@@ -1,11 +1,13 @@
-FROM python:3.9
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python:3.10-slim
 
 WORKDIR /code
 
 COPY requirements.txt /code/
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install django psycopg2-binary
 
 COPY . /code/
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
