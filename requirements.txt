@@ -1,12 +1,5 @@
 asgiref==3.11.1
-Django==6.0.4
-mysqlclient==2.2.8
-numpy==2.4.0
-pandas==2.3.3
-psycopg2-binary==2.9.11
-python-dateutil==2.9.0.post0
-pytz==2025.2
-six==1.17.0
+Django==5.2.13
+psycopg2-binary==2.9.12
 sqlparse==0.5.5
-termcolor==3.2.0
-tzdata==2025.3
+typing_extensions==4.15.0
