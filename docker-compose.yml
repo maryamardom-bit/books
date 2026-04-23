@@ -1,4 +1,4 @@
-version: '29.4.0'
+# version: '29.4.0'
 
 services:
   web:
@@ -16,8 +16,9 @@ services:
     restart: on-failure
 
   db:
-    image: postgres:14
+    image: postgres:18
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
     ports:
       - "5432:5432"
+
