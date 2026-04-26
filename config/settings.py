@@ -40,12 +40,16 @@ INSTALLED_APPS = [
 
     # third party
     'crispy_forms',
-    'crispy_bootstrap5',
+    'crispy_bootstrap5',   
+    'allauth',
+    'allauth.account',
 
+    # local
     'accounts',
     'pages',
-
 ]
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', # remove this, which only used in v0.56+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -113,6 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+
+    'django.contrib.auth.backends.ModelBackend',
+    # django allauth
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
