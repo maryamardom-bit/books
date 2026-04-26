@@ -2,11 +2,16 @@ asgiref==3.11.1
 certifi==2026.1.4
 crispy-bootstrap5==2026.3
 distlib==0.4.0
+dj-database-url==3.1.2
+dj-email-url==1.0.6
 Django==6.0.2
 django-allauth==65.16.1
+django-cache-url==3.4.6
 django-crispy-forms==2.6
 django-debug-toolbar==6.3.0
+environs==15.0.1
 filelock==3.20.3
+marshmallow==4.3.0
 mysqlclient==2.2.8
 numpy==2.4.0
 packaging==26.0
@@ -15,6 +20,7 @@ pipenv==2026.0.3
 platformdirs==4.5.1
 psycopg2-binary==2.9.11
 python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
 pytz==2025.2
 setuptools==80.10.2
 six==1.17.0
