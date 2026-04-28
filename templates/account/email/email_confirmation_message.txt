@@ -1,12 +1,10 @@
-{% load account %}
-{% user_display user as user_display%}
-{% load i18n %}
+{% load account i18n %}
+{% user_display user as user_display %}
 {% autoescape off %}
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain%}
-
-hello from {{site_name}}.
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain trimmed %}
+hello from {{ site_name }}.
 
 if you requested this email please click on the link below:
-{{ activate_url }}
 {% endblocktrans %}
+{{ activate_url }}
 {% endautoescape %}
