@@ -3,5 +3,14 @@ from .models import Product
 
 class ProductListView(generic.ListView):
     model = Product
+    queryset = Product.objects.filter(active = True)
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
+
+
+class ProductDetailView(generic.DetailView):
+    model = Product
+    template_name = 'Products/product_detail.html'
+    context_object_name = 'product'
+
+    
