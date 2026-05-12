@@ -1,6 +1,11 @@
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+
+
 from .models import Product,Comment
 from .forms import CommentForm
 
@@ -18,6 +23,7 @@ class ProductDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['comment_form'] = CommentForm()
         return context
     
@@ -34,7 +40,8 @@ class CommentCreateView(generic.CreateView):
              product = get_object_or_404(Product , id = product_id)
 
              obj.product = product
+             messages.success(self.request,_('your comment has been succsessfully registered '))
              return super().form_valid(form)
+        
 
-
-
+ 
