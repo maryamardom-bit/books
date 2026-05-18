@@ -27,3 +27,4 @@ urlpatterns = [
     path('rosetta/', include('rosetta.urls'))
 
 ]
+
