@@ -43,12 +43,36 @@
                                     <span class="price-separator">-</span>
                                     <span class="money old-price text-danger">۲۱۰,۰۰۰ تومان</span>
                                 </div>
-                                <div class="product-action d-flex align-items-sm-center align-content-center mb--30">
-                                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                               <div class="product-action d-flex align-items-sm-center align-content-center mb--30">
+                                    <form action="{% url 'cart:cart_add' product.id %}" 
+                                    method="post" 
+                                    >
                                         {% csrf_token %}
-                                        {{add_to_cart_form.as_p}}
-                                        <button type = "submit">{% trans "Add to cart" %}</button>
-                                    </form> 
+                                        <div class="quantity-wrapper d-flex justify-content-start">
+                                            <div class="quantity">
+                                                <input type="number" 
+                                                class="quantity-input" 
+                                                name="quantity" 
+                                                id="qty" 
+                                                value="1" 
+                                                min="1" 
+                                                max="30" 
+                                                >
+                                            </div>
+                                            <button type="submit" 
+                                            class="btn btn-small btn-bg-red btn-color-white btn-hover-2" 
+                                            >
+                                            {% trans "add to card" %}
+                                            </button>
+                                        </div>
+                                    </form>
+                                            {% comment %} <button class="btn btn-small btn-bg-red btn-color-white btn-hover-2" 
+                                        type = "submit" 
+                                        style="padding: 4px 8px ; width: auto ; margin-top: 10 px;" 
+                                        >
+                                        {% trans "Add to cart" %}
+                                        </button>
+                                    </form>  {% endcomment %}
                                    {% comment %} <div class="quantity-wrapper d-flex justify-content-start">
                                         <div class="quantity">
                                             <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
@@ -56,8 +80,9 @@
                                     </div>
                                     <button type="button" class="btn btn-small btn-bg-red btn-color-white btn-hover-2" onclick="window.location.href='cart.html'">
                                         {% trans "add to card" %}
-                                    </button>
-                                    </div> {% endcomment %}
+                                    </button>{% endcomment %}
+
+                                </div> 
                                 <div class="product-footer-meta mt-5 pt-5">
                                     <p><span class="m-0">  {% trans "categories" %}:</span>
                                         <a href="shop.html">لباس</a>,

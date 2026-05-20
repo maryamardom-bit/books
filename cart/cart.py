@@ -18,16 +18,20 @@ class Cart:
         self.cart = cart
 
 
-    def add(self , product, quantity = 1 ,):
+    def add(self , product, quantity = 1  , replace_current_quantity = False):
         """
         Add the spacified product to the cart if it exist
         """
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': quantity}
+            self.cart[product_id] = {'quantity': 0}
+            
+        if replace_current_quantity:
+            self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
+
 
         self.save()
 
@@ -49,7 +53,6 @@ class Cart:
 
     def __iter__(self):
         product_ids = self.cart.keys()
-
         products = Product.objects.filter(id__in = product_ids)
 
         cart = self.cart.copy()
