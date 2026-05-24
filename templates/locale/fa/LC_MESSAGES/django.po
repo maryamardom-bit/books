@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 13:57+0330\n"
+"POT-Creation-Date: 2026-05-23 17:37+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\templates\_base.html:65
+msgid "logout"
+msgstr "خروج"
+
+#: .\templates\_base.html:68
+msgid "profile"
+msgstr "پروفایل"
+
+#: .\templates\_base.html:72
+msgid "login"
+msgstr "ورود"
+
+#: .\templates\_base.html:75
+msgid "signup"
+msgstr "ثبت نام"
+
 #: .\templates\account\confirm_email.html:6
 #: .\templates\account\confirm_email.html:10
 msgid "Confirm Email Address"

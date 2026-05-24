@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 13:57+0330\n"
-"PO-Revision-Date: 2026-05-12 14:00+0330\n"
+"POT-Creation-Date: 2026-05-23 17:37+0330\n"
+"PO-Revision-Date: 2026-05-24 16:30+0330\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -54,25 +54,34 @@ msgstr "توضیحات محصول"
 msgid "$"
 msgstr "تومان"
 
-#: .\products\templates\products\product_detail.html:53
+#: .\products\templates\products\product_detail.html:65
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: .\products\templates\products\product_detail.html:57
+#: .\products\templates\products\product_detail.html:89
 msgid "categories"
 msgstr " دسته بندی"
 
-#: .\products\templates\products\product_detail.html:72
+#: .\products\templates\products\product_detail.html:104
 msgid "product description"
 msgstr "توضیحات محصول"
 
-#: .\products\templates\products\product_detail.html:156
+#: .\products\templates\products\product_detail.html:190
 msgid "Write your comment:"
 msgstr "نظر خود را بنویسید"
 
-#: .\products\templates\products\product_detail.html:162
+#: .\products\templates\products\product_detail.html:196
 msgid "submit"
 msgstr "ارسال"
+
+#: .\products\templates\products\product_detail.html:199
+#| msgid "Write your comment:"
+msgid "to write your comment please "
+msgstr "لطفا نظر خود را بنویسید"
+
+#: .\products\templates\products\product_detail.html:200
+msgid "log in"
+msgstr "ورود"
 
 #: .\products\views.py:43
 msgid "your comment has been succsessfully registered "

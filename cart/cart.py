@@ -1,3 +1,4 @@
+from django.contrib import messages
 from products.models import Product
 
 class Cart:
@@ -29,8 +30,12 @@ class Cart:
             
         if replace_current_quantity:
             self.cart[product_id]['quantity'] = quantity
+            messages.success(self.request,'product successfully updated to cart')
         else:
             self.cart[product_id]['quantity'] += quantity
+            messages.success(self.request,'product successfully added to cart')
+
+        
 
 
         self.save()
@@ -44,6 +49,7 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
+            messages.success(self.request,'product successfully removed from cart')
     
     def save(self):
         """
@@ -61,10 +67,12 @@ class Cart:
             cart[str(product.id)]['product_obj'] = product
 
         for item in cart.values():
+            item['total_price'] = item['product_obj'].price *item['quantity']
             yield item
         
     def __len__(self):
-        return len(self.cart.keys())
+        return sum(item['quantity'] for item in self.cart.values())
+        # return len(self.cart.keys())
     
     def clear(self):
         del self.session['cart']
@@ -72,9 +80,9 @@ class Cart:
 
     def get_total_price(self):
         product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in = product_ids)
 
-        return sum(product.price for product in products)
+
+        return sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())
     
 
 
