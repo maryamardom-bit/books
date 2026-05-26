@@ -8,7 +8,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.PositiveIntegerField(default= 0)
     active = models.BooleanField(default= True)
-    # cover= models.ImageField
+    # image= models.ImageField(verbose_name=_('Product Image'),upload_to= 'product/product_cover/', blank= True,)
     
     datetime_created = models.DateTimeField(auto_now= True)
     datetime_modified = models.DateTimeField(auto_now= True)
@@ -18,8 +18,6 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse('product_detail', args = [self.pk])
-
-
 
 class ActiveCommentsManager(models.Manager):
     def get_queryset(self):
