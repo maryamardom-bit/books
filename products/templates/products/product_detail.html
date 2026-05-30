@@ -21,7 +21,9 @@
                 <div class="container">
                     <div class="row no-gutters mb--80">
                         <div class="col-12 col-sm-4 product-main-image d-flex align-content-center">
-                            <img class="m-auto" style="max-height: 400px;" src="https://kasrapublishing.ir/wp-content/uploads/2025/09/%D9%81%D8%B1%D9%85%D8%AA-%D8%B3%D8%A7%DB%8C%D8%AA300-1.jpg" alt="">
+                            {% if product.image %}
+                                <img class="m-auto" style="max-height: 400px;" src="{{product.image.url}}" alt=""> 
+                            {% endif %}
                         </div>
                         <div class="col-12 col-sm-8 product-main-details mt-md--50">
                             <div class="product-summary pl-lg--30 pl-md--0 text-right p-4">
@@ -277,7 +279,7 @@
                             <div class="product-image">
                                 <div class="product-image--holder">
                                     <a href="product-details.html">
-                                        <img src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
+                                        <img src="{{product.image.url}}" alt="Product Image" class="primary-image">
                                     </a>
                                 </div>
                                 <span class="product-badge sale">sale</span>

@@ -181,7 +181,9 @@ ACCOUNT_AUTHENTICATION_METHOD ='email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
-
+#media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # crispy forms settings
 CRISPY_ALLOWED_TEMPLATE_PACK = "bootstrap5"
