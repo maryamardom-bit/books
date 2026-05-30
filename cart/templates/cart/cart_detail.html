@@ -4,6 +4,8 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load comment_tags %}
+{% load persian_translation_tags %}
+{% load humanize %}
 
 {% block content %}
     {% trans "Cart" as headeer_name %}
@@ -48,11 +50,11 @@
                                                                 </td>
                                                                 <td class="product-price">
                                                                     <span class="product-price-wrapper">
-                                                                        <span class="money">{{item.product_obj.price}} تومان</span>
+                                                                        <span class="money">{{item.product_obj.price |intcomma:False | translate_number }} {% trans "$" %}</span>
                                                                     </span>
                                                                 </td>
                                                                 <td class="product-quantity">
-                                                                    <form class= "d-flex" method="post" action="{% url "cart:cart_add" item.product_obj.id %}">
+                                                                    <form class= "d-flex" method="post" action="{% url "cart:cart_add" item.product_obj.id  %}">
                                                                         {% csrf_token %}
                                                                         <div class="quantity">
                                                                             <input 
@@ -60,17 +62,17 @@
                                                                                 class="quantity-input"
                                                                                 name="quantity" 
                                                                                 id="qty-1" 
-                                                                                value="{{item.quantity}}" 
+                                                                                value="{{item.quantity }}" 
                                                                                 min="1"
                                                                             >
                                                                         </div>
-                                                                            {{item.product_update_quantity_form.inplace}}
+                                                                            {{item.product_update_quantity_form.inplace }}
                                                                             <button class= "small" type="submit"><i class="fa fa-refresh"></i></button>                                                       
                                                                     </form>
                                             </td>
                                                                 <td class="product-total-price">
                                                                     <span class="product-price-wrapper">
-                                                                        <span class="money">{{item.total_price}} تومان</span>
+                                                                        <span class="money">{{item.total_price|intcomma:False  | translate_number}} {% trans "$" %}</span>
                                                                     </span>
                                                                 </td>
                                                             </tr>    
@@ -110,7 +112,7 @@
                                             </div>
                                             <div class="cart-calculator__item--value">
                                                 <span class="product-price-wrapper">
-                                                    <span class="money">{{cart.get_total_price}} تومان</span>
+                                                    <span class="money">{{cart.get_total_price|intcomma:False | translate_number}} {% trans "$" %}</span>
                                                 </span>
                                             </div>
                                         </div>
