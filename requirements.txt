@@ -24,6 +24,7 @@ mysqlclient==2.2.8
 numpy==2.4.0
 packaging==26.0
 pandas==2.3.3
+phonenumbers==9.0.31
 pillow==12.2.0
 pipenv==2026.0.3
 platformdirs==4.5.1

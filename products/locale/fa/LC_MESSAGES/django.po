@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 14:51+0330\n"
-"PO-Revision-Date: 2026-05-25 13:52+0330\n"
+"POT-Creation-Date: 2026-06-01 10:04+0330\n"
+"PO-Revision-Date: 2026-05-31 12:23+0330\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,72 +18,110 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\products\models.py:28
+#: .\products\models.py:10
+msgid "Product Title"
+msgstr "نام محصول"
+
+#: .\products\models.py:11
+msgid "Product Discription"
+msgstr "توضیحات محصول"
+
+#: .\products\models.py:12
+msgid "Product Short_Discription"
+msgstr "توضیح مختصر از محصول"
+
+#: .\products\models.py:13
+msgid "Product Price"
+msgstr "قیمت محصول"
+
+#: .\products\models.py:14
+msgid "Product Active"
+msgstr "آیا محصول موجود است؟"
+
+#: .\products\models.py:15
+msgid "Product Image"
+msgstr "تصویر محصول"
+
+#: .\products\models.py:17
+msgid "Date Time of Creation"
+msgstr "زمان ایجاد محصول"
+
+#: .\products\models.py:18
+msgid "Date Time of Modified"
+msgstr "زمان آخرین تغییرات در محصول"
+
+#: .\products\models.py:32
 msgid "Very Bad"
 msgstr "خیلی بد"
 
-#: .\products\models.py:29
+#: .\products\models.py:33
 msgid "Bad"
 msgstr "بد"
 
-#: .\products\models.py:30
+#: .\products\models.py:34
 msgid "Normal"
 msgstr "معمولی"
 
-#: .\products\models.py:31
+#: .\products\models.py:35
 msgid "Good"
 msgstr "خوب"
 
-#: .\products\models.py:32
+#: .\products\models.py:36
 msgid "Perfect"
 msgstr "عالی"
 
-#: .\products\models.py:43
+#: .\products\models.py:39
+msgid "Comment_Product"
+msgstr "نظر برای این محصول"
+
+#: .\products\models.py:47
 msgid "Comment Text"
 msgstr "متن دیدگاه"
 
-#: .\products\models.py:44
+#: .\products\models.py:48
 msgid "What is your score?"
 msgstr "امتیاز شما به این محصول کدام است؟"
 
-#: .\products\templates\products\product_detail.html:33
+#: .\products\models.py:53
+msgid "Comment_Active"
+msgstr "نظر فعال"
+
+#: .\products\templates\products\product_detail.html:38
+#: .\products\templates\products\product_list.html:52
 msgid "$"
 msgstr "تومان"
 
-#: .\products\templates\products\product_detail.html:56
+#: .\products\templates\products\product_detail.html:61
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: .\products\templates\products\product_detail.html:80
+#: .\products\templates\products\product_detail.html:85
 msgid "categories"
 msgstr " دسته بندی"
 
-#: .\products\templates\products\product_detail.html:95
+#: .\products\templates\products\product_detail.html:100
 msgid "product description"
 msgstr "توضیحات محصول"
 
-#: .\products\templates\products\product_detail.html:181
+#: .\products\templates\products\product_detail.html:186
 msgid "Write your comment:"
 msgstr "نظر خود را بنویسید"
 
-#: .\products\templates\products\product_detail.html:187
+#: .\products\templates\products\product_detail.html:192
 msgid "submit"
 msgstr "ارسال"
 
-#: .\products\templates\products\product_detail.html:190
+#: .\products\templates\products\product_detail.html:195
 msgid "to write your comment please "
 msgstr "لطفا نظر خود را بنویسید"
 
-#: .\products\templates\products\product_detail.html:191
+#: .\products\templates\products\product_detail.html:196
 msgid "log in"
 msgstr "ورود"
 
 #: .\products\views.py:43
 msgid "your comment has been succsessfully registered "
 msgstr "نظر شما با موفقیت ثبت شد"
-
-#~ msgid "Product Image"
-#~ msgstr "تصویر محصول"
 
 #~ msgid "product details of  "
 #~ msgstr "توضیحات محصول"

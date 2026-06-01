@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rosetta',
-    'ckeditor', 
+    'ckeditor',
+    'phonenumbers', 
 
     # local
     'accounts.apps.AccountsConfig',
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'cart.apps.CartConfig',
     'persian_translate.apps.PersianTranslateConfig',
+    'orders.apps.OrdersConfig',
 ]
 SITE_ID = 1
 

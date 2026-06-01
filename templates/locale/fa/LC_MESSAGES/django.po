@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-26 09:41+0330\n"
-"PO-Revision-Date: 2026-05-26 09:43+0330\n"
+"POT-Creation-Date: 2026-06-01 10:04+0330\n"
+"PO-Revision-Date: 2026-05-31 12:18+0330\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,98 +18,91 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\_base.html:66
+#: .\templates\_base.html:66
 msgid "logout"
 msgstr "خروج"
 
-#: .\_base.html:69
+#: .\templates\_base.html:69
 msgid "profile"
 msgstr "پروفایل"
 
-#: .\_base.html:73 .\account\login.html:16
+#: .\templates\_base.html:73 .\templates\account\login.html:16
 msgid "login"
 msgstr "ورود"
 
-#: .\_base.html:76
+#: .\templates\_base.html:76
 msgid "signup"
 msgstr "ثبت نام"
 
-#: .\_base.html:233
+#: .\templates\_base.html:233
 msgid "hello"
 msgstr "سلام"
 
-#: .\_base.html:233 .\account\logout.html:9
-#, fuzzy
-#| msgid "logout"
+#: .\templates\_base.html:233 .\templates\account\logout.html:9
 msgid "Log Out"
 msgstr "خروج"
 
-#: .\_base.html:237 .\account\login.html:11
+#: .\templates\_base.html:237 .\templates\account\login.html:11
 msgid "Log In"
 msgstr "ورود"
 
-#: .\_base.html:237
-#, fuzzy
-#| msgid "signup"
+#: .\templates\_base.html:237
 msgid "Sign Up"
 msgstr "ثبت نام"
 
-#: .\account\confirm_email.html:6 .\account\confirm_email.html:10
+#: .\templates\account\confirm_email.html:6
+#: .\templates\account\confirm_email.html:10
 msgid "Confirm Email Address"
 msgstr "تأیید آدرس ایمیل"
 
-#: .\account\confirm_email.html:16
+#: .\templates\account\confirm_email.html:16
 #, python-format
 msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
 "address for user %(user_display)s."
 msgstr ""
 
-#: .\account\confirm_email.html:24
+#: .\templates\account\confirm_email.html:24
 msgid "Confirm"
 msgstr "تأیید"
 
-#: .\account\confirm_email.html:30
+#: .\templates\account\confirm_email.html:30
 #, python-format
 msgid ""
 "Unable to confirm %(email)s because it is already confirmed by a different "
 "account."
 msgstr ""
 
-#: .\account\confirm_email.html:36
+#: .\templates\account\confirm_email.html:36
 #, python-format
 msgid ""
-"This email confirmation link expired or is invalid. Please <a "
-"href=\"%(email_url)s\">issue a new email confirmation request</a>."
+"This email confirmation link expired or is invalid. Please <a href=\"%"
+"(email_url)s\">issue a new email confirmation request</a>."
 msgstr ""
 
-#: .\account\email\email_confirmation_message.txt:4
+#: .\templates\account\email\email_confirmation_message.txt:4
 #, python-format
 msgid ""
 "hello from %(site_name)s. if you requested this email please click on the "
 "link below:"
 msgstr ""
 
-#: .\account\email\email_confirmation_subject.txt:3
+#: .\templates\account\email\email_confirmation_subject.txt:3
 msgid "please confirm email"
 msgstr "لطفاً ایمیل را تأیید کنید"
 
-#: .\account\login.html:7
-#, fuzzy
-#| msgid "login"
+#: .\templates\account\login.html:7
 msgid "log in"
 msgstr "ورود"
 
-#: .\account\logout.html:5
-#, fuzzy
-#| msgid "logout"
+#: .\templates\account\logout.html:5
 msgid "log out"
 msgstr "خروج"
 
-#: .\account\logout.html:10
+#: .\templates\account\logout.html:10
 msgid "Are you sure you want to logout?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
-#: .\account\logout.html:13
+#: .\templates\account\logout.html:13
 msgid "Are You Sure?"
 msgstr "آیا مطمئن هستید؟"
