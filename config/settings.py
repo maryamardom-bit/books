@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'rosetta',
     'ckeditor',
-    'phonenumbers', 
+    'phonenumber_field', 
 
     # local
     'accounts.apps.AccountsConfig',
@@ -200,6 +200,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 LOCALE_PATHS = (
     'templates/locale',
 )
+
+# phone_number
+PHONENUMBER_DEFAULT_REGION = 'IR'
+
 
 from django.contrib.messages import constants as messages_constant
 # for messages framework
