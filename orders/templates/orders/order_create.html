@@ -12,7 +12,7 @@
         {% include "topheader.html" with  header_name=header_name %}
         <!-- Main Content Wrapper Start -->
         <div class="main-content-wrapper">
-            <div class="page-content-inner">
+            <div class="page-content-inner pb-5">
                 <div class="container">
                     <div class="row pt--50 pt-md--40 pt-sm--20"></div>
                     <div class="row pb--80 pb-md--60 pb-sm--40">
@@ -22,48 +22,50 @@
                                 <h2>جزئیات سفارش</h2>
                             </div>
                             <div class="checkout-form">
-                                <form action="#" class="form form--checkout">
+                                <form action="" method="post" class="form form--checkout">
+                                    {% csrf_token %}
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {{forms.errors}}
+                                    </div>
+                                    {% endif %}
                                     <div class="form-row mb--20">
                                         <div class="form__group col-md-6 mb-sm--30">
                                             <label for="billing_fname" class="form__label form__label--2">نام  <span class="required">*</span></label>
-                                            <input type="text" name="billing_fname" id="billing_fname" class="form__input form__input--2">
+                                            <input type="text" name="{{form.first_name.name}}" id="billing_fname" class="form__input form__input--2">
                                         </div>
                                         <div class="form__group col-md-6">
                                             <label for="billing_lname" class="form__label form__label--2">نام خانوادگی  <span class="required">*</span></label>
-                                            <input type="text" name="billing_lname" id="billing_lname" class="form__input form__input--2">
+                                            <input type="text" name="{{form.last_name.name}}" id="billing_lname" class="form__input form__input--2">
                                         </div>
                                     </div>
                                     <div class="form-row mb--20">
                                         <div class="form__group col-12">
-                                            <label for="billing_company" class="form__label form__label--2">آدرس</label>
-                                            <input type="text" name="billing_company" id="billing_company" class="form__input form__input--2">
+                                            <label for="billing_address" class="form__label form__label--2">آدرس</label>
+                                            <input type="text" name="{{form.address.name}}" id="billing_address" class="form__input form__input--2">
                                         </div>
                                     </div>
                                     <div class="form-row mb--20">
                                         <div class="form__group col-12">
                                             <label for="billing_phone" class="form__label form__label--2">شماره همراه <span class="required">*</span></label>
-                                            <input type="text" name="billing_phone" id="billing_phone" class="form__input form__input--2">
+                                            <input type="text" name="{{form.phone_number.name}}" id="billing_phone" class="form__input form__input--2">
                                         </div>
                                     </div>
-                                    <div class="form-row mb--20">
-                                        <div class="form__group col-12">
-                                            <label for="billing_email" class="form__label form__label--2">ایمیل  <span class="required">*</span></label>
-                                            <input type="email" name="billing_email" id="billing_email" class="form__input form__input--2">
-                                        </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form__group col-12">
                                             <label for="orderNotes" class="form__label form__label--2">یادداشت شما</label>
-                                            <textarea class="form__input form__input--2 form__input--textarea" id="orderNotes" name="orderNotes" placeholder="اگر یادداشتی دارید در اینجا وارد کنید. در غیر این صورت این مکان را خالی بگذارید"></textarea>
+                                            <textarea class="form__input form__input--2 form__input--textarea" id="orderNotes" name="{{form.order_notes.name}}" placeholder="اگر یادداشتی دارید در اینجا وارد کنید. در غیر این صورت این مکان را خالی بگذارید"></textarea>
                                         </div>
                                     </div>
-                                </form>
+                                    <button class="btn" type="submit">{% trans "submit" %}</button>
+                                </form> 
                             </div>
                         </div>
                         <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
                             <div class="order-details">
                                 <div class="checkout-title mt--10">
-                                    <h2>سفارش شما</h2>
+                                <h2>سفارش شما</h2>
                                 </div>
                                 <div class="table-content table-responsive mb--30">
                                     <table class="table order-table order-table-2">
@@ -112,34 +114,6 @@
         </div>
         <!-- Main Content Wrapper Start -->
 
-        <!-- Footer Start-->
-        <footer class="footer">
-            <div class="footer-top bg-color ptb--50" data-bg-color="#f6f6f6">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-9 text-center">
-                            <div class="footer-widget mb--50">
-                                <div class="textwidget">
-                                    <img src="assets/img/codingyar_logo.png" alt="Logo">
-                                </div>
-                            </div>
-                            <div class="footer-widget mb--50 pb--1">
-                                <ul class="footer-menu">
-                                    <li><a href="">درباره ما</a></li>
-                                    <li><a href="">قوانین و مقررات</a></li>
-                                    <li><a href="">تماس با ما</a></li>
-                                </ul>
-                            </div>
-                            <div class="footer-widget">
-                                Codingyar.com © | all rights reserved
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Footer End-->
-
         <!-- Search form Popup Start -->
         <div class="searchform__popup" id="searchForm">
             <a href="#" class="btn-close"><i class="flaticon flaticon-cross"></i></a>
@@ -154,80 +128,7 @@
         <!-- Search form Popup End -->
 
         <!-- Mini Cart Start -->
-        <aside class="mini-cart" id="miniCart">
-            <div class="mini-cart-wrapper">
-                <a href="" class="btn-close"><i class="flaticon flaticon-cross"></i></a>
-                <div class="mini-cart-inner">
-                    <h3 class="mini-cart__heading mb--40 mb-lg--30 text-right">سبد خرید</h3>
-                    <div class="mini-cart__content">
-                        <ul class="mini-cart__list text-right">
-                            <li class="mini-cart__product d-flex justify-content-between">
-                                <div class="mini-cart__product__image">
-                                    <a href="#">
-                                        <img src="assets/img/products/prod-1-100x100.jpg" alt="products">
-                                    </a>
-                                </div>
-                                <div class="mini-cart__product__content pt-2">
-                                    <span class="mini-cart__product__title d-flex flex-row justify-content-between">
-                                        <a href="#"> محصول سماره یک </a>
-                                        <a href="#" class="">
-                                            &#10060;
-                                        </a>
-                                    </span>
-                                    <span class="mini-cart__product__quantity">
-                                        <span>۴۹,۰۰۰ تومان</span> &#215; <span>۱</span>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="mini-cart__product d-flex justify-content-between">
-                                <div class="mini-cart__product__image">
-                                    <a href="#">
-                                        <img src="assets/img/products/prod-1-100x100.jpg" alt="products">
-                                    </a>
-                                </div>
-                                <div class="mini-cart__product__content pt-2">
-                                    <span class="mini-cart__product__title d-flex flex-row justify-content-between">
-                                        <a href="#"> محصول سماره یک </a>
-                                        <a href="#" class="">
-                                            &#10060;
-                                        </a>
-                                    </span>
-                                    <span class="mini-cart__product__quantity">
-                                        <span>۴۹,۰۰۰ تومان</span> &#215; <span>۱</span>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="mini-cart__product d-flex justify-content-between">
-                                <div class="mini-cart__product__image">
-                                    <a href="#">
-                                        <img src="assets/img/products/prod-1-100x100.jpg" alt="products">
-                                    </a>
-                                </div>
-                                <div class="mini-cart__product__content pt-2">
-                                    <span class="mini-cart__product__title d-flex flex-row justify-content-between">
-                                        <a href="#"> محصول سماره یک </a>
-                                        <a href="#" class="">
-                                            &#10060;
-                                        </a>
-                                    </span>
-                                    <span class="mini-cart__product__quantity">
-                                        <span>۴۹,۰۰۰ تومان</span> &#215; <span>۱</span>
-                                    </span>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="mini-cart__total">
-                            <span>جمع کل</span>
-                            <span class="ammount">۱۴۸,۰۰۰ تومان</span>
-                        </div>
-                        <div class="mini-cart__buttons">
-                            <a href="cart.html" class="btn btn-fullwidth btn-bg-sand mb--20">مشاهده سبد خرید</a>
-                            <a href="checkout.html" class="btn btn-fullwidth btn-bg-sand">پرداخت</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        {% include "cart/cart_sidebar.html" %}
         <!-- Mini Cart End -->
 
         <!-- Global Overlay Start -->
