@@ -51,7 +51,27 @@
                               <div class="product-price-wrapper mb--30">
                                 <span class="money text-success">{{ product.price |intcomma:False | translate_number }} {% trans "$" %}</span>
                               </div>
-                              <a href="{{ product.get_absolute_url }}" class="btn btn-small btn-bg-sand btn-color-dark px-3">اضافه کردن به سبد خرید</a>
+                              <form action="{% url 'cart:cart_add' product.id %}" 
+                                    method="post" 
+                                    >
+                                        {% csrf_token %}
+                                                <input type="hidden" 
+                                                class="quantity-input" 
+                                                name="quantity" 
+                                                id="qty" 
+                                                value="1" 
+                                                min="1" 
+                                                max="30" 
+                                                >
+                                        <div class="quantity-wrapper">
+                                            <button type="submit" 
+                                            class="btn btn-small btn-bg-red btn-color-white btn-hover-2" 
+                                            >
+                                            {% trans "add to card" %}
+                                            </button>
+                                        </div>
+                                    </form>
+                              {% comment %} <a href="{{ product.get_absolute_url }}" class="btn btn-small btn-bg-sand btn-color-dark px-3">{% trans "add to cart" %}</a> {% endcomment %}
                             </div>
                           </div>
                         </div>
