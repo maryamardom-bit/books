@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-11 12:17+0330\n"
+"POT-Creation-Date: 2026-06-16 12:18+0330\n"
 "PO-Revision-Date: 2026-06-11 12:19+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,7 @@ msgstr "تاریخ ایجاد"
 msgid "Date Time of Modified"
 msgstr "اخرین تغییرات"
 
-#: .\orders\models.py:30
+#: .\orders\models.py:37
 msgid "Product Price"
 msgstr "قیمت محصول"
 
@@ -75,9 +75,8 @@ msgstr "تومان"
 msgid "you can't proceed page because your cart is empty."
 msgstr "سبد خرید شما خالی است و قادر به ادامه فرآیند نیستید"
 
-#: .\orders\views.py:42
-msgid "you're order has successfully placed."
-msgstr "سفارش شما با موفقیت ارسال شد"
+#~ msgid "you're order has successfully placed."
+#~ msgstr "سفارش شما با موفقیت ارسال شد"
 
 #~ msgid "user_order"
 #~ msgstr "سفارش کاربر"

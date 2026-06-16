@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-13 12:06+0330\n"
+"POT-Creation-Date: 2026-06-16 12:18+0330\n"
 "PO-Revision-Date: 2026-06-13 12:07+0330\n"
 "Last-Translator: ddg fghgj <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,12 +50,10 @@ msgid "go shopping"
 msgstr "برو به فروشگاه"
 
 #: .\cart\templates\cart\cart_detail.html:94
-#| msgid "go to cart"
 msgid "Empty cart"
 msgstr "خالی کردن سبد خرید"
 
 #: .\cart\templates\cart\cart_detail.html:128
-#| msgid "check out"
 msgid "checkout"
 msgstr "پرداخت"
 
@@ -76,7 +74,6 @@ msgid "check out"
 msgstr "پرداخت"
 
 #: .\cart\views.py:53
-#| msgid "product successfully removed from cart"
 msgid "all producs successfully removed from your cart"
 msgstr "تمام محصولات با موفقیت از سبد خرید حذف شدند"
 

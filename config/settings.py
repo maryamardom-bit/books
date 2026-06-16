@@ -46,15 +46,19 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
 
+
     # third party
     'jalali_date',
     'crispy_forms',
-    'crispy_bootstrap5',   
+    'crispy_bootstrap5',
+    'auth_style',   
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rosetta',
     'ckeditor',
     'phonenumber_field', 
+    
 
     # local
     'accounts.apps.AccountsConfig',
@@ -76,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware', # remove this, which only used in v0.56+
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -211,3 +216,5 @@ MESSAGE_TAGS ={
     messages_constant.ERROR: 'danger',
     
 }
+
+ZARINPAL_MERCHANT_ID = env("DJANGO_ZARINPAL_MERCHANT_ID")
