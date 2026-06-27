@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rosetta',
     'ckeditor',
-    'phonenumber_field', 
+    'phonenumber_field',
+    'debug_toolbar', 
     
 
     # local
@@ -72,6 +73,7 @@ SITE_ID = 1
 
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +83,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware', # remove this, which only used in v0.56+
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
+
 ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 
 ROOT_URLCONF = 'config.urls'
 
@@ -218,3 +226,4 @@ MESSAGE_TAGS ={
 }
 
 ZARINPAL_MERCHANT_ID = env("DJANGO_ZARINPAL_MERCHANT_ID")
+

@@ -1,0 +1,99 @@
+<!-- در فایل products/product_search_results.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    نتایج جستجو برای "{{ query }}"
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                نتایج جستجو برای: <span class="text-primary">"{{ query }}"</span>
+            </h2>
+            
+            {% if results %}
+                <p class="text-muted">{{ page_obj.paginator.count }} کتاب پیدا شد</p>
+                
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                    {% for product in results %}
+                        <div class="col">
+                            <div class="card h-100">
+                                {% if product.cover_image %}
+                                    <img src="{{ product.cover_image.url }}" class="card-img-top" alt="{{ product.title }}">
+                                {% else %}
+                                    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="بدون تصویر">
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'products:product_detail' product.id %}" class="text-decoration-none">
+                                            {{ product.title }}
+                                        </a>
+                                    </h5>
+                                    <p class="card-text text-muted">
+                                        نویسنده: {{ product.author|default:"نامشخص" }}
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>{{ product.price|floatformat:0 }} {% trans "$" %}</strong>
+                                    </p>
+                                </div>
+                                
+                                <div class="card-footer bg-transparent">
+                                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-primary btn-sm w-100">
+                                        مشاهده جزئیات
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- صفحه‌بندی -->
+                {% if is_paginated %}
+                    <nav aria-label="صفحه‌بندی نتایج" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">قبلی</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+<a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">بعدی</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+                
+            {% else %}
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">هیچ نتیجه‌ای یافت نشد!</h4>
+                    <p>متاسفانه کتابی با عبارت "{{ query }}" پیدا نشد.</p>
+                    <hr>
+                    <p class="mb-0">
+                        پیشنهاد می‌کنیم:
+                        <ul>
+                            <li>املای کلمات را بررسی کنید.</li>
+                            <li>از کلمات کلیدی ساده‌تر استفاده کنید.</li>
+                            <li><a href="{% url 'products:product_list' %}" class="alert-link">بازگشت به لیست همه کتاب‌ها</a></li>
+                        </ul>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

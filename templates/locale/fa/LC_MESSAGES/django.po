@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 13:08+0330\n"
-"PO-Revision-Date: 2026-06-16 13:09+0330\n"
+"POT-Creation-Date: 2026-06-16 13:19+0330\n"
+"PO-Revision-Date: 2026-06-16 13:19+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,7 @@ msgid "Log In"
 msgstr "ورود"
 
 #: .\templates\_base.html:237 .\templates\account\login.html:26
+#: .\templates\account\signup.html:19
 msgid "Sign Up"
 msgstr "ثبت نام"
 
@@ -114,6 +115,18 @@ msgstr "بله"
 #: .\templates\account\logout.html:20
 msgid "No"
 msgstr "خیر"
+
+#: .\templates\account\signup.html:23
+#, fuzzy
+#| msgid "Don't have an account?"
+msgid "Already have an account?"
+msgstr "حساب کاربری ندارید؟"
+
+#: .\templates\account\signup.html:23
+#, fuzzy
+#| msgid "login"
+msgid "Login"
+msgstr "ورود"
 
 #~ msgid "Yes, Log Out"
 #~ msgstr "بله"
