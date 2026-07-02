@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 13:19+0330\n"
-"PO-Revision-Date: 2026-06-16 13:19+0330\n"
+"POT-Creation-Date: 2026-07-02 11:55+0330\n"
+"PO-Revision-Date: 2026-07-02 12:09+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,38 +18,41 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\templates\_base.html:66
+#: .\templates\_base.html:388
 msgid "logout"
 msgstr "خروج"
 
-#: .\templates\_base.html:69
-msgid "profile"
-msgstr "پروفایل"
-
-#: .\templates\_base.html:73 .\templates\account\login.html:20
+#: .\templates\_base.html:392 .\templates\account\login.html:20
 msgid "login"
 msgstr "ورود"
 
-#: .\templates\_base.html:76
+#: .\templates\_base.html:395
 msgid "signup"
 msgstr "ثبت نام"
 
-#: .\templates\_base.html:233
-msgid "hello"
-msgstr "سلام"
+#: .\templates\_base.html:433
+msgid "home"
+msgstr "خانه"
 
-#: .\templates\_base.html:233 .\templates\account\logout.html:14
-msgid "Log Out"
-msgstr "خروج"
+#: .\templates\_base.html:438
+msgid "products"
+msgstr "محصولات"
 
-#: .\templates\_base.html:237 .\templates\account\login.html:15
-msgid "Log In"
-msgstr "ورود"
+#: .\templates\_base.html:443
+msgid "order"
+msgstr "شرایط سفارش"
 
-#: .\templates\_base.html:237 .\templates\account\login.html:26
-#: .\templates\account\signup.html:19
-msgid "Sign Up"
-msgstr "ثبت نام"
+#: .\templates\_base.html:448
+msgid "about us"
+msgstr "درباره ما"
+
+#: .\templates\_base.html:453
+msgid "contact us"
+msgstr "ارتباط با ما"
+
+#: .\templates\_base.html:458
+msgid "working us"
+msgstr "همکاری با ما"
 
 #: .\templates\account\confirm_email.html:6
 #: .\templates\account\confirm_email.html:10
@@ -96,12 +99,24 @@ msgstr "لطفاً ایمیل را تأیید کنید"
 msgid "log in"
 msgstr "ورود"
 
+#: .\templates\account\login.html:15
+msgid "Log In"
+msgstr "ورود"
+
 #: .\templates\account\login.html:25
 msgid "Don't have an account?"
 msgstr "حساب کاربری ندارید؟"
 
+#: .\templates\account\login.html:26 .\templates\account\signup.html:19
+msgid "Sign Up"
+msgstr "ثبت نام"
+
 #: .\templates\account\logout.html:5
 msgid "log out"
+msgstr "خروج"
+
+#: .\templates\account\logout.html:14
+msgid "Log Out"
 msgstr "خروج"
 
 #: .\templates\account\logout.html:15
@@ -127,6 +142,12 @@ msgstr "حساب کاربری ندارید؟"
 #| msgid "login"
 msgid "Login"
 msgstr "ورود"
+
+#~ msgid "profile"
+#~ msgstr "پروفایل"
+
+#~ msgid "hello"
+#~ msgstr "سلام"
 
 #~ msgid "Yes, Log Out"
 #~ msgstr "بله"

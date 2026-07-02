@@ -1,270 +1,3 @@
-{% comment %} {% load static %}
-{% load i18n %}
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-            <header class="header">
-                <div class="header-inner fixed-header">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-xl-9 col-lg-8 col-5 col-xs-0 col-none col-sm-block p-0">
-                                <nav class="main-navigation">
-                                    <div class="site-branding" style="margin-right: 30px;">
-                                        <a href="index.html" class="logo">
-                                            <figure class="logo--normal d-none d-sm-block">
-                                                <img class="px-5" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 50px; margin-bottom: -15px;" alt="Logo">
-                                            </figure>
-                                        </a>
-                                    </div>
-                                    <div class="mainmenu-nav d-none d-lg-block w-100 pr-3">
-                                        <ul class="mainmenu d-lg-flex jusity-content-end jusity-content-lg-start pt-4">
-                                            <li class="mainmenu__item menu-item-has-children active">
-                                                <a href="{% url 'product_list' %}" class="mainmenu__link">
-                                                    <span class="mm-text">خانه</span>
-                                                </a>
-                                            </li>
-                                            <li class="mainmenu__item menu-item-has-children">
-                                                <a href="Blog.html" class="mainmenu__link">
-                                                    <span class="mm-text">وبلاگ</span>
-                                                </a>
-                                            </li>
-                                            <li class="mainmenu__item menu-item-has-children">
-                                                <a href="#" class="mainmenu__link">
-                                                    <span class="mm-text">صفحات</span>
-                                                </a>
-                                            </li>
-                                            <li class="mainmenu__item">
-                                                <a href="contact-us.html" class="mainmenu__link">
-                                                    <span class="mm-text">تماس با ما</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </nav>
-                            </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-7 col-12 p-0">
-                                <ul class="header-toolbar">
-                                    <li class="header-toolbar__item">
-                                        <a href="wishlist.html" class="header-toolbar__btn mx-4">
-                                            <i class="flaticon flaticon-like"></i>
-                                        </a>
-                                    </li>
-                                    <li class="header-toolbar__item mini-cart-item">
-                                        <a href="#miniCart" class="header-toolbar__btn toolbar-btn mini-cart-btn">
-                                            <i class="flaticon flaticon-shopping-cart"></i>
-                                            <sup class="mini-cart-count">{{ cart|length}}</sup>
-                                        </a>
-                                    </li>
-                                    <li class="header-toolbar__item user-info">
-                                        <a href="my-account.html" class="header-toolbar__btn">
-                                            <i class="flaticon flaticon-user"></i>
-                                        </a>
-                                        <ul class="user-info-menu">
-                                            {% if user.is_authenticated %}    
-                                                <li>
-                                                    <a class="text-right" href="{% url 'account_logout' %}">{% trans "logout" %}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="text-right" href="">{% trans "profile" %} </a>
-                                                </li>
-                                            {% else %}                                        
-                                                <li>
-                                                    <a class="text-right" href="{%url 'account_login'%}">{% trans "login" %}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="text-right" href="{% url 'account_signup' %}">{% trans "signup" %}</a>
-                                                </li>
-                                            {% endif %}
-                                    </ul>
-                                    </li>
-                                    <li class="header-toolbar__item">
-                                        <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
-                                            <i class="flaticon flaticon-search"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mobile-menu"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        <!-- Header End -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      {% block page_title %}
-
-      {% endblock %}
-    </title>
-
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <!-- Favicons -->
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="{% static 'img/icon.png' %}" />
-
-    <!-- ************************* CSS Files ************************* -->
-
-    <link rel="stylesheet" href="{% static 'css/_base.css' %}" />
-
-    <!-- Vendor CSS -->
-    <link rel="stylesheet" href="{% static 'css/vendor.css' %}" />
-
-    <!-- style css -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-
-    {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" /> {% endcomment %}
-  {% comment %} </head>
-  <style>
-    /* استایل نوتیفیکیشن */
-.notification-toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    animation: fadeInOut 3s ease-in-out forwards;
-}
-
-.toast-message {
-    background-color: #28a745;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    direction: rtl;
-    min-width: 250px;
-    justify-content: center;
-}
-
-.toast-icon {
-    font-size: 18px;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(255,255,255,0.2);
-    border-radius: 50%;
-}
-
-.toast-text {
-    margin: 0;
-}
-
-/* انیمیشن محو شدن */
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
-    }
-    15% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    85% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
-        visibility: hidden;
-    }
-}
-
-/* استایل برای انواع مختلف پیام‌ها */
-.toast-success {
-    background-color: #28a745;
-}
-
-.toast-error {
-    background-color: #dc3545;
-}
-
-.toast-warning {
-    background-color: #ffc107;
-    color: #333;
-}
-
-.toast-info {
-    background-color: #17a2b8;
-}
-
-/* حذف خودکار نوتیفیکیشن با جاوااسکریپت (اختیاری) */
-@media (max-width: 768px) {
-    .toast-message {
-        min-width: 200px;
-        padding: 10px 20px;
-        font-size: 12px;
-    }
-}
-
-  </style>
-{% if messages %}
-<div class="notification-toast" id="notificationToast">
-    {% for message in messages %}
-    <div class="toast-message toast-{{ message.tags }}">
-        <span class="toast-icon">✓</span>
-        <span class="toast-text">{{ message }}</span>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-<body dir='rtl'>
-    {% if user.is_authenticated %}
-        <div style="text-align: left; direction: ltr; padding-left: 20px;">
-         {% trans "hello" %} {{ user.email }} | <a href="{% url 'account_logout' %}">{% trans "Log Out" %}</a>
-        </div>
-    {% else %}
-        <div style="text-align: left; direction: ltr; padding-left: 20px;">
-        <a href="{% url 'account_login' %}">{% trans "Log In" %} </a>| <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-        </div>
-    {% endif %}
-
-    {% block content %}
-
-    {% endblock %}
-    {% include "footer.html" %}
-
-    {% include "cart/cart_sidebar.html" %}
-
-    <!-- jQuery JS -->
-    <script src="{% static 'js/vendor.js' %}"></script>
-
-    <!-- Main JS -->
-    <script src="{% static 'js/main.js' %}"></script>
-    <script>
-        // حذف خودکار نوتیفیکیشن بعد از 3 ثانیه
-        setTimeout(function() {
-            var toast = document.getElementById('notificationToast');
-            if (toast) {
-                toast.style.opacity = '0';
-                setTimeout(function() {
-                    toast.remove();
-                }, 300);
-            }
-        }, 3000);
-    </script>
-  </body>
-</html> {% endcomment %} 
-
-
 {% load static %}
 {% load i18n %}
 
@@ -287,7 +20,7 @@
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
     <link rel="apple-touch-icon" href="{% static 'img/icon.png' %}" />
 
-    <!-- ***************** CSS Files ***************** -->
+    <!-- *** CSS Files *** -->
     <link rel="stylesheet" href="{% static 'css/_base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vendor.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
@@ -371,40 +104,231 @@
         }
     }
 
-    /* استایل فرم جستجو در هدر */
-    .search-form-header {
-        display: inline-flex;
-        align-items: center;
-        margin-left: 15px;
-    }
+    /* ============================================
+       استایل جدید برای جستجو و منو
+    ============================================ */
     
-    .search-form-header input {
-        width: 200px;
-        padding: 5px 12px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        font-size: 14px;
+    /* استایل ردیف جستجو */
+    .search-row {
+        padding: 15px 0;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .search-row .search-form-header {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .search-row .search-form-header input {
+        width: 100%;
+        padding: 10px 20px;
+        border: 2px solid #ddd;
+        border-radius: 25px;
+        font-size: 15px;
         transition: all 0.3s ease;
+        background-color: white;
     }
-    
-    .search-form-header input:focus {
-        width: 250px;
+
+    .search-row .search-form-header input:focus {
         border-color: #6c5ce7;
         outline: none;
-        box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
     }
-    
-    .search-form-header button {
+
+    .search-row .search-form-header button {
         background: transparent;
         border: none;
-        margin-right: -30px;
+        margin-right: -40px;
         z-index: 1;
         cursor: pointer;
         color: #666;
+        font-size: 18px;
     }
-    
-    .search-form-header button:hover {
+
+    .search-row .search-form-header button:hover {
         color: #6c5ce7;
+    }
+
+/* استایل منوی اصلی با نوار رنگی */
+    .mainmenu-nav-wrapper {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        padding: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mainmenu-nav-wrapper .mainmenu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__item {
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__link {
+        display: block;
+        padding: 14px 25px;
+        color: white !important;
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .mainmenu-nav-wrapper .mainmenuitem:first-child .mainmenulink {
+        border-right: none;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__link:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+    }
+
+    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink {
+        background-color: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+    }
+
+    /* زیرخط برای آیتم فعال */
+    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        border-radius: 2px;
+    }
+
+    /* استایل هدر تولبار (آیکون‌های سمت راست) */
+    .header-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        list-style: none;
+        margin: 0;
+        padding: 10px 0;
+    }
+
+    .header-toolbar__item {
+        margin-left: 15px;
+    }
+
+    .header-toolbar__btn {
+        color: #333;
+        font-size: 20px;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .header-toolbar__btn:hover {
+        color: #6c5ce7;
+    }
+
+    .mini-cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 10px;
+        min-width: 18px;
+        text-align: center;
+    }
+
+    .user-info {
+        position: relative;
+    }
+
+    .user-info-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 8px 0;
+        min-width: 150px;
+        z-index: 1000;
+    }
+
+    .user-info:hover .user-info-menu {
+        display: block;
+    }
+
+    .user-info-menu li {
+        list-style: none;
+    }
+
+    .user-info-menu li a {
+        display: block;
+        padding: 8px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+    .user-info-menu li a:hover {
+        background-color: #f8f9fa;
+        color: #6c5ce7;
+    }
+
+    /* ریسپانسیو */
+    @media (max-width: 992px) {
+        .mainmenu-nav-wrapper .mainmenu {
+            flex-wrap: wrap;
+        }
+        
+        .mainmenu-nav-wrapper .mainmenu__link {
+            padding: 10px 15px;
+            font-size: 13px;
+            border-right: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .search-row .search-form-header {
+            max-width: 100%;
+            padding: 0 15px;
+        }
+
+        .header-toolbar {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .mainmenu-nav-wrapper .mainmenu__link {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .mainmenu-nav-wrapper .mainmenu {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding: 5px 10px;
+        }
+
+.header-toolbar__item {
+            margin-left: 10px;
+        }
     }
 </style>
 
@@ -420,67 +344,31 @@
         {% endfor %}
     </div>
     {% endif %}
-<!-- ========== Header Start ========== -->
+
+    <!-- ========== Header Start ========== -->
     <header class="header">
         <div class="header-inner fixed-header">
             <div class="container">
+                <!-- ردیف اول: لوگو و آیکون‌های سمت راست -->
                 <div class="row align-items-center">
-                    <div class="col-xl-9 col-lg-8 col-5 col-xs-0 col-none col-sm-block p-0">
+                    <div class="col-xl-9 col-lg-8 col-7">
                         <nav class="main-navigation">
-                            <div class="site-branding" style="margin-right: 30px;">
+                            <div class="site-branding">
                                 <a href="{% url 'product_list' %}" class="logo">
-                                    <figure class="logo--normal d-none d-sm-block">
-                                        <img class="px-5" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 50px; margin-bottom: -15px;" alt="Logo">
+                                    <figure class="logo--normal">
+                                        <img class="px-5" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 80px;" alt="Logo">
                                     </figure>
                                 </a>
-                            </div>
-                            <div class="mainmenu-nav d-none d-lg-block w-100 pr-3">
-                                <ul class="mainmenu d-lg-flex jusity-content-end jusity-content-lg-start pt-4">
-                                    <li class="mainmenu__item menu-item-has-children active">
-                                        <a href="{% url 'home' %}" class="mainmenu__link">
-                                            <span class="mm-text">خانه</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item menu-item-has-children">
-                                        <a href="{% url 'product_list' %}" class="mainmenu__link">
-                                            <span class="mm-text">وبلاگ</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item menu-item-has-children">
-                                        <a href="#" class="mainmenu__link">
-                                            <span class="mm-text">صفحات</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item">
-                                        <a href="{% url 'aboutus' %}" class="mainmenu__link">
-                                            <span class="mm-text">درباره  ما</span>
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
                         </nav>
                     </div>
                     
-                    <div class="col-xl-3 col-lg-4 col-sm-7 col-12 p-0">
+                    <div class="col-xl-3 col-lg-4 col-5">
                         <ul class="header-toolbar">
-                            <!-- ===== فرم جستجوی سراسری ===== -->
                             <li class="header-toolbar__item">
-                                <form class="search-form-header" method="get" action="{% url 'product_search' %}">
-                                    <input type="text" 
-                                           name="q" 
-                                           placeholder="جستجوی کتاب..." 
-                                           value="{{ query|default:'' }}"
-                                           aria-label="جستجو">
-                                    <button type="submit">
-                                        <i class="flaticon flaticon-search"></i>
-                                    </button>
-                                </form>
-                            </li>با
-                            
-                            <li class="header-toolbar__item">
-                                <a href="wishlist.html" class="header-toolbar__btn mx-4">
+                                <a href="wishlist.html" class="header-toolbar__btn">
                                     <i class="flaticon flaticon-like"></i>
-</a>
+                                </a>
                             </li>
                             
                             <li class="header-toolbar__item mini-cart-item">
@@ -499,9 +387,6 @@
                                         <li>
                                             <a class="text-right" href="{% url 'account_logout' %}">{% trans "logout" %}</a>
                                         </li>
-                                        {% comment %} <li>
-                                            <a class="text-right" href="{% url 'profile' %}">{% trans "profile" %}</a>
-                                        </li> {% endcomment %}
                                     {% else %}                                        
                                         <li>
                                             <a class="text-right" href="{% url 'account_login' %}">{% trans "login" %}</a>
@@ -515,7 +400,71 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- ===== ردیف دوم: جستجو ===== -->
+                <div class="search-row">
+                    <div class="container">
+
+<div class="row">
+                            <div class="col-12">
+                                <form class="search-form-header" method="get" action="{% url 'product_search' %}">
+                                    <input type="text" 
+                                           name="q" 
+                                           placeholder="جستجوی کتاب..." 
+                                           value="{{ query|default:'' }}"
+                                           aria-label="جستجو">
+                                    <button type="submit">
+                                        <i class="flaticon flaticon-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== ردیف سوم: منوی اصلی با نوار رنگی ===== -->
+                <div class="mainmenu-nav-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="mainmenu">
+                                    <li class="mainmenu__item menu-item-has-children active">
+                                        <a href="{% url 'home' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "home" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item menu-item-has-children">
+                                        <a href="{% url 'product_list' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "products" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'orderus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "order" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'aboutus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "about us" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'contactus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "contact us" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'workingus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "working us" %}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
+                <!-- موبایل منو -->
                 <div class="row">
                     <div class="col-12">
                         <div class="mobile-menu"></div>
@@ -533,45 +482,3 @@
         {% endblock %}
     </main>
     <!-- ========== Main Content End ========== -->
-
-    <!-- ========== Footer Start ========== -->
-    {% include "footer.html" %}
-    <!-- ========== Footer End ========== -->
-
-    <!-- ========== Cart Sidebar Start ========== -->
-    {% include "cart/cart_sidebar.html" %}
-    <!-- ========== Cart Sidebar End ========== -->
-
-    <!-- ========== JavaScript Files ========== -->
-    <script src="{% static 'js/vendor.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    
-    <!-- حذف خودکار نوتیفیکیشن -->
-    <script>
-        setTimeout(function() {
-            var toast = document.getElementById('notificationToast');
-            if (toast) {
-                toast.style.opacity = '0';
-                setTimeout(function() {
-                    toast.remove();
-                }, 300);
-            }
-        }, 3000);
-        
-        // نگه داشتن مقدار جستجو در اینپوت (اختیاری)
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.querySelector('.search-form-header input');
-            if (searchInput) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const query = urlParams.get('q');
-                if (query) {
-                    searchInput.value = query;
-                }
-            }
-        });
-    </script>
-    
-    {% block extra_js %}{% endblock %}
-</body>
-</html>
-

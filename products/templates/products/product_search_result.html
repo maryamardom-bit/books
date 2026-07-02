@@ -1,99 +1,133 @@
-<!-- در فایل products/product_search_results.html -->
-{% extends 'base.html' %}
+{% extends '_base.html' %}
 {% load static %}
-
-{% block title %}
-    نتایج جستجو برای "{{ query }}"
-{% endblock %}
+{% load i18n %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="row">
+<div class="container mt-4">
+    <!-- عنوان و آمار -->
+    <div class="row mb-4">
         <div class="col-12">
-            <h2 class="mb-4">
-                نتایج جستجو برای: <span class="text-primary">"{{ query }}"</span>
-            </h2>
-            
-            {% if results %}
-                <p class="text-muted">{{ page_obj.paginator.count }} کتاب پیدا شد</p>
-                
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-                    {% for product in results %}
-                        <div class="col">
-                            <div class="card h-100">
-                                {% if product.cover_image %}
-                                    <img src="{{ product.cover_image.url }}" class="card-img-top" alt="{{ product.title }}">
-                                {% else %}
-                                    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="بدون تصویر">
-                                {% endif %}
-                                
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a href="{% url 'products:product_detail' product.id %}" class="text-decoration-none">
-                                            {{ product.title }}
-                                        </a>
-                                    </h5>
-                                    <p class="card-text text-muted">
-                                        نویسنده: {{ product.author|default:"نامشخص" }}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>{{ product.price|floatformat:0 }} {% trans "$" %}</strong>
-                                    </p>
-                                </div>
-                                
-                                <div class="card-footer bg-transparent">
-                                    <a href="{% url 'products:product_detail' product.id %}" class="btn btn-primary btn-sm w-100">
-                                        مشاهده جزئیات
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                
-                <!-- صفحه‌بندی -->
-                {% if is_paginated %}
-                    <nav aria-label="صفحه‌بندی نتایج" class="mt-4">
-                        <ul class="pagination justify-content-center">
-                            {% if page_obj.has_previous %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">قبلی</a>
-                                </li>
-                            {% endif %}
-                            
-                            {% for num in page_obj.paginator.page_range %}
-                                {% if page_obj.number == num %}
-                                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                    <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                            
-                            {% if page_obj.has_next %}
-                                <li class="page-item">
-<a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">بعدی</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endif %}
-                
-            {% else %}
-                <div class="alert alert-warning">
-                    <h4 class="alert-heading">هیچ نتیجه‌ای یافت نشد!</h4>
-                    <p>متاسفانه کتابی با عبارت "{{ query }}" پیدا نشد.</p>
-                    <hr>
-                    <p class="mb-0">
-                        پیشنهاد می‌کنیم:
-                        <ul>
-                            <li>املای کلمات را بررسی کنید.</li>
-                            <li>از کلمات کلیدی ساده‌تر استفاده کنید.</li>
-                            <li><a href="{% url 'products:product_list' %}" class="alert-link">بازگشت به لیست همه کتاب‌ها</a></li>
-                        </ul>
-                    </p>
-                </div>
+            <h2>{% trans "search for:" %} "{{ query }}"</h2>
+            {% if query %}
+                <p class="text-muted">{{ results_count }}{% trans "find it" %}</p>
             {% endif %}
         </div>
     </div>
+
+    <!-- نتایج -->
+    {% if results %}
+        <div class="row">
+            {% for product in results %}
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- تصویر -->
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" 
+                                 class="card-img-top" 
+                                 alt="{{ product.title }}"
+                                 style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                 style="height: 200px;">
+                                <span class="text-muted">{% trans "without picture" %}</span>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'product_detail' product.pk %}" 
+                                   class="text-decoration-none text-dark">
+                                    {{ product.title }}
+                                </a>
+                            </h5>
+                            
+                            <p class="card-text text-muted small">
+                                {{ product.short_discription|truncatewords:10|default:product.description|truncatewords:10 }}
+                            </p>
+                            
+                            <p class="card-text">
+                                <strong>{% trans "price:" %}</strong> 
+                                {{ product.price|default:"نامشخص" }} {% trans "$" %}
+                            </p>
+                            
+                            {% if product.avg_stars %}
+                                <div class="small text-warning">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= product.avg_stars %}
+                                            ★
+                                        {% else %}
+                                            ☆
+                                        {% endif %}
+                                    {% endfor %}
+                                    <span class="text-muted">({{ product.comments_count }})</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-footer bg-white border-top-0">
+                            <a href="{% url 'product_detail' product.pk %}" 
+                               class="btn btn-primary btn-sm w-100">
+                                {% trans "details" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- صفحه‌بندی -->
+        {% if is_paginated %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">
+                                {% trans "before" %}
+                            </a>
+                        </li>
+                    {% endif %}
+{% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ query }}&page={{ num }}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">
+                                {% trans "next" %}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+    {% else %}
+        {% if query %}
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">{% trans "can not find this book !" %}"{{ query }}"</h4>
+                <hr>
+                <p class="mb-0"{% trans "sugesstions:" %}</p>
+                <ul>
+                    <li>{% trans "check spells" %}</li>
+                    <li>{% trans "use keywords" %}</li>
+                    <li>{% trans "search for book or keywords" %}</li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+               {% trans "search for..." %}
+            </div>
+        {% endif %}
+    {% endif %}
 </div>
 {% endblock %}

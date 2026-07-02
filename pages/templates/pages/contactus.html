@@ -1,0 +1,47 @@
+
+{% extends "_base.html" %}
+{% load i18n %}
+{% block content %}
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4 pb-3 border-bottom"> {% trans "contact us" %}</h1>
+
+            {% if contact %}
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <address class="mb-0">
+                        <p class="mb-2"><strong>{% trans "address:" %}</strong> {{ contact.address }}</p>
+                        <p class="mb-2"><strong> {% trans "postal cart:" %}</strong> {{ contact.postal_code }}</p>
+                        <p class="mb-0"><strong>{% trans "phone number:" %}</strong> {{ contact.phone }}</p>
+                    </address>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">{% trans "Communication with sales and orders department" %}</h2>
+                    <ul class="list-unstyled mb-0">
+                        <li class="py-2 border-bottom">
+                            <strong>{% trans "whats app:" %}</strong> 
+                            <a href="https://wa.me/{{ contact.whatsapp }}">{{ contact.whatsapp }}</a>
+                        </li>
+                        <li class="py-2">
+                            <strong>{% trans "email:" %}</strong> 
+                            <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <p>{% trans "contact info up to date.please try later." %}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+
