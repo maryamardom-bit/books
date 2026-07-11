@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'rosetta',
     'ckeditor',
     'phonenumber_field',
-    'debug_toolbar', 
+    'debug_toolbar',
     
 
     # local

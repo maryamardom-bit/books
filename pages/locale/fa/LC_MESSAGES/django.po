@@ -8,48 +8,128 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-02 11:55+0330\n"
-"PO-Revision-Date: 2026-07-02 12:12+0330\n"
+"POT-Creation-Date: 2026-07-11 16:20+0000\n"
+"PO-Revision-Date: 2026-07-11 19:59+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\pages\templates\pages\contactus.html:8
+#: pages/models.py:9
+#| msgid "address:"
+msgid "address"
+msgstr "آدرس:"
+
+#: pages/models.py:10
+#| msgid "postal cart:"
+msgid "postal cart"
+msgstr "کد پستی:"
+
+#: pages/models.py:11
+msgid "phone"
+msgstr "تلفن"
+
+#: pages/models.py:12
+#| msgid "whats app:"
+msgid "whatsapp"
+msgstr "واتس اپ:"
+
+#: pages/models.py:13 pages/models.py:26
+#| msgid "email:"
+msgid "email"
+msgstr "ایمیل:"
+
+#: pages/models.py:16
+#| msgid "contact info"
+msgid "contact_info"
+msgstr "ارتباط با ما"
+
+#: pages/models.py:17
+#| msgid "contact info"
+msgid "contact_infos"
+msgstr "ارتباط با ما"
+
+#: pages/models.py:24
+msgid "intro_text"
+msgstr "متن معرفی"
+
+#: pages/models.py:25
+msgid "invitation_text"
+msgstr "متن دعوت"
+
+#: pages/models.py:27
+msgid "active"
+msgstr "فعال"
+
+#: pages/models.py:28
+msgid "last updated"
+msgstr "آخرین آپدیت"
+
+#: pages/models.py:31
+msgid "cooperation"
+msgstr "همکاری"
+
+#: pages/models.py:32
+msgid "cooperations"
+msgstr "همکاری‌ها"
+
+#: pages/models.py:39
+msgid "Only one cooperation record can exist."
+msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
+
+#: pages/templates/pages/contactus.html:8
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: .\pages\templates\pages\contactus.html:13
-msgid "contact info"
-msgstr "ارتباط با ما"
-
-#: .\pages\templates\pages\contactus.html:15
+#: pages/templates/pages/contactus.html:14
 msgid "address:"
 msgstr "آدرس:"
 
-#: .\pages\templates\pages\contactus.html:16
+#: pages/templates/pages/contactus.html:15
 msgid "postal cart:"
 msgstr "کد پستی:"
 
-#: .\pages\templates\pages\contactus.html:17
+#: pages/templates/pages/contactus.html:16
 msgid "phone number:"
 msgstr "تلفن:"
 
-#: .\pages\templates\pages\contactus.html:24
+#: pages/templates/pages/contactus.html:23
 msgid "Communication with sales and orders department"
 msgstr "ارتباط با واحد فروش و سفارشات"
 
-#: .\pages\templates\pages\contactus.html:27
+#: pages/templates/pages/contactus.html:26
 msgid "whats app:"
 msgstr "واتس اپ:"
 
-#: .\pages\templates\pages\contactus.html:31
+#: pages/templates/pages/contactus.html:30
 msgid "email:"
 msgstr "ایمیل:"
 
-#: .\pages\templates\pages\contactus.html:39
+#: pages/templates/pages/contactus.html:38
 msgid "contact info up to date.please try later."
 msgstr "اطلاعات تماس در حال بروز رسانی است.لطفا دوباره تلاش کنید."
+
+#: pages/templates/pages/workingus.html:9
+msgid "Collaborate with Us"
+msgstr "همکاری با ما"
+
+#: pages/templates/pages/workingus.html:27
+#| msgid "email:"
+msgid "Email:"
+msgstr "ایمیل:"
+
+#: pages/templates/pages/workingus.html:37
+msgid "Last updated:"
+msgstr "آخرین بروزرسانی"
+
+#: pages/templates/pages/workingus.html:44
+msgid ""
+"The cooperation page content is not available at the moment. Please try "
+"again later."
+msgstr ""
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
+"کنید."

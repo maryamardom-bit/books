@@ -1,16 +1,41 @@
 {% extends "_base.html" %}
 {% load i18n %}
+
 {% block content %}
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #000; letter-spacing: -0.02em;">
+                {% trans "Collaborate with Us" %}
+            </h1>
 
+            {% if cooperation and cooperation.is_active %}
+                <div class="mb-5">
+                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
+                        {{ cooperation.intro_text|linebreaks }}
+                    </p>
+                </div>
 
-انتشارات کتابکده کسری با نگاه ویژه به جریان روز معماری و رشته‌های وابسته، با اساتید، دانش‌پژوهان و صاحب‌نظران همکاری می‌نماید تا با انتشار آثار تالیف و ترجمه، از تولید محتوای ارزشمند حمایت نماید.
+                <div class="mb-5">
+                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
+                        {{ cooperation.invitation_text|linebreaks }}
+                    </p>
+                </div>
 
-همگرایی نگاه‌های منتوع، اساس دگرگونی و رشد است. از این رو ما از ایده‌های نو و تعریف پروژه‌های جدید در حوزه فعالیت‌های انتشارات پشتیبانی کرده؛ توان و تجربه خود را برای تحقق ایده‌ها و مشارکت در پروژه‌ها، در اختیار صاحبان ایده قرار می‌دهیم.
+                <div class="mt-5 text-muted small" style="border-top: 1px solid #eee; padding-top: 1rem;">
+                    {% trans "Last updated:" %} {{ cooperation.updated_at|date:"Y/m/d H:i" }}
+                </div>
 
-نظر به ضرورت مستندسازی فعالیت‌های آموزشی، پژوهشی و حرفه‌ای، ما به عنوان نهاد نشر و بخشی از جامعه معماری، با سایر نهادها و ارکان حرفه‌ای رسمی و خصوصی گوناگون همکاری نموده و از گسترش این ارتباطات در جهت انعکاس فعالیت‌ها و دستاوردها استقبال می‌نماییم.
-
-برای مشاوره و همکاری در انتشار آثار ترجمه و تألیف، اجرای پروژه‌های نشر و مستندسازی فعالیت‌های آموزشی، پژوهشی و حرفه‌ای، ما در کنار شما هستیم. با ما در ارتباط باشید...
-
-همچنین این انتشارات از تمامی افراد خلاق و علاقه‌مند به نشر و تولید محتوا، اعم از گرافیست، ویراستار تخصصی و متخصصین رسانه‌های دیجیتال دعوت به همکاری می‌نماید. برای ثبت درخواست همکاری، مشخصات، رزومه و نوع علاقه کاری خود را به آدرس ایمیل kasrapublishing@gmail.com ارسال نمایید.
-
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="alert alert-light border-0" role="alert" style="background: #f8f8f8;">
+                        <p class="mb-0" style="color: #666;">
+                            {% trans "The cooperation page content is not available at the moment. Please try again later." %}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock content %}

@@ -2,81 +2,82 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 12:18+0330\n"
+"POT-Creation-Date: 2026-07-11 16:20+0000\n"
 "PO-Revision-Date: 2026-06-13 12:07+0330\n"
 "Last-Translator: ddg fghgj <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\cart\cart.py:34
+#: cart/cart.py:34
 msgid "product successfully updated to cart"
 msgstr "به روزرسانی شد"
 
-#: .\cart\cart.py:37
+#: cart/cart.py:37
 msgid "product successfully added to cart"
 msgstr "با موفقیت به سبد خرید اضافه شد"
 
-#: .\cart\cart.py:50
+#: cart/cart.py:50
 msgid "product successfully removed from cart"
 msgstr "با موفقیت از سبد خرید حذف شد"
 
-#: .\cart\templates\cart\cart_detail.html:11
+#: cart/templates/cart/cart_detail.html:11
 msgid "Cart"
 msgstr "سبد خرید"
 
-#: .\cart\templates\cart\cart_detail.html:53
-#: .\cart\templates\cart\cart_detail.html:75
-#: .\cart\templates\cart\cart_detail.html:121
-#: .\cart\templates\cart\cart_sidebar.html:34
+#: cart/templates/cart/cart_detail.html:53
+#: cart/templates/cart/cart_detail.html:75
+#: cart/templates/cart/cart_detail.html:121
+#: cart/templates/cart/cart_sidebar.html:34
 msgid "$"
 msgstr "تومان"
 
-#: .\cart\templates\cart\cart_detail.html:84
+#: cart/templates/cart/cart_detail.html:84
 msgid "cart is empty ! please add some products to the cart "
 msgstr "سبد خرید خالی است.لطفا محصول درخواستی را به سبد اضافه کنید"
 
-#: .\cart\templates\cart\cart_detail.html:85
+#: cart/templates/cart/cart_detail.html:85
 msgid "go shopping"
 msgstr "برو به فروشگاه"
 
-#: .\cart\templates\cart\cart_detail.html:94
+#: cart/templates/cart/cart_detail.html:94
 msgid "Empty cart"
 msgstr "خالی کردن سبد خرید"
 
-#: .\cart\templates\cart\cart_detail.html:128
+#: cart/templates/cart/cart_detail.html:128
 msgid "checkout"
 msgstr "پرداخت"
 
-#: .\cart\templates\cart\cart_sidebar.html:8
+#: cart/templates/cart/cart_sidebar.html:8
 msgid "cart"
 msgstr "سبد خرید"
 
-#: .\cart\templates\cart\cart_sidebar.html:33
+#: cart/templates/cart/cart_sidebar.html:33
 msgid "total"
 msgstr "جمع کل"
 
-#: .\cart\templates\cart\cart_sidebar.html:37
+#: cart/templates/cart/cart_sidebar.html:37
 msgid "go to cart"
 msgstr "برو به سبد خرید"
 
-#: .\cart\templates\cart\cart_sidebar.html:39
+#: cart/templates/cart/cart_sidebar.html:39
 msgid "check out"
 msgstr "پرداخت"
 
-#: .\cart\views.py:53
+#: cart/views.py:53
 msgid "all producs successfully removed from your cart"
 msgstr "تمام محصولات با موفقیت از سبد خرید حذف شدند"
 
-#: .\cart\views.py:56
+#: cart/views.py:56
 msgid "your cart is already empty."
 msgstr "سبد خرید شما خالی است."

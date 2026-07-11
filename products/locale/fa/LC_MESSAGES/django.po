@@ -8,173 +8,173 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-02 11:55+0330\n"
+"POT-Creation-Date: 2026-07-11 16:20+0000\n"
 "PO-Revision-Date: 2026-07-02 12:02+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\products\models.py:10
+#: products/models.py:10
 msgid "Product Title"
 msgstr "نام محصول"
 
-#: .\products\models.py:11
+#: products/models.py:11
 msgid "Product Discription"
 msgstr "توضیحات محصول"
 
-#: .\products\models.py:12
+#: products/models.py:12
 msgid "Product Short_Discription"
 msgstr "توضیح مختصر از محصول"
 
-#: .\products\models.py:13
+#: products/models.py:13
 msgid "Product Price"
 msgstr "قیمت محصول"
 
-#: .\products\models.py:14
+#: products/models.py:14
 msgid "Product Active"
 msgstr "آیا محصول موجود است؟"
 
-#: .\products\models.py:15
+#: products/models.py:15
 msgid "Product Image"
 msgstr "تصویر محصول"
 
-#: .\products\models.py:17
+#: products/models.py:17
 msgid "Date Time of Creation"
 msgstr "زمان ایجاد محصول"
 
-#: .\products\models.py:18
+#: products/models.py:18
 msgid "Date Time of Modified"
 msgstr "زمان آخرین تغییرات در محصول"
 
-#: .\products\models.py:34
+#: products/models.py:34
 msgid "Very Bad"
 msgstr "خیلی بد"
 
-#: .\products\models.py:35
+#: products/models.py:35
 msgid "Bad"
 msgstr "بد"
 
-#: .\products\models.py:36
+#: products/models.py:36
 msgid "Normal"
 msgstr "معمولی"
 
-#: .\products\models.py:37
+#: products/models.py:37
 msgid "Good"
 msgstr "خوب"
 
-#: .\products\models.py:38
+#: products/models.py:38
 msgid "Perfect"
 msgstr "عالی"
 
-#: .\products\models.py:41
+#: products/models.py:41
 msgid "Comment_Product"
 msgstr "نظر برای این محصول"
 
-#: .\products\models.py:49
+#: products/models.py:49
 msgid "Comment Text"
 msgstr "متن دیدگاه"
 
-#: .\products\models.py:50
+#: products/models.py:50
 msgid "What is your score?"
 msgstr "امتیاز شما به این محصول کدام است؟"
 
-#: .\products\models.py:55
+#: products/models.py:55
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
-#: .\products\templates\products\product_detail.html:38
-#: .\products\templates\products\product_list.html:52
-#: .\products\templates\products\product_search_result.html:50
+#: products/templates/products/product_detail.html:38
+#: products/templates/products/product_list.html:52
+#: products/templates/products/product_search_result.html:50
 msgid "$"
 msgstr "تومان"
 
-#: .\products\templates\products\product_detail.html:61
-#: .\products\templates\products\product_list.html:70
+#: products/templates/products/product_detail.html:61
+#: products/templates/products/product_list.html:70
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: .\products\templates\products\product_detail.html:85
+#: products/templates/products/product_detail.html:85
 msgid "categories"
 msgstr " دسته بندی"
 
-#: .\products\templates\products\product_detail.html:100
+#: products/templates/products/product_detail.html:100
 msgid "product description"
 msgstr "توضیحات محصول"
 
-#: .\products\templates\products\product_detail.html:186
+#: products/templates/products/product_detail.html:186
 msgid "Write your comment:"
 msgstr "نظر خود را بنویسید"
 
-#: .\products\templates\products\product_detail.html:192
+#: products/templates/products/product_detail.html:192
 msgid "submit"
 msgstr "ارسال"
 
-#: .\products\templates\products\product_detail.html:195
+#: products/templates/products/product_detail.html:195
 msgid "to write your comment please "
 msgstr "لطفا نظر خود را بنویسید"
 
-#: .\products\templates\products\product_detail.html:196
+#: products/templates/products/product_detail.html:196
 msgid "log in"
 msgstr "ورود"
 
-#: .\products\templates\products\product_search_result.html:10
+#: products/templates/products/product_search_result.html:10
 msgid "search for:"
 msgstr "جستجو برای :"
 
-#: .\products\templates\products\product_search_result.html:12
+#: products/templates/products/product_search_result.html:12
 msgid "find it"
 msgstr "پیدا شد"
 
-#: .\products\templates\products\product_search_result.html:32
+#: products/templates/products/product_search_result.html:32
 msgid "without picture"
 msgstr "بدون تصویر"
 
-#: .\products\templates\products\product_search_result.html:49
+#: products/templates/products/product_search_result.html:49
 msgid "price:"
 msgstr "قیمت "
 
-#: .\products\templates\products\product_search_result.html:70
+#: products/templates/products/product_search_result.html:70
 msgid "details"
 msgstr "جزییات"
 
-#: .\products\templates\products\product_search_result.html:85
+#: products/templates/products/product_search_result.html:85
 msgid "before"
 msgstr "قبل"
 
-#: .\products\templates\products\product_search_result.html:106
+#: products/templates/products/product_search_result.html:106
 msgid "next"
 msgstr "بعد"
 
-#: .\products\templates\products\product_search_result.html:117
+#: products/templates/products/product_search_result.html:117
 msgid "can not find this book !"
 msgstr "کتاب موجود نیست!"
 
-#: .\products\templates\products\product_search_result.html:119
+#: products/templates/products/product_search_result.html:119
 msgid "sugesstions:"
 msgstr "پیشنهادات"
 
-#: .\products\templates\products\product_search_result.html:121
+#: products/templates/products/product_search_result.html:121
 msgid "check spells"
 msgstr "املای کلمات را چک کنید."
 
-#: .\products\templates\products\product_search_result.html:122
+#: products/templates/products/product_search_result.html:122
 msgid "use keywords"
 msgstr "از کلمات کلیدی استفاده کنید."
 
-#: .\products\templates\products\product_search_result.html:123
+#: products/templates/products/product_search_result.html:123
 msgid "search for book or keywords"
 msgstr "جستجوی نام کتاب یا کلمات کلیدی"
 
-#: .\products\templates\products\product_search_result.html:128
+#: products/templates/products/product_search_result.html:128
 msgid "search for..."
 msgstr "جستجو برای ..."
 
-#: .\products\views.py:44
-#| msgid "your comment has been succsessfully registered "
+#: products/views.py:44
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
 

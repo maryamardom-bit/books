@@ -8,136 +8,137 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-02 11:55+0330\n"
+"POT-Creation-Date: 2026-07-11 16:20+0000\n"
 "PO-Revision-Date: 2026-07-02 12:09+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: .\templates\_base.html:388
+#: templates/_base.html:388
 msgid "logout"
 msgstr "خروج"
 
-#: .\templates\_base.html:392 .\templates\account\login.html:20
+#: templates/_base.html:392 templates/account/login.html:20
 msgid "login"
 msgstr "ورود"
 
-#: .\templates\_base.html:395
+#: templates/_base.html:395
 msgid "signup"
 msgstr "ثبت نام"
 
-#: .\templates\_base.html:433
+#: templates/_base.html:433
 msgid "home"
 msgstr "خانه"
 
-#: .\templates\_base.html:438
+#: templates/_base.html:438
 msgid "products"
 msgstr "محصولات"
 
-#: .\templates\_base.html:443
+#: templates/_base.html:443
 msgid "order"
 msgstr "شرایط سفارش"
 
-#: .\templates\_base.html:448
+#: templates/_base.html:448
 msgid "about us"
 msgstr "درباره ما"
 
-#: .\templates\_base.html:453
+#: templates/_base.html:453
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: .\templates\_base.html:458
+#: templates/_base.html:458
 msgid "working us"
 msgstr "همکاری با ما"
 
-#: .\templates\account\confirm_email.html:6
-#: .\templates\account\confirm_email.html:10
+#: templates/account/confirm_email.html:6
+#: templates/account/confirm_email.html:10
 msgid "Confirm Email Address"
 msgstr "تأیید آدرس ایمیل"
 
-#: .\templates\account\confirm_email.html:16
+#: templates/account/confirm_email.html:16
 #, python-format
 msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
 "address for user %(user_display)s."
 msgstr ""
 
-#: .\templates\account\confirm_email.html:24
+#: templates/account/confirm_email.html:24
 msgid "Confirm"
 msgstr "تأیید"
 
-#: .\templates\account\confirm_email.html:30
+#: templates/account/confirm_email.html:30
 #, python-format
 msgid ""
 "Unable to confirm %(email)s because it is already confirmed by a different "
 "account."
 msgstr ""
 
-#: .\templates\account\confirm_email.html:36
+#: templates/account/confirm_email.html:36
 #, python-format
 msgid ""
 "This email confirmation link expired or is invalid. Please <a "
 "href=\"%(email_url)s\">issue a new email confirmation request</a>."
 msgstr ""
 
-#: .\templates\account\email\email_confirmation_message.txt:4
+#: templates/account/email/email_confirmation_message.txt:4
 #, python-format
 msgid ""
 "hello from %(site_name)s. if you requested this email please click on the "
 "link below:"
 msgstr ""
 
-#: .\templates\account\email\email_confirmation_subject.txt:3
+#: templates/account/email/email_confirmation_subject.txt:3
 msgid "please confirm email"
 msgstr "لطفاً ایمیل را تأیید کنید"
 
-#: .\templates\account\login.html:6
+#: templates/account/login.html:6
 msgid "log in"
 msgstr "ورود"
 
-#: .\templates\account\login.html:15
+#: templates/account/login.html:15
 msgid "Log In"
 msgstr "ورود"
 
-#: .\templates\account\login.html:25
+#: templates/account/login.html:25
 msgid "Don't have an account?"
 msgstr "حساب کاربری ندارید؟"
 
-#: .\templates\account\login.html:26 .\templates\account\signup.html:19
+#: templates/account/login.html:26 templates/account/signup.html:19
 msgid "Sign Up"
 msgstr "ثبت نام"
 
-#: .\templates\account\logout.html:5
+#: templates/account/logout.html:5
 msgid "log out"
 msgstr "خروج"
 
-#: .\templates\account\logout.html:14
+#: templates/account/logout.html:14
 msgid "Log Out"
 msgstr "خروج"
 
-#: .\templates\account\logout.html:15
+#: templates/account/logout.html:15
 msgid "Are you sure you want to logout?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
-#: .\templates\account\logout.html:19
+#: templates/account/logout.html:19
 msgid "Yes"
 msgstr "بله"
 
-#: .\templates\account\logout.html:20
+#: templates/account/logout.html:20
 msgid "No"
 msgstr "خیر"
 
-#: .\templates\account\signup.html:23
+#: templates/account/signup.html:23
 #, fuzzy
 #| msgid "Don't have an account?"
 msgid "Already have an account?"
 msgstr "حساب کاربری ندارید؟"
 
-#: .\templates\account\signup.html:23
+#: templates/account/signup.html:23
 #, fuzzy
 #| msgid "login"
 msgid "Login"
