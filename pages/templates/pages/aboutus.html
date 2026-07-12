@@ -1,10 +1,40 @@
 {% extends "_base.html" %}
+{% load i18n %}
 
 {% block content %}
-<h1>
-    درباره ما
-«کتابکده کسری» با هدف ارتقاء کیفیت نشر به ویژه در حوزه تخصصی معماری، فعالیت خود را در سال ۱۳۸۵ آغاز نمود و در سال ۱۳۸۹ با اخذ مجوز انتشارات، فعالیت خود را در زمینه انتشار کتب تخصصی در زمینه هنر، معماری و شهرسازی گسترش داد. این انتشارات با قریب به یکصد و پنجاه عنوان کتاب تخصصی، همکاری با اساتید، دانشگاه‌ها و نهادهای گوناگون را در کارنامه کاری خود دارد. محدوده آثار این انتشارات گستره متنوعی از کتب پایه و مقدماتی تا پیشرفته و از موضوعات کاربردی تا تئوری را در بر گرفته؛ از این رو مخاطبین انتشارات شامل طیف وسیعی از دانشجویان مقاطع گوناگون و اساتید دانشگاه، طراحان و فعالان حرفه‌ای، مدیران و برنامه‌ریزان و… می‌گردد.
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #000; letter-spacing: -0.02em;">
+                {% trans "About Us" %}
+            </h1>
 
-انتشارات کتابکده کسری در تلاش است با توسعه همکاری‌های علمی مستمر با ارگان‌های رسمی، مؤسسات آموزشی-پژوهشی و نهادهای خصوصی فعال در بخش‌های مختلف حرفه‌ای، هرچه بیش‌تر در جهت ارائه محتوای متناسب با نیازهای علمی و فنی مخاطبین خود گام برداشته و از سوی دیگر با حمایت از آثار پیش‌رو در کنار جریان انتقادی در جهت توسعه مرزهای اندیشه‌ای ایفای نقش نماید.
-</h1>
+            {% if aboutus.is_active %}
+                <div class="mb-5">
+                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
+                        {{ aboutus.text|linebreaks }}
+                    </p>
+                </div>
+
+                {% if cooperation.is_active %} 
+                    <div class="mb-5">
+                        <h2 class="h4 fw-normal mb-3">{% trans "Cooperation" %}</h2>
+                        <p class="fs-5 lh-lg" style="color: #1a1a1a;">
+                            {{ cooperation.invitation_text|linebreaks }}
+                        </p>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="alert alert-light border-0" role="alert" style="background: #f8f8f8;">
+                        <p class="mb-0" style="color: #666;">
+                            {% trans "The about us page content is not available at the moment. Please try again later." %}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock content %}

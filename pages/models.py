@@ -1,8 +1,5 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
-from django.db import models
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 class ContactInfo(models.Model):
@@ -40,3 +37,47 @@ class CooperationInfo(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
+
+
+
+class AboutUs(models.Model):
+    text = models.TextField(verbose_name=_("text"))
+    is_active = models.BooleanField(default=True, verbose_name=_("active"))  
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("last updated")) 
+
+    class Meta:
+        verbose_name = _("about_us")
+        verbose_name_plural = _("about_us_plural")  
+
+    def __str__(self):
+        return "about_us"
+    
+    def clean(self):
+        if not self.pk and AboutUs.objects.exists():
+            raise ValidationError(_("Only one about us record can exist."))
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+
+class OrderCondition(models.Model):
+    text = models.TextField(verbose_name=_("text"))
+    is_active = models.BooleanField(default=True, verbose_name=_("active"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("updated at"))
+
+    class Meta:
+        verbose_name = _("orderus")
+        verbose_name_plural = _("orderus")
+
+    def __str__(self):
+        return "orderus"
+
+    def clean(self):
+        if not self.pk and OrderCondition.objects.exists():
+            raise ValidationError(_("Only one orderus record can exist."))
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+    
