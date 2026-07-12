@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-12 08:25+0000\n"
-"PO-Revision-Date: 2026-07-12 11:56+0330\n"
+"PO-Revision-Date: 2026-07-12 13:13+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -88,13 +88,11 @@ msgid "about_us_plural"
 msgstr "درباره ما"
 
 #: pages/models.py:57
-#, fuzzy
 #| msgid "Only one cooperation record can exist."
 msgid "Only one about us record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
 #: pages/models.py:67
-#, fuzzy
 #| msgid "last updated"
 msgid "updated at"
 msgstr "آخرین آپدیت"
@@ -108,7 +106,6 @@ msgid "order conditions"
 msgstr "شرایط سفارش"
 
 #: pages/models.py:78
-#, fuzzy
 #| msgid "Only one cooperation record can exist."
 msgid "Only one order condition record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
@@ -118,13 +115,11 @@ msgid "About Us"
 msgstr "درباره ما"
 
 #: pages/templates/pages/aboutus.html:21
-#, fuzzy
 #| msgid "cooperation"
 msgid "Cooperation"
 msgstr "همکاری"
 
 #: pages/templates/pages/aboutus.html:32
-#, fuzzy
 #| msgid ""
 #| "The cooperation page content is not available at the moment. Please try "
 #| "again later."
@@ -172,7 +167,6 @@ msgid "Order Conditions"
 msgstr "شرایط سفارش"
 
 #: pages/templates/pages/orderus.html:22
-#, fuzzy
 #| msgid ""
 #| "The cooperation page content is not available at the moment. Please try "
 #| "again later."

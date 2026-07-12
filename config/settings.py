@@ -227,3 +227,18 @@ MESSAGE_TAGS ={
 
 ZARINPAL_MERCHANT_ID = env("DJANGO_ZARINPAL_MERCHANT_ID")
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',  # از یک تنظیم سفارشی استفاده می‌کنیم
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],  # دکمه‌های پررنگ، ایتالیک و زیرخط
+            ['NumberedList', 'BulletedList'],  # لیست شماره‌دار و گلوله‌ای
+            # دکمه‌های ترازبندی که به دنبال آن هستید:
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],  # دکمه‌های لینک
+            ['RemoveFormat', 'Source']  # پاک کردن فرمت و مشاهده کد منبع
+        ],
+        'height': 500,
+        'width': '100%',
+    },
+}

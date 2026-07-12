@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
 
 class ContactInfo(models.Model):
     address = models.TextField(verbose_name=_("address"))
@@ -18,8 +19,8 @@ class ContactInfo(models.Model):
 
 
 class CooperationInfo(models.Model):
-    intro_text = models.TextField(verbose_name=_("intro_text"))
-    invitation_text = models.TextField(verbose_name=_("invitation_text"))
+    intro_text = RichTextField(verbose_name=_("intro_text"))
+    invitation_text = RichTextField(verbose_name=_("invitation_text"))
     is_active = models.BooleanField(default=True, verbose_name=_("active"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("last updated"))
 
@@ -41,7 +42,7 @@ class CooperationInfo(models.Model):
 
 
 class AboutUs(models.Model):
-    text = models.TextField(verbose_name=_("text"))
+    text = RichTextField(verbose_name=_("text"))
     is_active = models.BooleanField(default=True, verbose_name=_("active"))  
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("last updated")) 
 
@@ -62,7 +63,7 @@ class AboutUs(models.Model):
 
 
 class OrderCondition(models.Model):
-    text = models.TextField(verbose_name=_("text"))
+    text = RichTextField(verbose_name=_("text"))
     is_active = models.BooleanField(default=True, verbose_name=_("active"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("updated at"))
 
