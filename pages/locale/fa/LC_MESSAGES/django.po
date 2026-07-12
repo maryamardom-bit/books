@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 08:25+0000\n"
-"PO-Revision-Date: 2026-07-12 13:13+0330\n"
+"POT-Creation-Date: 2026-07-12 14:58+0000\n"
+"PO-Revision-Date: 2026-07-12 19:47+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,95 +19,89 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: pages/models.py:6
+#: pages/models.py:7
 msgid "address"
 msgstr "آدرس:"
 
-#: pages/models.py:7
+#: pages/models.py:8
 msgid "postal cart"
 msgstr "کد پستی:"
 
-#: pages/models.py:8
+#: pages/models.py:9
 msgid "phone"
 msgstr "تلفن"
 
-#: pages/models.py:9
+#: pages/models.py:10
 msgid "whatsapp"
 msgstr "واتس اپ:"
 
-#: pages/models.py:10
+#: pages/models.py:11
 msgid "email"
 msgstr "ایمیل:"
 
-#: pages/models.py:13
+#: pages/models.py:14
 msgid "contact_info"
 msgstr "ارتباط با ما"
 
-#: pages/models.py:14
+#: pages/models.py:15
 msgid "contact_infos"
 msgstr "ارتباط با ما"
 
-#: pages/models.py:21
+#: pages/models.py:22
 msgid "intro_text"
 msgstr "متن معرفی"
 
-#: pages/models.py:22
+#: pages/models.py:23
 msgid "invitation_text"
 msgstr "متن دعوت"
 
-#: pages/models.py:23 pages/models.py:45 pages/models.py:66
+#: pages/models.py:24 pages/models.py:46 pages/models.py:67
 msgid "active"
 msgstr "فعال"
 
-#: pages/models.py:24 pages/models.py:46
+#: pages/models.py:25 pages/models.py:47
 msgid "last updated"
 msgstr "آخرین آپدیت"
 
-#: pages/models.py:27
+#: pages/models.py:28
 msgid "cooperation"
 msgstr "همکاری"
 
-#: pages/models.py:28
+#: pages/models.py:29
 msgid "cooperations"
 msgstr "همکاری‌ها"
 
-#: pages/models.py:35
+#: pages/models.py:36
 msgid "Only one cooperation record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
-#: pages/models.py:44 pages/models.py:65
+#: pages/models.py:45 pages/models.py:66
 msgid "text"
 msgstr "متن"
 
-#: pages/models.py:49
+#: pages/models.py:50
 msgid "about_us"
 msgstr "درباره ما"
 
-#: pages/models.py:50
+#: pages/models.py:51
 msgid "about_us_plural"
 msgstr "درباره ما"
 
-#: pages/models.py:57
-#| msgid "Only one cooperation record can exist."
+#: pages/models.py:58
 msgid "Only one about us record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
-#: pages/models.py:67
-#| msgid "last updated"
+#: pages/models.py:68
 msgid "updated at"
 msgstr "آخرین آپدیت"
 
-#: pages/models.py:70
-msgid "order condition"
+#: pages/models.py:71 pages/models.py:72
+msgid "orderus"
 msgstr "شرایط سفارش"
 
-#: pages/models.py:71
-msgid "order conditions"
-msgstr "شرایط سفارش"
-
-#: pages/models.py:78
-#| msgid "Only one cooperation record can exist."
-msgid "Only one order condition record can exist."
+#: pages/models.py:79
+#| msgid "Only one about us record can exist."
+msgid "Only one orderus record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
 #: pages/templates/pages/aboutus.html:9
@@ -115,14 +109,10 @@ msgid "About Us"
 msgstr "درباره ما"
 
 #: pages/templates/pages/aboutus.html:21
-#| msgid "cooperation"
 msgid "Cooperation"
 msgstr "همکاری"
 
 #: pages/templates/pages/aboutus.html:32
-#| msgid ""
-#| "The cooperation page content is not available at the moment. Please try "
-#| "again later."
 msgid ""
 "The about us page content is not available at the moment. Please try again "
 "later."
@@ -167,9 +157,6 @@ msgid "Order Conditions"
 msgstr "شرایط سفارش"
 
 #: pages/templates/pages/orderus.html:22
-#| msgid ""
-#| "The cooperation page content is not available at the moment. Please try "
-#| "again later."
 msgid ""
 "The order conditions page content is not available at the moment. Please try"
 " again later."
@@ -192,6 +179,15 @@ msgid ""
 msgstr ""
 "محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
 "کنید."
+
+#~ msgid "order condition"
+#~ msgstr "شرایط سفارش"
+
+#~ msgid "order conditions"
+#~ msgstr "شرایط سفارش"
+
+#~ msgid "Only one order condition record can exist."
+#~ msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
 #~ msgid "Email:"
 #~ msgstr "ایمیل:"

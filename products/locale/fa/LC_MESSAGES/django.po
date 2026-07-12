@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-11 16:20+0000\n"
+"POT-Creation-Date: 2026-07-12 16:02+0000\n"
 "PO-Revision-Date: 2026-07-02 12:02+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,13 +88,13 @@ msgid "Comment_Active"
 msgstr "نظر فعال"
 
 #: products/templates/products/product_detail.html:38
-#: products/templates/products/product_list.html:52
+#: products/templates/products/product_list.html:53
 #: products/templates/products/product_search_result.html:50
 msgid "$"
 msgstr "تومان"
 
 #: products/templates/products/product_detail.html:61
-#: products/templates/products/product_list.html:70
+#: products/templates/products/product_list.html:71
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
@@ -177,6 +177,11 @@ msgstr "جستجو برای ..."
 #: products/views.py:44
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#, fuzzy
+#~| msgid "add to card"
+#~ msgid "add to cart"
+#~ msgstr "اضافه کردن به خرید"
 
 #~ msgid "product details of  "
 #~ msgstr "توضیحات محصول"

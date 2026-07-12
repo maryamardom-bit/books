@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-11 16:20+0000\n"
-"PO-Revision-Date: 2026-07-02 12:09+0330\n"
+"POT-Creation-Date: 2026-07-12 16:17+0000\n"
+"PO-Revision-Date: 2026-07-12 19:48+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -133,16 +133,56 @@ msgid "No"
 msgstr "خیر"
 
 #: templates/account/signup.html:23
-#, fuzzy
-#| msgid "Don't have an account?"
 msgid "Already have an account?"
 msgstr "حساب کاربری ندارید؟"
 
 #: templates/account/signup.html:23
-#, fuzzy
-#| msgid "login"
 msgid "Login"
 msgstr "ورود"
+
+#: templates/footer.html:52
+#| msgid "about us"
+msgid "About Us"
+msgstr "درباره ما"
+
+#: templates/footer.html:53
+#| msgid "contact us"
+msgid "Contact Us"
+msgstr "ارتباط با ما"
+
+#: templates/footer.html:57
+msgid "All rights reserved"
+msgstr ""
+
+#: templates/home.html:6
+msgid "Home"
+msgstr "خانه"
+
+#: templates/home.html:6
+msgid "Kasra Architecture Bookstore"
+msgstr "کتابفروشی معماری کسری"
+
+#: templates/home.html:90
+msgid "Architectural History"
+msgstr "تاریخ معماری"
+
+#: templates/home.html:95
+msgid "Design & Theory"
+msgstr "طراحی و نظریه"
+
+#: templates/home.html:100
+msgid "Sustainable Design"
+msgstr "طراحی پایدار"
+
+#: templates/home.html:105
+msgid "Urban Planning"
+msgstr "برنامه‌ریزی شهری"
+
+#~ msgid "about_us |"
+#~ msgstr "درباره ما"
+
+#~ msgid "contact_us"
+#~ msgstr "ارتباط با ما"
 
 #~ msgid "profile"
 #~ msgstr "پروفایل"
