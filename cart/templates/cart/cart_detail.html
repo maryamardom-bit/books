@@ -43,7 +43,7 @@
                                                                 </td>
                                                                 <td class="product-name ">
                                                                     <h3>
-                                                                        <a href="{{item.product_obj.get_absolute_url}}">
+                                                                        <a href="{% url  'product:product_detail' item.product_obj.id%}">
                                                                             {{item.product_obj.title}}
                                                                         </a>
                                                                     </h3>
@@ -64,6 +64,7 @@
                                                                                 id="qty-1" 
                                                                                 value="{{item.quantity }}" 
                                                                                 min="1"
+                                                                                
                                                                             >
                                                                         </div>
                                                                             {{item.product_update_quantity_form.inplace }}
@@ -103,15 +104,6 @@
                                 <div class="cart-totals">
                                     <h5 class="font-size-14 font-bold mb--15">مجموع</h5>
                                     <div class="cart-calculator">
-                                        {% comment %} <div class="cart-calculator__item">
-                                            <div class="cart-calculator__item--head">
-                                                <span>مجموع</span>
-                                            </div>
-                                            <div class="cart-calculator__item--value">
-                                                <span>۳۴۶,۰۰۰ تومان</span>
-                                            </div>
-                                        </div>
-                                        <div class="cart-calculator__item order-total"> {% endcomment %}
                                             <div class="cart-calculator__item--head">
                                                 <span>جمع کل</span>
                                             </div>
@@ -123,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{% url "order_create" %}" class="btn btn-fullwidth btn-bg-red btn-color-white btn-hover-2">
+                                <a href="{% url "order:order_create" %}" class="btn btn-fullwidth btn-bg-red btn-color-white btn-hover-2">
                                     {% trans "checkout" %} 
                                 </a>
                             </div>

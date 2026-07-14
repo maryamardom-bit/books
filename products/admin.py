@@ -10,7 +10,9 @@ class CommentsInLine(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
-    list_display = ['title' , 'price' , 'active',]
+    list_display = ['title' , 'category', 'price' , 'active',]
+    list_filter = ['category', 'active']
+    search_fields = ['title', 'description']
 
     inlines =[
         CommentsInLine ,
@@ -20,3 +22,6 @@ class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['product' , 'author','body' , 'stars' , 'active',]
 
+
+
+ 

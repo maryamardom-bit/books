@@ -84,8 +84,8 @@
 <!-- ===== بخش دسته‌بندی‌ها ===== -->
 <section class="categories-section" style="padding: 30px 0 50px;">
     <div class="container">
-        <div class="category-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+        <div class="category-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+            <a href={% url 'product:product_list_by_category' category='history' %}" %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
                 <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏛️</span>
                 <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Architectural History" %}</span>
 
@@ -105,6 +105,11 @@
                 <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Urban Planning" %}</span>
 
             </a>
+            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📦</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Misc" %}</span>
+
+            </a>
         </div>
     </div>
 </section>
@@ -118,4 +123,4 @@
 </style>
 
 
-{% endblock %}
+{% endblock %}nal (C

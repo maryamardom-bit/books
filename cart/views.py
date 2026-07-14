@@ -56,3 +56,11 @@ def clear_cart(request):
         messages.warning(request , _('your cart is already empty.'))
 
     return redirect('product_list')
+
+
+def product_list_by_category(request, category):
+    products = Product.objects.filter(category=category, active=True)
+    return render(request, 'product_list.html', {
+        'products': products,
+        'category': category,
+    })

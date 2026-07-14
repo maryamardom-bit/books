@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-12 14:58+0000\n"
+"POT-Creation-Date: 2026-07-13 15:00+0000\n"
 "PO-Revision-Date: 2026-07-12 19:47+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,6 @@ msgid "orderus"
 msgstr "شرایط سفارش"
 
 #: pages/models.py:79
-#| msgid "Only one about us record can exist."
 msgid "Only one orderus record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
@@ -117,8 +116,7 @@ msgid ""
 "The about us page content is not available at the moment. Please try again "
 "later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
 #: pages/templates/pages/contactus.html:9
 msgid "contact us"
@@ -158,11 +156,10 @@ msgstr "شرایط سفارش"
 
 #: pages/templates/pages/orderus.html:22
 msgid ""
-"The order conditions page content is not available at the moment. Please try"
-" again later."
+"The order conditions page content is not available at the moment. Please try "
+"again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
 #: pages/templates/pages/workingus.html:9
 msgid "Collaborate with Us"
@@ -177,8 +174,7 @@ msgid ""
 "The cooperation page content is not available at the moment. Please try "
 "again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
 #~ msgid "order condition"
 #~ msgstr "شرایط سفارش"

@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,render
 from django.contrib import messages
 from django.db.models import Q, Count, Avg, Value, IntegerField
 from django.db.models.functions import Coalesce
@@ -17,6 +17,13 @@ class ProductListView(generic.ListView):
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
 
+    
+def product_list_by_category(request, category):
+    products = Product.objects.filter(category=category, active=True)
+    return render(request, 'product_list.html', {
+        'products': products,
+        'category': category,
+    })
 
 class ProductDetailView(generic.DetailView):
     model = Product
@@ -76,3 +83,5 @@ class ProductSearchView(generic.ListView):
         context['query'] = self.request.GET.get('q', '')
         context['results_count'] = self.get_queryset().count()
         return context
+    
+    

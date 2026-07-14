@@ -7,9 +7,24 @@ from ckeditor.fields import RichTextField
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=100, verbose_name=_('Product Title')) 
+
+    class Category(models.TextChoices):
+        HISTORY = 'history', _('history')
+        DESIGN_THEORY = 'design_theory', _('design_theory')
+        SUSTAINABLE = 'sustainable', _('sustainable')
+        URBAN_PLANNING = 'urban_planning', _('urban_planning')
+        MISC = 'misc', _('misc')
+
+    title = models.CharField(max_length=100, verbose_name=_('Product Title'))
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices,
+        default=Category.MISC,
+        verbose_name=_('Product Category')
+    )
+    title = models.CharField(max_length=100, verbose_name=_('Product Title'))
     description = RichTextField(verbose_name=_('Product Discription'))
-    short_discription = models.TextField(blank=True, verbose_name=_('Product Short_Discription'))
+    short_discription = RichTextField(blank=True, verbose_name=_('Product Short_Discription'))
     price = models.PositiveIntegerField(default=0, verbose_name=_('Product Price'))
     active = models.BooleanField(default=True, verbose_name=_('Product Active'))
     image = models.ImageField(upload_to='product/product_cover/', blank=True, verbose_name=_('Product Image'))
@@ -21,7 +36,7 @@ class Product(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse('product_detail', args=[self.pk])
+        return reverse('product:product_detail', args=[self.pk])
 
 
 class ActiveCommentsManager(models.Manager):

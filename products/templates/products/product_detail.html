@@ -32,7 +32,7 @@
                             <div class="product-summary pl-lg--30 pl-md--0 text-right p-4">
                                 <h3 class="product-title mb--20">{{product.title}} </h3>
                                 <p class="product-short-description mb--20">
-                                    {{product.short_discription|truncatewords:50}}
+                                    {{product.short_discription|truncatewords:50|safe}}
                                 </p>
                                 <div class="my-5 py-5 product-price-wrapper mb--25">
                                     <span class="money text-success">{{product.price |intcomma:False | translate_number}} {% trans "$" %}</span>
@@ -184,7 +184,7 @@
                                                                 {% trans "Write your comment:" %}
                                                             </span>                              
                                                             <br>                          
-                                                            <form action="{% url 'comment_create' product.id %}" method="POST">
+                                                            <form action="{% url 'product:comment_create' product.id %}" method="POST">
                                                                 {% csrf_token %}
                                                                 {{comment_form|crispy}}
                                                                 <input type="submit" value="{% trans "submit" %}">

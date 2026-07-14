@@ -1,26 +1,12 @@
+> ardom.m:
 {% load static %}
 {% load i18n %}
 
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    
-    <title>
-        {% block page_title %}
-            {% if query %}نتایج جستجو برای "{{ query }}" | {% endif %}
-            کتاب‌فروشی کسرا
-        {% endblock %}
-    </title>
 
-    <!-- Favicons -->
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="{% static 'img/icon.png' %}" />
-
-    <!-- *** CSS Files *** -->
+    <!-- * CSS Files * -->
     <link rel="stylesheet" href="{% static 'css/_base.css' %}" />
     <link rel="stylesheet" href="{% static 'css/vendor.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
@@ -105,132 +91,83 @@
     }
 
     /* ============================================
-       استایل جدید برای جستجو و منو
+       استایل جدید هدر - یک ردیف
     ============================================ */
     
-    /* استایل ردیف جستجو */
-    .search-row {
-        padding: 15px 0;
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #e9ecef;
-    }
-
-    .search-row .search-form-header {
+    /* استایل جستجو در هدر - یک ردیف با لوگو */
+    .search-form-header {
         display: flex;
-        justify-content: center;
+        align-items: center;
         width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    .search-row .search-form-header input {
-        width: 100%;
-        padding: 10px 20px;
-        border: 2px solid #ddd;
+        background: white;
         border-radius: 25px;
-        font-size: 15px;
+        border: 2px solid #ddd;
         transition: all 0.3s ease;
-        background-color: white;
+        padding: 2px;
     }
 
-    .search-row .search-form-header input:focus {
+    .search-form-header:focus-within {
         border-color: #6c5ce7;
-        outline: none;
         box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
     }
 
-    .search-row .search-form-header button {
+    .search-form-header input {
+        flex: 1;
+        border: none;
+        padding: 10px 20px;
+        font-size: 15px;
+        border-radius: 25px 0 0 25px;
+        background: transparent;
+        outline: none;
+        min-width: 0; /* جلوگیری از سرریز */
+    }
+
+    .search-form-header button {
         background: transparent;
         border: none;
-        margin-right: -40px;
-        z-index: 1;
+        padding: 10px 18px;
         cursor: pointer;
         color: #666;
         font-size: 18px;
+        border-radius: 0 25px 25px 0;
+        transition: color 0.3s ease;
     }
 
-    .search-row .search-form-header button:hover {
+    .search-form-header button:hover {
         color: #6c5ce7;
     }
 
-/* استایل منوی اصلی با نوار رنگی */
-    .mainmenu-nav-wrapper {
-        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-        padding: 0;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .mainmenu-nav-wrapper .mainmenu {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 0;
-    }
-
-    .mainmenu-nav-wrapper .mainmenu__item {
-        position: relative;
+    /* اطمینان از اینکه لوگو تغییر اندازه نده */
+    .site-branding .logo figure {
         margin: 0;
         padding: 0;
     }
 
-    .mainmenu-nav-wrapper .mainmenu__link {
+    .site-branding .logo img {
+        max-height: 80px !important; /* سایز ثابت لوگو */
+        width: auto;
         display: block;
-        padding: 14px 25px;
-        color: white !important;
-        font-size: 15px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border-right: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .mainmenu-nav-wrapper .mainmenuitem:first-child .mainmenulink {
-        border-right: none;
-    }
-
-    .mainmenu-nav-wrapper .mainmenu__link:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-        color: white !important;
-    }
-
-    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink {
-        background-color: rgba(255, 255, 255, 0.2);
-        font-weight: 600;
-    }
-
-    /* زیرخط برای آیتم فعال */
-    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink::after {
-        content: '';
-        position: absolute;
-        bottom: 8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30px;
-        height: 3px;
-        background-color: white;
-        border-radius: 2px;
-    }
-
-    /* استایل هدر تولبار (آیکون‌های سمت راست) */
+    /* تنظیم toolbar برای همراستایی با جستجو */
     .header-toolbar {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         list-style: none;
         margin: 0;
-        padding: 10px 0;
+        padding: 0;
+        gap: 15px;
     }
 
     .header-toolbar__item {
-        margin-left: 15px;
+        margin: 0;
     }
 
-    .header-toolbar__btn {
+> ardom.m:
+.header-toolbar__btn {
         color: #333;
-        font-size: 20px;
+        font-size: 22px;
         position: relative;
         transition: color 0.3s ease;
     }
@@ -290,6 +227,68 @@
         color: #6c5ce7;
     }
 
+    /* استایل منوی اصلی با نوار رنگی */
+    .mainmenu-nav-wrapper {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        padding: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__item {
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__link {
+        display: block;
+        padding: 14px 25px;
+        color: white !important;
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__item:first-child .mainmenu__link {
+        border-right: none;
+    }
+
+    .mainmenu-nav-wrapper .mainmenu__link:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white !important;
+    }
+
+    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink {
+        background-color: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+    }
+
+    /* زیرخط برای آیتم فعال */
+    .mainmenu-nav-wrapper .mainmenuitem.active .mainmenulink::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        border-radius: 2px;
+    }
+
     /* ریسپانسیو */
     @media (max-width: 992px) {
         .mainmenu-nav-wrapper .mainmenu {
@@ -303,22 +302,32 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .search-row .search-form-header {
-            max-width: 100%;
-            padding: 0 15px;
-        }
-
         .header-toolbar {
-            justify-content: center;
+            gap: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .search-form-header input {
+            padding: 8px 15px;
+            font-size: 13px;
+        }
+        
+        .search-form-header button {
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+        
+        .site-branding .logo img {
+            max-height: 60px !important;
+        }
+        
+        .header-toolbar__btn {
+            font-size: 18px;
         }
     }
 
     @media (max-width: 576px) {
-        .mainmenu-nav-wrapper .mainmenu__link {
-            padding: 8px 12px;
-            font-size: 12px;
-        }
-        
         .mainmenu-nav-wrapper .mainmenu {
             justify-content: flex-start;
             overflow-x: auto;
@@ -326,7 +335,22 @@
             padding: 5px 10px;
         }
 
-.header-toolbar__item {
+> ardom.m:
+.mainmenu-nav-wrapper .mainmenu__link {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .search-form-header input {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+        
+        .site-branding .logo img {
+            max-height: 50px !important;
+        }
+        
+        .header-toolbar__item {
             margin-left: 10px;
         }
     }
@@ -338,8 +362,8 @@
     <div class="notification-toast" id="notificationToast">
         {% for message in messages %}
         <div class="toast-message toast-{{ message.tags }}">
-            <span class="toast-icon">✓</span>
             <span class="toast-text">{{ message }}</span>
+            <span class="toast-icon">✓</span>
         </div>
         {% endfor %}
     </div>
@@ -349,30 +373,38 @@
     <header class="header">
         <div class="header-inner fixed-header">
             <div class="container">
-                <!-- ردیف اول: لوگو و آیکون‌های سمت راست -->
+                <!-- یک ردیف واحد برای لوگو، جستجو و سبد خرید -->
                 <div class="row align-items-center">
-                    <div class="col-xl-9 col-lg-8 col-7">
-                        <nav class="main-navigation">
-                            <div class="site-branding">
-                                <a href="{% url 'product_list' %}" class="logo">
-                                    <figure class="logo--normal">
-                                        <img class="px-5" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 80px;" alt="Logo">
-                                    </figure>
-                                </a>
-                            </div>
-                        </nav>
+                    <!-- ستون لوگو (با عرض ثابت) -->
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-4">
+                        <div class="site-branding">
+                            <a href="{% url 'page:aboutus' %}" class="logo">
+                                <figure class="logo--normal">
+                                    <img class="px-8" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 80px;" alt="Logo">
+                                </figure>
+                            </a>
+                        </div>
                     </div>
-                    
-                    <div class="col-xl-3 col-lg-4 col-5">
+
+                    <!-- ستون جستجو (بیشترین فضا) -->
+                    <div class="col-xl-7 col-lg-7 col-md-6 col-5">
+                        <form class="search-form-header" method="get" action="{% url 'product:product_search' %}">
+                            <input type="text" 
+                                   name="q" 
+                                   placeholder="جستجوی کتاب..." 
+                                   value="{{ query|default:'' }}"
+                                   aria-label="جستجو">
+                            <button type="submit">
+                                <i class="flaticon flaticon-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ستون سبد خرید و کاربر (با عرض ثابت) -->
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-3">
                         <ul class="header-toolbar">
-                            <li class="header-toolbar__item">
-                                <a href="wishlist.html" class="header-toolbar__btn">
-                                    <i class="flaticon flaticon-like"></i>
-                                </a>
-                            </li>
-                            
                             <li class="header-toolbar__item mini-cart-item">
-                                <a href="#miniCart" class="header-toolbar__btn toolbar-btn mini-cart-btn">
+                                <a href="{% url 'cart:cart_detail' %}" class="header-toolbar__btn toolbar-btn mini-cart-btn">
                                     <i class="flaticon flaticon-shopping-cart"></i>
                                     <sup class="mini-cart-count">{{ cart|length|default:0 }}</sup>
                                 </a>
@@ -400,61 +432,41 @@
                         </ul>
                     </div>
                 </div>
+                <!-- پایان ردیف واحد -->
 
-                <!-- ===== ردیف دوم: جستجو ===== -->
-                <div class="search-row">
-                    <div class="container">
-
-<div class="row">
-                            <div class="col-12">
-                                <form class="search-form-header" method="get" action="{% url 'product_search' %}">
-                                    <input type="text" 
-                                           name="q" 
-                                           placeholder="جستجوی کتاب..." 
-                                           value="{{ query|default:'' }}"
-                                           aria-label="جستجو">
-                                    <button type="submit">
-                                        <i class="flaticon flaticon-search"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ===== ردیف سوم: منوی اصلی با نوار رنگی ===== -->
+                <!-- ===== ردیف دوم: منوی اصلی با نوار رنگی ===== -->
                 <div class="mainmenu-nav-wrapper">
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
                                 <ul class="mainmenu">
                                     <li class="mainmenu__item menu-item-has-children active">
-                                        <a href="{% url 'home' %}" class="mainmenu__link">
+                                        <a href="{% url 'page:home' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "home" %}</span>
                                         </a>
                                     </li>
                                     <li class="mainmenu__item menu-item-has-children">
-                                        <a href="{% url 'product_list' %}" class="mainmenu__link">
+                                        <a href="{% url 'product:product_list' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "products" %}</span>
                                         </a>
                                     </li>
                                     <li class="mainmenu__item">
-                                        <a href="{% url 'orderus' %}" class="mainmenu__link">
+                                        <a href="{% url 'page:orderus' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "order" %}</span>
                                         </a>
                                     </li>
                                     <li class="mainmenu__item">
-                                        <a href="{% url 'aboutus' %}" class="mainmenu__link">
+                                        <a href="{% url 'page:aboutus' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "about us" %}</span>
                                         </a>
                                     </li>
                                     <li class="mainmenu__item">
-                                        <a href="{% url 'contactus' %}" class="mainmenu__link">
+                                        <a href="{% url 'page:contactus' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "contact us" %}</span>
                                         </a>
                                     </li>
                                     <li class="mainmenu__item">
-                                        <a href="{% url 'workingus' %}" class="mainmenu__link">
+                                        <a href="{% url 'page:workingus' %}" class="mainmenu__link">
                                             <span class="mm-text">{% trans "working us" %}</span>
                                         </a>
                                     </li>
@@ -462,8 +474,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </div>                
                 <!-- موبایل منو -->
                 <div class="row">
                     <div class="col-12">
@@ -482,6 +493,8 @@
         {% endblock %}
     </main>
     <!-- ========== Main Content End ========== -->
-{% include "footer.html" %}
+
+    {% include "footer.html" %}
 </body>
 </html>
+

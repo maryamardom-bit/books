@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-11 16:20+0000\n"
+"POT-Creation-Date: 2026-07-13 15:00+0000\n"
 "PO-Revision-Date: 2026-06-13 12:07+0330\n"
 "Last-Translator: ddg fghgj <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,25 +36,25 @@ msgid "Cart"
 msgstr "سبد خرید"
 
 #: cart/templates/cart/cart_detail.html:53
-#: cart/templates/cart/cart_detail.html:75
-#: cart/templates/cart/cart_detail.html:121
+#: cart/templates/cart/cart_detail.html:76
+#: cart/templates/cart/cart_detail.html:112
 #: cart/templates/cart/cart_sidebar.html:34
 msgid "$"
 msgstr "تومان"
 
-#: cart/templates/cart/cart_detail.html:84
+#: cart/templates/cart/cart_detail.html:85
 msgid "cart is empty ! please add some products to the cart "
 msgstr "سبد خرید خالی است.لطفا محصول درخواستی را به سبد اضافه کنید"
 
-#: cart/templates/cart/cart_detail.html:85
+#: cart/templates/cart/cart_detail.html:86
 msgid "go shopping"
 msgstr "برو به فروشگاه"
 
-#: cart/templates/cart/cart_detail.html:94
+#: cart/templates/cart/cart_detail.html:95
 msgid "Empty cart"
 msgstr "خالی کردن سبد خرید"
 
-#: cart/templates/cart/cart_detail.html:128
+#: cart/templates/cart/cart_detail.html:119
 msgid "checkout"
 msgstr "پرداخت"
 
