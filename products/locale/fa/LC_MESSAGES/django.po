@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-13 15:00+0000\n"
-"PO-Revision-Date: 2026-07-02 12:02+0330\n"
+"PO-Revision-Date: 2026-07-14 17:22+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -21,23 +21,23 @@ msgstr ""
 
 #: products/models.py:12
 msgid "history"
-msgstr ""
+msgstr "تاریخ معماری"
 
 #: products/models.py:13
 msgid "design_theory"
-msgstr ""
+msgstr "طراحی و نظریه"
 
 #: products/models.py:14
 msgid "sustainable"
-msgstr ""
+msgstr "طراحی پایدار"
 
 #: products/models.py:15
 msgid "urban_planning"
-msgstr ""
+msgstr "برنامه ریزی شهری"
 
 #: products/models.py:16
 msgid "misc"
-msgstr ""
+msgstr "متفرقه"
 
 #: products/models.py:18 products/models.py:25
 msgid "Product Title"
@@ -205,7 +205,6 @@ msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
 
 #, fuzzy
-#~| msgid "add to card"
 #~ msgid "add to cart"
 #~ msgstr "اضافه کردن به خرید"
 

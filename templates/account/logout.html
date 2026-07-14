@@ -1,28 +1,29 @@
+
 {% extends '_base.html' %}
 {% load i18n %}
 
 {% block page_title %}
-  {% trans "log out" %}
-{% endblock %}
+{% trans "log out" %}
+{% endblock page_title %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="row justify-content-center">
-      <div class="col-12 col-md-6 col-lg-5">
-        <div class="card shadow-sm mt-5">
-          <div class="card-body p-4 text-center">
-            <h2 class="mb-3">{% trans "Log Out" %}</h2>
-            <p class="mb-4">{% trans "Are you sure you want to logout?" %}</p>
-            <form action="" method="post">
-              {% csrf_token %}
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-secondary btn-lg">{% trans "Yes" %}</button>
-                <a href="{% url 'home' %}" class="btn btn-secondary btn-lg">{% trans "No" %}</a>
-              </div>
-            </form>
-          </div>
+        <div class="col-12 col-md-6 col-lg-5">
+            <div class="card shadow-sm mt-5">
+                <div class="card-body p-4 text-center">
+                    <h2 class="mb-3">{% trans "Log Out" %}</h2>
+                    <p class="mb-4">{% trans "Are you sure you want to logout?" %}</p>
+                    <form action="{% url 'account_logout' %}" method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg">{% trans "Yes" %}</button>
+                            <a href="{% url 'page:home' %}" class="btn btn-secondary btn-lg">{% trans "No" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 {% endblock %}

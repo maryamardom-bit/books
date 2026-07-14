@@ -1,4 +1,3 @@
-> ardom.m:
 {% load static %}
 {% load i18n %}
 
@@ -164,7 +163,6 @@
         margin: 0;
     }
 
-> ardom.m:
 .header-toolbar__btn {
         color: #333;
         font-size: 22px;
@@ -188,44 +186,82 @@
         min-width: 18px;
         text-align: center;
     }
-
+        
     .user-info {
-        position: relative;
-    }
+    position: relative;
+    display: inline-block;
+}
 
-    .user-info-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        padding: 8px 0;
-        min-width: 150px;
-        z-index: 1000;
-    }
+.user-info-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 2px); /* فاصله بسیار کم از آیکون */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 8px 0;
+    min-width: 0px;
+    width: auto;
+    z-index: 1000;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
 
-    .user-info:hover .user-info-menu {
-        display: block;
-    }
+/* فلش بالای منو - چسبیده به آیکون */
+.user-info-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px; /* فلش دقیقاً بالای منو */
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 2px 0 0 0;
+    z-index: 1001;
+}
 
-    .user-info-menu li {
-        list-style: none;
-    }
+.user-info:hover .user-info-menu {
+    display: block;
+}
 
-    .user-info-menu li a {
-        display: block;
-        padding: 8px 20px;
-        color: #333;
-        text-decoration: none;
-        transition: background 0.3s ease;
-    }
+.user-info-menu li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
-    .user-info-menu li a:hover {
-        background-color: #f8f9fa;
-        color: #6c5ce7;
-    }
+.user-info-menu li a {
+    display: block;
+    padding: 1px 24px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 50;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.user-info-menu li a:hover {
+    background-color: #f8f9fa;
+    color: #6c5ce7;
+}
+
+/* گردی گوشه‌ها */
+.user-info-menu li:first-child a {
+    border-radius: 12px 12px 0 0;
+}
+
+.user-info-menu li:last-child a {
+    border-radius: 0 0 12px 12px;
+}
+
+.user-info-menu li:only-child a {
+    border-radius: 12px;
+}
 
     /* استایل منوی اصلی با نوار رنگی */
     .mainmenu-nav-wrapper {
@@ -335,8 +371,7 @@
             padding: 5px 10px;
         }
 
-> ardom.m:
-.mainmenu-nav-wrapper .mainmenu__link {
+    .mainmenu-nav-wrapper .mainmenu__link {
             padding: 8px 12px;
             font-size: 12px;
         }
@@ -411,7 +446,7 @@
                             </li>
                             
                             <li class="header-toolbar__item user-info">
-                                <a href="my-account.html" class="header-toolbar__btn">
+                                <a href="{% url "account_logout" %}" class="header-toolbar__btn">
                                     <i class="flaticon flaticon-user"></i>
                                 </a>
                                 <ul class="user-info-menu">

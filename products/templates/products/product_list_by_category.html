@@ -1,0 +1,79 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+{% block page_title %}
+    {% if category %}
+        {{ category.name }}
+    {% else %}
+        {% trans "Category" %}
+    {% endif %}
+{% endblock page_title %}
+
+{% block content %}
+<div class="main-content-wrapper">
+    <div class="page-content-inner ptb--80">
+        <div class="container">
+            <!-- عنوان دسته‌بندی -->
+            <div class="row mb--50">
+                <div class="col-12">
+                    {% if category %}
+                        <h2 class="text-center">{{ category.name }}</h2>
+                        <hr>
+                    {% else %}
+                        <h2 class="text-center">{% trans "Category not found" %}</h2>
+                        <p class="text-center"><a href="{% url 'product:product_list' %}">{% trans "Back to products" %}</a></p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- محصولات -->
+            <div class="row">
+                {% if products %}
+                    {% for product in products %}
+                        <div class="col-xl-3 col-md-4 col-sm-6 mb--50">
+                            <div class="ShoppingYar-product">
+                                <div class="product-inner">
+                                    <figure class="product-image">
+                                        {% if product.image %}
+                                            <a href="{{ product.get_absolute_url }}">
+                                                <img src="{{ product.image.url }}" alt="{{ product.title }}" />
+                                            </a>
+                                        {% endif %}
+                                    </figure>
+                                    <div class="product-info">
+                                        <h3 class="product-title h6 mb--15">
+                                            <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                                        </h3>
+                                        <div class="product-price-wrapper mb--30">
+                                            <span class="money text-success">
+                                                {{ product.price|intcomma:False|translate_number }} {% trans "$" %}
+                                            </span>
+                                        </div>
+                                        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" class="quantity-input" name="quantity" value="1" min="1" max="30">
+                                            <div class="quantity-wrapper">
+                                                <button type="submit" class="btn btn-small btn-color-white" style="background-color: #00CED1;">
+                                                    {% trans "add to card" %}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12 text-center">
+                        <p>{% trans "No products found in this category." %}</p>
+                        <a href="{% url 'product:product_list' %}" class="btn btn-primary">{% trans "Back to products" %}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

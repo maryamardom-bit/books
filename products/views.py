@@ -10,7 +10,6 @@ from .models import Product, Comment
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
-
 class ProductListView(generic.ListView):
     model = Product
     queryset = Product.objects.filter(active=True)
@@ -84,4 +83,30 @@ class ProductSearchView(generic.ListView):
         context['results_count'] = self.get_queryset().count()
         return context
     
+
+def product_list_by_category(request, category):
+    # بررسی اینکه category یکی از مقادیر معتبر هست
+    valid_categories = ['history', 'design_theory', 'sustainable', 'urban_planning', 'misc']
+    
+    if category not in valid_categories:
+        # اگر دسته‌بندی نامعتبر بود، به صفحه محصولات برمی‌گردیم
+        return render(request, 'Products/product_list_by_category.html', {
+            'products': Product.objects.none(),
+            'category': None,
+            'error': 'دسته‌بندی نامعتبر است'
+        })
+    
+    # فیلتر کردن محصولات بر اساس category
+    products = Product.objects.filter(category=category, active=True)
+    
+    # دریافت نام نمایشی دسته‌بندی
+    category_display = dict(Product.Category.choices).get(category, category)
+    
+    return render(request, 'Products/product_list_by_category.html', {
+        'products': products,
+        'category': {
+            'name': category_display,
+            'slug': category
+        },
+    })
     

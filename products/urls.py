@@ -10,3 +10,5 @@ urlpatterns = [
     path('search/', views.ProductSearchView.as_view(), name='product_search'),
     path('category/<str:category>/', views.product_list_by_category, name='product_list_by_category'),
 ]
+
+
