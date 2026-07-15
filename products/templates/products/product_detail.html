@@ -80,11 +80,10 @@
 
                                 </div> 
                                 <div class="product-footer-meta mt-5 pt-5">
-                                    <p><span class="m-0">  {% trans "categories" %}:</span>
-                                        <a href="shop.html">لباس</a>,
-                                        <a href="shop.html">تابستانی</a>,
-                                        <a href="shop.html">گرم</a>,
-                                        <a href="shop.html">زنانه</a>
+                                    <p><span class="m-0">  {% trans "categories" %}:</span>                                 
+                                            <a href="{% url 'product:product_list_by_category' category=product.category %}">
+                                                {{ product.get_category_display }}
+                                            </a>
                                     </p>
                                 </div>
                             </div>
