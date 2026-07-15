@@ -55,7 +55,7 @@ def clear_cart(request):
     else:
         messages.warning(request , _('your cart is already empty.'))
 
-    return redirect('product_list')
+    return redirect('product:product_list')
 
 
 def product_list_by_category(request, category):
