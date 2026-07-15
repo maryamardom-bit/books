@@ -16,22 +16,37 @@ class Product(models.Model):
         URBAN_PLANNING = 'urban_planning', _('urban_planning')
         MISC = 'misc', _('misc')
 
+    class BookSize(models.TextChoices):
+        RAGHIEI = 'raghiei', _('raghiei')
+        VAZEHI = 'vazehi', _('vazehi')
+        JEYBI = 'jeybi', _('jeybi')
+        RAHLEI = 'rahlei', _('rahlei')
+        OTHER = 'other', _('other')
+   
+    class CoverType(models.TextChoices):
+        SHOMIZ = 'shomiz', _('shomiz')
+        GARD = 'gard', _('gard')
+        OTHER = 'other', _('other')
+    
+
     title = models.CharField(max_length=100, verbose_name=_('Product Title'))
-    category = models.CharField(
-        max_length=20,
-        choices=Category.choices,
-        default=Category.MISC,
-        verbose_name=_('Product Category')
-    )
-    title = models.CharField(max_length=100, verbose_name=_('Product Title'))
+    category = models.CharField(max_length=20,choices=Category.choices,default=Category.MISC,verbose_name=_('Product Category'))
     description = RichTextField(verbose_name=_('Product Discription'))
-    short_discription = RichTextField(blank=True, verbose_name=_('Product Short_Discription'))
     price = models.PositiveIntegerField(default=0, verbose_name=_('Product Price'))
     active = models.BooleanField(default=True, verbose_name=_('Product Active'))
     image = models.ImageField(upload_to='product/product_cover/', blank=True, verbose_name=_('Product Image'))
-    
+    author = models.CharField(max_length=200, blank=True, verbose_name=_('Author'))
+    publisher = models.CharField(max_length=200, blank=True, verbose_name=_('Publisher'))
+    isbn = models.CharField(max_length=20, blank=True, verbose_name=_('ISBN'))
+    publication_year = models.IntegerField(null=True, blank=True, verbose_name=_('Publication Year'))
+    edition = models.CharField(max_length=50, blank=True, verbose_name=_('Edition'))
+    pages = models.IntegerField(null=True, blank=True, verbose_name=_('Number of Pages'))
+    book_size = models.CharField(max_length=20,choices=BookSize.choices,blank=True,null=True,verbose_name=_('Book Size'))
+    cover_type = models.CharField(max_length=20,choices=CoverType.choices,blank=True,null=True,verbose_name=_('Cover Type'))
+   
     datetime_created = models.DateTimeField(default=timezone.now, verbose_name=_('Date Time of Creation'))
     datetime_modified = models.DateTimeField(auto_now=True, verbose_name=_('Date Time of Modified'))
+
 
     def str(self):
         return self.title
@@ -77,3 +92,4 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', args=[self.product.id])
     
+

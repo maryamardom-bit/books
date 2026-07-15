@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 15:00+0000\n"
+"POT-Creation-Date: 2026-07-15 11:11+0000\n"
 "PO-Revision-Date: 2026-07-13 18:31+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,39 +19,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: templates/_base.html:388
+#: templates/_base.html:455
 msgid "logout"
 msgstr "خروج"
 
-#: templates/_base.html:392 templates/account/login.html:20
+#: templates/_base.html:459 templates/account/login.html:20
 msgid "login"
 msgstr "ورود"
 
-#: templates/_base.html:395
+#: templates/_base.html:462
 msgid "signup"
 msgstr "ثبت نام"
 
-#: templates/_base.html:433
+#: templates/_base.html:480
 msgid "home"
 msgstr "خانه"
 
-#: templates/_base.html:438
+#: templates/_base.html:485
 msgid "products"
 msgstr "محصولات"
 
-#: templates/_base.html:443
+#: templates/_base.html:490
 msgid "order"
 msgstr "شرایط سفارش"
 
-#: templates/_base.html:448
+#: templates/_base.html:495
 msgid "about us"
 msgstr "درباره ما"
 
-#: templates/_base.html:453
+#: templates/_base.html:500
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: templates/_base.html:458
+#: templates/_base.html:505
 msgid "working us"
 msgstr "همکاری با ما"
 
@@ -112,23 +112,23 @@ msgstr "حساب کاربری ندارید؟"
 msgid "Sign Up"
 msgstr "ثبت نام"
 
-#: templates/account/logout.html:5
+#: templates/account/logout.html:6
 msgid "log out"
 msgstr "خروج"
 
-#: templates/account/logout.html:14
+#: templates/account/logout.html:15
 msgid "Log Out"
 msgstr "خروج"
 
-#: templates/account/logout.html:15
+#: templates/account/logout.html:16
 msgid "Are you sure you want to logout?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
-#: templates/account/logout.html:19
+#: templates/account/logout.html:20
 msgid "Yes"
 msgstr "بله"
 
-#: templates/account/logout.html:20
+#: templates/account/logout.html:21
 msgid "No"
 msgstr "خیر"
 
@@ -156,23 +156,23 @@ msgstr "خانه"
 msgid "Kasra Architecture Bookstore"
 msgstr "کتابفروشی معماری کسری"
 
-#: templates/home.html:90
+#: templates/home.html:73
 msgid "Architectural History"
 msgstr "تاریخ معماری"
 
-#: templates/home.html:95
+#: templates/home.html:79
 msgid "Design & Theory"
 msgstr "طراحی و نظریه"
 
-#: templates/home.html:100
+#: templates/home.html:85
 msgid "Sustainable Design"
 msgstr "طراحی پایدار"
 
-#: templates/home.html:105
+#: templates/home.html:91
 msgid "Urban Planning"
 msgstr "برنامه‌ریزی شهری"
 
-#: templates/home.html:110
+#: templates/home.html:97
 msgid "Misc"
 msgstr "متفرقه"
 

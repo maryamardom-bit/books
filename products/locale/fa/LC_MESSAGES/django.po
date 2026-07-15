@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 15:00+0000\n"
-"PO-Revision-Date: 2026-07-14 17:22+0330\n"
+"POT-Creation-Date: 2026-07-15 11:11+0000\n"
+"PO-Revision-Date: 2026-07-15 15:01+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,134 +19,235 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: products/models.py:12
+#: products/admin.py:23
+msgid "Basic Information"
+msgstr "اطلاعات اولیه"
+
+#: products/admin.py:32
+#| msgid "details"
+msgid "Book Details"
+msgstr "جزییات "
+
+#: products/admin.py:45
+msgid "Status & Dates"
+msgstr "وضعیت و تاریخ‌ها"
+
+#: products/models.py:13
 msgid "history"
 msgstr "تاریخ معماری"
 
-#: products/models.py:13
+#: products/models.py:14
 msgid "design_theory"
 msgstr "طراحی و نظریه"
 
-#: products/models.py:14
+#: products/models.py:15
 msgid "sustainable"
 msgstr "طراحی پایدار"
 
-#: products/models.py:15
+#: products/models.py:16
 msgid "urban_planning"
 msgstr "برنامه ریزی شهری"
 
-#: products/models.py:16
+#: products/models.py:17
 msgid "misc"
 msgstr "متفرقه"
 
-#: products/models.py:18 products/models.py:25
+#: products/models.py:20
+msgid "raghiei"
+msgstr "رقعی"
+
+#: products/models.py:21
+msgid "vazehi"
+msgstr "وزیری"
+
+#: products/models.py:22
+msgid "jeybi"
+msgstr "جیبی"
+
+#: products/models.py:23
+msgid "rahlei"
+msgstr "رحلی"
+
+#: products/models.py:24 products/models.py:30
+msgid "other"
+msgstr "غیره"
+
+#: products/models.py:27
+msgid "shomiz"
+msgstr "شومیز"
+
+#: products/models.py:28
+msgid "salebi"
+msgstr "سلفی"
+
+#: products/models.py:29
+msgid "gard"
+msgstr "سخت"
+
+#: products/models.py:33
 msgid "Product Title"
 msgstr "نام محصول"
 
-#: products/models.py:23
-#, fuzzy
+#: products/models.py:34
 #| msgid "Product Title"
 msgid "Product Category"
-msgstr "نام محصول"
+msgstr "دسته بندی محصول"
 
-#: products/models.py:26
+#: products/models.py:35
 msgid "Product Discription"
 msgstr "توضیحات محصول"
 
-#: products/models.py:27
-msgid "Product Short_Discription"
-msgstr "توضیح مختصر از محصول"
-
-#: products/models.py:28
+#: products/models.py:36
 msgid "Product Price"
 msgstr "قیمت محصول"
 
-#: products/models.py:29
+#: products/models.py:37
 msgid "Product Active"
 msgstr "آیا محصول موجود است؟"
 
-#: products/models.py:30
+#: products/models.py:38
 msgid "Product Image"
 msgstr "تصویر محصول"
 
-#: products/models.py:32
+#: products/models.py:39
+msgid "Author"
+msgstr "نویسنده"
+
+#: products/models.py:40
+msgid "Publisher"
+msgstr "ناشر"
+
+#: products/models.py:41
+msgid "ISBN"
+msgstr "شابک"
+
+#: products/models.py:42
+msgid "Publication Year"
+msgstr "سال انتشار"
+
+#: products/models.py:43
+msgid "Edition"
+msgstr "نوبت چاپ"
+
+#: products/models.py:44
+msgid "Number of Pages"
+msgstr "تعداد صفحات"
+
+#: products/models.py:45
+msgid "Book Size"
+msgstr "اندازه کتاب"
+
+#: products/models.py:46
+msgid "Cover Type"
+msgstr "نوع صحافی/جلد:"
+
+#: products/models.py:48
 msgid "Date Time of Creation"
 msgstr "زمان ایجاد محصول"
 
-#: products/models.py:33
+#: products/models.py:49
 msgid "Date Time of Modified"
 msgstr "زمان آخرین تغییرات در محصول"
 
-#: products/models.py:49
+#: products/models.py:66
 msgid "Very Bad"
 msgstr "خیلی بد"
 
-#: products/models.py:50
+#: products/models.py:67
 msgid "Bad"
 msgstr "بد"
 
-#: products/models.py:51
+#: products/models.py:68
 msgid "Normal"
 msgstr "معمولی"
 
-#: products/models.py:52
+#: products/models.py:69
 msgid "Good"
 msgstr "خوب"
 
-#: products/models.py:53
+#: products/models.py:70
 msgid "Perfect"
 msgstr "عالی"
 
-#: products/models.py:56
+#: products/models.py:73
 msgid "Comment_Product"
 msgstr "نظر برای این محصول"
 
-#: products/models.py:64
+#: products/models.py:81
 msgid "Comment Text"
 msgstr "متن دیدگاه"
 
-#: products/models.py:65
+#: products/models.py:82
 msgid "What is your score?"
 msgstr "امتیاز شما به این محصول کدام است؟"
 
-#: products/models.py:70
+#: products/models.py:87
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
 #: products/templates/products/product_detail.html:38
 #: products/templates/products/product_list.html:51
+#: products/templates/products/product_list_by_category.html:52
 #: products/templates/products/product_search_result.html:50
 msgid "$"
 msgstr "تومان"
 
-#: products/templates/products/product_detail.html:61
+#: products/templates/products/product_detail.html:59
 #: products/templates/products/product_list.html:70
+#: products/templates/products/product_list_by_category.html:60
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: products/templates/products/product_detail.html:85
+#: products/templates/products/product_detail.html:83
 msgid "categories"
 msgstr " دسته بندی"
 
-#: products/templates/products/product_detail.html:100
+#: products/templates/products/product_detail.html:97
 msgid "product description"
 msgstr "توضیحات محصول"
 
-#: products/templates/products/product_detail.html:186
+#: products/templates/products/product_detail.html:100
+msgid "Additional information"
+msgstr "اطلاعات تکمیلی"
+
+#: products/templates/products/product_detail.html:103
+#| msgid "Comment Text"
+msgid "comments"
+msgstr "نظرات"
+
+#: products/templates/products/product_detail.html:183
 msgid "Write your comment:"
 msgstr "نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:192
+#: products/templates/products/product_detail.html:189
 msgid "submit"
 msgstr "ارسال"
 
-#: products/templates/products/product_detail.html:195
+#: products/templates/products/product_detail.html:192
 msgid "to write your comment please "
 msgstr "لطفا نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:196
+#: products/templates/products/product_detail.html:193
 msgid "log in"
 msgstr "ورود"
+
+#: products/templates/products/product_list_by_category.html:11
+#| msgid "Product Title"
+msgid "Category"
+msgstr "دسته بندی"
+
+#: products/templates/products/product_list_by_category.html:26
+msgid "Category not found"
+msgstr "دسته‌بندی یافت نشد"
+
+#: products/templates/products/product_list_by_category.html:27
+#: products/templates/products/product_list_by_category.html:72
+msgid "Back to products"
+msgstr "برو به محصولات"
+
+#: products/templates/products/product_list_by_category.html:71
+msgid "No products found in this category."
+msgstr "محصولی در این دسته پیدا نشد."
 
 #: products/templates/products/product_search_result.html:10
 msgid "search for:"
@@ -200,9 +301,12 @@ msgstr "جستجوی نام کتاب یا کلمات کلیدی"
 msgid "search for..."
 msgstr "جستجو برای ..."
 
-#: products/views.py:44
+#: products/views.py:50
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#~ msgid "Product Short_Discription"
+#~ msgstr "توضیح مختصر از محصول"
 
 #, fuzzy
 #~ msgid "add to cart"

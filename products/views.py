@@ -51,7 +51,7 @@ class CommentCreateView(generic.CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('product_detail', args=[self.object.product.id])
+        return reverse('product:product_detail', args=[self.object.product.id])
 
 
 class ProductSearchView(generic.ListView):
