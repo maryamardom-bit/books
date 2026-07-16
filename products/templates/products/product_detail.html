@@ -74,14 +74,13 @@
                   <!-- Description Tab -->
                   <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
                     <div class="product-description text-justify p-4">
-                      <h4 class="mb-4 border-bottom pb-3 text-primary"><i class="fa fa-align-right ml-2"></i>معرفی کتاب</h4>
+                      <h4 class="mb-4 border-bottom pb-3 text-primary"><i class="fa fa-align-right ml-2"></i>{% trans 'Book Introduction' %}</h4>
                       <p class="lead">{{ product.description|safe }}</p>
                     </div>
-
                   <!-- Additional Information Tab -->
                   <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
                     <div class="table-content table-responsive p-4">
-                      <h4 class="mb-4 border-bottom pb-3 text-primary"><i class="fa fa-list-ul ml-2"></i>مشخصات کتاب</h4>
+                      <h4 class="mb-4 border-bottom pb-3 text-primary"><i class="fa fa-list-ul ml-2"></i>{% trans 'Book Specifications' %}</h4>
                       <table class="table table-bordered table-hover shop_attributes">
                         <tbody>
                           <tr>
@@ -184,7 +183,7 @@
                                       <div class="d-flex align-items-center flex-wrap mb-1">
                                         <strong class="review__author text-dark ml-2" style="font-size: 1.1rem; font-weight: 600;">{{ comment.author.username }}</strong>
                                         {% if comment.author.is_staff or comment.author.is_superuser %}
-                                          <span class="badge badge-primary ml-1" style="font-size: 0.65rem; padding: 4px 10px; border-radius: 20px;"><i class="fa fa-check ml-1"></i>نویسنده</span>
+                                          <span class="badge badge-primary ml-1" style="font-size: 0.65rem; padding: 4px 10px; border-radius: 20px;"><i class="fa fa-check ml-1"></i>{% trans "author" %}</span>
                                         {% endif %}
                                         <div class="comment-stars mr-2 mr-auto">
                                           {% for i in '12345'|make_list %}
@@ -198,7 +197,6 @@
                                           {% endfor %}
                                         </div>
                                       </div>
-
                                       <!-- ردیف دوم: تاریخ -->
                                       <div class="review__date mb-2">
                                         <span class="review__published-date text-muted" style="font-size: 0.85rem;">
@@ -206,7 +204,6 @@
                                           {{ comment.datetime_created|to_jalali:'%Y/%m/%d' }}
                                         </span>
                                       </div>
-
                                       <!-- متن نظر -->
                                       <div class="review__description mt-2">
                                         <p class="mb-0 text-justify" style="font-size: 1.2rem; line-height: 2; color: #444; font-weight: 400;">{{ comment.body }}</p>
@@ -227,9 +224,9 @@
                       {% else %}
                         <div class="alert alert-info text-center py-5" style="background-color: #f8f9fa; border: 2px dashed #dee2e6;">
                           <i class="fa fa-book-open ml-2" style="font-size: 2.5rem; color: #6c757d;"></i>
-                          <p class="mt-3 mb-1" style="font-size: 1.1rem; font-weight: 500;">هنوز نظری برای این کتاب ثبت نشده است.</p>
-                          <small class="text-muted" style="font-size: 0.95rem;">شما می‌توانید اولین نفری باشید که نظر خود را به اشتراک می‌گذارد!</small>
-                        </div>
+                          <p class="mt-3 mb-1" style="font-size: 1.1rem; font-weight: 500;">{% trans "No comments yet for this book." %}</p>
+                          <small class="text-muted" style="font-size: 0.95rem;">{% trans "You can be the first to share your opinion!" %}</small>
+</div>
                       {% endif %}
                       <!-- فرم ثبت نظر -->
                       <div class="review-form-wrapper mt-4 pt-4 border-top">
@@ -238,24 +235,24 @@
                             {% if user.is_authenticated %}
                               <h5 class="mb-3 text-primary" style="font-size: 1.15rem; font-weight: 600;">
                                 <i class="fa fa-pen ml-2"></i>
-                                {% trans 'نظر خود را بنویسید' %}
+                                {% trans 'Write your comment' %}
                               </h5>
                               <form action="{% url 'product:comment_create' product.id %}" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">{{ comment_form|crispy }}</div>
                                 <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                  <button type="submit" class="btn btn-primary px-5 py-2" style="font-size: 1rem; border-radius: 8px;"><i class="fa fa-send ml-2"></i>{% trans 'ثبت نظر' %}</button>
+                                  <button type="submit" class="btn btn-primary px-5 py-2" style="font-size: 1.2rem; border-radius: 8px;"><i class="fa fa-send ml-2"></i>{% trans 'Post a comment' %}</button>
                                   <small class="text-muted" style="font-size: 0.85rem;">
                                     <i class="fa fa-info-circle ml-1"></i>
-                                    نظر شما پس از بررسی منتشر خواهد شد
+                                    {% trans "Your comment will be published after review" %}
                                   </small>
                                 </div>
                               </form>
                             {% else %}
                               <div class="alert alert-warning text-center py-3" style="font-size: 1rem; border-radius: 8px;">
                                 <i class="fa fa-user ml-2"></i>
-                                {% trans 'برای ثبت نظر لطفاً ' %}
-                                <a href="{% url 'account_login' %}" class="font-weight-bold">{% trans 'وارد حساب کاربری خود شوید' %}</a>
+                             {% trans 'Please post a comment' %}
+                                <a href="{% url 'account_login' %}" class="font-weight-bold">{% trans 'Log in to your account' %}</a>
                               </div>
                             {% endif %}
                           </div>

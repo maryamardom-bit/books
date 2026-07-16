@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 07:10+0000\n"
-"PO-Revision-Date: 2026-07-16 10:42+0330\n"
+"POT-Creation-Date: 2026-07-16 10:30+0000\n"
+"PO-Revision-Date: 2026-07-16 14:01+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -135,7 +135,7 @@ msgstr "اندازه کتاب"
 msgid "Cover Type"
 msgstr "نوع صحافی/جلد:"
 
-#: products/models.py:46
+#: products/models.py:46 products/templates/products/product_detail.html:126
 msgid "Printing_time"
 msgstr "نوبت چاپ:"
 
@@ -183,84 +183,116 @@ msgstr "امتیاز شما به این محصول کدام است؟"
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
-#: products/templates/products/product_detail.html:38
+#: products/templates/products/product_detail.html:32
 #: products/templates/products/product_list.html:51
 #: products/templates/products/product_list_by_category.html:52
 #: products/templates/products/product_search_result.html:50
 msgid "$"
 msgstr "تومان"
 
-#: products/templates/products/product_detail.html:59
+#: products/templates/products/product_detail.html:41
 #: products/templates/products/product_list.html:70
 #: products/templates/products/product_list_by_category.html:60
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: products/templates/products/product_detail.html:83
+#: products/templates/products/product_detail.html:47
 msgid "categories"
 msgstr " دسته بندی"
 
-#: products/templates/products/product_detail.html:97
+#: products/templates/products/product_detail.html:61
 msgid "product description"
 msgstr "توضیحات محصول"
 
-#: products/templates/products/product_detail.html:100
+#: products/templates/products/product_detail.html:65
 msgid "Additional information"
 msgstr "اطلاعات تکمیلی"
 
-#: products/templates/products/product_detail.html:103
+#: products/templates/products/product_detail.html:69
 msgid "comments"
 msgstr "نظرات"
 
-#: products/templates/products/product_detail.html:122
-#: products/templates/products/product_detail.html:143
-#| msgid "Edition"
+#: products/templates/products/product_detail.html:77
+msgid "Book Introduction"
+msgstr "مقدمه کتاب"
+
+#: products/templates/products/product_detail.html:83
+msgid "Book Specifications"
+msgstr "مشخصات کتاب"
+
+#: products/templates/products/product_detail.html:88
+#: products/templates/products/product_detail.html:186
+msgid "author"
+msgstr "نویسنده"
+
+#: products/templates/products/product_detail.html:95
+msgid "translator"
+msgstr "مترجم"
+
+#: products/templates/products/product_detail.html:102
 msgid "edition"
 msgstr "مترجم:"
 
-#: products/templates/products/product_detail.html:127
+#: products/templates/products/product_detail.html:108
 msgid "book_size"
 msgstr "قطع:"
 
-#: products/templates/products/product_detail.html:131
+#: products/templates/products/product_detail.html:114
 msgid "pages"
 msgstr "تعداد صفحات:"
 
-#: products/templates/products/product_detail.html:135
-#| msgid "Cover Type"
+#: products/templates/products/product_detail.html:120
 msgid "cover_type"
 msgstr "نوع صحافی/جلد:"
 
-#: products/templates/products/product_detail.html:139
-#: products/templates/products/product_detail.html:147
-#| msgid "Publication Year"
+#: products/templates/products/product_detail.html:132
 msgid "publication_year"
 msgstr "سال انتشار:"
 
-#: products/templates/products/product_detail.html:151
-#| msgid "Publisher"
+#: products/templates/products/product_detail.html:138
 msgid "publisher"
 msgstr "ناشر:"
 
-#: products/templates/products/product_detail.html:155
+#: products/templates/products/product_detail.html:144
 msgid "isbn"
 msgstr "شابک:"
 
-#: products/templates/products/product_detail.html:208
-msgid "Write your comment:"
+#: products/templates/products/product_detail.html:158
+msgid "Readers' comments"
+msgstr "نظرات خوانندگان"
+
+#: products/templates/products/product_detail.html:164
+msgid "Verified comments"
+msgstr "نظرات تایید شده"
+
+#: products/templates/products/product_detail.html:227
+msgid "No comments yet for this book."
+msgstr "هنوز نظری برای این کتاب ثبت نشده است."
+
+#: products/templates/products/product_detail.html:228
+msgid "You can be the first to share your opinion!"
+msgstr "شما می‌توانید اولین نفری باشید که نظر خود را به اشتراک می‌گذارد!"
+
+#: products/templates/products/product_detail.html:238
+msgid "Write your comment"
 msgstr "نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:214
-msgid "submit"
-msgstr "ارسال"
+#: products/templates/products/product_detail.html:244
+#| msgid "comments"
+msgid "Post a comment"
+msgstr "ارسال نظر"
 
-#: products/templates/products/product_detail.html:217
-msgid "to write your comment please "
-msgstr "لطفا نظر خود را بنویسید"
+#: products/templates/products/product_detail.html:247
+msgid "Your comment will be published after review"
+msgstr "نظر شما پس از بررسی منتشر خواهد شد."
 
-#: products/templates/products/product_detail.html:218
-msgid "log in"
-msgstr "ورود"
+#: products/templates/products/product_detail.html:254
+msgid "Please post a comment"
+msgstr "لطفاً نظر خود را ارسال کنید."
+
+#: products/templates/products/product_detail.html:255
+msgid "Log in to your account"
+msgstr "وارد حساب کاربری خود شوید"
 
 #: products/templates/products/product_list_by_category.html:11
 msgid "Category"
@@ -334,6 +366,15 @@ msgstr "جستجو برای ..."
 #: products/views.py:50
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#~ msgid "submit"
+#~ msgstr "ارسال"
+
+#~ msgid "to write your comment please "
+#~ msgstr "لطفا نظر خود را بنویسید"
+
+#~ msgid "log in"
+#~ msgstr "ورود"
 
 #~ msgid "salebi"
 #~ msgstr "سلفی"

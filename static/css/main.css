@@ -1424,11 +1424,11 @@ textarea,
   }
 
   .single-post .post-share .social .social__link.google-plus {
-    background-color: #c2080f;
+    background-color: #1561b7;
   }
 
   .single-post .post-share .social .social__link.pinterest {
-    background-color: #c2080f;
+    background-color: #1561b7;
   }
 }
 
@@ -4439,7 +4439,7 @@ textarea,
     -ms-transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
     -o-transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
     transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) 0s;
-    background-color: #c2080f;
+    background-color: #1561b7;
   }
 }
 
@@ -4579,7 +4579,7 @@ textarea,
   .main-navigation .mainmenu__item.menu-item-has-children>ul.megamenu>li a.megamenu-title .mm-text:after {
     position: absolute;
     content: '';
-    background-color: #c2080f;
+    background-color: #1561b7;
     width: 50%;
     height: 2px;
     bottom: -10px;
@@ -4795,7 +4795,7 @@ textarea,
 }
 
 .mobile-menu .mean-bar .mean-nav>ul {
-  background-color: #c2080f;
+  background-color: #1561b7;
   border: 1px solid #eeeeee;
   border-top: 0;
   overflow-x: hidden;
@@ -5502,7 +5502,7 @@ textarea,
 }
 
 .variation-form .product-color-variations .product-color-variation-btn.red:after {
-  background-color: #c2080f;
+  background-color: #1561b7;
 }
 
 .variation-form .product-color-variations .product-color-variation-btn.red.selected {
@@ -5872,7 +5872,7 @@ textarea,
 }
 
 .social__link i {
-  background-color: #c2080f;
+  background-color: #1561b7;
   width: 38px;
   height: 24px;
   font-size: 14px;
@@ -5885,11 +5885,11 @@ textarea,
 }
 
 .social__link.google-plus i {
-  background-color: #c2080f;
+  background-color: #1561b7;
 }
 
 .social__link.pinterest i {
-  background-color: #c2080f;
+  background-color: #1561b7;
 }
 
 .social__link.twitter i {
@@ -7507,7 +7507,7 @@ textarea,
 .ShoppingYar-preloader .ShoppingYar-child {
   width: 20px;
   height: 20px;
-  background-color: #c2080f;
+  background-color: #1561b7;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: ShoppingYar-bouncedelay 1.4s ease-in-out 0s infinite both;
@@ -24666,7 +24666,7 @@ button,
 .tab-style-1 .nav-link.active,
 .user-dashboard-tab__head .nav-link.active,
 .user-dashboard-tab__head .nav-link:hover {
-  background-color: #c2080f;
+  background-color: #1561b7;
 }
 
 .nav-hover-2 .slick-btn:hover,
@@ -24861,8 +24861,6 @@ a,
 }
 
 .primary-bg {
-  background-color: #c2080f;
+  background-color: #1561b7;
 
-
-  
-  
+ 
