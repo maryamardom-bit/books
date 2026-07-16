@@ -68,7 +68,6 @@ class ProductSearchView(generic.ListView):
             return Product.objects.filter(
                 Q(title__icontains=query) |
                 Q(description__icontains=query) |
-                Q(short_discription__icontains=query) |
                 Q(comments__body__icontains=query)
             ).filter(active=True).annotate(
                 comments_count=Count('comments', filter=Q(comments__active=True)),
