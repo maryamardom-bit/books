@@ -68,8 +68,6 @@
                                                                         name="quantity" 
                                                                         id="qty-{{ item.product_obj.id }}" 
                                                                         value="{{ item.quantity }}" 
-                                                                        min="1"
-                                                                        max="500"
                                                                         step="1"
                                                                     >
                                                                     <button type="button" class="btn-quantity btn-plus" data-id="{{ item.product_obj.id }}">
@@ -307,12 +305,13 @@
                     var productId = this.getAttribute('data-id');
                     var input = document.getElementById('qty-' + productId);
                     var currentValue = parseInt(input.value);
-                    if (currentValue < 99) {
+                    if (currentValue < 501) {
                         input.value = currentValue + 1;
                         var form = this.closest('form');
                         if (form) {
                             form.submit();
                         }
+
                     }
                 });
             });
