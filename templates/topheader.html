@@ -1,19 +1,116 @@
+{% load static %}
+{% load i18n %}
 <!-- topheader.html -->
-<div class="breadcrumb-area header-breadcrumb">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12">
-                <div class="page-title-wrapper">
-                    <div class="page-title-box">
-                        <h1 class="page-title-box__text">{{ header_name }}</h1>
-                        {% if icon %}
-                            <span class="page-title-box__icon">
-                                <i class="{{ icon }}"></i>
-                            </span>
-                        {% endif %}
+     <!-- ========== Header Start ========== -->
+    <header class="header">
+        <div class="header-inner fixed-header">
+            <div class="container">
+                <!-- یک ردیف واحد برای لوگو، جستجو و سبد خرید -->
+                <div class="row align-items-center">
+                    <!-- ستون لوگو (با عرض ثابت) -->
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-4">
+                        <div class="site-branding">
+                            <a href="{% url 'page:aboutus' %}" class="logo">
+                                <figure class="logo--normal">
+                                    <img class="px-8" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 80px;" alt="Logo">
+                                </figure>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- ستون جستجو (بیشترین فضا) -->
+                    <div class="col-xl-7 col-lg-7 col-md-6 col-5">
+                        <form class="search-form-header" method="get" action="{% url 'product:product_search' %}">
+                            <input type="text" 
+                                   name="q" 
+                                   placeholder="جستجوی کتاب..." 
+                                   value="{{ query|default:'' }}"
+                                   aria-label="جستجو">
+                            <button type="submit">
+                                <i class="flaticon flaticon-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ستون سبد خرید و کاربر (با عرض ثابت) -->
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-3">
+                        <ul class="header-toolbar">
+                            <li class="header-toolbar__item mini-cart-item">
+                                <a href="{% url 'cart:cart_detail' %}" class="header-toolbar__btn toolbar-btn mini-cart-btn">
+                                    <i class="flaticon flaticon-shopping-cart"></i>
+                                    <sup class="mini-cart-count">{{ cart|length|default:0 }}</sup>
+                                </a>
+                            </li>
+                            <li class="header-toolbar__item user-info">
+                                <a href="{% url "account_logout" %}" class="header-toolbar__btn">
+                                    <i class="flaticon flaticon-user"></i>
+                                </a>
+                                <ul class="user-info-menu">
+                                    {% if user.is_authenticated %}    
+                                        <li>
+                                            <a class="text-right" href="{% url 'account_logout' %}">{% trans "logout" %}</a>
+                                        </li>
+                                    {% else %}                                        
+                                        <li>
+                                            <a class="text-right" href="{% url 'account_login' %}">{% trans "login" %}</a>
+                                        </li>
+                                        <li>
+                                            <a class="text-right" href="{% url 'account_signup' %}">{% trans "signup" %}</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- پایان ردیف واحد -->
+                <!-- ===== ردیف دوم: منوی اصلی با نوار رنگی ===== -->
+                <div class="mainmenu-nav-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="mainmenu">
+                                    <li class="mainmenu__item menu-item-has-children active">
+                                        <a href="{% url 'page:home' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "home" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item menu-item-has-children">
+                                        <a href="{% url 'product:product_list' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "products" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'page:orderus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "order" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'page:aboutus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "about us" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'page:contactus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "contact us" %}</span>
+                                        </a>
+                                    </li>
+                                    <li class="mainmenu__item">
+                                        <a href="{% url 'page:workingus' %}" class="mainmenu__link">
+                                            <span class="mm-text">{% trans "working us" %}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <!-- موبایل منو -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="mobile-menu"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </header>
+    <!-- ========== Header End ========== -->

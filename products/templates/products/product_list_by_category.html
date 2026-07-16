@@ -5,6 +5,7 @@
 {% load humanize %}
 
 {% block page_title %}
+    {% include "topheader.html" with header_name=headeer_name %}
     {% if category %}
         {{ category.name }}
     {% else %}
