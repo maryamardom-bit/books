@@ -35,8 +35,8 @@ class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
                 'publisher',
                 'edition', 
                 'isbn', 
-                'publication_year', 
-                'edition', 
+                'publication_year',
+                'Printing_time', 
                 'pages', 
                 'book_size', 
                 'cover_type'

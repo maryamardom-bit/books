@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-15 11:11+0000\n"
-"PO-Revision-Date: 2026-07-15 15:01+0330\n"
+"POT-Creation-Date: 2026-07-16 07:10+0000\n"
+"PO-Revision-Date: 2026-07-16 10:42+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -24,11 +24,10 @@ msgid "Basic Information"
 msgstr "اطلاعات اولیه"
 
 #: products/admin.py:32
-#| msgid "details"
 msgid "Book Details"
 msgstr "جزییات "
 
-#: products/admin.py:45
+#: products/admin.py:46
 msgid "Status & Dates"
 msgstr "وضعیت و تاریخ‌ها"
 
@@ -68,7 +67,7 @@ msgstr "جیبی"
 msgid "rahlei"
 msgstr "رحلی"
 
-#: products/models.py:24 products/models.py:30
+#: products/models.py:24 products/models.py:29
 msgid "other"
 msgstr "غیره"
 
@@ -77,69 +76,68 @@ msgid "shomiz"
 msgstr "شومیز"
 
 #: products/models.py:28
-msgid "salebi"
-msgstr "سلفی"
-
-#: products/models.py:29
 msgid "gard"
 msgstr "سخت"
 
-#: products/models.py:33
+#: products/models.py:32
 msgid "Product Title"
 msgstr "نام محصول"
 
-#: products/models.py:34
-#| msgid "Product Title"
+#: products/models.py:33
 msgid "Product Category"
 msgstr "دسته بندی محصول"
 
-#: products/models.py:35
+#: products/models.py:34
 msgid "Product Discription"
 msgstr "توضیحات محصول"
 
-#: products/models.py:36
+#: products/models.py:35
 msgid "Product Price"
 msgstr "قیمت محصول"
 
-#: products/models.py:37
+#: products/models.py:36
 msgid "Product Active"
 msgstr "آیا محصول موجود است؟"
 
-#: products/models.py:38
+#: products/models.py:37
 msgid "Product Image"
 msgstr "تصویر محصول"
 
-#: products/models.py:39
+#: products/models.py:38
 msgid "Author"
 msgstr "نویسنده"
 
-#: products/models.py:40
+#: products/models.py:39
 msgid "Publisher"
 msgstr "ناشر"
 
-#: products/models.py:41
+#: products/models.py:40
 msgid "ISBN"
 msgstr "شابک"
 
-#: products/models.py:42
+#: products/models.py:41
 msgid "Publication Year"
 msgstr "سال انتشار"
 
-#: products/models.py:43
+#: products/models.py:42
 msgid "Edition"
-msgstr "نوبت چاپ"
+msgstr "مترجم"
 
-#: products/models.py:44
+#: products/models.py:43
 msgid "Number of Pages"
 msgstr "تعداد صفحات"
 
-#: products/models.py:45
+#: products/models.py:44
 msgid "Book Size"
 msgstr "اندازه کتاب"
 
-#: products/models.py:46
+#: products/models.py:45
 msgid "Cover Type"
 msgstr "نوع صحافی/جلد:"
+
+#: products/models.py:46
+msgid "Printing_time"
+msgstr "نوبت چاپ:"
 
 #: products/models.py:48
 msgid "Date Time of Creation"
@@ -211,28 +209,60 @@ msgid "Additional information"
 msgstr "اطلاعات تکمیلی"
 
 #: products/templates/products/product_detail.html:103
-#| msgid "Comment Text"
 msgid "comments"
 msgstr "نظرات"
 
-#: products/templates/products/product_detail.html:183
+#: products/templates/products/product_detail.html:122
+#: products/templates/products/product_detail.html:143
+#| msgid "Edition"
+msgid "edition"
+msgstr "مترجم:"
+
+#: products/templates/products/product_detail.html:127
+msgid "book_size"
+msgstr "قطع:"
+
+#: products/templates/products/product_detail.html:131
+msgid "pages"
+msgstr "تعداد صفحات:"
+
+#: products/templates/products/product_detail.html:135
+#| msgid "Cover Type"
+msgid "cover_type"
+msgstr "نوع صحافی/جلد:"
+
+#: products/templates/products/product_detail.html:139
+#: products/templates/products/product_detail.html:147
+#| msgid "Publication Year"
+msgid "publication_year"
+msgstr "سال انتشار:"
+
+#: products/templates/products/product_detail.html:151
+#| msgid "Publisher"
+msgid "publisher"
+msgstr "ناشر:"
+
+#: products/templates/products/product_detail.html:155
+msgid "isbn"
+msgstr "شابک:"
+
+#: products/templates/products/product_detail.html:208
 msgid "Write your comment:"
 msgstr "نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:189
+#: products/templates/products/product_detail.html:214
 msgid "submit"
 msgstr "ارسال"
 
-#: products/templates/products/product_detail.html:192
+#: products/templates/products/product_detail.html:217
 msgid "to write your comment please "
 msgstr "لطفا نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:193
+#: products/templates/products/product_detail.html:218
 msgid "log in"
 msgstr "ورود"
 
 #: products/templates/products/product_list_by_category.html:11
-#| msgid "Product Title"
 msgid "Category"
 msgstr "دسته بندی"
 
@@ -304,6 +334,9 @@ msgstr "جستجو برای ..."
 #: products/views.py:50
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#~ msgid "salebi"
+#~ msgstr "سلفی"
 
 #~ msgid "Product Short_Discription"
 #~ msgstr "توضیح مختصر از محصول"

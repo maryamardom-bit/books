@@ -43,6 +43,7 @@ class Product(models.Model):
     pages = models.IntegerField(null=True, blank=True, verbose_name=_('Number of Pages'))
     book_size = models.CharField(max_length=20,choices=BookSize.choices,blank=True,null=True,verbose_name=_('Book Size'))
     cover_type = models.CharField(max_length=20,choices=CoverType.choices,blank=True,null=True,verbose_name=_('Cover Type'))
+    Printing_time= models.CharField(null=True, blank=True, verbose_name=_('Printing_time'))
    
     datetime_created = models.DateTimeField(default=timezone.now, verbose_name=_('Date Time of Creation'))
     datetime_modified = models.DateTimeField(auto_now=True, verbose_name=_('Date Time of Modified'))
