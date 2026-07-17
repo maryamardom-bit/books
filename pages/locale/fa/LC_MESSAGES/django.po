@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 08:11+0000\n"
-"PO-Revision-Date: 2026-07-12 19:47+0330\n"
-"Last-Translator: gggg ggggg <>\n"
+"POT-Creation-Date: 2026-07-17 14:08+0000\n"
+"PO-Revision-Date: 2026-07-17 18:20+0330\n"
+"Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -103,78 +103,195 @@ msgstr "شرایط سفارش"
 msgid "Only one orderus record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
-#: pages/templates/pages/aboutus.html:10
+#: pages/templates/pages/aboutus.html:6 pages/templates/pages/aboutus.html:305
 msgid "About Us"
 msgstr "درباره ما"
 
-#: pages/templates/pages/aboutus.html:22
+#: pages/templates/pages/aboutus.html:6 pages/templates/pages/aboutus.html:315
+#: pages/templates/pages/contactus.html:6 pages/templates/pages/orderus.html:6
+#: pages/templates/pages/workingus.html:6
+msgid "Kasra Architecture Bookstore"
+msgstr "کتابفروشی کسری"
+
+#: pages/templates/pages/aboutus.html:324
 msgid "Cooperation"
 msgstr "همکاری"
 
-#: pages/templates/pages/aboutus.html:33
+#: pages/templates/pages/aboutus.html:333
+msgid "Year Established"
+msgstr "سال تأسیس"
+
+#: pages/templates/pages/aboutus.html:337
+msgid "Books Published"
+msgstr "کتاب‌های منتشر شده"
+
+#: pages/templates/pages/aboutus.html:341
+msgid "Authors"
+msgstr "نویسندگان"
+
+#: pages/templates/pages/aboutus.html:345
+msgid "Customer Satisfaction"
+msgstr "رضایت مشتریان"
+
+#: pages/templates/pages/aboutus.html:353
+#: pages/templates/pages/orderus.html:356
+msgid "No Information Available"
+msgstr "اطلاعات تماسی موجود نیست"
+
+#: pages/templates/pages/aboutus.html:354
 msgid ""
 "The about us page content is not available at the moment. Please try again "
 "later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
+"کنید."
 
-#: pages/templates/pages/contactus.html:10
-msgid "contact us"
+#: pages/templates/pages/contactus.html:6
+#: pages/templates/pages/contactus.html:281
+#: pages/templates/pages/workingus.html:318
+msgid "Contact Us"
 msgstr "ارتباط با ما"
 
-#: pages/templates/pages/contactus.html:16
-msgid "address:"
+#: pages/templates/pages/contactus.html:292
+msgid "Address & Contact Information"
+msgstr "آدرس و اطلاعات تماس"
+
+#: pages/templates/pages/contactus.html:299
+msgid "Address:"
 msgstr "آدرس:"
 
-#: pages/templates/pages/contactus.html:17
-msgid "postal cart:"
+#: pages/templates/pages/contactus.html:308
+msgid "Postal Code:"
 msgstr "کد پستی:"
 
-#: pages/templates/pages/contactus.html:18
-msgid "phone number:"
+#: pages/templates/pages/contactus.html:317
+msgid "Phone Number:"
 msgstr "تلفن:"
 
-#: pages/templates/pages/contactus.html:25
-msgid "Communication with sales and orders department"
+#: pages/templates/pages/contactus.html:326
+msgid "Communication with Sales & Orders Department"
 msgstr "ارتباط با واحد فروش و سفارشات"
 
-#: pages/templates/pages/contactus.html:28
-msgid "whats app:"
+#: pages/templates/pages/contactus.html:332
+msgid "WhatsApp:"
 msgstr "واتس اپ:"
 
-#: pages/templates/pages/contactus.html:32
-msgid "email:"
+#: pages/templates/pages/contactus.html:343
+msgid "Email:"
 msgstr "ایمیل:"
 
-#: pages/templates/pages/contactus.html:40
-msgid "contact info up to date.please try later."
-msgstr "اطلاعات تماس در حال بروز رسانی است.لطفا دوباره تلاش کنید."
+#: pages/templates/pages/contactus.html:355
+msgid "No Contact Information"
+msgstr "اطلاعات تماسی موجود نیست"
 
-#: pages/templates/pages/orderus.html:10
+#: pages/templates/pages/contactus.html:356
+msgid ""
+"Contact information is not available at the moment. Please try again later."
+msgstr ""
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
+"کنید."
+
+#: pages/templates/pages/contactus.html:365
+msgid "Working Hours"
+msgstr "ساعات کاری"
+
+#: pages/templates/pages/contactus.html:371
+msgid "Saturday - Thursday:"
+msgstr "شنبه تا پنج‌شنبه:"
+
+#: pages/templates/pages/contactus.html:378
+msgid "Friday:"
+msgstr "جمعه:"
+
+#: pages/templates/pages/contactus.html:379
+msgid "Closed"
+msgstr "تعطیل"
+
+#: pages/templates/pages/contactus.html:388
+msgid "Find Us"
+msgstr "موقعیت مکانی"
+
+#: pages/templates/pages/contactus.html:393
+msgid "Map Location"
+msgstr "مکان روی نقشه"
+
+#: pages/templates/pages/orderus.html:6 pages/templates/pages/orderus.html:317
 msgid "Order Conditions"
 msgstr "شرایط سفارش"
 
-#: pages/templates/pages/orderus.html:23
-msgid ""
-"The order conditions page content is not available at the moment. Please try "
-"again later."
-msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
+#: pages/templates/pages/orderus.html:327
+msgid "Kasra Architecture Bookstore - Order Guidelines"
+msgstr "کتابفروشی کسری"
 
-#: pages/templates/pages/workingus.html:10
+#: pages/templates/pages/orderus.html:337
+msgid "Fast Delivery"
+msgstr "تحویل سریع"
+
+#: pages/templates/pages/orderus.html:338
+msgid "Priority mail delivery for all orders"
+msgstr "تحویل اولویت‌دار پستی برای همه سفارش‌ها"
+
+#: pages/templates/pages/orderus.html:342
+msgid "Secure Payment"
+msgstr "پرداخت امن"
+
+#: pages/templates/pages/orderus.html:343
+msgid "Safe and secure online payment"
+msgstr "پرداخت آنلاین ایمن و مطمئن"
+
+#: pages/templates/pages/orderus.html:347
+msgid "Easy Returns"
+msgstr "بازگشت آسان"
+
+#: pages/templates/pages/orderus.html:348
+msgid "Hassle-free return policy"
+msgstr "بازگشت کالا بدون دردسر"
+
+#: pages/templates/pages/orderus.html:357
+msgid ""
+"The order conditions page content is not available at the moment. Please try"
+" again later."
+msgstr ""
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
+"کنید."
+
+#: pages/templates/pages/workingus.html:6
+#: pages/templates/pages/workingus.html:288
 msgid "Collaborate with Us"
 msgstr "همکاری با ما"
 
-#: pages/templates/pages/workingus.html:27
+#: pages/templates/pages/workingus.html:298
+msgid "Architecture Publishing House"
+msgstr "انتشارات معماری"
+
+#: pages/templates/pages/workingus.html:306
+msgid "Join Us"
+msgstr "به ما بپیوندید"
+
+#: pages/templates/pages/workingus.html:314
 msgid "Last updated:"
 msgstr "آخرین بروزرسانی"
 
-#: pages/templates/pages/workingus.html:34
+#: pages/templates/pages/workingus.html:327
+msgid "No Cooperation Information"
+msgstr "اطلاعات تماسی موجود نیست"
+
+#: pages/templates/pages/workingus.html:328
 msgid ""
 "The cooperation page content is not available at the moment. Please try "
 "again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
+"کنید."
+
+#~ msgid "postal cart:"
+#~ msgstr "کد پستی:"
+
+#~ msgid "email:"
+#~ msgstr "ایمیل:"
+
+#~ msgid "contact info up to date.please try later."
+#~ msgstr "اطلاعات تماس در حال بروز رسانی است.لطفا دوباره تلاش کنید."
 
 #~ msgid "order condition"
 #~ msgstr "شرایط سفارش"
@@ -184,6 +301,3 @@ msgstr ""
 
 #~ msgid "Only one order condition record can exist."
 #~ msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
-
-#~ msgid "Email:"
-#~ msgstr "ایمیل:"

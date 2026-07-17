@@ -1,116 +1,125 @@
 {% load static %}
 {% load i18n %}
-<!-- topheader.html -->
-     <!-- ========== Header Start ========== -->
-    <header class="header">
-        <div class="header-inner fixed-header">
-            <div class="container">
-                <!-- یک ردیف واحد برای لوگو، جستجو و سبد خرید -->
-                <div class="row align-items-center">
-                    <!-- ستون لوگو (با عرض ثابت) -->
-                    <div class="col-xl-2 col-lg-2 col-md-3 col-4">
-                        <div class="site-branding">
-                            <a href="{% url 'page:aboutus' %}" class="logo">
-                                <figure class="logo--normal">
-                                    <img class="px-8" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 80px;" alt="Logo">
-                                </figure>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- ستون جستجو (بیشترین فضا) -->
-                    <div class="col-xl-7 col-lg-7 col-md-6 col-5">
-                        <form class="search-form-header" method="get" action="{% url 'product:product_search' %}">
-                            <input type="text" 
-                                   name="q" 
-                                   placeholder="جستجوی کتاب..." 
-                                   value="{{ query|default:'' }}"
-                                   aria-label="جستجو">
-                            <button type="submit">
-                                <i class="flaticon flaticon-search"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- ستون سبد خرید و کاربر (با عرض ثابت) -->
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-3">
-                        <ul class="header-toolbar">
-                            <li class="header-toolbar__item mini-cart-item">
-                                <a href="{% url 'cart:cart_detail' %}" class="header-toolbar__btn toolbar-btn mini-cart-btn">
-                                    <i class="flaticon flaticon-shopping-cart"></i>
-                                    <sup class="mini-cart-count">{{ cart|length|default:0 }}</sup>
-                                </a>
-                            </li>
-                            <li class="header-toolbar__item user-info">
-                                <a href="{% url "account_logout" %}" class="header-toolbar__btn">
-                                    <i class="flaticon flaticon-user"></i>
-                                </a>
-                                <ul class="user-info-menu">
-                                    {% if user.is_authenticated %}    
-                                        <li>
-                                            <a class="text-right" href="{% url 'account_logout' %}">{% trans "logout" %}</a>
-                                        </li>
-                                    {% else %}                                        
-                                        <li>
-                                            <a class="text-right" href="{% url 'account_login' %}">{% trans "login" %}</a>
-                                        </li>
-                                        <li>
-                                            <a class="text-right" href="{% url 'account_signup' %}">{% trans "signup" %}</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </li>
-                        </ul>
+<!-- ========== Header Start ========== -->
+<header class="header">
+    <div class="header-inner fixed-header" style="background: #f5f0eb; border-bottom: 3px solid #c9a84c;">
+        <div class="container">
+            <!-- ردیف اول: لوگو، جستجو و سبد خرید -->
+            <div class="row align-items-center py-3">
+                <!-- ستون لوگو -->
+                <div class="col-xl-2 col-lg-2 col-md-3 col-4">
+                    <div class="site-branding">
+                        <a href="{% url 'page:home' %}" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                            <figure class="logo--normal" style="margin: 0;">
+                                <img class="px-8" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 70px; width: auto;" alt="Logo">
+                            </figure>
+                            <span style="display: none; md:display: inline-block;">
+                                <span style="display: block; font-family: 'Georgia', serif; font-size: 18px; font-weight: 700; color: #1a1a2e; letter-spacing: 1px;">کَسری</span>
+                                <span style="display: block; font-family: 'Georgia', serif; font-size: 11px; color: #c9a84c; letter-spacing: 2px;">انتشارات</span>
+                            </span>
+                        </a>
                     </div>
                 </div>
-                <!-- پایان ردیف واحد -->
-                <!-- ===== ردیف دوم: منوی اصلی با نوار رنگی ===== -->
-                <div class="mainmenu-nav-wrapper">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <ul class="mainmenu">
-                                    <li class="mainmenu__item menu-item-has-children active">
-                                        <a href="{% url 'page:home' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "home" %}</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item menu-item-has-children">
-                                        <a href="{% url 'product:product_list' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "products" %}</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item">
-                                        <a href="{% url 'page:orderus' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "order" %}</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item">
-                                        <a href="{% url 'page:aboutus' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "about us" %}</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item">
-                                        <a href="{% url 'page:contactus' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "contact us" %}</span>
-                                        </a>
-                                    </li>
-                                    <li class="mainmenu__item">
-                                        <a href="{% url 'page:workingus' %}" class="mainmenu__link">
-                                            <span class="mm-text">{% trans "working us" %}</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+
+                <!-- ستون جستجو -->
+                <div class="col-xl-7 col-lg-7 col-md-6 col-5">
+                    <form class="search-form-header" method="get" action="{% url 'product:product_search' %}" style="display: flex; align-items: center; width: 100%; background: #ffffff; border-radius: 30px; border: 2px solid #e8e0d8; transition: all 0.3s ease; padding: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                        <input type="text" 
+                               name="q" 
+                               placeholder="جستجوی کتاب..." 
+                               value="{{ query|default:'' }}"
+                               aria-label="جستجو"
+                               style="flex: 1; border: none; padding: 10px 20px; font-size: 14px; border-radius: 30px 0 0 30px; background: transparent; outline: none; color: #4a3a2a; font-family: 'Vazirmatn', 'IRANSans', sans-serif;">
+                        <button type="submit" style="background: transparent; border: none; padding: 10px 18px; cursor: pointer; color: #8a7a6a; font-size: 18px; border-radius: 0 30px 30px 0; transition: color 0.3s ease;">
+                            <i class="flaticon flaticon-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ستون سبد خرید و کاربر -->
+                <div class="col-xl-3 col-lg-3 col-md-3 col-3">
+                    <ul class="header-toolbar" style="display: flex; align-items: center; justify-content: flex-end; list-style: none; margin: 0; padding: 0; gap: 12px;">
+                        <li class="header-toolbar__item mini-cart-item">
+                            <a href="{% url 'cart:cart_detail' %}" class="header-toolbar__btn toolbar-btn mini-cart-btn" style="color: #4a3a2a; font-size: 22px; position: relative; transition: color 0.3s ease; text-decoration: none;">
+                                <i class="flaticon flaticon-shopping-cart"></i>
+                                <sup class="mini-cart-count" style="position: absolute; top: -6px; right: -8px; background: #c9a84c; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px; min-width: 18px; text-align: center; font-weight: 600;">{{ cart|length|default:0 }}</sup>
+                            </a>
+                        </li>
+                        <li class="header-toolbar__item user-info" style="position: relative; display: inline-block;">
+                            <a href="#" class="header-toolbar__btn" style="color: #4a3a2a; font-size: 22px; transition: color 0.3s ease; text-decoration: none;">
+                                <i class="flaticon flaticon-user"></i>
+                            </a>
+                            <ul class="user-info-menu" style="display: none; position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%); background: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 12px; padding: 8px 0; min-width: 140px; z-index: 1000; border: 1px solid #f0ece8;">
+                                <li style="list-style: none; margin: 0; padding: 0;">
+                                    <a href="{% url 'account_logout' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 12px 12px 0 0;">
+                                        {% trans "logout" %}
+                                    </a>
+                                </li>
+                                <li style="list-style: none; margin: 0; padding: 0;">
+                                    <a href="{% url 'account_login' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center;">
+                                        {% trans "login" %}
+                                    </a>
+                                </li>
+                                <li style="list-style: none; margin: 0; padding: 0;">
+                                    <a href="{% url 'account_signup' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 0 0 12px 12px;">
+                                        {% trans "signup" %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ردیف دوم: منوی اصلی با نوار رنگی -->
+            <div class="mainmenu-nav-wrapper" style="background: #1a1a2e; padding: 0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); margin-top: 5px; border-radius: 8px; overflow: hidden;">
+                <div class="container" style="padding: 0;">
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="mainmenu" style="list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; gap: 0;">
+                                <li class="mainmenu__item menu-item-has-children active" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'page:home' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease; border-right: 1px solid rgba(255, 255, 255, 0.08); position: relative;">
+                                        <span class="mm-text">{% trans "home" %}</span>
+                                    </a>
+                                </li>
+                                <li class="mainmenu__item menu-item-has-children" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'product:product_list' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease; border-right: 1px solid rgba(255, 255, 255, 0.08);">
+                                        <span class="mm-text">{% trans "products" %}</span>
+                                    </a>
+                                </li>
+                                <li class="mainmenu__item" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'page:orderus' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease; border-right: 1px solid rgba(255, 255, 255, 0.08);">
+                                        <span class="mm-text">{% trans "order" %}</span>
+                                    </a>
+                                </li>
+                                <li class="mainmenu__item" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'page:aboutus' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease; border-right: 1px solid rgba(255, 255, 255, 0.08);">
+                                        <span class="mm-text">{% trans "about us" %}</span>
+                                    </a>
+                                </li>
+                                <li class="mainmenu__item" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'page:contactus' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease; border-right: 1px solid rgba(255, 255, 255, 0.08);">
+                                        <span class="mm-text">{% trans "contact us" %}</span>
+                                    </a>
+                                </li>
+                                <li class="mainmenu__item" style="position: relative; margin: 0; padding: 0;">
+                                    <a href="{% url 'page:workingus' %}" class="mainmenu__link" style="display: block; padding: 12px 28px; color: #ffffff !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 0.3s ease;">
+                                        <span class="mm-text">{% trans "working us" %}</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                </div>                
-                <!-- موبایل منو -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mobile-menu"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- موبایل منو -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="mobile-menu"></div>
+                </div>
+            </div>
         </div>
-    </header>
-    <!-- ========== Header End ========== -->
+    </div>
+</header>
+<!-- ========== Header End ========== -->

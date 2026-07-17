@@ -1,41 +1,334 @@
 {% extends "_base.html" %}
+{% load static %}
 {% load i18n %}
 
+{% block page_title %}
+{% trans "Collaborate with Us" %} | {% trans "Kasra Architecture Bookstore" %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cooperation-section {
+        background: #faf8f6;
+        padding: 50px 0 70px;
+    }
+
+    .cooperation-section .page-title {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 32px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 35px;
+        padding-bottom: 18px;
+        border-bottom: 3px solid #c9a84c;
+        position: relative;
+    }
+
+    .cooperation-section .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        right: 0;
+        width: 80px;
+        height: 3px;
+        background: #c9a84c;
+    }
+
+    .cooperation-section .page-title i {
+        color: #c9a84c;
+        margin-left: 12px;
+    }
+
+    /* ===== کارت همکاری ===== */
+    .cooperation-card {
+        background: #ffffff;
+        border: 1px solid #f0ece8;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+        padding: 35px 40px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cooperation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: #c9a84c;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .cooperation-card:hover::before {
+        opacity: 1;
+    }
+
+    .cooperation-card:hover {
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.06);
+        border-color: #c9a84c;
+    }
+
+    .cooperation-card .card-icon {
+        font-size: 42px;
+        color: #c9a84c;
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .cooperation-card h5 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 12px;
+    }
+
+    .cooperation-card p {
+        color: #4a3a2a;
+        font-size: 15px;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    /* ===== متن همکاری ===== */
+    .cooperation-text {
+        font-size: 15px;
+        line-height: 1.9;
+        color: #4a3a2a;
+    }
+
+    .cooperation-text strong {
+        color: #1a1a2e;
+    }
+
+    /* ===== بخش دعوت ===== */
+    .invitation-box {
+        background: #f5f0eb;
+        border-radius: 12px;
+        padding: 30px 35px;
+        border-right: 4px solid #c9a84c;
+        margin: 30px 0 20px;
+    }
+
+    .invitation-box h5 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 10px;
+    }
+
+    .invitation-box h5 i {
+        color: #c9a84c;
+        margin-left: 10px;
+    }
+
+    .invitation-box p {
+        color: #4a3a2a;
+        font-size: 15px;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    /* ===== فوتر اطلاعات ===== */
+    .info-footer {
+        border-top: 2px solid #f0ece8;
+        padding-top: 20px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .info-footer .update-info {
+        color: #8a7a6a;
+        font-size: 13px;
+    }
+
+    .info-footer .update-info i {
+        color: #c9a84c;
+        margin-left: 6px;
+    }
+
+    .info-footer .action-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .info-footer .btn-contact {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 28px;
+        background: #1a1a2e;
+        color: #ffffff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-family: 'Playfair Display', 'Georgia', serif;
+    }
+
+    .info-footer .btn-contact:hover {
+        background: #c9a84c;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(201, 168, 76, 0.3);
+    }
+
+    .info-footer .btn-contact i {
+        font-size: 14px;
+    }
+
+    /* ===== خالی بودن ===== */
+    .empty-cooperation {
+        text-align: center;
+        padding: 60px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 2px dashed #e8e0d8;
+    }
+
+    .empty-cooperation .empty-icon {
+        font-size: 56px;
+        color: #c9a84c;
+        opacity: 0.3;
+        margin-bottom: 16px;
+    }
+
+    .empty-cooperation h4 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        color: #1a1a2e;
+        margin-bottom: 8px;
+    }
+
+    .empty-cooperation p {
+        color: #8a7a6a;
+        font-size: 15px;
+    }
+
+    /* ===== ریسپانسیو ===== */
+    @media (max-width: 992px) {
+        .cooperation-section {
+            padding: 30px 0 50px;
+        }
+
+        .cooperation-section .page-title {
+            font-size: 26px;
+        }
+
+        .cooperation-card {
+            padding: 25px 28px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .cooperation-section .page-title {
+            font-size: 22px;
+        }
+
+        .cooperation-card {
+            padding: 20px;
+        }
+
+        .cooperation-card .card-icon {
+            font-size: 32px;
+        }
+
+        .cooperation-card h5 {
+            font-size: 17px;
+        }
+
+        .cooperation-text {
+            font-size: 14px;
+        }
+
+        .invitation-box {
+            padding: 20px;
+        }
+
+        .invitation-box h5 {
+            font-size: 16px;
+        }
+
+        .invitation-box p {
+            font-size: 14px;
+        }
+
+        .info-footer {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .info-footer .btn-contact {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-{% include "topheader.html" with header_name=headeer_name %}
-<section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-12">
-            <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #000; letter-spacing: -0.02em;">
-                {% trans "Collaborate with Us" %}
-            </h1>
+<!-- ===== بخش همکاری با ما ===== -->
+<section class="cooperation-section">
+    <div class="container">
+        <!-- هدر صفحه -->
+        <div class="row">
+            <div class="col-12">
+                <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #c9a84c; letter-spacing: -0.02em;">
+                    <i class="fa fa-handshake-o"></i> {% trans "Collaborate with Us" %}
+                </h1>
+            </div>
+        </div>
 
-            {% if cooperation and cooperation.is_active %}
-                <div class="mb-5">
-                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
-                        {{ cooperation.intro_text|safe }}
-                    </p>
-                </div>
-
-                <div class="mb-5">
-                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
-                        {{ cooperation.invitation_text|safe }}
-                    </p>
-                </div>
-
-                <div class="mt-5 text-muted small" style="border-top: 1px solid #eee; padding-top: 1rem;">
-                    {% trans "Last updated:" %} {{ cooperation.updated_at|date:"Y/m/d H:i" }}
-                </div>
-
-            {% else %}
-                <div class="text-center py-5">
-                    <div class="alert alert-light border-0" role="alert" style="background: #f8f8f8;">
-                        <p class="mb-0" style="color: #666;">
-                            {% trans "The cooperation page content is not available at the moment. Please try again later." %}
-                        </p>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if cooperation and cooperation.is_active %}
+                    <!-- ===== کارت اصلی همکاری ===== -->
+                    <div class="cooperation-card">
+                        <h5>{% trans "Architecture Publishing House" %}</h5>
+                        <div class="cooperation-text">
+                            {{ cooperation.intro_text|safe }}
+                        </div>
                     </div>
-                </div>
-            {% endif %}
+
+                    <!-- ===== بخش دعوت به همکاری ===== -->
+                    <div class="invitation-box">
+                        <h5><i class="fa fa-bullhorn"></i> {% trans "Join Us" %}</h5>
+                        <p>{{ cooperation.invitation_text|safe }}</p>
+                    </div>
+
+                    <!-- ===== فوتر اطلاعات ===== -->
+                    <div class="info-footer">
+                        <span class="update-info">
+                            <i class="fa fa-clock-o"></i>
+                            {% trans "Last updated:" %} {{ cooperation.updated_at|date:"Y/m/d H:i" }}
+                        </span>
+                        <div class="action-buttons">
+                            <a href="{% url 'page:contactus' %}" class="btn-contact">
+                                <i class="fa fa-envelope"></i> {% trans "Contact Us" %}
+                            </a>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <!-- ===== خالی بودن اطلاعات ===== -->
+                    <div class="empty-cooperation">
+                        <div class="empty-icon">🤝</div>
+                        <h4>{% trans "No Cooperation Information" %}</h4>
+                        <p>{% trans "The cooperation page content is not available at the moment. Please try again later." %}</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>

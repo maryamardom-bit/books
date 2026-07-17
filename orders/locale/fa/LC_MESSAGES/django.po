@@ -2,15 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-11 16:20+0000\n"
-"PO-Revision-Date: 2026-06-11 12:19+0330\n"
-"Last-Translator: gggg ggggg <>\n"
+"POT-Creation-Date: 2026-07-17 13:44+0000\n"
+"PO-Revision-Date: 2026-07-17 18:21+0330\n"
+"Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -59,22 +59,111 @@ msgstr "اخرین تغییرات"
 msgid "Product Price"
 msgstr "قیمت محصول"
 
-#: orders/templates/orders/order_create.html:11
-msgid "order"
+#: orders/templates/orders/order_create.html:9
+#: orders/templates/orders/order_create.html:365
+#: orders/templates/orders/order_create.html:382
+msgid "Checkout"
+msgstr "تسویه حساب"
+
+#: orders/templates/orders/order_create.html:9
+msgid "Kasra Architecture Bookstore"
+msgstr "فروشگاه کتاب کسری"
+
+#: orders/templates/orders/order_create.html:373
+msgid "Home"
+msgstr "خانه"
+
+#: orders/templates/orders/order_create.html:378
+msgid "Cart"
+msgstr "سبد خرید"
+
+#: orders/templates/orders/order_create.html:393
+msgid "Order Details"
+msgstr "جزئیات سفارش"
+
+#: orders/templates/orders/order_create.html:411
+msgid "First Name"
+msgstr "نام"
+
+#: orders/templates/orders/order_create.html:428
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+#: orders/templates/orders/order_create.html:448
+msgid "Address"
+msgstr "آدرس"
+
+#: orders/templates/orders/order_create.html:467
+msgid "Phone Number"
+msgstr "شماره تماس"
+
+#: orders/templates/orders/order_create.html:487
+msgid "Order Notes"
+msgstr "یادداشت‌های سفارش"
+
+#: orders/templates/orders/order_create.html:493
+msgid "If you have any notes, enter them here..."
+msgstr "اگر یادداشتی دارید، آن را اینجا وارد کنید..."
+
+#: orders/templates/orders/order_create.html:502
+msgid "Submit Order"
 msgstr "ثبت سفارش"
 
-#: orders/templates/orders/order_create.html:61
-msgid "submit"
-msgstr "پرداخت"
+#: orders/templates/orders/order_create.html:513
+msgid "Your Order"
+msgstr "سفارش شما"
 
-#: orders/templates/orders/order_create.html:84
-#: orders/templates/orders/order_create.html:92
+#: orders/templates/orders/order_create.html:521
+msgid "Product"
+msgstr "محصول"
+
+#: orders/templates/orders/order_create.html:522
+msgid "Price"
+msgstr "قیمت"
+
+#: orders/templates/orders/order_create.html:533
+#: orders/templates/orders/order_create.html:542
 msgid "$"
 msgstr "تومان"
+
+#: orders/templates/orders/order_create.html:540
+msgid "Total"
+msgstr "کل"
+
+#: orders/templates/orders/order_create.html:550
+msgid "Payment Method"
+msgstr "روش پرداخت"
+
+#: orders/templates/orders/order_create.html:556
+msgid "Online Payment (Zarinpal)"
+msgstr "پرداخت آنلاین (زرین‌پال)"
+
+#: orders/templates/orders/order_create.html:563
+msgid ""
+"You will be redirected to the payment gateway after submitting the order."
+msgstr "بعد از ثبت سفارش، به درگاه پرداخت منتقل خواهید شد."
+
+#: orders/templates/orders/order_create.html:570
+msgid "Your Cart is Empty"
+msgstr "سبد خرید شما خالی است"
+
+#: orders/templates/orders/order_create.html:571
+msgid "Please add some books to your cart before checking out."
+msgstr "لطفاً قبل از پرداخت، چند کتاب به سبد خرید خود اضافه کنید."
+
+#: orders/templates/orders/order_create.html:573
+msgid "Go Shopping"
+msgstr "به خرید ادامه دهید"
 
 #: orders/views.py:17
 msgid "you can't proceed page because your cart is empty."
 msgstr "سبد خرید شما خالی است و قادر به ادامه فرآیند نیستید"
+
+#~ msgid "Cash on Delivery"
+#~ msgstr "پرداخت هنگام تحویل"
+
+#~ msgid "submit"
+#~ msgstr "پرداخت"
 
 #~ msgid "you're order has successfully placed."
 #~ msgstr "سفارش شما با موفقیت ارسال شد"

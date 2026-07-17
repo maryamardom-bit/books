@@ -8,146 +8,381 @@
 
 {% block extra_css %}
 <style>
+    /* ===== تنظیمات کلی ===== */
+    .home-section {
+        background: #faf8f6;
+        padding: 30px 0 60px;
+    }
 
-    / ===== ریسپانسیو ===== */
+    .home-section .section-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .home-section .section-header .section-badge {
+        display: inline-block;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #8a7a6a;
+        font-weight: 400;
+        font-family: 'Georgia', serif;
+        background: #f5f0eb;
+        padding: 4px 20px;
+        border-radius: 20px;
+        border: 1px solid #e8e0d8;
+    }
+
+    .home-section .section-header h2 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 32px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 12px 0 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .home-section .section-header p {
+        color: #8a7a6a;
+        font-size: 16px;
+        font-weight: 300;
+        max-width: 500px;
+        margin: 0 auto 12px;
+        line-height: 1.8;
+    }
+
+    .home-section .section-header .header-line {
+        width: 60px;
+        height: 3px;
+        background: #c9a84c;
+        margin: 0 auto;
+        border-radius: 2px;
+    }
+
+    /* ===== گرید دسته‌بندی‌ها ===== */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+
+    .category-card {
+        background: #ffffff;
+        padding: 28px 16px 22px;
+        text-align: center;
+        border: 1px solid #f0ece8;
+        border-radius: 12px;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: #1a1a2e;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 3px;
+        background: #c9a84c;
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        transform-origin: center;
+    }
+
+    .category-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+        border-color: #c9a84c;
+    }
+
+    .category-card .cat-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+        display: block;
+        transition: transform 0.4s ease;
+    }
+
+    .category-card:hover .cat-icon {
+        transform: scale(1.1) rotate(-3deg);
+    }
+
+    .category-card .cat-name {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        font-family: 'Georgia', serif;
+        display: block;
+        color: #1a1a2e;
+        line-height: 1.4;
+    }
+
+    .category-card .cat-count {
+        display: block;
+        font-size: 12px;
+        color: #8a7a6a;
+        margin-top: 6px;
+        font-weight: 300;
+    }
+
+    .category-card .cat-count strong {
+        color: #c9a84c;
+        font-weight: 600;
+    }
+
+    .category-card .cat-line {
+        display: block;
+        width: 30px;
+        height: 2px;
+        background: #c9a84c;
+        margin: 10px auto 0;
+        transition: all 0.4s ease;
+        opacity: 0;
+        border-radius: 2px;
+    }
+
+    .category-card:hover .cat-line {
+        opacity: 1;
+        width: 50px;
+    }
+
+    /* ===== ریسپانسیو ===== */
+    @media (max-width: 1200px) {
+        .category-grid {
+            gap: 16px;
+        }
+    }
+
     @media (max-width: 992px) {
         .category-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
 
-        .book-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .home-section .section-header h2 {
+            font-size: 28px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .home-section {
+            padding: 20px 0 40px;
+        }
+
+        .home-section .section-header h2 {
+            font-size: 24px;
+        }
+
+        .home-section .section-header p {
+            font-size: 14px;
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .category-card {
+            padding: 20px 12px 16px;
+        }
+
+        .category-card .cat-icon {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .category-card .cat-name {
+            font-size: 12px;
+        }
+
+        .category-card .cat-count {
+            font-size: 11px;
         }
     }
 
     @media (max-width: 576px) {
         .category-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
-        .book-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .category-card {
+            padding: 16px 10px 14px;
         }
 
-        .book-card .book-image {
-            height: 200px;
-        }
-
-        .section-title {
+        .category-card .cat-icon {
             font-size: 22px;
+            margin-bottom: 6px;
         }
 
-        .quote-section blockquote {
+        .category-card .cat-name {
+            font-size: 11px;
+            letter-spacing: 0.3px;
+        }
+
+        .category-card .cat-count {
+            font-size: 10px;
+        }
+
+        .home-section .section-header h2 {
             font-size: 20px;
+        }
+
+        .home-section .section-header .section-badge {
+            font-size: 10px;
+            padding: 3px 14px;
         }
     }
 
     @media (max-width: 400px) {
-        .book-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
         }
 
-        .book-card .book-info {
-            padding: 12px;
+        .category-card {
+            padding: 12px 8px 10px;
         }
 
-        .book-card .book-title {
-            font-size: 13px;
+        .category-card .cat-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .category-card .cat-name {
+            font-size: 10px;
+        }
+
+        .category-card .cat-count {
+            font-size: 9px;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-{% include "topheader.html" with header_name=headeer_name %}
-
 <!-- ===== بخش دسته‌بندی‌ها ===== -->
- <section class="categories-section" style="padding: 30px 0 50px;">
+<section class="home-section">
     <div class="container">
-        <div class="category-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
-            <!--  BUSINESS  -->
-            <a href="{% url 'product:product_list_by_category' category='BUSINESS' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">💼</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "BUSINESS" %}</span>
-            </a>
-            
-            <!--  ARCH_DESIGN  -->
-            <a href="{% url 'product:product_list_by_category' category='ARCH_DESIGN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏗️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "ARCH_DESIGN" %}</span>
-            </a>
-            
-            <!-- INTERIOR  -->
-            <a href="{% url 'product:product_list_by_category' category='INTERIOR' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🛋️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "INTERIOR" %}</span>
-            </a>
-            
-            <!-- URBAN -->
-            <a href="{% url 'product:product_list_by_category' category='URBAN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏙️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "URBAN" %}</span>
-            </a>
-            
-            <!-- LANDSCAPE -->
-            <a href="{% url 'product:product_list_by_category' category='LANDSCAPE' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌳</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "LANDSCAPE" %}</span>
-            </a>
-            <!-- DESIGN_GUIDE -->
-            <a href="{% url 'product:product_list_by_category' category='DESIGN_GUIDE' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📖</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DESIGN_GUIDE" %}</span>
-            </a>       
-            <!-- HISTORY -->
-            <a href="{% url 'product:product_list_by_category' category='HISTORY' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏛️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "HISTORY" %}</span>
-            </a>            
-            <!-- DESIGN_BASICS -->
-            <a href="{% url 'product:product_list_by_category' category='DESIGN_BASICS' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">✏️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DESIGN_BASICS" %}</span>
-            </a>           
-            <!-- DIGITALDIGITAL -->
-            <a href="{% url 'product:product_list_by_category' category='DIGITALDIGITAL' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">💻</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DIGITALDIGITAL" %}</span>
-            </a>            
-            <!-- SUSTAIN -->
-            <a href="{% url 'product:product_list_by_category' category='SUSTAIN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌿</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "SUSTAIN" %}</span>
-            </a>            
-            <!-- SAMPLES -->
-            <a href="{% url 'product:product_list_by_category' category='SAMPLES' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📐</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "SAMPLES" %}</span>
+        <!-- هدر بخش -->
+        <div class="section-header">
+            <p>{% trans "Discover our curated collection of architectural books" %}</p>
+            <div class="header-line"></div>
+        </div>
 
+        <!-- گرید دسته‌بندی‌ها -->
+        <div class="category-grid">
+            <!-- BUSINESS -->
+            <a href="{% url 'product:product_list_by_category' category='BUSINESS' %}" class="category-card">
+                <span class="cat-icon">💼</span>
+                <span class="cat-name">{% trans "Business & Management" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
             </a>
+
+            <!-- ARCH_DESIGN -->
+            <a href="{% url 'product:product_list_by_category' category='ARCH_DESIGN' %}" class="category-card">
+                <span class="cat-icon">🏗️</span>
+                <span class="cat-name">{% trans "Architectural Design" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- INTERIOR -->
+            <a href="{% url 'product:product_list_by_category' category='INTERIOR' %}" class="category-card">
+                <span class="cat-icon">🛋️</span>
+                <span class="cat-name">{% trans "Interior Design" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- URBAN -->
+            <a href="{% url 'product:product_list_by_category' category='URBAN' %}" class="category-card">
+                <span class="cat-icon">🏙️</span>
+                <span class="cat-name">{% trans "Urban Studies" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- LANDSCAPE -->
+            <a href="{% url 'product:product_list_by_category' category='LANDSCAPE' %}" class="category-card">
+                <span class="cat-icon">🌳</span>
+                <span class="cat-name">{% trans "Landscape" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- DESIGN_GUIDE -->
+            <a href="{% url 'product:product_list_by_category' category='DESIGN_GUIDE' %}" class="category-card">
+                <span class="cat-icon">📖</span>
+                <span class="cat-name">{% trans "Design Guide" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- HISTORY -->
+            <a href="{% url 'product:product_list_by_category' category='HISTORY' %}" class="category-card">
+                <span class="cat-icon">🏛️</span>
+                <span class="cat-name">{% trans "History & Theory" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- DESIGN_BASICS -->
+            <a href="{% url 'product:product_list_by_category' category='DESIGN_BASICS' %}" class="category-card">
+                <span class="cat-icon">✏️</span>
+                <span class="cat-name">{% trans "Design Basics" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- DIGITAL -->
+            <a href="{% url 'product:product_list_by_category' category='DIGITAL' %}" class="category-card">
+                <span class="cat-icon">💻</span>
+                <span class="cat-name">{% trans "Digital & Parametric" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- SUSTAIN -->
+            <a href="{% url 'product:product_list_by_category' category='SUSTAIN' %}" class="category-card">
+                <span class="cat-icon">🌿</span>
+                <span class="cat-name">{% trans "Sustainability" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
+            <!-- SAMPLES -->
+            <a href="{% url 'product:product_list_by_category' category='SAMPLES' %}" class="category-card">
+                <span class="cat-icon">📐</span>
+                <span class="cat-name">{% trans "Project Samples" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
+            </a>
+
             <!-- OTHER -->
-            <a href="{% url 'product:product_list_by_category' category='OTHER' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📦</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "OTHER" %}</span>
+            <a href="{% url 'product:product_list_by_category' category='OTHER' %}" class="category-card">
+                <span class="cat-icon">📦</span>
+                <span class="cat-name">{% trans "Other Books" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
             </a>
+
             <!-- PACKAGES -->
-            <a href="{% url 'product:product_list_by_category' category='PACKAGES' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📚</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "PACKAGES" %}</span> 
+            <a href="{% url 'product:product_list_by_category' category='PACKAGES' %}" class="category-card">
+                <span class="cat-icon">📚</span>
+                <span class="cat-name">{% trans "Packages & Sets" %}</span>
+                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
+                <span class="cat-line"></span>
             </a>
         </div>
     </div>
 </section>
-<style>
-    .category-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-        border-color: #f5c842 !important;
-    }
-</style>
-
-
 {% endblock %}

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 08:11+0000\n"
-"PO-Revision-Date: 2026-07-16 22:45+0330\n"
-"Last-Translator: gggg ggggg <>\n"
+"POT-Creation-Date: 2026-07-17 14:33+0000\n"
+"PO-Revision-Date: 2026-07-17 18:22+0330\n"
+"Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "ورود"
 msgid "Log In"
 msgstr "ورود"
 
-#: templates/account/login.html:20 templates/topheader.html:54
+#: templates/account/login.html:20 templates/topheader.html:60
 msgid "login"
 msgstr "ورود"
 
@@ -76,7 +76,7 @@ msgstr "ورود"
 msgid "Don't have an account?"
 msgstr "حساب کاربری ندارید؟"
 
-#: templates/account/login.html:26 templates/account/signup.html:20
+#: templates/account/login.html:26 templates/account/signup.html:19
 msgid "Sign Up"
 msgstr "ثبت نام"
 
@@ -84,27 +84,27 @@ msgstr "ثبت نام"
 msgid "log out"
 msgstr "خروج"
 
-#: templates/account/logout.html:16
+#: templates/account/logout.html:15
 msgid "Log Out"
 msgstr "خروج"
 
-#: templates/account/logout.html:17
+#: templates/account/logout.html:16
 msgid "Are you sure you want to logout?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
-#: templates/account/logout.html:21
+#: templates/account/logout.html:20
 msgid "Yes"
 msgstr "بله"
 
-#: templates/account/logout.html:22
+#: templates/account/logout.html:21
 msgid "No"
 msgstr "خیر"
 
-#: templates/account/signup.html:24
+#: templates/account/signup.html:23
 msgid "Already have an account?"
 msgstr "حساب کاربری ندارید؟"
 
-#: templates/account/signup.html:24
+#: templates/account/signup.html:23
 msgid "Login"
 msgstr "ورود"
 
@@ -114,101 +114,168 @@ msgstr "درباره فروشگاه"
 
 #: templates/footer.html:18
 msgid ""
-"Welcome to the website and online store of 'Kasri Library' publications. You "
-"can order available products directly from the publisher and use priority "
+"Welcome to the website and online store of 'Kasri Library' publications. You"
+" can order available products directly from the publisher and use priority "
 "mail delivery for all orders."
 msgstr ""
 "به وبسایت و فروشــگاه اینترنتی انتشــارات «کتابــکده کســری» خـوش آمدیــد. "
-"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده و "
-"از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
+"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده "
+"و از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
 
-#: templates/footer.html:27
+#: templates/footer.html:28
 msgid "Quick Links"
 msgstr "لینک‌های سریع"
 
-#: templates/footer.html:34
+#: templates/footer.html:35
 msgid "All Books"
 msgstr "همه کتاب‌ها"
 
-#: templates/footer.html:40
+#: templates/footer.html:41
 msgid "New Books"
 msgstr "کتاب‌های جدید"
 
-#: templates/footer.html:46
+#: templates/footer.html:47
 msgid "About Us"
 msgstr "درباره ما"
 
-#: templates/footer.html:52
+#: templates/footer.html:53
 msgid "Contact Us"
 msgstr "ارتباط با ما"
 
-#: templates/footer.html:63
+#: templates/footer.html:64
 msgid "Contact Information"
 msgstr "اطلاعات تماس"
 
-#: templates/footer.html:81
+#: templates/footer.html:82
 msgid "Sat - Thu: 9:00 - 14:00"
 msgstr "شنبه - پنجشنبه:  14:00- 9:00"
+
+#: templates/footer.html:97 templates/home.html:6
+msgid "Kasra Architecture Bookstore"
+msgstr "کتابفروشی کسری"
+
+#: templates/footer.html:99
+msgid "All Rights Reserved"
+msgstr "تمام حقوق محفوظ است"
+
+#: templates/footer.html:116
+msgid "Architecture"
+msgstr "معماری"
 
 #: templates/home.html:6
 msgid "Home"
 msgstr "خانه"
 
-#: templates/home.html:6
-msgid "Kasra Architecture Bookstore"
-msgstr "کتابفروشی معماری کسری"
+#: templates/home.html:276
+msgid "Discover our curated collection of architectural books"
+msgstr "کلکسیون منتخب کتاب‌های معماری "
 
-#: templates/home.html:74
-msgid "Architectural History"
-msgstr "تاریخ معماری"
+#: templates/home.html:285
+msgid "Business & Management"
+msgstr "کسب‌وکار و مدیریت"
 
-#: templates/home.html:80
-msgid "Design & Theory"
+#: templates/home.html:286 templates/home.html:294 templates/home.html:302
+#: templates/home.html:310 templates/home.html:318 templates/home.html:326
+#: templates/home.html:334 templates/home.html:342 templates/home.html:350
+#: templates/home.html:358 templates/home.html:366 templates/home.html:374
+#: templates/home.html:382
+msgid "books"
+msgstr "کتاب ها"
+
+#: templates/home.html:293
+msgid "Architectural Design"
+msgstr "طراحی معماری"
+
+#: templates/home.html:301
+msgid "Interior Design"
+msgstr "طراحی و معماری داخلی"
+
+#: templates/home.html:309
+msgid "Urban Studies"
+msgstr "مطالعات و طراحی شهری"
+
+#: templates/home.html:317
+msgid "Landscape"
+msgstr "منظر (لنداسکیپ)"
+
+#: templates/home.html:325
+msgid "Design Guide"
+msgstr "راهنمای طراحی"
+
+#: templates/home.html:333
+msgid "History & Theory"
 msgstr "طراحی و نظریه"
 
-#: templates/home.html:86
-msgid "Sustainable Design"
-msgstr "طراحی پایدار"
+#: templates/home.html:341
+msgid "Design Basics"
+msgstr "بیان، مقدمات و مفاهیم طراحی"
 
-#: templates/home.html:92
-msgid "Urban Planning"
-msgstr "برنامه‌ریزی شهری"
+#: templates/home.html:349
+msgid "Digital & Parametric"
+msgstr "طراحی دیجیتال و پارامتریک"
 
-#: templates/home.html:98
-msgid "Misc"
-msgstr "متفرقه"
+#: templates/home.html:357
+msgid "Sustainability"
+msgstr "پایداری و طبیعت‌گرایی"
 
-#: templates/topheader.html:50
+#: templates/home.html:365
+msgid "Project Samples"
+msgstr "نمونه پروژه"
+
+#: templates/home.html:373
+msgid "Other Books"
+msgstr "سایر کتاب‌ها"
+
+#: templates/home.html:381
+msgid "Packages & Sets"
+msgstr "بسته‌ها و مجموعه‌ها"
+
+#: templates/topheader.html:55
 msgid "logout"
 msgstr "خروج"
 
-#: templates/topheader.html:57
+#: templates/topheader.html:65
 msgid "signup"
 msgstr "ثبت نام"
 
-#: templates/topheader.html:74
+#: templates/topheader.html:82
 msgid "home"
 msgstr "خانه"
 
-#: templates/topheader.html:79
+#: templates/topheader.html:87
 msgid "products"
 msgstr "محصولات"
 
-#: templates/topheader.html:84
+#: templates/topheader.html:92
 msgid "order"
 msgstr "شرایط سفارش"
 
-#: templates/topheader.html:89
+#: templates/topheader.html:97
 msgid "about us"
 msgstr "درباره ما"
 
-#: templates/topheader.html:94
+#: templates/topheader.html:102
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: templates/topheader.html:99
+#: templates/topheader.html:107
 msgid "working us"
 msgstr "همکاری با ما"
+
+#~ msgid "Categories"
+#~ msgstr "دسته‌بندی‌ها"
+
+#~ msgid "Architecture Categories"
+#~ msgstr "دسته‌بندی‌های معماری"
+
+#~ msgid "Architectural History"
+#~ msgstr "تاریخ معماری"
+
+#~ msgid "Urban Planning"
+#~ msgstr "برنامه‌ریزی شهری"
+
+#~ msgid "Misc"
+#~ msgstr "متفرقه"
 
 #~ msgid "about_us |"
 #~ msgstr "درباره ما"

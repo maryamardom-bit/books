@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 17:54+0000\n"
-"PO-Revision-Date: 2026-07-16 14:03+0330\n"
-"Last-Translator: gggg ggggg <>\n"
+"POT-Creation-Date: 2026-07-17 14:47+0000\n"
+"PO-Revision-Date: 2026-07-17 18:21+0330\n"
+"Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -31,53 +31,85 @@ msgstr "با موفقیت به سبد خرید اضافه شد"
 msgid "product successfully removed from cart"
 msgstr "با موفقیت از سبد خرید حذف شد"
 
-#: cart/templates/cart/cart_detail.html:11
+#: cart/templates/cart/cart_detail.html:10
+#: cart/templates/cart/cart_detail.html:599
 msgid "Cart"
 msgstr "سبد خرید"
 
-#: cart/templates/cart/cart_detail.html:27
+#: cart/templates/cart/cart_detail.html:10
+msgid "Kasra Architecture Bookstore"
+msgstr "کتابفروشی کسری"
+
+#: cart/templates/cart/cart_detail.html:605
+msgid "Shopping Cart"
+msgstr "سبد خرید"
+
+#: cart/templates/cart/cart_detail.html:620
 msgid "pic_product"
 msgstr "تصویر محصول"
 
-#: cart/templates/cart/cart_detail.html:28
+#: cart/templates/cart/cart_detail.html:621
 msgid "name_of_product"
-msgstr "نام_محصول"
+msgstr "نام محصول"
 
-#: cart/templates/cart/cart_detail.html:29
+#: cart/templates/cart/cart_detail.html:622
 msgid "price"
 msgstr "قیمت"
 
-#: cart/templates/cart/cart_detail.html:30
+#: cart/templates/cart/cart_detail.html:623
 msgid "quantity"
 msgstr "تعداد"
 
-#: cart/templates/cart/cart_detail.html:31
-#: cart/templates/cart/cart_detail.html:121
+#: cart/templates/cart/cart_detail.html:624
 msgid "total_price"
 msgstr "جمع کل"
 
-#: cart/templates/cart/cart_detail.html:54
-#: cart/templates/cart/cart_detail.html:85
-#: cart/templates/cart/cart_detail.html:127
+#: cart/templates/cart/cart_detail.html:647
+#: cart/templates/cart/cart_detail.html:676
+#: cart/templates/cart/cart_detail.html:727
 #: cart/templates/cart/cart_sidebar.html:34
 msgid "$"
 msgstr "تومان"
 
-#: cart/templates/cart/cart_detail.html:96
-msgid "cart is empty ! please add some products to the cart "
-msgstr "سبد خرید خالی است.لطفا محصول درخواستی را به سبد اضافه کنید"
-
-#: cart/templates/cart/cart_detail.html:98
-msgid "go shopping"
-msgstr "برو به فروشگاه"
-
-#: cart/templates/cart/cart_detail.html:109
+#: cart/templates/cart/cart_detail.html:691
 msgid "Empty cart"
 msgstr "خالی کردن سبد خرید"
 
-#: cart/templates/cart/cart_detail.html:133
-msgid "checkout"
+#: cart/templates/cart/cart_detail.html:701
+msgid "Your Cart is Empty"
+msgstr "سبد خرید شما خالی است."
+
+#: cart/templates/cart/cart_detail.html:702
+msgid "Please add some books to your cart before checking out."
+msgstr "لطفاً قبل از پرداخت تعدادی کتاب به سبد خود اضافه کنید."
+
+#: cart/templates/cart/cart_detail.html:704
+msgid "Go Shopping"
+msgstr "برو به فروشگاه"
+
+#: cart/templates/cart/cart_detail.html:715
+msgid "Cart Totals"
+msgstr "جمع کل"
+
+#: cart/templates/cart/cart_detail.html:720
+msgid "Total Products"
+msgstr "مجموع محصولات"
+
+#: cart/templates/cart/cart_detail.html:721
+msgid "number"
+msgstr "عدد"
+
+#: cart/templates/cart/cart_detail.html:724
+msgid "Total Price"
+msgstr "جمع کل"
+
+#: cart/templates/cart/cart_detail.html:732
+msgid "Proceed to Checkout"
 msgstr "پرداخت"
+
+#: cart/templates/cart/cart_detail.html:736
+msgid "Cart is empty"
+msgstr "سبد خرید شما خالی است."
 
 #: cart/templates/cart/cart_sidebar.html:8
 msgid "cart"
@@ -102,3 +134,9 @@ msgstr "تمام محصولات با موفقیت از سبد خرید حذف ش
 #: cart/views.py:56
 msgid "your cart is already empty."
 msgstr "سبد خرید شما خالی است."
+
+#~ msgid "cart is empty ! please add some products to the cart "
+#~ msgstr "سبد خرید خالی است.لطفا محصول درخواستی را به سبد اضافه کنید"
+
+#~ msgid "checkout"
+#~ msgstr "پرداخت"

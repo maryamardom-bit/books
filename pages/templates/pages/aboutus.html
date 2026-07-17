@@ -1,40 +1,360 @@
 {% extends "_base.html" %}
+{% load static %}
 {% load i18n %}
 
+{% block page_title %}
+{% trans "About Us" %} | {% trans "Kasra Architecture Bookstore" %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-section {
+        background: #faf8f6;
+        padding: 50px 0 70px;
+    }
+
+    .about-section .page-title {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 32px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 35px;
+        padding-bottom: 18px;
+        border-bottom: 3px solid #c9a84c;
+        position: relative;
+    }
+
+    .about-section .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        right: 0;
+        width: 80px;
+        height: 3px;
+        background: #c9a84c;
+    }
+
+    .about-section .page-title i {
+        color: #c9a84c;
+        margin-left: 12px;
+    }
+
+    /* ===== کارت درباره ما ===== */
+    .about-card {
+        background: #ffffff;
+        border: 1px solid #f0ece8;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+        padding: 35px 40px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .about-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: #c9a84c;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .about-card:hover::before {
+        opacity: 1;
+    }
+
+    .about-card:hover {
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.06);
+        border-color: #c9a84c;
+    }
+
+    .about-card .card-icon {
+        font-size: 42px;
+        color: #c9a84c;
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .about-card h5 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 12px;
+    }
+
+    .about-text {
+        font-size: 15px;
+        line-height: 2;
+        color: #4a3a2a;
+    }
+
+    .about-text strong {
+        color: #1a1a2e;
+    }
+
+    /* ===== بخش همکاری ===== */
+    .cooperation-box {
+        background: #f5f0eb;
+        border-radius: 12px;
+        padding: 30px 35px;
+        border-right: 4px solid #c9a84c;
+        margin: 20px 0 10px;
+    }
+
+    .cooperation-box h5 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 10px;
+    }
+
+    .cooperation-box h5 i {
+        color: #c9a84c;
+        margin-left: 10px;
+    }
+
+    .cooperation-box p {
+        color: #4a3a2a;
+        font-size: 15px;
+        line-height: 1.9;
+        margin-bottom: 0;
+    }
+
+    /* ===== آمار و ارقام ===== */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .stat-item {
+        background: #ffffff;
+        border: 1px solid #f0ece8;
+        border-radius: 12px;
+        padding: 25px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        border-color: #c9a84c;
+    }
+
+    .stat-item .stat-number {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: #c9a84c;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .stat-item .stat-label {
+        font-size: 14px;
+        color: #8a7a6a;
+        font-weight: 400;
+    }
+
+    /* ===== خالی بودن ===== */
+    .empty-about {
+        text-align: center;
+        padding: 60px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 2px dashed #e8e0d8;
+    }
+
+    .empty-about .empty-icon {
+        font-size: 56px;
+        color: #c9a84c;
+        opacity: 0.3;
+        margin-bottom: 16px;
+    }
+
+    .empty-about h4 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        color: #1a1a2e;
+        margin-bottom: 8px;
+    }
+
+    .empty-about p {
+        color: #8a7a6a;
+        font-size: 15px;
+    }
+
+    /* ===== ریسپانسیو ===== */
+    @media (max-width: 992px) {
+        .about-section {
+            padding: 30px 0 50px;
+        }
+
+        .about-section .page-title {
+            font-size: 26px;
+        }
+
+        .about-card {
+            padding: 25px 28px;
+        }
+
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .stat-item {
+            padding: 18px 14px;
+        }
+
+        .stat-item .stat-number {
+            font-size: 26px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .about-section .page-title {
+            font-size: 22px;
+        }
+
+        .about-card {
+            padding: 20px;
+        }
+
+        .about-card .card-icon {
+            font-size: 32px;
+        }
+
+        .about-card h5 {
+            font-size: 17px;
+        }
+
+        .about-text {
+            font-size: 14px;
+        }
+
+        .cooperation-box {
+            padding: 20px;
+        }
+
+        .cooperation-box h5 {
+            font-size: 16px;
+        }
+
+        .cooperation-box p {
+            font-size: 14px;
+        }
+
+        .stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-item .stat-number {
+            font-size: 22px;
+        }
+
+        .stat-item .stat-label {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .stat-item {
+            padding: 14px 10px;
+        }
+
+        .stat-item .stat-number {
+            font-size: 18px;
+        }
+
+        .stat-item .stat-label {
+            font-size: 11px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-{% include "topheader.html" with header_name=headeer_name %}
-<section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-12">
-            <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #000; letter-spacing: -0.02em;">
-                {% trans "About Us" %}
-            </h1>
+<!-- ===== بخش درباره ما ===== -->
+<section class="about-section">
+    <div class="container">
+        <!-- هدر صفحه -->
+        <div class="row">
+            <div class="col-12">
+                <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #c9a84c; letter-spacing: -0.02em;">
+                    <i class="fa fa-building"></i> {% trans "About Us" %}
+                </h1>
+            </div>
+        </div>
 
-            {% if aboutus.is_active %}
-                <div class="mb-5">
-                    <p class="fs-5 lh-lg" style="color: #1a1a1a;">
-                        {{ aboutus.text|safe }}
-                    </p>
-                </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if aboutus.is_active %}
+                    <!-- ===== کارت درباره ما ===== -->
+                    <div class="about-card">
+                        <h5>{% trans "Kasra Architecture Bookstore" %}</h5>
+                        <div class="about-text">
+                            {{ aboutus.text|safe }}
+                        </div>
+                    </div>
 
-                {% if cooperation.is_active %} 
-                    <div class="mb-5">
-                        <h2 class="h4 fw-normal mb-3">{% trans "Cooperation" %}</h2>
-                        <p class="fs-5 lh-lg" style="color: #1a1a1a;">
-                            {{ cooperation.invitation_text|safe }}
-                        </p>
+                    <!-- ===== بخش همکاری ===== -->
+                    {% if cooperation.is_active %}
+                        <div class="cooperation-box">
+                            <h5><i class="fa fa-handshake-o"></i> {% trans "Cooperation" %}</h5>
+                            <p>{{ cooperation.invitation_text|safe }}</p>
+                        </div>
+                    {% endif %}
+
+                    <!-- ===== آمار و ارقام ===== -->
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="stat-number">۱۳۹۲</span>
+                            <span class="stat-label">{% trans "Year Established" %}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">۵۰۰+</span>
+                            <span class="stat-label">{% trans "Books Published" %}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">۱۵۰+</span>
+                            <span class="stat-label">{% trans "Authors" %}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">۱۰۰%</span>
+                            <span class="stat-label">{% trans "Customer Satisfaction" %}</span>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <!-- ===== خالی بودن اطلاعات ===== -->
+                    <div class="empty-about">
+                        <div class="empty-icon">📖</div>
+                        <h4>{% trans "No Information Available" %}</h4>
+                        <p>{% trans "The about us page content is not available at the moment. Please try again later." %}</p>
                     </div>
                 {% endif %}
-
-            {% else %}
-                <div class="text-center py-5">
-                    <div class="alert alert-light border-0" role="alert" style="background: #f8f8f8;">
-                        <p class="mb-0" style="color: #666;">
-                            {% trans "The about us page content is not available at the moment. Please try again later." %}
-                        </p>
-                    </div>
-                </div>
-            {% endif %}
+            </div>
         </div>
     </div>
 </section>
