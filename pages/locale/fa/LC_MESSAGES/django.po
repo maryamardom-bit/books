@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 14:08+0000\n"
-"PO-Revision-Date: 2026-07-17 18:20+0330\n"
+"POT-Creation-Date: 2026-07-17 15:40+0000\n"
+"PO-Revision-Date: 2026-07-17 19:11+0330\n"
 "Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -207,13 +207,14 @@ msgstr "جمعه:"
 msgid "Closed"
 msgstr "تعطیل"
 
-#: pages/templates/pages/contactus.html:388
-msgid "Find Us"
-msgstr "موقعیت مکانی"
+#: pages/templates/pages/contactus.html:387
+#| msgid "Map Location"
+msgid "Our Location"
+msgstr "موقعیت ما"
 
-#: pages/templates/pages/contactus.html:393
-msgid "Map Location"
-msgstr "مکان روی نقشه"
+#: pages/templates/pages/contactus.html:408
+msgid "Open in Maps"
+msgstr "نمایش روی نقشه"
 
 #: pages/templates/pages/orderus.html:6 pages/templates/pages/orderus.html:317
 msgid "Order Conditions"
@@ -283,6 +284,9 @@ msgid ""
 msgstr ""
 "محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
 "کنید."
+
+#~ msgid "Find Us"
+#~ msgstr "موقعیت مکانی"
 
 #~ msgid "postal cart:"
 #~ msgstr "کد پستی:"

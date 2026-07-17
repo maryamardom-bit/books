@@ -1,401 +1,400 @@
-{% extends "_base.html" %}
+{% extends '_base.html' %}
 {% load static %}
 {% load i18n %}
 
 {% block page_title %}
-{% trans "Contact Us" %} | {% trans "Kasra Architecture Bookstore" %}
+  {% trans 'Contact Us' %}|{% trans 'Kasra Architecture Bookstore' %}
 {% endblock %}
 
 {% block extra_css %}
-<style>
+  <style>
     .contact-section {
-        background: #faf8f6;
-        padding: 50px 0 70px;
+      background: #faf8f6;
+      padding: 50px 0 70px;
     }
-
+    
     .contact-section .page-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 32px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 30px;
-        padding-bottom: 18px;
-        border-bottom: 3px solid #c9a84c;
-        position: relative;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 30px;
+      padding-bottom: 18px;
+      border-bottom: 3px solid #c9a84c;
+      position: relative;
     }
-
+    
     .contact-section .page-title::after {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        right: 0;
-        width: 80px;
-        height: 3px;
-        background: #c9a84c;
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      right: 0;
+      width: 80px;
+      height: 3px;
+      background: #c9a84c;
     }
-
+    
     .contact-section .page-title i {
-        color: #c9a84c;
-        margin-left: 12px;
+      color: #c9a84c;
+      margin-left: 12px;
     }
-
+    
     /* ===== کارت اطلاعات تماس ===== */
     .contact-card {
-        background: #ffffff;
-        border: 1px solid #f0ece8;
-        border-radius: 12px;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
-        transition: all 0.3s ease;
-        margin-bottom: 24px;
-        overflow: hidden;
+      background: #ffffff;
+      border: 1px solid #f0ece8;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+      margin-bottom: 24px;
+      overflow: hidden;
     }
-
+    
     .contact-card:hover {
-        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.06);
-        border-color: #c9a84c;
+      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.06);
+      border-color: #c9a84c;
     }
-
+    
     .contact-card .card-header-custom {
-        background: #f5f0eb;
-        padding: 16px 24px;
-        border-bottom: 2px solid #c9a84c;
+      background: #f5f0eb;
+      padding: 16px 24px;
+      border-bottom: 2px solid #c9a84c;
     }
-
+    
     .contact-card .card-header-custom h5 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 18px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin: 0;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin: 0;
     }
-
+    
     .contact-card .card-header-custom h5 i {
-        color: #c9a84c;
-        margin-left: 10px;
+      color: #c9a84c;
+      margin-left: 10px;
     }
-
+    
     .contact-card .card-body-custom {
-        padding: 24px;
+      padding: 24px;
     }
-
+    
     /* ===== آیتم‌های اطلاعات ===== */
     .contact-info-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        padding: 10px 0;
-        border-bottom: 1px solid #f0ece8;
-        color: #4a3a2a;
-        font-size: 15px;
-        line-height: 1.8;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0ece8;
+      color: #4a3a2a;
+      font-size: 15px;
+      line-height: 1.8;
     }
-
+    
     .contact-info-item:last-child {
-        border-bottom: none;
+      border-bottom: none;
     }
-
+    
     .contact-info-item .info-icon {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        background: #f5f0eb;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #c9a84c;
-        font-size: 16px;
-        transition: all 0.3s ease;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: #f5f0eb;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c9a84c;
+      font-size: 16px;
+      transition: all 0.3s ease;
     }
-
+    
     .contact-info-item:hover .info-icon {
-        background: #c9a84c;
-        color: #fff;
+      background: #c9a84c;
+      color: #fff;
     }
-
+    
     .contact-info-item strong {
-        color: #1a1a2e;
-        font-weight: 600;
-        margin-left: 6px;
+      color: #1a1a2e;
+      font-weight: 600;
+      margin-left: 6px;
     }
-
+    
     .contact-info-item a {
-        color: #4a3a2a;
-        text-decoration: none;
-        transition: color 0.3s ease;
+      color: #4a3a2a;
+      text-decoration: none;
+      transition: color 0.3s ease;
     }
-
+    
     .contact-info-item a:hover {
-        color: #c9a84c;
+      color: #c9a84c;
     }
-
+    
     /* ===== بخش ارتباط با واحد فروش ===== */
     .sales-section {
-        background: #f5f0eb;
-        border-radius: 12px;
-        padding: 28px 30px;
-        border-right: 4px solid #c9a84c;
-        margin-top: 10px;
+      background: #f5f0eb;
+      border-radius: 12px;
+      padding: 28px 30px;
+      border-right: 4px solid #c9a84c;
+      margin-top: 10px;
     }
-
+    
     .sales-section h5 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 18px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 16px;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 16px;
     }
-
+    
     .sales-section h5 i {
-        color: #c9a84c;
-        margin-left: 10px;
+      color: #c9a84c;
+      margin-left: 10px;
     }
-
+    
     .sales-link-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
-
+    
     .sales-link-item:last-child {
-        border-bottom: none;
+      border-bottom: none;
     }
-
+    
     .sales-link-item .link-icon {
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-        background: #ffffff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #c9a84c;
-        font-size: 14px;
-        transition: all 0.3s ease;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c9a84c;
+      font-size: 14px;
+      transition: all 0.3s ease;
     }
-
+    
     .sales-link-item:hover .link-icon {
-        background: #c9a84c;
-        color: #fff;
+      background: #c9a84c;
+      color: #fff;
     }
-
+    
     .sales-link-item a {
-        color: #4a3a2a;
-        text-decoration: none;
-        transition: color 0.3s ease;
-        font-size: 14px;
+      color: #4a3a2a;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-size: 14px;
     }
-
+    
     .sales-link-item a:hover {
-        color: #c9a84c;
+      color: #c9a84c;
     }
-
+    
     /* ===== خالی بودن اطلاعات ===== */
     .empty-contact {
-        text-align: center;
-        padding: 60px 20px;
-        background: #ffffff;
-        border-radius: 12px;
-        border: 2px dashed #e8e0d8;
+      text-align: center;
+      padding: 60px 20px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 2px dashed #e8e0d8;
     }
-
+    
     .empty-contact .empty-icon {
-        font-size: 56px;
-        color: #c9a84c;
-        opacity: 0.3;
-        margin-bottom: 16px;
+      font-size: 56px;
+      color: #c9a84c;
+      opacity: 0.3;
+      margin-bottom: 16px;
     }
-
+    
     .empty-contact h4 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        color: #1a1a2e;
-        margin-bottom: 8px;
+      font-family: 'Playfair Display', 'Georgia', serif;
+      color: #1a1a2e;
+      margin-bottom: 8px;
     }
-
+    
     .empty-contact p {
-        color: #8a7a6a;
-        font-size: 15px;
+      color: #8a7a6a;
+      font-size: 15px;
     }
-
+    
     /* ===== ریسپانسیو ===== */
     @media (max-width: 992px) {
-        .contact-section {
-            padding: 30px 0 50px;
-        }
-
-        .contact-section .page-title {
-            font-size: 26px;
-        }
+      .contact-section {
+        padding: 30px 0 50px;
+      }
+    
+      .contact-section .page-title {
+        font-size: 26px;
+      }
     }
-
+    
     @media (max-width: 576px) {
-        .contact-section .page-title {
-            font-size: 22px;
-        }
-
-        .contact-card .card-body-custom {
-            padding: 16px;
-        }
-
-        .contact-info-item {
-            font-size: 13px;
-            gap: 10px;
-        }
-
-        .contact-info-item .info-icon {
-            width: 30px;
-            height: 30px;
-            min-width: 30px;
-            font-size: 13px;
-        }
-
-        .sales-section {
-            padding: 20px;
-        }
-
-        .sales-link-item {
-            font-size: 13px;
-        }
-
-        .sales-link-item .link-icon {
-            width: 28px;
-            height: 28px;
-            min-width: 28px;
-            font-size: 12px;
-        }
+      .contact-section .page-title {
+        font-size: 22px;
+      }
+    
+      .contact-card .card-body-custom {
+        padding: 16px;
+      }
+    
+      .contact-info-item {
+        font-size: 13px;
+        gap: 10px;
+      }
+    
+      .contact-info-item .info-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        font-size: 13px;
+      }
+    
+      .sales-section {
+        padding: 20px;
+      }
+    
+      .sales-link-item {
+        font-size: 13px;
+      }
+    
+      .sales-link-item .link-icon {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        font-size: 12px;
+      }
     }
-</style>
+  </style>
 {% endblock %}
 
 {% block content %}
-<!-- ===== بخش تماس با ما ===== -->
-<section class="contact-section">
+  <!-- ===== بخش تماس با ما ===== -->
+  <section class="contact-section">
     <div class="container">
-        <!-- هدر صفحه -->
-        <div class="row">
-            <div class="col-12">
-                <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #c9a84c; letter-spacing: -0.02em;">
-                    <i class="fa fa-phone"></i> {% trans "Contact Us" %}
-                </h1>
-            </div>
+      <!-- هدر صفحه -->
+      <div class="row">
+        <div class="col-12">
+          <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #c9a84c; letter-spacing: -0.02em;"><i class="fa fa-phone"></i> {% trans 'Contact Us' %}</h1>
         </div>
+      </div>
 
-        <div class="row">
-            <div class="col-lg-8">
-                {% if contact %}
-                    <!-- ===== کارت اطلاعات تماس ===== -->
-                    <div class="contact-card">
-                        <div class="card-header-custom">
-                            <h5><i class="fa fa-map-marker"></i> {% trans "Address & Contact Information" %}</h5>
-                        </div>
-                        <div class="card-body-custom">
-                            <!-- آدرس -->
-                            <div class="contact-info-item">
-                                <span class="info-icon"><i class="fa fa-map-marker"></i></span>
-                                <div>
-                                    <strong>{% trans "Address:" %}</strong>
-                                    <span>{{ contact.address }}</span>
-                                </div>
-                            </div>
-
-                            <!-- کد پستی -->
-                            <div class="contact-info-item">
-                                <span class="info-icon"><i class="fa fa-envelope"></i></span>
-                                <div>
-                                    <strong>{% trans "Postal Code:" %}</strong>
-                                    <span>{{ contact.postal_code }}</span>
-                                </div>
-                            </div>
-
-                            <!-- تلفن -->
-                            <div class="contact-info-item">
-                                <span class="info-icon"><i class="fa fa-phone"></i></span>
-                                <div>
-                                    <strong>{% trans "Phone Number:" %}</strong>
-                                    <span>{{ contact.phone }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ===== بخش ارتباط با واحد فروش ===== -->
-                    <div class="sales-section">
-                        <h5><i class="fa fa-headset"></i> {% trans "Communication with Sales & Orders Department" %}</h5>
-
-                        <!-- واتساپ -->
-                        <div class="sales-link-item">
-                            <span class="link-icon"><i class="fa fa-whatsapp"></i></span>
-                            <div>
-                                <strong>{% trans "WhatsApp:" %}</strong>
-                                <a href="https://wa.me/{{ contact.whatsapp }}" target="_blank">
-                                    {{ contact.whatsapp }}
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- ایمیل -->
-                        <div class="sales-link-item">
-                            <span class="link-icon"><i class="fa fa-envelope"></i></span>
-                            <div>
-                                <strong>{% trans "Email:" %}</strong>
-                                <a href="mailto:{{ contact.email }}">
-                                    {{ contact.email }}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                {% else %}
-                    <!-- ===== خالی بودن اطلاعات ===== -->
-                    <div class="empty-contact">
-                        <div class="empty-icon">📞</div>
-                        <h4>{% trans "No Contact Information" %}</h4>
-                        <p>{% trans "Contact information is not available at the moment. Please try again later." %}</p>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- ===== ستون جانبی ===== -->
-            <div class="col-lg-4 mt-4 mt-lg-0">
-                <div class="contact-card">
-                    <div class="card-header-custom">
-                        <h5><i class="fa fa-clock"></i> {% trans "Working Hours" %}</h5>
-                    </div>
-                    <div class="card-body-custom">
-                        <div class="contact-info-item">
-                            <span class="info-icon"><i class="fa fa-calendar"></i></span>
-                            <div>
-                                <strong>{% trans "Saturday - Thursday:" %}</strong>
-                                <span>14:00 - 09:00</span>
-                            </div>
-                        </div>
-                        <div class="contact-info-item">
-                            <span class="info-icon"><i class="fa fa-calendar-times"></i></span>
-                            <div>
-                                <strong>{% trans "Friday:" %}</strong>
-                                <span>{% trans "Closed" %}</span>
-                            </div>
-                        </div>
-                    </div>
+      <div class="row">
+        <div class="col-lg-8">
+          {% if contact %}
+            <!-- ===== کارت اطلاعات تماس ===== -->
+            <div class="contact-card">
+              <div class="card-header-custom">
+                <h5><i class="fa fa-map-marker"></i> {% trans 'Address & Contact Information' %}</h5>
+              </div>
+              <div class="card-body-custom">
+                <!-- آدرس -->
+                <div class="contact-info-item">
+                  <span class="info-icon"><i class="fa fa-map-marker"></i></span>
+                  <div>
+                    <strong>{% trans 'Address:' %}</strong>
+                    <span>{{ contact.address }}</span>
+                  </div>
                 </div>
 
-                <!-- کارت نقشه یا اطلاعات اضافی -->
-                <div class="contact-card">
-                    <div class="card-header-custom">
-                        <h5><i class="fa fa-map"></i> {% trans "Find Us" %}</h5>
-                    </div>
-                    <div class="card-body-custom" style="padding: 0; overflow: hidden; border-radius: 0 0 12px 12px;">
-                        <div style="background: #e8e0d8; height: 180px; display: flex; align-items: center; justify-content: center; color: #8a7a6a; font-size: 14px;">
-                            <i class="fa fa-map-marker" style="font-size: 32px; margin-left: 10px; color: #c9a84c;"></i>
-                            {% trans "Map Location" %}
-                        </div>
-                    </div>
+                <!-- کد پستی -->
+                <div class="contact-info-item">
+                  <span class="info-icon"><i class="fa fa-envelope"></i></span>
+                  <div>
+                    <strong>{% trans 'Postal Code:' %}</strong>
+                    <span>{{ contact.postal_code }}</span>
+                  </div>
                 </div>
+
+                <!-- تلفن -->
+                <div class="contact-info-item">
+                  <span class="info-icon"><i class="fa fa-phone"></i></span>
+                  <div>
+                    <strong>{% trans 'Phone Number:' %}</strong>
+                    <span>{{ contact.phone }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- ===== بخش ارتباط با واحد فروش ===== -->
+            <div class="sales-section">
+              <h5><i class="fa fa-headset"></i> {% trans 'Communication with Sales & Orders Department' %}</h5>
+
+              <!-- واتساپ -->
+              <div class="sales-link-item">
+                <span class="link-icon"><i class="fa fa-whatsapp"></i></span>
+                <div>
+                  <strong>{% trans 'WhatsApp:' %}</strong>
+                  <a href="https://wa.me/{{ contact.whatsapp }}" target="_blank">{{ contact.whatsapp }}</a>
+                </div>
+              </div>
+
+              <!-- ایمیل -->
+              <div class="sales-link-item">
+                <span class="link-icon"><i class="fa fa-envelope"></i></span>
+                <div>
+                  <strong>{% trans 'Email:' %}</strong>
+                  <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <!-- ===== خالی بودن اطلاعات ===== -->
+            <div class="empty-contact">
+              <div class="empty-icon">📞</div>
+              <h4>{% trans 'No Contact Information' %}</h4>
+              <p>
+                {% trans 'Contact information is not available at the moment. Please try again later.' %}
+              </p>
+            </div>
+          {% endif %}
         </div>
+
+        <!-- ===== ستون جانبی ===== -->
+        <div class="col-lg-4 mt-4 mt-lg-0">
+          <div class="contact-card">
+            <div class="card-header-custom">
+              <h5><i class="fa fa-clock"></i> {% trans 'Working Hours' %}</h5>
+            </div>
+            <div class="card-body-custom">
+              <div class="contact-info-item">
+                <span class="info-icon"><i class="fa fa-calendar"></i></span>
+                <div>
+                  <strong>{% trans 'Saturday - Thursday:' %}</strong>
+                  <span>14:00 - 09:00</span>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <span class="info-icon"><i class="fa fa-calendar-times"></i></span>
+                <div>
+                  <strong>{% trans 'Friday:' %}</strong>
+                  <span>{% trans 'Closed' %}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="card-header-custom">
+              <h5><i class="fa fa-map"></i> {% trans 'Our Location' %}</h5>
+            </div>
+            <div class="card-body-custom" style="padding: 0; overflow: hidden; border-radius: 0 0 12px 12px;">
+              <!-- نقشه جاسازی شده -->
+              <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2897.456!2d59.5678!3d36.4567!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzYuw5DCsDQ1JzI3LjgiTiA1OcKwMzQnMDQuMCJF!5e0!3m2!1sen!2sus!4v1234567890" width="100%" height="250" style="border:0; display: block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+              <!-- آدرس زیر نقشه -->
+              <div style="padding: 12px 20px; background: #faf8f6; border-top: 1px solid #f0ece8; display: flex; align-items: center; gap: 10px;">
+                <i class="fa fa-map-marker" style="color: #c9a84c; font-size: 18px;"></i>
+                <span style="color: #4a3a2a; font-size: 14px;">{{ contact.address }}</span>
+                <a href="https://maps.app.goo.gl/MxVs4ZZyvcQS7i7Y8" target="_blank" style="margin-right: auto; color: #c9a84c; text-decoration: none; font-size: 13px; font-weight: 500;"><i class="fa fa-external-link"></i> {% trans 'Open in Maps' %}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
-{% endblock content %}
+  </section>
+{% endblock %}

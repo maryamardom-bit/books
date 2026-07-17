@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 14:55+0000\n"
+"POT-Creation-Date: 2026-07-17 15:40+0000\n"
 "PO-Revision-Date: 2026-07-17 18:27+0330\n"
 "Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -361,12 +361,10 @@ msgid "Search Results"
 msgstr "نتایج جستجو"
 
 #: products/templates/products/product_search_result.html:487
-#| msgid "search for:"
 msgid "Search for"
 msgstr "جستجو برای :"
 
 #: products/templates/products/product_search_result.html:493
-#| msgid "books found"
 msgid "book found"
 msgstr "کتاب پیدا شد"
 
@@ -379,12 +377,10 @@ msgid "Unknown"
 msgstr "نامشخص"
 
 #: products/templates/products/product_search_result.html:562
-#| msgid "Book Details"
 msgid "View Details"
 msgstr "جزییات "
 
 #: products/templates/products/product_search_result.html:617
-#| msgid "No Products Found"
 msgid "No Results Found"
 msgstr "هیچ محصولی یافت نشد"
 
@@ -393,7 +389,6 @@ msgid "We couldn't find any books matching"
 msgstr "ما هیچ کتابی که مطابقت داشته باشد پیدا نکردیم"
 
 #: products/templates/products/product_search_result.html:621
-#| msgid "sugesstions:"
 msgid "Suggestions:"
 msgstr "پیشنهادات"
 
@@ -402,7 +397,6 @@ msgid "Check the spelling of your search terms"
 msgstr "املا یا نوشتار کلمات جستجوی خود را بررسی کنید"
 
 #: products/templates/products/product_search_result.html:624
-#| msgid "search for book or keywords"
 msgid "Use more general keywords"
 msgstr "جستجوی نام کتاب یا کلمات کلیدی"
 
