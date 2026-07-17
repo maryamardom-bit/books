@@ -1,28 +1,24 @@
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404,render
+from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.db.models import Q, Count, Avg, Value, IntegerField
 from django.db.models.functions import Coalesce
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Product, Comment
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
+
 class ProductListView(generic.ListView):
     model = Product
     queryset = Product.objects.filter(active=True)
+    paginate_by = 12 
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
 
-    
-def product_list_by_category(request, category):
-    products = Product.objects.filter(category=category, active=True)
-    return render(request, 'product_list.html', {
-        'products': products,
-        'category': category,
-    })
 
 class ProductDetailView(generic.DetailView):
     model = Product
@@ -45,8 +41,8 @@ class CommentCreateView(generic.CreateView):
         
         product_id = int(self.kwargs['product_id'])
         product = get_object_or_404(Product, id=product_id)
-
         obj.product = product
+        
         messages.success(self.request, _('your comment has been successfully registered'))
         return super().form_valid(form)
 
@@ -62,7 +58,6 @@ class ProductSearchView(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q', '').strip()
-        print(f"query:'{query}'")
         
         if query:
             return Product.objects.filter(
@@ -81,14 +76,17 @@ class ProductSearchView(generic.ListView):
         context['query'] = self.request.GET.get('q', '')
         context['results_count'] = self.get_queryset().count()
         return context
-    
+
 
 def product_list_by_category(request, category):
-    # بررسی اینکه category یکی از مقادیر معتبر هست
-    valid_categories = ['history', 'design_theory', 'sustainable', 'urban_planning', 'misc']
+    """
+    نمایش کتاب‌های یک دسته خاص با صفحه‌بندی
+    """
+    # دریافت همه دسته‌بندی‌های معتبر از مدل
+    valid_categories = dict(Product.Category.choices)
     
+    # بررسی معتبر بودن دسته
     if category not in valid_categories:
-        # اگر دسته‌بندی نامعتبر بود، به صفحه محصولات برمی‌گردیم
         return render(request, 'Products/product_list_by_category.html', {
             'products': Product.objects.none(),
             'category': None,
@@ -96,16 +94,48 @@ def product_list_by_category(request, category):
         })
     
     # فیلتر کردن محصولات بر اساس category
-    products = Product.objects.filter(category=category, active=True)
+    products_list = Product.objects.filter(category=category, active=True)
+    
+    # صفحه‌بندی
+    paginator = Paginator(products_list, 12)
+    page = request.GET.get('page', 1)
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     
     # دریافت نام نمایشی دسته‌بندی
-    category_display = dict(Product.Category.choices).get(category, category)
+    category_display = valid_categories.get(category, category)
+    
+    # دیکشنری آیکون‌ها برای هر دسته
+    category_icons = {
+        'BUSINESS_MANAGEMENT': '💼',
+        'ARCHITECTURAL_DESIGN': '🏗️',
+        'INTERIOR_DESIGN': '🛋️',
+        'URBAN_STUDIES': '🏙️',
+        'LANDSCAPE': '🌳',
+        'DESIGN_GUIDE': '📖',
+        'HISTORY_CRITICISM': '🏛️',
+        'DESIGN_FUNDAMENTALS': '✏️',
+        'DIGITAL_PARAMETRIC': '💻',
+        'SUSTAINABILITY': '🌿',
+        'PROJECT_SAMPLES': '📐',
+        'OTHER': '📦',
+        'PACKAGES': '📚',
+    }
     
     return render(request, 'Products/product_list_by_category.html', {
         'products': products,
         'category': {
             'name': category_display,
-            'slug': category
+            'slug': category,
+            'icon': category_icons.get(category, '📚'),
+            'count': products_list.count(),
         },
+        'paginator': paginator,
+        'is_paginated': products.has_other_pages(),
+        'page_obj': products,
     })
-    

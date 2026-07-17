@@ -6,32 +6,43 @@ from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 
 
-
 class Product(models.Model):
 
     class Category(models.TextChoices):
-        HISTORY = 'history', _('history')
-        DESIGN_THEORY = 'design_theory', _('design_theory')
-        SUSTAINABLE = 'sustainable', _('sustainable')
-        URBAN_PLANNING = 'urban_planning', _('urban_planning')
-        MISC = 'misc', _('misc')
+        BUSINESS = 'BUSINESS', _('BUSINESS')
+        ARCH_DESIGN = 'ARCH_DESIGN', _('ARCH_DESIGN')
+        INTERIOR = 'INTERIOR', _('INTERIOR')
+        URBAN = 'URBAN', _('URBAN')
+        LANDSCAPE = 'LANDSCAPE', _('LANDSCAPE')
+        DESIGN_GUIDE = 'DESIGN_GUIDE', _('DESIGN_GUIDE')
+        HISTORY = 'HISTORY', _('HISTORY')
+        DESIGN_BASICS = 'DESIGN_BASICS', _('DESIGN_BASICS')
+        DIGITAL = 'DIGITAL', _('DIGITAL')
+        SUSTAIN = 'SUSTAIN', _('SUSTAIN')
+        SAMPLES = 'SAMPLES', _('SAMPLES')
+        OTHER = 'OTHER', _('OTHER')
+        PACKAGES = 'PACKAGES', _('PACKAGES')
 
     class BookSize(models.TextChoices):
-        RAGHIEI = 'raghiei', _('raghiei')
-        VAZEHI = 'vazehi', _('vazehi')
-        JEYBI = 'jeybi', _('jeybi')
-        RAHLEI = 'rahlei', _('rahlei')
-        OTHER = 'other', _('other')
+        RAGHIEI = 'raghiei', _('رقعی')
+        VAZEHI = 'vazehi', _('وزیری')
+        JEYBI = 'jeybi', _('جیبی')
+        RAHLEI = 'rahlei', _('رحلی')
+        OTHER = 'other', _('سایر')
    
     class CoverType(models.TextChoices):
-        SHOMIZ = 'shomiz', _('shomiz')
-        GARD = 'gard', _('gard')
-        OTHER = 'other', _('other')
-    
+        SHOMIZ = 'shomiz', _('شومیز')
+        GARD = 'gard', _('گالینگور')
+        OTHER = 'other', _('سایر')
 
     title = models.CharField(max_length=100, verbose_name=_('Product Title'))
-    category = models.CharField(max_length=20,choices=Category.choices,default=Category.MISC,verbose_name=_('Product Category'))
-    description = RichTextField(verbose_name=_('Product Discription'))
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices,
+        default=Category.OTHER,
+        verbose_name=_('Product Category')
+    )
+    description = RichTextField(verbose_name=_('Product Description'))
     price = models.PositiveIntegerField(default=0, verbose_name=_('Product Price'))
     active = models.BooleanField(default=True, verbose_name=_('Product Active'))
     image = models.ImageField(upload_to='product/product_cover/', blank=True, verbose_name=_('Product Image'))
@@ -41,15 +52,14 @@ class Product(models.Model):
     publication_year = models.IntegerField(null=True, blank=True, verbose_name=_('Publication Year'))
     edition = models.CharField(max_length=50, blank=True, verbose_name=_('Edition'))
     pages = models.IntegerField(null=True, blank=True, verbose_name=_('Number of Pages'))
-    book_size = models.CharField(max_length=20,choices=BookSize.choices,blank=True,null=True,verbose_name=_('Book Size'))
-    cover_type = models.CharField(max_length=20,choices=CoverType.choices,blank=True,null=True,verbose_name=_('Cover Type'))
-    Printing_time= models.CharField(null=True, blank=True, verbose_name=_('Printing_time'))
+    book_size = models.CharField(max_length=20, choices=BookSize.choices, blank=True, null=True, verbose_name=_('Book Size'))
+    cover_type = models.CharField(max_length=20, choices=CoverType.choices, blank=True, null=True, verbose_name=_('Cover Type'))
+    Printing_time = models.CharField(null=True, blank=True, verbose_name=_('Printing_time'))
    
     datetime_created = models.DateTimeField(default=timezone.now, verbose_name=_('Date Time of Creation'))
     datetime_modified = models.DateTimeField(auto_now=True, verbose_name=_('Date Time of Modified'))
 
-
-    def str(self):
+    def __str__(self):
         return self.title
     
     def get_absolute_url(self):
@@ -86,11 +96,8 @@ class Comment(models.Model):
 
     active = models.BooleanField(default=True, verbose_name=_('Comment_Active'))
 
-    # manager
     objects = models.Manager()
     active_comments_manager = ActiveCommentsManager()
 
     def get_absolute_url(self):
         return reverse('product_detail', args=[self.product.id])
-    
-

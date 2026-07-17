@@ -5,7 +5,7 @@
 {% load humanize %}
 
 {% block page_title %}
-    {% include "topheader.html" with header_name=headeer_name %}
+
     {% if category %}
         {{ category.name }}
     {% else %}
@@ -14,22 +14,10 @@
 {% endblock page_title %}
 
 {% block content %}
+{% include "topheader.html" with header_name=headeer_name %}
 <div class="main-content-wrapper">
     <div class="page-content-inner ptb--80">
         <div class="container">
-            <!-- عنوان دسته‌بندی -->
-            <div class="row mb--50">
-                <div class="col-12">
-                    {% if category %}
-                        <h2 class="text-center">{{ category.name }}</h2>
-                        <hr>
-                    {% else %}
-                        <h2 class="text-center">{% trans "Category not found" %}</h2>
-                        <p class="text-center"><a href="{% url 'product:product_list' %}">{% trans "Back to products" %}</a></p>
-                    {% endif %}
-                </div>
-            </div>
-
             <!-- محصولات -->
             <div class="row">
                 {% if products %}

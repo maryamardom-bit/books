@@ -68,70 +68,79 @@
  <section class="categories-section" style="padding: 30px 0 50px;">
     <div class="container">
         <div class="category-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
-            <!-- تاریخ معماری -->
-            <a href="{% url 'product:product_list_by_category' category='history' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏛️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Architectural History" %}</span>
+            <!--  BUSINESS  -->
+            <a href="{% url 'product:product_list_by_category' category='BUSINESS' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">💼</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "BUSINESS" %}</span>
             </a>
             
-            <!-- طراحی و تئوری -->
-            <a href="{% url 'product:product_list_by_category' category='design_theory' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📐</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Design & Theory" %}</span>
+            <!--  ARCH_DESIGN  -->
+            <a href="{% url 'product:product_list_by_category' category='ARCH_DESIGN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏗️</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "ARCH_DESIGN" %}</span>
             </a>
             
-            <!-- طراحی پایدار -->
-            <a href="{% url 'product:product_list_by_category' category='sustainable' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌿</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Sustainable Design" %}</span>
+            <!-- INTERIOR  -->
+            <a href="{% url 'product:product_list_by_category' category='INTERIOR' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🛋️</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "INTERIOR" %}</span>
             </a>
             
-            <!-- برنامه‌ریزی شهری -->
-            <a href="{% url 'product:product_list_by_category' category='urban_planning' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+            <!-- URBAN -->
+            <a href="{% url 'product:product_list_by_category' category='URBAN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
                 <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏙️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Urban Planning" %}</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "URBAN" %}</span>
             </a>
             
-            <!-- متفرقه -->
-            <a href="{% url 'product:product_list_by_category' category='misc' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+            <!-- LANDSCAPE -->
+            <a href="{% url 'product:product_list_by_category' category='LANDSCAPE' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌳</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "LANDSCAPE" %}</span>
+            </a>
+            <!-- DESIGN_GUIDE -->
+            <a href="{% url 'product:product_list_by_category' category='DESIGN_GUIDE' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📖</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DESIGN_GUIDE" %}</span>
+            </a>       
+            <!-- HISTORY -->
+            <a href="{% url 'product:product_list_by_category' category='HISTORY' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏛️</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "HISTORY" %}</span>
+            </a>            
+            <!-- DESIGN_BASICS -->
+            <a href="{% url 'product:product_list_by_category' category='DESIGN_BASICS' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">✏️</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DESIGN_BASICS" %}</span>
+            </a>           
+            <!-- DIGITALDIGITAL -->
+            <a href="{% url 'product:product_list_by_category' category='DIGITALDIGITAL' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">💻</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "DIGITALDIGITAL" %}</span>
+            </a>            
+            <!-- SUSTAIN -->
+            <a href="{% url 'product:product_list_by_category' category='SUSTAIN' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌿</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "SUSTAIN" %}</span>
+            </a>            
+            <!-- SAMPLES -->
+            <a href="{% url 'product:product_list_by_category' category='SAMPLES' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📐</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "SAMPLES" %}</span>
+
+            </a>
+            <!-- OTHER -->
+            <a href="{% url 'product:product_list_by_category' category='OTHER' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
                 <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📦</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Misc" %}</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "OTHER" %}</span>
+            </a>
+            <!-- PACKAGES -->
+            <a href="{% url 'product:product_list_by_category' category='PACKAGES' %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
+                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📚</span>
+                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "PACKAGES" %}</span> 
             </a>
         </div>
     </div>
 </section>
-{% comment %} <section class="categories-section" style="padding: 30px 0 50px;">
-    <div class="container">
-        <div class="category-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
-            <a href={% url 'product:product_list_by_category' category='history' %}" %}" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏛️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Architectural History" %}</span>
-
-            </a>
-            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📐</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Design & Theory" %}</span>
-
-            </a>
-            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🌿</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Sustainable Design" %}</span>
-
-            </a>
-            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">🏙️</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Urban Planning" %}</span>
-
-            </a>
-            <a href="#" class="category-card" style="background: #fff; padding: 30px 20px; text-align: center; border: 1px solid #f0f0f0; transition: all 0.4s ease; cursor: pointer; text-decoration: none; color: #1a1a2e;">
-                <span class="cat-icon" style="font-size: 36px; margin-bottom: 15px; display: block;">📦</span>
-                <span class="cat-name" style="font-size: 16px; font-weight: 500; letter-spacing: 1px; font-family: 'Georgia', serif;">{% trans "Misc" %}</span>
-
-            </a>
-        </div>
-    </div>
-</section> {% endcomment %}
-
 <style>
     .category-card:hover {
         transform: translateY(-8px);

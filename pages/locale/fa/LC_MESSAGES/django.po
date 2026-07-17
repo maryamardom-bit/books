@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-13 15:00+0000\n"
+"POT-Creation-Date: 2026-07-17 08:11+0000\n"
 "PO-Revision-Date: 2026-07-12 19:47+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,73 +103,73 @@ msgstr "شرایط سفارش"
 msgid "Only one orderus record can exist."
 msgstr "فقط یک سابقه همکاری می‌تواند وجود داشته باشد."
 
-#: pages/templates/pages/aboutus.html:9
+#: pages/templates/pages/aboutus.html:10
 msgid "About Us"
 msgstr "درباره ما"
 
-#: pages/templates/pages/aboutus.html:21
+#: pages/templates/pages/aboutus.html:22
 msgid "Cooperation"
 msgstr "همکاری"
 
-#: pages/templates/pages/aboutus.html:32
+#: pages/templates/pages/aboutus.html:33
 msgid ""
 "The about us page content is not available at the moment. Please try again "
 "later."
 msgstr ""
 "محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
-#: pages/templates/pages/contactus.html:9
+#: pages/templates/pages/contactus.html:10
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: pages/templates/pages/contactus.html:15
+#: pages/templates/pages/contactus.html:16
 msgid "address:"
 msgstr "آدرس:"
 
-#: pages/templates/pages/contactus.html:16
+#: pages/templates/pages/contactus.html:17
 msgid "postal cart:"
 msgstr "کد پستی:"
 
-#: pages/templates/pages/contactus.html:17
+#: pages/templates/pages/contactus.html:18
 msgid "phone number:"
 msgstr "تلفن:"
 
-#: pages/templates/pages/contactus.html:24
+#: pages/templates/pages/contactus.html:25
 msgid "Communication with sales and orders department"
 msgstr "ارتباط با واحد فروش و سفارشات"
 
-#: pages/templates/pages/contactus.html:27
+#: pages/templates/pages/contactus.html:28
 msgid "whats app:"
 msgstr "واتس اپ:"
 
-#: pages/templates/pages/contactus.html:31
+#: pages/templates/pages/contactus.html:32
 msgid "email:"
 msgstr "ایمیل:"
 
-#: pages/templates/pages/contactus.html:39
+#: pages/templates/pages/contactus.html:40
 msgid "contact info up to date.please try later."
 msgstr "اطلاعات تماس در حال بروز رسانی است.لطفا دوباره تلاش کنید."
 
-#: pages/templates/pages/orderus.html:9
+#: pages/templates/pages/orderus.html:10
 msgid "Order Conditions"
 msgstr "شرایط سفارش"
 
-#: pages/templates/pages/orderus.html:22
+#: pages/templates/pages/orderus.html:23
 msgid ""
 "The order conditions page content is not available at the moment. Please try "
 "again later."
 msgstr ""
 "محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
-#: pages/templates/pages/workingus.html:9
+#: pages/templates/pages/workingus.html:10
 msgid "Collaborate with Us"
 msgstr "همکاری با ما"
 
-#: pages/templates/pages/workingus.html:26
+#: pages/templates/pages/workingus.html:27
 msgid "Last updated:"
 msgstr "آخرین بروزرسانی"
 
-#: pages/templates/pages/workingus.html:33
+#: pages/templates/pages/workingus.html:34
 msgid ""
 "The cooperation page content is not available at the moment. Please try "
 "again later."

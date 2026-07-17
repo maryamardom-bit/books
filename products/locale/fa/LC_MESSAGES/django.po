@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 18:57+0000\n"
-"PO-Revision-Date: 2026-07-16 21:27+0330\n"
+"POT-Creation-Date: 2026-07-17 11:17+0000\n"
+"PO-Revision-Date: 2026-07-17 14:49+0330\n"
 "Last-Translator: gggg ggggg <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -32,156 +32,189 @@ msgid "Status & Dates"
 msgstr "وضعیت و تاریخ‌ها"
 
 #: products/models.py:13
-msgid "history"
-msgstr "تاریخ معماری"
+msgid "کسب‌وکار و مدیریت"
+msgstr "کسب‌وکار و مدیریت"
 
 #: products/models.py:14
-msgid "design_theory"
-msgstr "طراحی و نظریه"
+msgid "طراحی معماری"
+msgstr "طراحی معماری"
 
 #: products/models.py:15
-msgid "sustainable"
-msgstr "طراحی پایدار"
+msgid "طراحی و معماری داخلی"
+msgstr "طراحی و معماری داخلی"
 
 #: products/models.py:16
-msgid "urban_planning"
-msgstr "برنامه ریزی شهری"
+msgid "مطالعات و طراحی شهری"
+msgstr "مطالعات و طراحی شهری"
 
 #: products/models.py:17
-msgid "misc"
-msgstr "متفرقه"
+msgid "منظر (لنداسکیپ)"
+msgstr "منظر (لنداسکیپ)"
+
+#: products/models.py:18
+msgid "راهنمای طراحی"
+msgstr "راهنمای طراحی"
+
+#: products/models.py:19
+msgid "تاریخ، نقد و نظریه"
+msgstr "تاریخ، نقد و نظریه"
 
 #: products/models.py:20
-msgid "raghiei"
-msgstr "رقعی"
+msgid "بیان، مقدمات و مفاهیم طراحی"
+msgstr "بیان، مقدمات و مفاهیم طراحی"
 
 #: products/models.py:21
-msgid "vazehi"
-msgstr "وزیری"
+msgid "طراحی دیجیتال و پارامتریک"
+msgstr "طراحی دیجیتال و پارامتریک"
 
 #: products/models.py:22
-msgid "jeybi"
-msgstr "جیبی"
+msgid "پایداری و طبیعت‌گرایی"
+msgstr "پایداری و طبیعت‌گرایی"
 
 #: products/models.py:23
-msgid "rahlei"
-msgstr "رحلی"
+msgid "نمونه پروژه"
+msgstr "نمونه پروژه"
 
-#: products/models.py:24 products/models.py:29
-msgid "other"
-msgstr "غیره"
+#: products/models.py:24
+msgid "سایر کتاب‌ها"
+msgstr "سایر کتاب‌ها"
 
-#: products/models.py:27
-msgid "shomiz"
-msgstr "شومیز"
+#: products/models.py:25
+msgid "بسته‌ها و مجموعه‌ها"
+msgstr "بسته‌ها و مجموعه‌ها"
 
 #: products/models.py:28
-msgid "gard"
-msgstr "سخت"
+msgid "رقعی"
+msgstr "رقعی"
 
-#: products/models.py:32
+#: products/models.py:29
+msgid "وزیری"
+msgstr "وزیری"
+
+#: products/models.py:30
+msgid "جیبی"
+msgstr "جیبی"
+
+#: products/models.py:31
+msgid "رحلی"
+msgstr "رحلی"
+
+#: products/models.py:32 products/models.py:37
+msgid "سایر"
+msgstr "سایر"
+
+#: products/models.py:35
+msgid "شومیز"
+msgstr "شومیز"
+
+#: products/models.py:36
+msgid "گالینگور"
+msgstr "گالینگور"
+
+#: products/models.py:39
 msgid "Product Title"
 msgstr "نام محصول"
 
-#: products/models.py:33
+#: products/models.py:44
 msgid "Product Category"
 msgstr "دسته بندی محصول"
 
-#: products/models.py:34
-msgid "Product Discription"
+#: products/models.py:46
+#| msgid "Product Discription"
+msgid "Product Description"
 msgstr "توضیحات محصول"
 
-#: products/models.py:35
+#: products/models.py:47
 msgid "Product Price"
 msgstr "قیمت محصول"
 
-#: products/models.py:36
+#: products/models.py:48
 msgid "Product Active"
 msgstr "آیا محصول موجود است؟"
 
-#: products/models.py:37
+#: products/models.py:49
 msgid "Product Image"
 msgstr "تصویر محصول"
 
-#: products/models.py:38 products/templates/products/product_detail.html:162
+#: products/models.py:50 products/templates/products/product_detail.html:162
 #: products/templates/products/product_detail.html:257
 msgid "Author"
 msgstr "نویسنده"
 
-#: products/models.py:39 products/templates/products/product_detail.html:109
+#: products/models.py:51 products/templates/products/product_detail.html:109
 #: products/templates/products/product_detail.html:214
 msgid "Publisher"
 msgstr "ناشر"
 
-#: products/models.py:40 products/templates/products/product_detail.html:220
+#: products/models.py:52 products/templates/products/product_detail.html:220
 msgid "ISBN"
 msgstr "شابک"
 
-#: products/models.py:41 products/templates/products/product_detail.html:208
+#: products/models.py:53 products/templates/products/product_detail.html:208
 msgid "Publication Year"
 msgstr "سال انتشار"
 
-#: products/models.py:42 products/templates/products/product_detail.html:176
+#: products/models.py:54 products/templates/products/product_detail.html:176
 msgid "Edition"
 msgstr "مترجم"
 
-#: products/models.py:43
+#: products/models.py:55
 msgid "Number of Pages"
 msgstr "تعداد صفحات"
 
-#: products/models.py:44 products/templates/products/product_detail.html:182
+#: products/models.py:56 products/templates/products/product_detail.html:182
 msgid "Book Size"
 msgstr "اندازه کتاب"
 
-#: products/models.py:45 products/templates/products/product_detail.html:196
+#: products/models.py:57 products/templates/products/product_detail.html:196
 msgid "Cover Type"
 msgstr "نوع صحافی/جلد:"
 
-#: products/models.py:46
+#: products/models.py:58
 msgid "Printing_time"
 msgstr "نوبت چاپ:"
 
-#: products/models.py:48
+#: products/models.py:60
 msgid "Date Time of Creation"
 msgstr "زمان ایجاد محصول"
 
-#: products/models.py:49
+#: products/models.py:61
 msgid "Date Time of Modified"
 msgstr "زمان آخرین تغییرات در محصول"
 
-#: products/models.py:66
+#: products/models.py:77
 msgid "Very Bad"
 msgstr "خیلی بد"
 
-#: products/models.py:67
+#: products/models.py:78
 msgid "Bad"
 msgstr "بد"
 
-#: products/models.py:68
+#: products/models.py:79
 msgid "Normal"
 msgstr "معمولی"
 
-#: products/models.py:69
+#: products/models.py:80
 msgid "Good"
 msgstr "خوب"
 
-#: products/models.py:70
+#: products/models.py:81
 msgid "Perfect"
 msgstr "عالی"
 
-#: products/models.py:73
+#: products/models.py:84
 msgid "Comment_Product"
 msgstr "نظر برای این محصول"
 
-#: products/models.py:81
+#: products/models.py:92
 msgid "Comment Text"
 msgstr "متن دیدگاه"
 
-#: products/models.py:82
+#: products/models.py:93
 msgid "What is your score?"
 msgstr "امتیاز شما به این محصول کدام است؟"
 
-#: products/models.py:87
+#: products/models.py:98
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
@@ -191,8 +224,8 @@ msgstr "نقد و بررسی"
 
 #: products/templates/products/product_detail.html:81
 #: products/templates/products/product_list.html:49
-#: products/templates/products/product_list_by_category.html:52
-#: products/templates/products/product_search_result.html:50
+#: products/templates/products/product_list_by_category.html:41
+#: products/templates/products/product_search_result.html:51
 msgid "$"
 msgstr "تومان"
 
@@ -278,82 +311,155 @@ msgid "to write a review"
 msgstr "برای نوشتن نظر"
 
 #: products/templates/products/product_list.html:55
-#: products/templates/products/product_list_by_category.html:60
+#: products/templates/products/product_list_by_category.html:49
 msgid "add to card"
 msgstr "اضافه کردن به خرید"
 
-#: products/templates/products/product_list_by_category.html:11
+#: products/templates/products/product_list_by_category.html:12
 msgid "Category"
 msgstr "دسته بندی"
 
-#: products/templates/products/product_list_by_category.html:26
-msgid "Category not found"
-msgstr "دسته‌بندی یافت نشد"
-
-#: products/templates/products/product_list_by_category.html:27
-#: products/templates/products/product_list_by_category.html:72
-msgid "Back to products"
-msgstr "برو به محصولات"
-
-#: products/templates/products/product_list_by_category.html:71
+#: products/templates/products/product_list_by_category.html:60
 msgid "No products found in this category."
 msgstr "محصولی در این دسته پیدا نشد."
 
-#: products/templates/products/product_search_result.html:10
+#: products/templates/products/product_list_by_category.html:61
+msgid "Back to products"
+msgstr "برو به محصولات"
+
+#: products/templates/products/product_search_result.html:11
 msgid "search for:"
 msgstr "جستجو برای :"
 
-#: products/templates/products/product_search_result.html:12
+#: products/templates/products/product_search_result.html:13
 msgid "find it"
 msgstr "پیدا شد"
 
-#: products/templates/products/product_search_result.html:32
+#: products/templates/products/product_search_result.html:33
 msgid "without picture"
 msgstr "بدون تصویر"
 
-#: products/templates/products/product_search_result.html:49
+#: products/templates/products/product_search_result.html:50
 msgid "price:"
 msgstr "قیمت "
 
-#: products/templates/products/product_search_result.html:70
+#: products/templates/products/product_search_result.html:71
 msgid "details"
 msgstr "جزییات"
 
-#: products/templates/products/product_search_result.html:85
+#: products/templates/products/product_search_result.html:86
 msgid "before"
 msgstr "قبل"
 
-#: products/templates/products/product_search_result.html:106
+#: products/templates/products/product_search_result.html:107
 msgid "next"
 msgstr "بعد"
 
-#: products/templates/products/product_search_result.html:117
+#: products/templates/products/product_search_result.html:118
 msgid "can not find this book !"
 msgstr "کتاب موجود نیست!"
 
-#: products/templates/products/product_search_result.html:119
+#: products/templates/products/product_search_result.html:120
 msgid "sugesstions:"
 msgstr "پیشنهادات"
 
-#: products/templates/products/product_search_result.html:121
+#: products/templates/products/product_search_result.html:122
 msgid "check spells"
 msgstr "املای کلمات را چک کنید."
 
-#: products/templates/products/product_search_result.html:122
+#: products/templates/products/product_search_result.html:123
 msgid "use keywords"
 msgstr "از کلمات کلیدی استفاده کنید."
 
-#: products/templates/products/product_search_result.html:123
+#: products/templates/products/product_search_result.html:124
 msgid "search for book or keywords"
 msgstr "جستجوی نام کتاب یا کلمات کلیدی"
 
-#: products/templates/products/product_search_result.html:128
+#: products/templates/products/product_search_result.html:129
 msgid "search for..."
 msgstr "جستجو برای ..."
 
-#: products/views.py:50
+#: products/views.py:46
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#~ msgid "HISTBusiness_and_Managemen"
+#~ msgstr "کسب‌وکار و مدیریت"
+
+#~ msgid "Architectural_design"
+#~ msgstr "طراحی معماری"
+
+#~ msgid "Interior_design_and_architecture"
+#~ msgstr "طراحی و معماری داخلی"
+
+#~ msgid "Urban_studies_and_design"
+#~ msgstr "مطالعات و طراحی شهری"
+
+#~ msgid "View"
+#~ msgstr "منظر "
+
+#~ msgid "Design_Guide"
+#~ msgstr "راهنمای طراحی"
+
+#~ msgid "History_Criticism_and_Theory"
+#~ msgstr "تاریخ، نقد و نظریه"
+
+#~ msgid "VExpression_Basics_and_Design_Conceptsiew"
+#~ msgstr "بیان، مقدمات و مفاهیم طراحی"
+
+#~ msgid "Digital_and_parametric_design"
+#~ msgstr "طراحی دیجیتال و پارامتریک"
+
+#~ msgid "Sustainability_and_naturalismView"
+#~ msgstr "پایداری و طبیعت‌گرایی"
+
+#~ msgid "Project_sample"
+#~ msgstr "نمونه پروژه"
+
+#~ msgid "Other_books"
+#~ msgstr "سایر کتاب‌ها"
+
+#~ msgid "Packages_and_Sets"
+#~ msgstr "بسته‌ها و مجموعه‌ها"
+
+#~ msgid "raghiei"
+#~ msgstr "رقعی"
+
+#~ msgid "vazehi"
+#~ msgstr "وزیری"
+
+#~ msgid "jeybi"
+#~ msgstr "جیبی"
+
+#~ msgid "rahlei"
+#~ msgstr "رحلی"
+
+#~ msgid "other"
+#~ msgstr "غیره"
+
+#~ msgid "shomiz"
+#~ msgstr "شومیز"
+
+#~ msgid "gard"
+#~ msgstr "سخت"
+
+#~ msgid "Category not found"
+#~ msgstr "دسته‌بندی یافت نشد"
+
+#~ msgid "history"
+#~ msgstr "تاریخ معماری"
+
+#~ msgid "design_theory"
+#~ msgstr "طراحی و نظریه"
+
+#~ msgid "sustainable"
+#~ msgstr "طراحی پایدار"
+
+#~ msgid "urban_planning"
+#~ msgstr "برنامه ریزی شهری"
+
+#~ msgid "misc"
+#~ msgstr "متفرقه"
 
 #~ msgid "categories"
 #~ msgstr " دسته بندی"
