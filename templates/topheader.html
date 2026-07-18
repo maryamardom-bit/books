@@ -12,15 +12,10 @@
                         <a href="{% url 'page:home' %}" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
                             <figure class="logo--normal" style="margin: 0;">
                                 <img class="px-8" src="{% static 'img/kasrapublishing.jpg' %}" style="max-height: 70px; width: auto;" alt="Logo">
-                            </figure>
-                            <span style="display: none; md:display: inline-block;">
-                                <span style="display: block; font-family: 'Georgia', serif; font-size: 18px; font-weight: 700; color: #1a1a2e; letter-spacing: 1px;">کَسری</span>
-                                <span style="display: block; font-family: 'Georgia', serif; font-size: 11px; color: #c9a84c; letter-spacing: 2px;">انتشارات</span>
-                            </span>
+                            </figure>          
                         </a>
                     </div>
                 </div>
-
                 <!-- ستون جستجو -->
                 <div class="col-xl-7 col-lg-7 col-md-6 col-5">
                     <form class="search-form-header" method="get" action="{% url 'product:product_search' %}" style="display: flex; align-items: center; width: 100%; background: #ffffff; border-radius: 30px; border: 2px solid #e8e0d8; transition: all 0.3s ease; padding: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
@@ -46,28 +41,48 @@
                                 <sup class="mini-cart-count" style="position: absolute; top: -6px; right: -8px; background: #c9a84c; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 10px; min-width: 18px; text-align: center; font-weight: 600;">{{ cart|length|default:0 }}</sup>
                             </a>
                         </li>
+                        
+                        <!-- ====== بخش کاربر با تشخیص لاگین ====== -->
                         <li class="header-toolbar__item user-info" style="position: relative; display: inline-block;">
-                            <a href="#" class="header-toolbar__btn" style="color: #4a3a2a; font-size: 22px; transition: color 0.3s ease; text-decoration: none;">
-                                <i class="flaticon flaticon-user"></i>
-                            </a>
-                            <ul class="user-info-menu" style="display: none; position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%); background: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 12px; padding: 8px 0; min-width: 140px; z-index: 1000; border: 1px solid #f0ece8;">
-                                <li style="list-style: none; margin: 0; padding: 0;">
-                                    <a href="{% url 'account_logout' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 12px 12px 0 0;">
-                                        {% trans "logout" %}
-                                    </a>
-                                </li>
-                                <li style="list-style: none; margin: 0; padding: 0;">
-                                    <a href="{% url 'account_login' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center;">
-                                        {% trans "login" %}
-                                    </a>
-                                </li>
-                                <li style="list-style: none; margin: 0; padding: 0;">
-                                    <a href="{% url 'account_signup' %}" style="display: block; padding: 8px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 0 0 12px 12px;">
-                                        {% trans "signup" %}
-                                    </a>
-                                </li>
-                            </ul>
+                            {% if user.is_authenticated %}
+                                <!-- حالت لاگین: نمایش سلام + نام کاربر با هاور خروج -->
+                                <div class="user-dropdown-wrapper" style="position: relative; display: inline-block;">
+                                    <div class="user-dropdown-toggle" style="color: #4a3a2a; font-size: 16px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 5px 12px; border-radius: 25px; transition: all 0.3s ease; background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.15);">
+                                        <span style="font-size: 15px; color: #c9a84c; font-weight: 600;">سلام</span>
+                                        <span style="font-size: 14px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #4a3a2a; font-weight: 500;">{{ user.username|truncatechars:10 }}</span>
+                                        <i class="fas fa-chevron-down" style="font-size: 10px; color: #c9a84c;"></i>
+                                    </div>
+                                    
+                                    <!-- منوی هاور فقط خروج -->
+                                    <div class="logout-hover-menu" style="display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 16px; padding: 6px 0; min-width: 140px; z-index: 1000; border: 1px solid #e8e0d8; padding-top: 6px;">
+                                        <a href="{% url 'account_logout' %}?user_id={{ user.id }}" style="display: block; padding: 10px 24px; color: #8b4513; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 12px; font-weight: 500; margin: 4px 8px;">
+                                            <i class="fas fa-sign-out-alt" style="margin-left: 8px; color: #c9a84c;"></i> {% trans "logout" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <!-- حالت خارج: نمایش  با منوی ورود/ثبت‌نام (هاور) -->
+                                <div class="auth-dropdown-wrapper" style="position: relative; display: inline-block;">
+                                    <div class="auth-dropdown-toggle" style="color: #4a3a2a; font-size: 16px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 5px 12px; border-radius: 25px; transition: all 0.3s ease; background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.15);">
+                                        <span style="font-size: 15px; color: #c9a84c; font-weight: 600;">{% trans "hi" %}</span>
+                                        <span style="font-size: 14px; color: #4a3a2a; font-weight: 500;">{% trans "login" %}</span>
+                                        <i class="fas fa-chevron-down" style="font-size: 10px; color: #c9a84c;"></i>
+                                    </div>
+                                    
+                                    <!-- منوی هاور ورود/ثبت‌نام -->
+                                    <div class="auth-hover-menu" style="display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #ffffff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); border-radius: 16px; padding: 6px 0; min-width: 160px; z-index: 1000; border: 1px solid #e8e0d8; padding-top: 6px;">
+                                        <a href="{% url 'account_login' %}" style="display: block; padding: 10px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 12px 12px 0 0; font-weight: 500; margin: 0 8px;">
+                                            <i class="fas fa-sign-in-alt" style="margin-left: 8px; color: #c9a84c;"></i> {% trans "login" %}
+                                        </a>
+                                        <div style="border-top: 1px solid #f0ece8; margin: 4px 16px;"></div>
+                                        <a href="{% url 'account_signup' %}" style="display: block; padding: 10px 24px; color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.2s ease; text-align: center; border-radius: 0 0 12px 12px; font-weight: 500; margin: 0 8px;">
+                                            <i class="fas fa-user-plus" style="margin-left: 8px; color: #c9a84c;"></i> {% trans "signup" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </li>
+                        <!-- ====== پایان بخش کاربر ====== -->
                     </ul>
                 </div>
             </div>
@@ -113,7 +128,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- موبایل منو -->
             <div class="row">
                 <div class="col-12">
@@ -123,4 +137,106 @@
         </div>
     </div>
 </header>
+
+<!-- ====== اسکریپت مدیریت منوی کاربر ====== -->
+<script>
+    // متغیر برای تایمر هاور
+    let hoverTimer = null;
+    let authHoverTimer = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // ========== منوی خروج (حالت لاگین) ==========
+        const logoutWrapper = document.querySelector('.user-dropdown-wrapper');
+        if (logoutWrapper) {
+            const logoutMenu = logoutWrapper.querySelector('.logout-hover-menu');
+
+            logoutWrapper.addEventListener('mouseenter', function() {
+                clearTimeout(hoverTimer);
+                if (logoutMenu) {
+                    logoutMenu.style.display = 'block';
+                }
+            });
+
+            logoutWrapper.addEventListener('mouseleave', function() {
+                hoverTimer = setTimeout(function() {
+                    if (logoutMenu) {
+                        logoutMenu.style.display = 'none';
+                    }
+                }, 300);
+            });
+
+            if (logoutMenu) {
+                logoutMenu.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimer);
+                    logoutMenu.style.display = 'block';
+                });
+
+                logoutMenu.addEventListener('mouseleave', function() {
+                    hoverTimer = setTimeout(function() {
+                        logoutMenu.style.display = 'none';
+                    }, 300);
+                });
+            }
+        }
+
+        // ========== منوی ورود/ثبت‌نام (حالت خارج) ==========
+        const authWrapper = document.querySelector('.auth-dropdown-wrapper');
+        if (authWrapper) {
+            const authMenu = authWrapper.querySelector('.auth-hover-menu');
+
+            authWrapper.addEventListener('mouseenter', function() {
+                clearTimeout(authHoverTimer);
+                if (authMenu) {
+                    authMenu.style.display = 'block';
+                }
+            });
+
+            authWrapper.addEventListener('mouseleave', function() {
+                authHoverTimer = setTimeout(function() {
+                    if (authMenu) {
+                        authMenu.style.display = 'none';
+                    }
+                }, 300);
+            });
+
+            if (authMenu) {
+                authMenu.addEventListener('mouseenter', function() {
+                    clearTimeout(authHoverTimer);
+                    authMenu.style.display = 'block';
+                });
+
+                authMenu.addEventListener('mouseleave', function() {
+                    authHoverTimer = setTimeout(function() {
+                        authMenu.style.display = 'none';
+                    }, 300);
+                });
+            }
+        }
+    });
+
+    // بستن منوها با کلیک خارج از آنها
+    document.addEventListener('click', function(event) {
+        const userInfo = document.querySelector('.user-info');
+        const logoutMenu = document.querySelector('.logout-hover-menu');
+        const authMenu = document.querySelector('.auth-hover-menu');
+        
+        if (userInfo && !userInfo.contains(event.target)) {
+            if (logoutMenu) logoutMenu.style.display = 'none';
+            if (authMenu) authMenu.style.display = 'none';
+        }
+    });
+
+    // بستن منو با کلید ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const logoutMenu = document.querySelector('.logout-hover-menu');
+            const authMenu = document.querySelector('.auth-hover-menu');
+            if (logoutMenu) logoutMenu.style.display = 'none';
+            if (authMenu) authMenu.style.display = 'none';
+        }
+    });
+</script>
+
+<!-- ====== اضافه کردن Font Awesome برای آیکون‌ها ====== -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- ========== Header End ========== -->
