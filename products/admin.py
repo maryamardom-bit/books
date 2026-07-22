@@ -14,7 +14,7 @@ class CommentsInLine(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
     list_display = ['title','category','author','publisher','price','active',]
-    list_filter = ['category', 'active','book_size','cover_type','publication_year',]
+    list_filter = ['category', 'active','book_size','cover_type','year_of_publication',]
     search_fields = ['title', 'description','author','publisher','isbn']
     list_editable = ['price', 'active']
     readonly_fields = ['datetime_created', 'datetime_modified']
@@ -31,15 +31,17 @@ class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
         }),
         (_('Book Details'), {
             'fields': (
-                'author', 
-                'publisher',
+                'weight',
+                'author',
+                'book_size',
+                'number_of_pages', 
+                'cover_type',
                 'edition', 
+                'publisher',
+                'publication_date',
+                'printing_series',
+                'year_of_publication',
                 'isbn', 
-                'publication_year',
-                'Printing_time', 
-                'pages', 
-                'book_size', 
-                'cover_type'
             ),
             'classes': ('wide', 'extrapretty'),
         }),

@@ -1,0 +1,126 @@
+<!-- templates/account/verification_sent.html -->
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}
+{% trans "ایمیل تأیید ارسال شد" %}
+{% endblock page_title %}
+
+{% block content %}
+<div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-lg-4">
+            <div style="background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); padding: 30px 25px; text-align: center; border: 1px solid #f0ece8;">
+                
+                <!-- آیکون موفقیت -->
+                <div style="font-size: 50px; color: #28a745; margin-bottom: 12px;">
+                    <i class="fas fa-check-circle" style="animation: pulse 2s infinite;"></i>
+                </div>
+                
+                <!-- عنوان -->
+                <h2 style="color: #1a1a2e; font-weight: 700; font-size: 20px; margin-bottom: 8px;">
+                    {% trans "ایمیل تأیید ارسال شد" %}
+                </h2>
+                
+                <!-- متن توضیحی -->
+                <p style="color: #8a7a6a; font-size: 14px; margin-bottom: 12px; line-height: 1.8;">
+                    {% trans "لینک تأیید به آدرس ایمیل شما ارسال شد." %}
+                </p>
+                
+                <div style="background: #f5f0eb; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px;">
+                    <p style="color: #1a1a2e; font-weight: 500; font-size: 14px; margin: 0; direction: ltr;">
+                        <i class="fas fa-envelope" style="color: #c9a84c; margin-left: 6px;"></i>
+                        {{ user.email|default:"ایمیل شما" }}
+                    </p>
+                </div>
+                
+                <p style="color: #8a7a6a; font-size: 13px; margin-bottom: 20px; line-height: 1.6;">
+                    {% trans "لطفاً ایمیل خود را بررسی کرده و روی لینک تأیید کلیک کنید." %}
+                </p>
+                
+                <div style="background: #fef9e7; border-radius: 10px; padding: 10px 14px; margin-bottom: 20px; border: 1px solid #f9e4b7;">
+                    <p style="color: #856404; font-size: 12px; margin: 0;">
+                        <i class="fas fa-info-circle" style="margin-left: 6px;"></i>
+                        {% trans "اگر ایمیلی دریافت نکردید، پوشه اسپم را نیز بررسی کنید." %}
+                    </p>
+                </div>
+                
+                <!-- دکمه‌ها -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="{% url 'account_login' %}" 
+                       style="width: 100%; background: linear-gradient(135deg, #c9a84c, #b8963e); 
+                              color: white; border: none; border-radius: 10px; 
+                              padding: 11px 16px; font-size: 14px; font-weight: 600; 
+                              text-decoration: none; text-align: center; 
+                              transition: all 0.3s ease;">
+                        <i class="fas fa-sign-in-alt" style="margin-left: 6px;"></i>
+                        {% trans "ورود به حساب کاربری" %}
+                    </a>
+                    
+                    <a href="{% url 'account_email' %}" 
+                       style="display: block; width: 100%; background: #f5f0eb; 
+                              color: #4a3a2a; text-decoration: none; border-radius: 10px; 
+                              padding: 11px 16px; font-size: 14px; font-weight: 500; 
+                              text-align: center; transition: all 0.3s ease;">
+                        <i class="fas fa-redo" style="margin-left: 6px;"></i>
+                        {% trans "ارسال مجدد ایمیل" %}
+                    </a>
+                    
+                    <a href="{% url 'page:home' %}" 
+                       style="display: block; width: 100%; background: transparent; 
+                              color: #8a7a6a; text-decoration: none; border-radius: 10px; 
+                              padding: 11px 16px; font-size: 13px; font-weight: 400; 
+                              text-align: center; transition: all 0.3s ease; border: 1px solid #e8e0d8;">
+                        <i class="fas fa-home" style="margin-left: 6px;"></i>
+                        {% trans "بازگشت به صفحه اصلی" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.12); }
+        100% { transform: scale(1); }
+    }
+    
+    a[href*="login"]:hover,
+    a[href*="email"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(201, 168, 76, 0.3);
+    }
+    
+    a[href*="home"]:hover {
+        transform: translateY(-2px);
+        background: #f5f0eb !important;
+        border-color: #c9a84c !important;
+    }
+    
+    @media (max-width: 576px) {
+        .container {
+            padding-top: 30px !important;
+            padding-bottom: 30px !important;
+        }
+        .card {
+            padding: 20px 18px !important;
+        }
+        h2 {
+            font-size: 18px !important;
+        }
+        .fa-check-circle {
+            font-size: 40px !important;
+        }
+        p, button, a {
+            font-size: 13px !important;
+        }
+        button, a {
+            padding: 10px 14px !important;
+            font-size: 13px !important;
+        }
+    }
+</style>
+{% endblock %}

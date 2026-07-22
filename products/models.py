@@ -35,29 +35,32 @@ class Product(models.Model):
         GARD = 'gard', _('گالینگور')
         OTHER = 'other', _('سایر')
 
-    title = models.CharField(max_length=100, verbose_name=_('Product Title'))
+    title = models.CharField(max_length=100, verbose_name=_('product_title'))
     category = models.CharField(
         max_length=20,
         choices=Category.choices,
         default=Category.OTHER,
-        verbose_name=_('Product Category')
+        verbose_name=_('product_category')
     )
-    description = RichTextField(verbose_name=_('Product Description'))
-    price = models.PositiveIntegerField(default=0, verbose_name=_('Product Price'))
-    active = models.BooleanField(default=True, verbose_name=_('Product Active'))
-    image = models.ImageField(upload_to='product/product_cover/', blank=True, verbose_name=_('Product Image'))
-    author = models.CharField(max_length=200, blank=True, verbose_name=_('Author'))
-    publisher = models.CharField(max_length=200, blank=True, verbose_name=_('Publisher'))
-    isbn = models.CharField(max_length=20, blank=True, verbose_name=_('ISBN'))
-    publication_year = models.IntegerField(null=True, blank=True, verbose_name=_('Publication Year'))
-    edition = models.CharField(max_length=50, blank=True, verbose_name=_('Edition'))
-    pages = models.IntegerField(null=True, blank=True, verbose_name=_('Number of Pages'))
-    book_size = models.CharField(max_length=20, choices=BookSize.choices, blank=True, null=True, verbose_name=_('Book Size'))
-    cover_type = models.CharField(max_length=20, choices=CoverType.choices, blank=True, null=True, verbose_name=_('Cover Type'))
-    Printing_time = models.CharField(null=True, blank=True, verbose_name=_('Printing_time'))
+    description = RichTextField(verbose_name=_('description'))
+    price = models.PositiveIntegerField(default=0, verbose_name=_('price'))
+    active = models.BooleanField(default=True, verbose_name=_('active'))
+    image = models.ImageField(upload_to='product/product_cover/', blank=True, verbose_name=_('image'))
+    author = models.CharField(max_length=200, blank=True, verbose_name=_('author'))
+    publisher = models.CharField(max_length=200, blank=True, verbose_name=_('publisher'))
+    isbn = models.CharField(max_length=20, blank=True, verbose_name=_('isbn'))
+    year_of_publication = models.IntegerField(null=True, blank=True, verbose_name=_('year_of_publication'))
+    edition = models.CharField(max_length=50, blank=True, verbose_name=_('edition'))
+    number_of_pages = models.IntegerField(null=True, blank=True, verbose_name=_('number_of_pages'))
+    book_size = models.CharField(max_length=20, choices=BookSize.choices, blank=True, null=True, verbose_name=_('book_size'))
+    cover_type = models.CharField(max_length=20, choices=CoverType.choices, blank=True, null=True, verbose_name=_('cover_type'))
+    publication_date = models.IntegerField(null=True, blank=True, verbose_name=_('publication_date'))
+    printing_series=models.CharField(null=True, blank=True, verbose_name=_('printing_series'))
+    weight= models.IntegerField(null=True, blank=True, verbose_name=_('weight'))
+
    
-    datetime_created = models.DateTimeField(default=timezone.now, verbose_name=_('Date Time of Creation'))
-    datetime_modified = models.DateTimeField(auto_now=True, verbose_name=_('Date Time of Modified'))
+    datetime_created = models.DateTimeField(default=timezone.now, verbose_name=_('datetime_created'))
+    datetime_modified = models.DateTimeField(auto_now=True, verbose_name=_('datetime_modified'))
 
     def __str__(self):
         return self.title
@@ -73,7 +76,7 @@ class ActiveCommentsManager(models.Manager):
 
 class Comment(models.Model):
     PRODUCT_STARS = [
-        (1, _('Very Bad')),
+        (1, _('Very_Bad')),
         (2, _('Bad')), 
         (3, _('Normal')), 
         (4, _('Good')), 
@@ -88,8 +91,8 @@ class Comment(models.Model):
         verbose_name='comment_author',
     )
     
-    body = models.TextField(verbose_name=_('Comment Text'))
-    stars = models.IntegerField(choices=PRODUCT_STARS, verbose_name=_('What is your score?'))
+    body = models.TextField(verbose_name=_('Comment_Text'))
+    stars = models.IntegerField(choices=PRODUCT_STARS, verbose_name=_('What_is_your_score?'))
 
     datetime_created = models.DateTimeField(auto_now_add=True)
     detetime_modified = models.DateTimeField(auto_now=True)
@@ -101,3 +104,4 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return reverse('product_detail', args=[self.product.id])
+    

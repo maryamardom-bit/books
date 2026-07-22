@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 15:40+0000\n"
-"PO-Revision-Date: 2026-07-17 18:27+0330\n"
-"Last-Translator: ثفق قفقف <>\n"
+"POT-Creation-Date: 2026-07-22 16:31+0330\n"
+"PO-Revision-Date: 2026-07-22 17:03+0330\n"
+"Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "اطلاعات اولیه"
 msgid "Book Details"
 msgstr "جزییات "
 
-#: products/admin.py:46
+#: products/admin.py:47
 msgid "Status & Dates"
 msgstr "وضعیت و تاریخ‌ها"
 
@@ -112,108 +112,126 @@ msgid "گالینگور"
 msgstr "گالینگور"
 
 #: products/models.py:38
-msgid "Product Title"
+#| msgid "Product Title"
+msgid "product_title"
 msgstr "نام محصول"
 
 #: products/models.py:43
-msgid "Product Category"
+#| msgid "Product Category"
+msgid "product_category"
 msgstr "دسته بندی محصول"
 
 #: products/models.py:45
-msgid "Product Description"
+#| msgid "Description"
+msgid "description"
 msgstr "توضیحات محصول"
 
 #: products/models.py:46
-msgid "Product Price"
-msgstr "قیمت محصول"
+#| msgid "price:"
+msgid "price"
+msgstr "قیمت "
 
 #: products/models.py:47
-msgid "Product Active"
-msgstr "آیا محصول موجود است؟"
+msgid "active"
+msgstr "فعال"
 
 #: products/models.py:48
-msgid "Product Image"
-msgstr "تصویر محصول"
+msgid "image"
+msgstr "تصویر:"
 
-#: products/models.py:49 products/templates/products/product_detail.html:158
-#: products/templates/products/product_detail.html:253
-msgid "Author"
+#: products/models.py:49
+msgid "author"
 msgstr "نویسنده"
 
-#: products/models.py:50 products/templates/products/product_detail.html:105
-#: products/templates/products/product_detail.html:210
-msgid "Publisher"
-msgstr "ناشر"
+#: products/models.py:50
+msgid "publisher"
+msgstr "ناشر:"
 
-#: products/models.py:51 products/templates/products/product_detail.html:216
-msgid "ISBN"
-msgstr "شابک"
+#: products/models.py:51
+msgid "isbn"
+msgstr "شابک:"
 
-#: products/models.py:52 products/templates/products/product_detail.html:204
-msgid "Publication Year"
-msgstr "سال انتشار"
+#: products/models.py:52
+#| msgid "publication_year"
+msgid "year_of_publication"
+msgstr "سال چاپ:"
 
-#: products/models.py:53 products/templates/products/product_detail.html:172
-msgid "Edition"
-msgstr "مترجم"
+#: products/models.py:53
+msgid "edition"
+msgstr "مترجم:"
 
 #: products/models.py:54
-msgid "Number of Pages"
+#| msgid "Number of Pages"
+msgid "number_of_pages"
 msgstr "تعداد صفحات"
 
-#: products/models.py:55 products/templates/products/product_detail.html:178
-msgid "Book Size"
-msgstr "اندازه کتاب"
+#: products/models.py:55
+msgid "book_size"
+msgstr "قطع:"
 
-#: products/models.py:56 products/templates/products/product_detail.html:192
-msgid "Cover Type"
+#: products/models.py:56
+msgid "cover_type"
 msgstr "نوع صحافی/جلد:"
 
 #: products/models.py:57
-msgid "Printing_time"
+#| msgid "publication_year"
+msgid "publication_date"
+msgstr "تاریخ نشر:"
+
+#: products/models.py:58
+#| msgid "Printing_time"
+msgid "printing_series"
 msgstr "نوبت چاپ:"
 
 #: products/models.py:59
-msgid "Date Time of Creation"
-msgstr "زمان ایجاد محصول"
+msgid "weight"
+msgstr "وزن(گرم):"
 
-#: products/models.py:60
-msgid "Date Time of Modified"
-msgstr "زمان آخرین تغییرات در محصول"
+#: products/models.py:62
+msgid "datetime_created"
+msgstr "زمان_ایجاد:"
 
-#: products/models.py:76
-msgid "Very Bad"
+#: products/models.py:63
+#| msgid "Date Time of Modified"
+msgid "datetime_modified"
+msgstr "زمان آخرین تغییرات در محصول:"
+
+#: products/models.py:79
+#| msgid "Very Bad"
+msgid "Very_Bad"
 msgstr "خیلی بد"
 
-#: products/models.py:77
+#: products/models.py:80
 msgid "Bad"
 msgstr "بد"
 
-#: products/models.py:78
+#: products/models.py:81
 msgid "Normal"
 msgstr "معمولی"
 
-#: products/models.py:79
+#: products/models.py:82
 msgid "Good"
 msgstr "خوب"
 
-#: products/models.py:80
+#: products/models.py:83
 msgid "Perfect"
 msgstr "عالی"
 
-#: products/models.py:83
+#: products/models.py:86
 msgid "Comment_Product"
 msgstr "نظر برای این محصول"
 
-#: products/models.py:91
-msgid "Comment Text"
+#: products/models.py:94
+#| msgid "Comment Text"
+msgid "Comment_Text"
 msgstr "متن دیدگاه"
 
-#: products/models.py:92
-msgid "What is your score?"
+#: products/models.py:95
+#| msgid "What is your score?"
+msgid "What_is_your_score?"
 msgstr "امتیاز شما به این محصول کدام است؟"
 
-#: products/models.py:97
+#: products/models.py:100
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
@@ -232,6 +250,11 @@ msgstr "تومان"
 msgid "Add_to_cart"
 msgstr "اضافه کردن به سبد خرید"
 
+#: products/templates/products/product_detail.html:105
+#: products/templates/products/product_detail.html:210
+msgid "Publisher"
+msgstr "ناشر"
+
 #: products/templates/products/product_detail.html:109
 msgid "Year"
 msgstr "سال"
@@ -239,7 +262,7 @@ msgstr "سال"
 #: products/templates/products/product_detail.html:113
 #: products/templates/products/product_detail.html:184
 msgid "Pages"
-msgstr "صفحه"
+msgstr "تعداد صفحات"
 
 #: products/templates/products/product_detail.html:128
 msgid "Description"
@@ -261,17 +284,42 @@ msgstr "مقدمه کتاب"
 msgid "Book Specifications"
 msgstr "مشخصات کتاب"
 
+#: products/templates/products/product_detail.html:158
+#: products/templates/products/product_detail.html:253
+msgid "Author"
+msgstr "نویسنده"
+
 #: products/templates/products/product_detail.html:165
 msgid "Translator"
 msgstr "مترجم"
+
+#: products/templates/products/product_detail.html:172
+msgid "Edition"
+msgstr "مترجم"
+
+#: products/templates/products/product_detail.html:178
+msgid "Book Size"
+msgstr "اندازه کتاب"
 
 #: products/templates/products/product_detail.html:187
 msgid "pages"
 msgstr "صفحه"
 
+#: products/templates/products/product_detail.html:192
+msgid "Cover Type"
+msgstr "نوع صحافی/جلد:"
+
 #: products/templates/products/product_detail.html:198
 msgid "Printing Time"
-msgstr "نوبت چاپ:"
+msgstr "تاریخ نشر:"
+
+#: products/templates/products/product_detail.html:204
+msgid "Publication Year"
+msgstr "سال انتشار"
+
+#: products/templates/products/product_detail.html:216
+msgid "ISBN"
+msgstr "شابک"
 
 #: products/templates/products/product_detail.html:231
 msgid "Readers' Reviews"
@@ -416,14 +464,26 @@ msgstr "مرور همه کتاب‌ها"
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
 
+#~ msgid "Product Description"
+#~ msgstr "توضیحات محصول"
+
+#~ msgid "Product Price"
+#~ msgstr "قیمت محصول"
+
+#~ msgid "Product Active"
+#~ msgstr "آیا محصول موجود است؟"
+
+#~ msgid "Product Image"
+#~ msgstr "تصویر محصول"
+
+#~ msgid "Date Time of Creation"
+#~ msgstr "زمان ایجاد محصول"
+
 #~ msgid "find it"
 #~ msgstr "پیدا شد"
 
 #~ msgid "without picture"
 #~ msgstr "بدون تصویر"
-
-#~ msgid "price:"
-#~ msgstr "قیمت "
 
 #~ msgid "details"
 #~ msgstr "جزییات"
@@ -568,27 +628,6 @@ msgstr "نظر شما با موفقیت ثبت شد"
 
 #~ msgid "comments"
 #~ msgstr "نظرات"
-
-#~ msgid "author"
-#~ msgstr "نویسنده"
-
-#~ msgid "edition"
-#~ msgstr "مترجم:"
-
-#~ msgid "book_size"
-#~ msgstr "قطع:"
-
-#~ msgid "cover_type"
-#~ msgstr "نوع صحافی/جلد:"
-
-#~ msgid "publication_year"
-#~ msgstr "سال انتشار:"
-
-#~ msgid "publisher"
-#~ msgstr "ناشر:"
-
-#~ msgid "isbn"
-#~ msgstr "شابک:"
 
 #~ msgid "Verified comments"
 #~ msgstr "نظرات تایید شده"

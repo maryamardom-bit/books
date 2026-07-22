@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 15:40+0000\n"
+"POT-Creation-Date: 2026-07-22 16:31+0330\n"
 "PO-Revision-Date: 2026-07-17 19:11+0330\n"
 "Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,112 +107,108 @@ msgstr "فقط یک سابقه همکاری می‌تواند وجود داشت�
 msgid "About Us"
 msgstr "درباره ما"
 
-#: pages/templates/pages/aboutus.html:6 pages/templates/pages/aboutus.html:315
-#: pages/templates/pages/contactus.html:6 pages/templates/pages/orderus.html:6
-#: pages/templates/pages/workingus.html:6
+#: pages/templates/pages/aboutus.html:6 pages/templates/pages/contactus.html:6
+#: pages/templates/pages/orderus.html:6 pages/templates/pages/workingus.html:6
 msgid "Kasra Architecture Bookstore"
 msgstr "کتابفروشی کسری"
 
-#: pages/templates/pages/aboutus.html:324
+#: pages/templates/pages/aboutus.html:323
 msgid "Cooperation"
 msgstr "همکاری"
 
-#: pages/templates/pages/aboutus.html:333
+#: pages/templates/pages/aboutus.html:332
 msgid "Year Established"
 msgstr "سال تأسیس"
 
-#: pages/templates/pages/aboutus.html:337
+#: pages/templates/pages/aboutus.html:336
 msgid "Books Published"
 msgstr "کتاب‌های منتشر شده"
 
-#: pages/templates/pages/aboutus.html:341
+#: pages/templates/pages/aboutus.html:340
 msgid "Authors"
 msgstr "نویسندگان"
 
-#: pages/templates/pages/aboutus.html:345
+#: pages/templates/pages/aboutus.html:344
 msgid "Customer Satisfaction"
 msgstr "رضایت مشتریان"
 
-#: pages/templates/pages/aboutus.html:353
-#: pages/templates/pages/orderus.html:356
+#: pages/templates/pages/aboutus.html:352
+#: pages/templates/pages/orderus.html:355
 msgid "No Information Available"
 msgstr "اطلاعات تماسی موجود نیست"
 
-#: pages/templates/pages/aboutus.html:354
+#: pages/templates/pages/aboutus.html:353
 msgid ""
 "The about us page content is not available at the moment. Please try again "
 "later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
 #: pages/templates/pages/contactus.html:6
-#: pages/templates/pages/contactus.html:281
-#: pages/templates/pages/workingus.html:318
+#: pages/templates/pages/contactus.html:280
+#: pages/templates/pages/workingus.html:317
 msgid "Contact Us"
 msgstr "ارتباط با ما"
 
-#: pages/templates/pages/contactus.html:292
+#: pages/templates/pages/contactus.html:290
 msgid "Address & Contact Information"
 msgstr "آدرس و اطلاعات تماس"
 
-#: pages/templates/pages/contactus.html:299
+#: pages/templates/pages/contactus.html:297
 msgid "Address:"
 msgstr "آدرس:"
 
-#: pages/templates/pages/contactus.html:308
+#: pages/templates/pages/contactus.html:306
 msgid "Postal Code:"
 msgstr "کد پستی:"
 
-#: pages/templates/pages/contactus.html:317
+#: pages/templates/pages/contactus.html:315
 msgid "Phone Number:"
 msgstr "تلفن:"
 
-#: pages/templates/pages/contactus.html:326
+#: pages/templates/pages/contactus.html:324
 msgid "Communication with Sales & Orders Department"
 msgstr "ارتباط با واحد فروش و سفارشات"
 
-#: pages/templates/pages/contactus.html:332
+#: pages/templates/pages/contactus.html:330
 msgid "WhatsApp:"
 msgstr "واتس اپ:"
 
-#: pages/templates/pages/contactus.html:343
+#: pages/templates/pages/contactus.html:339
 msgid "Email:"
 msgstr "ایمیل:"
 
-#: pages/templates/pages/contactus.html:355
+#: pages/templates/pages/contactus.html:348
 msgid "No Contact Information"
 msgstr "اطلاعات تماسی موجود نیست"
 
-#: pages/templates/pages/contactus.html:356
+#: pages/templates/pages/contactus.html:350
 msgid ""
 "Contact information is not available at the moment. Please try again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
-#: pages/templates/pages/contactus.html:365
+#: pages/templates/pages/contactus.html:360
 msgid "Working Hours"
 msgstr "ساعات کاری"
 
-#: pages/templates/pages/contactus.html:371
+#: pages/templates/pages/contactus.html:366
 msgid "Saturday - Thursday:"
 msgstr "شنبه تا پنج‌شنبه:"
 
-#: pages/templates/pages/contactus.html:378
+#: pages/templates/pages/contactus.html:373
 msgid "Friday:"
 msgstr "جمعه:"
 
-#: pages/templates/pages/contactus.html:379
+#: pages/templates/pages/contactus.html:374
 msgid "Closed"
 msgstr "تعطیل"
 
-#: pages/templates/pages/contactus.html:387
-#| msgid "Map Location"
+#: pages/templates/pages/contactus.html:382
 msgid "Our Location"
 msgstr "موقعیت ما"
 
-#: pages/templates/pages/contactus.html:408
+#: pages/templates/pages/contactus.html:392
 msgid "Open in Maps"
 msgstr "نمایش روی نقشه"
 
@@ -220,70 +216,66 @@ msgstr "نمایش روی نقشه"
 msgid "Order Conditions"
 msgstr "شرایط سفارش"
 
-#: pages/templates/pages/orderus.html:327
-msgid "Kasra Architecture Bookstore - Order Guidelines"
-msgstr "کتابفروشی کسری"
-
-#: pages/templates/pages/orderus.html:337
+#: pages/templates/pages/orderus.html:336
 msgid "Fast Delivery"
 msgstr "تحویل سریع"
 
-#: pages/templates/pages/orderus.html:338
+#: pages/templates/pages/orderus.html:337
 msgid "Priority mail delivery for all orders"
 msgstr "تحویل اولویت‌دار پستی برای همه سفارش‌ها"
 
-#: pages/templates/pages/orderus.html:342
+#: pages/templates/pages/orderus.html:341
 msgid "Secure Payment"
 msgstr "پرداخت امن"
 
-#: pages/templates/pages/orderus.html:343
+#: pages/templates/pages/orderus.html:342
 msgid "Safe and secure online payment"
 msgstr "پرداخت آنلاین ایمن و مطمئن"
 
-#: pages/templates/pages/orderus.html:347
+#: pages/templates/pages/orderus.html:346
 msgid "Easy Returns"
 msgstr "بازگشت آسان"
 
-#: pages/templates/pages/orderus.html:348
+#: pages/templates/pages/orderus.html:347
 msgid "Hassle-free return policy"
 msgstr "بازگشت کالا بدون دردسر"
 
-#: pages/templates/pages/orderus.html:357
+#: pages/templates/pages/orderus.html:356
 msgid ""
-"The order conditions page content is not available at the moment. Please try"
-" again later."
+"The order conditions page content is not available at the moment. Please try "
+"again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
 
 #: pages/templates/pages/workingus.html:6
 #: pages/templates/pages/workingus.html:288
 msgid "Collaborate with Us"
 msgstr "همکاری با ما"
 
-#: pages/templates/pages/workingus.html:298
-msgid "Architecture Publishing House"
-msgstr "انتشارات معماری"
-
-#: pages/templates/pages/workingus.html:306
+#: pages/templates/pages/workingus.html:305
 msgid "Join Us"
 msgstr "به ما بپیوندید"
 
-#: pages/templates/pages/workingus.html:314
+#: pages/templates/pages/workingus.html:313
 msgid "Last updated:"
 msgstr "آخرین بروزرسانی"
 
-#: pages/templates/pages/workingus.html:327
+#: pages/templates/pages/workingus.html:326
 msgid "No Cooperation Information"
 msgstr "اطلاعات تماسی موجود نیست"
 
-#: pages/templates/pages/workingus.html:328
+#: pages/templates/pages/workingus.html:327
 msgid ""
 "The cooperation page content is not available at the moment. Please try "
 "again later."
 msgstr ""
-"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان "
-"کنید."
+"محتوای صفحه همکاری در حال حاضر در دسترس نیست. لطفاً بعداً دوباره امتحان کنید."
+
+#~ msgid "Kasra Architecture Bookstore - Order Guidelines"
+#~ msgstr "کتابفروشی کسری"
+
+#~ msgid "Architecture Publishing House"
+#~ msgstr "انتشارات معماری"
 
 #~ msgid "Find Us"
 #~ msgstr "موقعیت مکانی"

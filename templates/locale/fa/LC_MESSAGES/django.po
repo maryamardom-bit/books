@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 14:33+0000\n"
-"PO-Revision-Date: 2026-07-17 18:22+0330\n"
-"Last-Translator: ثفق قفقف <>\n"
+"POT-Creation-Date: 2026-07-22 16:31+0330\n"
+"PO-Revision-Date: 2026-07-22 16:40+0330\n"
+"Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -19,34 +19,43 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: templates/account/confirm_email.html:6
-#: templates/account/confirm_email.html:10
-msgid "Confirm Email Address"
-msgstr "تأیید آدرس ایمیل"
+#: templates/account/confirm_email.html:8
+#: templates/account/confirm_email.html:29
+#: templates/account/confirm_email.html:63
+msgid "تأیید ایمیل"
+msgstr "تأیید ایمیل"
 
-#: templates/account/confirm_email.html:16
-#, python-format
-msgid ""
-"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
-"address for user %(user_display)s."
+#: templates/account/confirm_email.html:31
+msgid "لینک نامعتبر"
 msgstr ""
 
-#: templates/account/confirm_email.html:24
-msgid "Confirm"
-msgstr "تأیید"
-
-#: templates/account/confirm_email.html:30
-#, python-format
+#: templates/account/confirm_email.html:38
 msgid ""
-"Unable to confirm %(email)s because it is already confirmed by a different "
-"account."
+"\n"
+"                        لطفاً برای تأیید آدرس ایمیل زیر کلیک کنید:\n"
+"                        "
 msgstr ""
 
-#: templates/account/confirm_email.html:36
-#, python-format
-msgid ""
-"This email confirmation link expired or is invalid. Please <a "
-"href=\"%(email_url)s\">issue a new email confirmation request</a>."
+#: templates/account/confirm_email.html:50
+msgid "با کلیک روی دکمه زیر، ایمیل شما تأیید می‌شود."
+msgstr ""
+
+#: templates/account/confirm_email.html:72
+msgid "لینک تأیید ایمیل معتبر نیست یا منقضی شده است."
+msgstr ""
+
+#: templates/account/confirm_email.html:77
+msgid "لطفاً دوباره ثبت‌نام کنید یا ایمیل جدیدی دریافت کنید."
+msgstr ""
+
+#: templates/account/confirm_email.html:88
+msgid "ثبت‌نام مجدد"
+msgstr ""
+
+#: templates/account/confirm_email.html:97
+#: templates/account/email_confirmed.html:63
+#: templates/account/verification_sent.html:58
+msgid "ورود به حساب کاربری"
 msgstr ""
 
 #: templates/account/email/email_confirmation_message.txt:4
@@ -60,53 +69,210 @@ msgstr ""
 msgid "please confirm email"
 msgstr "لطفاً ایمیل را تأیید کنید"
 
-#: templates/account/login.html:6
-msgid "log in"
+#: templates/account/email_confirmed.html:8
+msgid "ایمیل با موفقیت تأیید شد"
+msgstr ""
+
+#: templates/account/email_confirmed.html:24
+msgid "ایمیل با موفقیت تأیید شد!"
+msgstr ""
+
+#: templates/account/email_confirmed.html:29
+msgid "آدرس ایمیل شما با موفقیت تأیید شد."
+msgstr ""
+
+#: templates/account/email_confirmed.html:42
+msgid "اکنون می‌توانید از تمام امکانات سایت استفاده کنید."
+msgstr ""
+
+#: templates/account/email_confirmed.html:54
+msgid "رفتن به صفحه اصلی"
+msgstr ""
+
+#: templates/account/login.html:7 templates/account/login.html:23
+#: templates/account/login.html:95
+msgid "log_in"
 msgstr "ورود"
 
-#: templates/account/login.html:15
-msgid "Log In"
-msgstr "ورود"
+#: templates/account/login.html:28
+msgid "welcome!enter your information"
+msgstr "خوش آمدید! اطلاعات خود را وارد کنید"
 
-#: templates/account/login.html:20 templates/topheader.html:60
-msgid "login"
-msgstr "ورود"
+#: templates/account/login.html:39
+msgid "username/passworrd is not correct"
+msgstr "نام کاربری/رمز عبور صحیح نیست"
 
-#: templates/account/login.html:25
-msgid "Don't have an account?"
+#: templates/account/login.html:47
+msgid "email or user_name"
+msgstr "ایمیل/نام کاربری"
+
+#: templates/account/login.html:53
+msgid "enter email or user_name"
+msgstr "ایمیل /نام کاربری را وارد کنید"
+
+#: templates/account/login.html:61
+msgid "password"
+msgstr "رمز عبور"
+
+#: templates/account/login.html:67
+msgid "enter your password"
+msgstr "رمز عبور خود را وارد کنید"
+
+#: templates/account/login.html:79
+msgid "remmember me"
+msgstr "مرا به خاطر بسپار"
+
+#: templates/account/login.html:84
+msgid "forgot password?"
+msgstr "رمز عبور را فراموش کرده‌اید؟"
+
+#: templates/account/login.html:102
+#| msgid "Don't have an account?"
+msgid "haven't account?"
 msgstr "حساب کاربری ندارید؟"
 
-#: templates/account/login.html:26 templates/account/signup.html:19
-msgid "Sign Up"
+#: templates/account/login.html:105
+#| msgid "signup"
+msgid "sign_up"
 msgstr "ثبت نام"
 
-#: templates/account/logout.html:6
-msgid "log out"
+#: templates/account/logout.html:6 templates/account/logout.html:22
+msgid "log_out"
 msgstr "خروج"
 
-#: templates/account/logout.html:15
-msgid "Log Out"
-msgstr "خروج"
-
-#: templates/account/logout.html:16
-msgid "Are you sure you want to logout?"
+#: templates/account/logout.html:27
+#| msgid "Are you sure you want to logout?"
+msgid "are you sure,you want to log out?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
-#: templates/account/logout.html:20
-msgid "Yes"
-msgstr "بله"
+#: templates/account/logout.html:42
+msgid "yes,log_out"
+msgstr "بله،خروج"
 
-#: templates/account/logout.html:21
-msgid "No"
+#: templates/account/logout.html:52
+#| msgid "Cancel"
+msgid "cancel"
 msgstr "خیر"
 
-#: templates/account/signup.html:23
-msgid "Already have an account?"
-msgstr "حساب کاربری ندارید؟"
+#: templates/account/password_reset.html:8
+#: templates/account/password_reset.html:24
+msgid "بازیابی رمز عبور"
+msgstr ""
 
-#: templates/account/signup.html:23
-msgid "Login"
+#: templates/account/password_reset.html:29
+msgid ""
+"آدرس ایمیل خود را وارد کنید تا لینک بازیابی رمز عبور برای شما ارسال شود."
+msgstr ""
+
+#: templates/account/password_reset.html:50
+msgid "ایمیل"
+msgstr ""
+
+#: templates/account/password_reset.html:56
+msgid "ایمیل خود را وارد کنید"
+msgstr ""
+
+#: templates/account/password_reset.html:67
+msgid "ارسال لینک بازیابی"
+msgstr ""
+
+#: templates/account/password_reset.html:74
+msgid "رمز عبور خود را به خاطر دارید؟"
+msgstr ""
+
+#: templates/account/password_reset.html:77
+msgid "ورود"
+msgstr ""
+
+#: templates/account/password_reset.html:81
+msgid "حساب کاربری ندارید؟"
+msgstr ""
+
+#: templates/account/password_reset.html:84
+msgid "ثبت‌نام"
+msgstr ""
+
+#: templates/account/signup.html:7
+msgid "Register for Kasra Publications"
+msgstr "ثبت نام در انتشارات کسری"
+
+#: templates/account/signup.html:23 templates/account/signup.html:113
+msgid "Register"
+msgstr "ثبت نام"
+
+#: templates/account/signup.html:28
+msgid "Join the big family of Kasra Publications."
+msgstr "به خانواده بزرگ انتشارات کسری بپیوندید."
+
+#: templates/account/signup.html:39
+msgid "Please check the following errors:"
+msgstr "لطفاً خطاهای زیر را بررسی کنید:"
+
+#: templates/account/signup.html:52
+msgid "email"
+msgstr "ایمیل"
+
+#: templates/account/signup.html:58
+msgid "Enter your email"
+msgstr "ایمیل خود را وارد کنید"
+
+#: templates/account/signup.html:66 templates/account/signup.html:72
+msgid "Username (optional)"
+msgstr "نام کاربری (اختیاری)"
+
+#: templates/account/signup.html:79
+msgid "Password"
+msgstr "رمز عبور"
+
+#: templates/account/signup.html:85
+msgid "Choose a strong password"
+msgstr "رمز عبور انتخاب کنید"
+
+#: templates/account/signup.html:88
+msgid "At least 8 characters, including letters and numbers"
+msgstr "حداقل ۸ کاراکتر، شامل حروف و اعداد"
+
+#: templates/account/signup.html:96
+msgid "Repeat password"
+msgstr "تکرار رمز عبور"
+
+#: templates/account/signup.html:102
+msgid "Re-enter password"
+msgstr "رمز عبور را دوباره وارد کنید"
+
+#: templates/account/signup.html:120
+msgid "Have you already registered?"
+msgstr "آیا قبلاً ثبت نام کرده‌اید؟"
+
+#: templates/account/signup.html:123
+#| msgid "log in"
+msgid "Log in"
 msgstr "ورود"
+
+#: templates/account/verification_sent.html:7
+#: templates/account/verification_sent.html:23
+msgid "ایمیل تأیید ارسال شد"
+msgstr ""
+
+#: templates/account/verification_sent.html:28
+msgid "لینک تأیید به آدرس ایمیل شما ارسال شد."
+msgstr ""
+
+#: templates/account/verification_sent.html:39
+msgid "لطفاً ایمیل خود را بررسی کرده و روی لینک تأیید کلیک کنید."
+msgstr ""
+
+#: templates/account/verification_sent.html:45
+msgid "اگر ایمیلی دریافت نکردید، پوشه اسپم را نیز بررسی کنید."
+msgstr ""
+
+#: templates/account/verification_sent.html:67
+msgid "ارسال مجدد ایمیل"
+msgstr ""
+
+#: templates/account/verification_sent.html:76
+msgid "بازگشت به صفحه اصلی"
+msgstr ""
 
 #: templates/footer.html:14
 msgid "About Architecture Book"
@@ -230,37 +396,75 @@ msgstr "سایر کتاب‌ها"
 msgid "Packages & Sets"
 msgstr "بسته‌ها و مجموعه‌ها"
 
-#: templates/topheader.html:55
+#: templates/topheader.html:59
 msgid "logout"
 msgstr "خروج"
 
-#: templates/topheader.html:65
+#: templates/topheader.html:67
+msgid "hi"
+msgstr "سلام"
+
+#: templates/topheader.html:68 templates/topheader.html:75
+msgid "login"
+msgstr "ورود"
+
+#: templates/topheader.html:79
 msgid "signup"
 msgstr "ثبت نام"
 
-#: templates/topheader.html:82
+#: templates/topheader.html:98
 msgid "home"
 msgstr "خانه"
 
-#: templates/topheader.html:87
+#: templates/topheader.html:103
 msgid "products"
 msgstr "محصولات"
 
-#: templates/topheader.html:92
+#: templates/topheader.html:108
 msgid "order"
 msgstr "شرایط سفارش"
 
-#: templates/topheader.html:97
+#: templates/topheader.html:113
 msgid "about us"
 msgstr "درباره ما"
 
-#: templates/topheader.html:102
+#: templates/topheader.html:118
 msgid "contact us"
 msgstr "ارتباط با ما"
 
-#: templates/topheader.html:107
+#: templates/topheader.html:123
 msgid "working us"
 msgstr "همکاری با ما"
+
+#~ msgid "Confirm Email Address"
+#~ msgstr "تأیید آدرس ایمیل"
+
+#~ msgid "Confirm"
+#~ msgstr "تأیید"
+
+#~ msgid "Log In"
+#~ msgstr "ورود"
+
+#~ msgid "Sign Up"
+#~ msgstr "ثبت نام"
+
+#~ msgid "log out"
+#~ msgstr "خروج"
+
+#~ msgid "Log Out"
+#~ msgstr "خروج"
+
+#~ msgid "Yes"
+#~ msgstr "بله"
+
+#~ msgid "No"
+#~ msgstr "خیر"
+
+#~ msgid "Already have an account?"
+#~ msgstr "حساب کاربری ندارید؟"
+
+#~ msgid "Login"
+#~ msgstr "ورود"
 
 #~ msgid "Categories"
 #~ msgstr "دسته‌بندی‌ها"
@@ -291,9 +495,6 @@ msgstr "همکاری با ما"
 
 #~ msgid "Yes, Log Out"
 #~ msgstr "بله"
-
-#~ msgid "Cancel"
-#~ msgstr "خیر"
 
 #~ msgid "Are You Sure?"
 #~ msgstr "آیا مطمئن هستید؟"
