@@ -37,14 +37,17 @@
                 <!-- Title -->
                 <h3 class="product-title mb-3" style="font-size: 2.2rem; font-weight: 700; color: #2c3e50; line-height: 1.3;">{{ product.title }}</h3>
 
-                <!-- Author -->
+                <!-- Author & Edition (as Translator) -->
                 <div class="product-author mb-3" style="font-size: 1.1rem; color: #555;">
-                  <i class="fa fa-user ml-2" style="color: #7f8c8d;"></i>
-                  <span style="font-weight: 500;">{{ product.author }}</span>
-                  {% if product.translator %}
-                    <span class="mx-2">|</span>
-                    <i class="fa fa-language ml-2" style="color: #7f8c8d;"></i>
-                    <span style="font-weight: 500;">{{ product.translator }}</span>
+                  <div>
+                    <i class="fa fa-user ml-2" style="color: #7f8c8d;"></i>
+                    <span style="font-weight: 500;">{% trans 'Author' %}: {{ product.author|default:'-' }}</span>
+                  </div>
+                  {% if product.edition %}
+                    <div class="mt-1">
+                      <i class="fa fa-language ml-2" style="color: #7f8c8d;"></i>
+                      <span style="font-weight: 500;">{% trans 'Translator' %}: {{ product.edition }}</span>
+                    </div>
                   {% endif %}
                 </div>
 
@@ -72,6 +75,7 @@
                 <div class="product-short-description mb-4" style="border-right: 3px solid #2c3e50; padding-right: 15px;">
                   <p style="font-size: 1rem; line-height: 1.8; color: #555; font-weight: 400;">{{ product.description|truncatewords:40|safe }}</p>
                 </div>
+                
                 <!-- Price -->
                 <div class="product-price-wrapper mb-4">
                   <span class="money" style="font-size: 2rem; font-weight: 700; color: #2c3e50;">{{ product.price|intcomma:False|translate_number }} {% trans '$' %}</span>
@@ -90,33 +94,35 @@
                     </div>
 
                     <!-- Add to Cart Button -->
-<button type="submit" class="btn-add-to-cart" style="background: #027476; color: #fff; border: none; padding: 3px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s; box-shadow: 0 2px 8px rgba(2, 116, 118, 0.15); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; height: 32px; line-height: 1;">
-  <i class="fa fa-shopping-cart" style="font-size: 10px;"></i>
-  {% trans 'Add_to_cart' %}
-</button>
+                    <button type="submit" class="btn-add-to-cart" style="background: #027476; color: #fff; border: none; padding: 3px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s; box-shadow: 0 2px 8px rgba(2, 116, 118, 0.15); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; height: 32px; line-height: 1;">
+                      <i class="fa fa-shopping-cart" style="font-size: 10px;"></i>
+                      {% trans 'Add_to_cart' %}
+                    </button>
                   </form>
                 </div>
 
-                <!-- Product Meta -->
-                <div class="product-footer-meta pt-3" style="border-top: 1px solid #ecf0f1;">
-                  <div class="d-flex flex-wrap">
-                    <div class="meta-item ml-4 mb-2">
-                      <i class="fa fa-book" style="color: #7f8c8d;"></i>
-                      <span style="color: #555; font-size: 0.9rem;">{% trans 'Publisher' %}: {{ product.publisher }}</span>
-                    </div>
-                    <div class="meta-item ml-4 mb-2">
-                      <i class="fa fa-calendar" style="color: #7f8c8d;"></i>
-                      <span style="color: #555; font-size: 0.9rem;">{% trans 'Year' %}: {{ product.publication_year }}</span>
-                    </div>
-                    <div class="meta-item ml-4 mb-2">
-                      <i class="fa fa-file-text" style="color: #7f8c8d;"></i>
-                      <span style="color: #555; font-size: 0.9rem;">{% trans 'Pages' %}: {{ product.pages }}</span>
-                    </div>
-                  </div>
-                </div>
+                <!-- Product Meta (Complete Info) -->
+                 <div class="product-footer-meta pt-3" style="border-top: 1px solid #ecf0f1;">
+  <div class="d-flex flex-wrap" style="gap: 15px;">
+    <div class="d-flex align-items-center">
+      <i class="fa fa-book" style="color: #7f8c8d;"></i>
+      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Publisher' %}: {{ product.publisher|default:'-' }}</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <i class="fa fa-calendar" style="color: #7f8c8d;"></i>
+      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Year' %}: {{ product.year_of_publication|default:'-' }}</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <i class="fa fa-file-text" style="color: #7f8c8d;"></i>
+      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Pages' %}: {{ product.number_of_pages|default:'-' }}</span>
+    </div>
+  </div>
+</div>
+
               </div>
             </div>
           </div>
+          
           <!-- Tabs Section -->
           <div class="row justify-content-center">
             <div class="col-12">
@@ -150,72 +156,89 @@
                   <!-- Specifications Tab -->
                   <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
                     <div class="table-content table-responsive p-4" style="background: #fafafa; border-radius: 8px;">
-                      <h4 class="mb-4 pb-3" style="border-bottom: 2px solid #2c3e50; color: #2c3e50; font-weight: 700;"><i class="fa fa-list-ul ml-2"></i>{% trans 'Book Specifications' %}</h4>
+                      <h4 class="mb-4 pb-3" style="border-bottom: 2px solid #2c3e50; color: #2c3e50; font-weight: 700;"><i class="fa fa-list-ul ml-2"></i>{% trans 'Complete Specifications' %}</h4>
                       <table class="table table-bordered table-hover shop_attributes" style="background: #fff; border-radius: 8px; overflow: hidden;">
                         <tbody>
+
                           <tr>
-                            <th class="bg-light" style="width: 30%; font-weight: 600; color: #2c3e50;">
+                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-user ml-2"></i>{% trans 'Author' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.author }}</td>
+                            <td style="font-weight: 500;">{{ product.author|default:'-' }}</td>
                           </tr>
-                          {% if product.translator %}
+                          {% if product.edition %}
                             <tr>
                               <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                                <i class="fa fa-language ml-2"></i>{% trans 'Translator' %}
+                                <i class="fa fa-language ml-2"></i>{% trans 'edition' %}
                               </th>
-                              <td style="font-weight: 500;">{{ product.translator }}</td>
+                              <td style="font-weight: 500;">{{ product.edition }}</td>
                             </tr>
                           {% endif %}
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-book ml-2"></i>{% trans 'Edition' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.edition|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-arrows-alt ml-2"></i>{% trans 'Book Size' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.get_book_size_display }}</td>
+                            <td style="font-weight: 500;">{{ product.get_book_size_display|default:'-' }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-file-alt ml-2"></i>{% trans 'Pages' %}
+                              <i class="fa fa-file-alt ml-2"></i>{% trans 'Number of Pages' %}
                             </th>
-                            <td style="font-weight: 500;">
-                              {{ product.pages }} {% trans 'pages' %}
-                            </td>
+                            <td style="font-weight: 500;">{{ product.number_of_pages|default:'-' }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-paint-brush ml-2"></i>{% trans 'Cover Type' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.get_cover_type_display }}</td>
+                            <td style="font-weight: 500;">{{ product.get_cover_type_display|default:'-' }}</td>
+                          </tr>
+                            <tr>
+                            <th class="bg-light" style="width: 35%; font-weight: 600; color: #2c3e50;">
+                              <i class="fa fa-weight ml-2"></i>{% trans 'Weight' %}
+                            </th>
+                            <td style="font-weight: 500;">
+                              {% if product.weight %}
+                                {{ product.weight }} g
+                              {% else %}
+                                <span style="color: #999; font-style: italic;">{% trans 'Not entered' %}</span>
+                              {% endif %}
+                            </td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-calendar-alt ml-2"></i>{% trans 'Printing Time' %}
+                              <i class="fa fa-calendar-alt ml-2"></i>{% trans 'Publication Date' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.Printing_time|default:'-' }}</td>
+                            <td style="font-weight: 500;">
+                              {% if product.publication_date %}
+                                {{ product.publication_date }}
+                              {% else %}
+                                <span style="color: #999; font-style: italic;">{% trans 'Not entered' %}</span>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
+                              <i class="fa fa-calendar-alt ml-2"></i>{% trans 'Printing Series' %}
+                            </th>
+                            <td style="font-weight: 500;">{{ product.printing_series|default:'-' }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-calendar ml-2"></i>{% trans 'Publication Year' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.publication_year }}</td>
+                            <td style="font-weight: 500;">{{ product.year_of_publication|default:'-' }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-building ml-2"></i>{% trans 'Publisher' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.publisher }}</td>
+                            <td style="font-weight: 500;">{{ product.publisher|default:'-' }}</td>
                           </tr>
                           <tr>
                             <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
                               <i class="fa fa-barcode ml-2"></i>{% trans 'ISBN' %}
                             </th>
-                            <td style="font-weight: 500;">{{ product.isbn }}</td>
+                            <td style="font-weight: 500;">{{ product.isbn|default:'-' }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -291,6 +314,7 @@
                           </p>
                         </div>
                       {% endif %}
+                      
                       <!-- Add Review Form -->
                       <div class="review-form-wrapper mt-4 pt-4" style="border-top: 2px solid #ecf0f1;">
                         <div class="row">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-22 16:31+0330\n"
+"POT-Creation-Date: 2026-07-22 20:14+0330\n"
 "PO-Revision-Date: 2026-07-22 16:40+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,12 +127,10 @@ msgid "forgot password?"
 msgstr "رمز عبور را فراموش کرده‌اید؟"
 
 #: templates/account/login.html:102
-#| msgid "Don't have an account?"
 msgid "haven't account?"
 msgstr "حساب کاربری ندارید؟"
 
 #: templates/account/login.html:105
-#| msgid "signup"
 msgid "sign_up"
 msgstr "ثبت نام"
 
@@ -141,7 +139,6 @@ msgid "log_out"
 msgstr "خروج"
 
 #: templates/account/logout.html:27
-#| msgid "Are you sure you want to logout?"
 msgid "are you sure,you want to log out?"
 msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
 
@@ -150,7 +147,6 @@ msgid "yes,log_out"
 msgstr "بله،خروج"
 
 #: templates/account/logout.html:52
-#| msgid "Cancel"
 msgid "cancel"
 msgstr "خیر"
 
@@ -245,7 +241,6 @@ msgid "Have you already registered?"
 msgstr "آیا قبلاً ثبت نام کرده‌اید؟"
 
 #: templates/account/signup.html:123
-#| msgid "log in"
 msgid "Log in"
 msgstr "ورود"
 
@@ -280,13 +275,13 @@ msgstr "درباره فروشگاه"
 
 #: templates/footer.html:18
 msgid ""
-"Welcome to the website and online store of 'Kasri Library' publications. You"
-" can order available products directly from the publisher and use priority "
+"Welcome to the website and online store of 'Kasri Library' publications. You "
+"can order available products directly from the publisher and use priority "
 "mail delivery for all orders."
 msgstr ""
 "به وبسایت و فروشــگاه اینترنتی انتشــارات «کتابــکده کســری» خـوش آمدیــد. "
-"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده "
-"و از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
+"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده و "
+"از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
 
 #: templates/footer.html:28
 msgid "Quick Links"
