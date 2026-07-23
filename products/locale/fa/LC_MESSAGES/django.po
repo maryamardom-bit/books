@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-22 20:14+0330\n"
-"PO-Revision-Date: 2026-07-22 20:19+0330\n"
+"POT-Creation-Date: 2026-07-23 18:49+0330\n"
+"PO-Revision-Date: 2026-07-23 18:54+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,17 +19,85 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: products/admin.py:23
+#: products/admin.py:20 products/models.py:159 products/models.py:296
+msgid "package"
+msgstr "بسته"
+
+#: products/admin.py:21 products/models.py:160 products/models.py:297
+#| msgid "pages"
+msgid "packages"
+msgstr "بسته ها"
+
+#: products/admin.py:33
+msgid "Package"
+msgstr "بسته"
+
+#: products/admin.py:42 products/admin.py:172
+#| msgid "Product Price"
+msgid "Package Price"
+msgstr "قیمت بسته"
+
+#: products/admin.py:55 products/admin.py:115
 msgid "Basic Information"
 msgstr "اطلاعات اولیه"
 
-#: products/admin.py:32
+#: products/admin.py:64
 msgid "Book Details"
 msgstr "جزییات "
 
-#: products/admin.py:48
+#: products/admin.py:80
 msgid "Status & Dates"
 msgstr "وضعیت و تاریخ‌ها"
+
+#: products/admin.py:118 products/templates/products/product_list.html:8
+msgid "Products"
+msgstr "محصولات"
+
+#: products/admin.py:120
+msgid "Select the products that belong to this package"
+msgstr "محصولاتی را که متعلق به این بسته هستند انتخاب کنید"
+
+#: products/admin.py:122
+msgid "Pricing"
+msgstr "قیمت گذاری"
+
+#: products/admin.py:124
+msgid "Set the package price. Original price is auto-calculated."
+msgstr "قیمت بسته را تنظیم کنید. قیمت اصلی به صورت خودکار محاسبه می‌شود."
+
+#: products/admin.py:126
+#| msgid "Status & Dates"
+msgid "Status"
+msgstr "وضعیت و تاریخ‌ها"
+
+#: products/admin.py:143
+#| msgid "No Products Found"
+msgid "Products Count"
+msgstr "تعداد محصولات"
+
+#: products/admin.py:155
+msgid "Original Price"
+msgstr "قیمت اصلی"
+
+#: products/admin.py:185
+msgid "Discount"
+msgstr "تخفیف"
+
+#: products/admin.py:199
+msgid "Savings"
+msgstr "صرفه جویی"
+
+#: products/admin.py:220
+msgid "Activate selected packages"
+msgstr "فعال کردن بسته‌های انتخاب شده"
+
+#: products/admin.py:225
+msgid "Deactivate selected packages"
+msgstr "غیرفعال کردن بسته‌های انتخاب شده"
+
+#: products/admin.py:237
+msgid "apply 10 percent discount"
+msgstr "اعمال 10 درصد تخفیف"
 
 #: products/models.py:12
 msgid "BUSINESS"
@@ -119,19 +187,19 @@ msgstr "نام محصول"
 msgid "product_category"
 msgstr "دسته بندی محصول"
 
-#: products/models.py:45
+#: products/models.py:45 products/models.py:115 products/models.py:253
 msgid "description"
 msgstr "توضیحات محصول"
 
-#: products/models.py:46
+#: products/models.py:46 products/models.py:129 products/models.py:266
 msgid "price"
 msgstr "قیمت "
 
-#: products/models.py:47
+#: products/models.py:47 products/models.py:154 products/models.py:291
 msgid "active"
 msgstr "فعال"
 
-#: products/models.py:48
+#: products/models.py:48 products/models.py:116 products/models.py:254
 msgid "image"
 msgstr "تصویر:"
 
@@ -151,7 +219,7 @@ msgstr "شابک:"
 msgid "year_of_publication"
 msgstr "سال چاپ:"
 
-#: products/models.py:53 products/templates/products/product_detail.html:171
+#: products/models.py:53 products/templates/products/product_detail.html:172
 msgid "edition"
 msgstr "مترجم:"
 
@@ -223,9 +291,76 @@ msgstr "امتیاز شما به این محصول کدام است؟"
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
+#: products/models.py:113 products/models.py:251
+msgid "title"
+msgstr "عنوان"
+
+#: products/models.py:114 products/models.py:252
+msgid "slug"
+msgstr "اسلاگ"
+
+#: products/models.py:122 products/models.py:260
+#| msgid "Products"
+msgid "products"
+msgstr "محصولات"
+
+#: products/models.py:134 products/models.py:270
+msgid "Total price for this package"
+msgstr "قیمت کل این بسته"
+
+#: products/models.py:139 products/models.py:275
+msgid "original price"
+msgstr "قیمت اصلی"
+
+#: products/models.py:144 products/models.py:281
+msgid "Sum of all product prices (auto-calculated)"
+msgstr "جمع قیمت تمام محصولات (محاسبه خودکار)"
+
+#: products/models.py:149 products/models.py:286
+msgid "discount percent"
+msgstr "درصد تخفیف"
+
+#: products/models.py:151 products/models.py:288
+msgid "Discount percentage for this package"
+msgstr "درصد تخفیف برای این بسته"
+
+#: products/models.py:155 products/models.py:292
+#| msgid "datetime_created"
+msgid "created"
+msgstr "زمان_ایجاد:"
+
+#: products/models.py:156 products/models.py:293
+#| msgid "datetime_modified"
+msgid "modified"
+msgstr "زمان آخرین تغییرات در محصول:"
+
+#: products/templates/products/category_list.html:6
+#| msgid "categories"
+msgid "Categories"
+msgstr " دسته بندی"
+
+#: products/templates/products/category_list.html:244
+#| msgid "categories"
+msgid "Book Categories"
+msgstr "دسته بندی کتاب ها"
+
+#: products/templates/products/category_list.html:245
+msgid "Discover our curated collection of architectural books"
+msgstr "مجموعه منتخب ما از کتاب‌های معماری را کشف کنید"
+
+#: products/templates/products/category_list.html:254
+#| msgid "book_size"
+msgid "books"
+msgstr "کتاب ها"
+
+#: products/templates/products/category_list.html:258
+#| msgid "categories"
+msgid "No categories found"
+msgstr "هیچ دسته بندی ای یافت نشد"
+
 #: products/templates/products/product_detail.html:44
-#: products/templates/products/product_detail.html:164
-#: products/templates/products/product_detail.html:275
+#: products/templates/products/product_detail.html:165
+#: products/templates/products/product_detail.html:276
 msgid "Author"
 msgstr "نویسنده"
 
@@ -249,7 +384,7 @@ msgid "Add_to_cart"
 msgstr "اضافه کردن به سبد خرید"
 
 #: products/templates/products/product_detail.html:109
-#: products/templates/products/product_detail.html:232
+#: products/templates/products/product_detail.html:233
 msgid "Publisher"
 msgstr "ناشر"
 
@@ -261,107 +396,98 @@ msgstr "سال"
 msgid "Pages"
 msgstr "تعداد صفحات"
 
-#: products/templates/products/product_detail.html:133
+#: products/templates/products/product_detail.html:134
 msgid "Description"
 msgstr "توضیحات محصول"
 
-#: products/templates/products/product_detail.html:137
+#: products/templates/products/product_detail.html:138
 msgid "Specifications"
 msgstr "مشخصات "
 
-#: products/templates/products/product_detail.html:141
+#: products/templates/products/product_detail.html:142
 msgid "Reviews"
 msgstr "نقد و بررسی"
 
-#: products/templates/products/product_detail.html:150
+#: products/templates/products/product_detail.html:151
 msgid "Book Introduction"
 msgstr "مقدمه کتاب"
 
-#: products/templates/products/product_detail.html:158
-#| msgid "Book Specifications"
+#: products/templates/products/product_detail.html:159
 msgid "Complete Specifications"
 msgstr "مشخصات کتاب"
 
-#: products/templates/products/product_detail.html:178
+#: products/templates/products/product_detail.html:179
 msgid "Book Size"
 msgstr "اندازه کتاب"
 
-#: products/templates/products/product_detail.html:184
-#| msgid "number_of_pages"
+#: products/templates/products/product_detail.html:185
 msgid "Number of Pages"
 msgstr "تعداد صفحات"
 
-#: products/templates/products/product_detail.html:190
+#: products/templates/products/product_detail.html:191
 msgid "Cover Type"
 msgstr "نوع صحافی/جلد:"
 
-#: products/templates/products/product_detail.html:196
-#| msgid "weight"
+#: products/templates/products/product_detail.html:197
 msgid "Weight"
 msgstr "وزن(گرم):"
 
-#: products/templates/products/product_detail.html:202
-#: products/templates/products/product_detail.html:214
+#: products/templates/products/product_detail.html:203
+#: products/templates/products/product_detail.html:215
 msgid "Not entered"
 msgstr "-"
 
-#: products/templates/products/product_detail.html:208
-#| msgid "Publication Year"
+#: products/templates/products/product_detail.html:209
 msgid "Publication Date"
 msgstr "سال انتشار:"
 
-#: products/templates/products/product_detail.html:220
-#| msgid "printing_series"
+#: products/templates/products/product_detail.html:221
 msgid "Printing Series"
 msgstr "نوبت چاپ:"
 
-#: products/templates/products/product_detail.html:226
+#: products/templates/products/product_detail.html:227
 msgid "Publication Year"
 msgstr "سال انتشار"
 
-#: products/templates/products/product_detail.html:238
+#: products/templates/products/product_detail.html:239
 msgid "ISBN"
 msgstr "شابک"
 
-#: products/templates/products/product_detail.html:253
+#: products/templates/products/product_detail.html:254
 msgid "Readers' Reviews"
 msgstr "نظرات خوانندگان"
 
-#: products/templates/products/product_detail.html:309
+#: products/templates/products/product_detail.html:310
 msgid "No reviews yet for this book."
 msgstr "هنوز نظری برای این کتاب ثبت نشده است."
 
-#: products/templates/products/product_detail.html:312
+#: products/templates/products/product_detail.html:313
 msgid "Be the first to share your opinion!"
 msgstr "شما می‌توانید اولین نفری باشید که نظر خود را به اشتراک می‌گذارد!"
 
-#: products/templates/products/product_detail.html:324
+#: products/templates/products/product_detail.html:325
 msgid "Write Your Review"
 msgstr "نظر خود را بنویسید"
 
-#: products/templates/products/product_detail.html:330
+#: products/templates/products/product_detail.html:331
 msgid "Submit Review"
 msgstr "ارسال نظر"
 
-#: products/templates/products/product_detail.html:333
+#: products/templates/products/product_detail.html:334
 msgid "Your review will be published after moderation"
 msgstr "نظر شما پس از بررسی منتشر خواهد شد."
 
-#: products/templates/products/product_detail.html:341
+#: products/templates/products/product_detail.html:342
 msgid "Please"
 msgstr "لطفاً"
 
-#: products/templates/products/product_detail.html:342
+#: products/templates/products/product_detail.html:343
 msgid "Log in to your account"
 msgstr "وارد حساب کاربری خود شوید"
 
-#: products/templates/products/product_detail.html:343
+#: products/templates/products/product_detail.html:344
 msgid "to write a review"
 msgstr "برای نوشتن نظر"
-
-#: products/templates/products/product_list.html:8
-msgid "Products"
-msgstr "محصولات"
 
 #: products/templates/products/product_list.html:8
 #: products/templates/products/product_search_result.html:8
@@ -469,17 +595,11 @@ msgstr "نظر شما با موفقیت ثبت شد"
 #~ msgid "Edition"
 #~ msgstr "مترجم"
 
-#~ msgid "pages"
-#~ msgstr "صفحه"
-
 #~ msgid "Printing Time"
 #~ msgstr "تاریخ نشر:"
 
 #~ msgid "Product Description"
 #~ msgstr "توضیحات محصول"
-
-#~ msgid "Product Price"
-#~ msgstr "قیمت محصول"
 
 #~ msgid "Product Active"
 #~ msgstr "آیا محصول موجود است؟"
@@ -630,9 +750,6 @@ msgstr "نظر شما با موفقیت ثبت شد"
 
 #~ msgid "misc"
 #~ msgstr "متفرقه"
-
-#~ msgid "categories"
-#~ msgstr " دسته بندی"
 
 #~ msgid "Additional information"
 #~ msgstr "اطلاعات تکمیلی"

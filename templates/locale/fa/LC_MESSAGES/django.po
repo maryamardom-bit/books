@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-22 20:14+0330\n"
+"POT-Creation-Date: 2026-07-23 18:49+0330\n"
 "PO-Revision-Date: 2026-07-22 16:40+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,7 +311,7 @@ msgstr "اطلاعات تماس"
 msgid "Sat - Thu: 9:00 - 14:00"
 msgstr "شنبه - پنجشنبه:  14:00- 9:00"
 
-#: templates/footer.html:97 templates/home.html:6
+#: templates/footer.html:97 templates/home.html:355
 msgid "Kasra Architecture Bookstore"
 msgstr "کتابفروشی کسری"
 
@@ -327,69 +327,45 @@ msgstr "معماری"
 msgid "Home"
 msgstr "خانه"
 
-#: templates/home.html:276
-msgid "Discover our curated collection of architectural books"
+#: templates/home.html:356
+#, fuzzy
+#| msgid "Discover our curated collection of architectural books"
+msgid "Discover the finest collection of architecture and design books"
 msgstr "کلکسیون منتخب کتاب‌های معماری "
 
-#: templates/home.html:285
-msgid "Business & Management"
-msgstr "کسب‌وکار و مدیریت"
-
-#: templates/home.html:286 templates/home.html:294 templates/home.html:302
-#: templates/home.html:310 templates/home.html:318 templates/home.html:326
-#: templates/home.html:334 templates/home.html:342 templates/home.html:350
-#: templates/home.html:358 templates/home.html:366 templates/home.html:374
-#: templates/home.html:382
-msgid "books"
-msgstr "کتاب ها"
-
-#: templates/home.html:293
-msgid "Architectural Design"
-msgstr "طراحی معماری"
-
-#: templates/home.html:301
-msgid "Interior Design"
-msgstr "طراحی و معماری داخلی"
-
-#: templates/home.html:309
-msgid "Urban Studies"
-msgstr "مطالعات و طراحی شهری"
-
-#: templates/home.html:317
-msgid "Landscape"
-msgstr "منظر (لنداسکیپ)"
-
-#: templates/home.html:325
-msgid "Design Guide"
-msgstr "راهنمای طراحی"
-
-#: templates/home.html:333
-msgid "History & Theory"
-msgstr "طراحی و نظریه"
-
-#: templates/home.html:341
-msgid "Design Basics"
-msgstr "بیان، مقدمات و مفاهیم طراحی"
-
-#: templates/home.html:349
-msgid "Digital & Parametric"
-msgstr "طراحی دیجیتال و پارامتریک"
-
-#: templates/home.html:357
-msgid "Sustainability"
-msgstr "پایداری و طبیعت‌گرایی"
-
 #: templates/home.html:365
-msgid "Project Samples"
-msgstr "نمونه پروژه"
+msgid "New Releases"
+msgstr ""
+
+#: templates/home.html:366
+#, fuzzy
+#| msgid "Kasra Architecture Bookstore"
+msgid "Latest architectural books"
+msgstr "کتابفروشی کسری"
 
 #: templates/home.html:373
-msgid "Other Books"
-msgstr "سایر کتاب‌ها"
+msgid "Categories"
+msgstr "دسته‌بندی‌ها"
 
-#: templates/home.html:381
+#: templates/home.html:374
+msgid "Browse by subject"
+msgstr ""
+
+#: templates/home.html:382
 msgid "Packages & Sets"
 msgstr "بسته‌ها و مجموعه‌ها"
+
+#: templates/home.html:383
+msgid "Curated collections"
+msgstr ""
+
+#: templates/home.html:390
+msgid "On Sale"
+msgstr ""
+
+#: templates/home.html:391
+msgid "Best discounts"
+msgstr ""
 
 #: templates/topheader.html:59
 msgid "logout"
@@ -431,6 +407,45 @@ msgstr "ارتباط با ما"
 msgid "working us"
 msgstr "همکاری با ما"
 
+#~ msgid "Business & Management"
+#~ msgstr "کسب‌وکار و مدیریت"
+
+#~ msgid "books"
+#~ msgstr "کتاب ها"
+
+#~ msgid "Architectural Design"
+#~ msgstr "طراحی معماری"
+
+#~ msgid "Interior Design"
+#~ msgstr "طراحی و معماری داخلی"
+
+#~ msgid "Urban Studies"
+#~ msgstr "مطالعات و طراحی شهری"
+
+#~ msgid "Landscape"
+#~ msgstr "منظر (لنداسکیپ)"
+
+#~ msgid "Design Guide"
+#~ msgstr "راهنمای طراحی"
+
+#~ msgid "History & Theory"
+#~ msgstr "طراحی و نظریه"
+
+#~ msgid "Design Basics"
+#~ msgstr "بیان، مقدمات و مفاهیم طراحی"
+
+#~ msgid "Digital & Parametric"
+#~ msgstr "طراحی دیجیتال و پارامتریک"
+
+#~ msgid "Sustainability"
+#~ msgstr "پایداری و طبیعت‌گرایی"
+
+#~ msgid "Project Samples"
+#~ msgstr "نمونه پروژه"
+
+#~ msgid "Other Books"
+#~ msgstr "سایر کتاب‌ها"
+
 #~ msgid "Confirm Email Address"
 #~ msgstr "تأیید آدرس ایمیل"
 
@@ -460,9 +475,6 @@ msgstr "همکاری با ما"
 
 #~ msgid "Login"
 #~ msgstr "ورود"
-
-#~ msgid "Categories"
-#~ msgstr "دسته‌بندی‌ها"
 
 #~ msgid "Architecture Categories"
 #~ msgstr "دسته‌بندی‌های معماری"
