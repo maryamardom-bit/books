@@ -14,7 +14,7 @@ class CommentsInLine(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
     list_display = ['title','category','author','publisher','price','active',]
-    list_filter = ['category', 'active','book_size','cover_type','year_of_publication',]
+    list_filter = ['category', 'active','book_size','cover_type','year_of_publication','datetime_created']
     search_fields = ['title', 'description','author','publisher','isbn']
     list_editable = ['price', 'active']
     readonly_fields = ['datetime_created', 'datetime_modified']

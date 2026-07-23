@@ -8,7 +8,9 @@ urlpatterns = [
     path('<int:pk>/', views.ProductDetailView.as_view(), name='product_detail'),
     path('comment/<int:product_id>/', views.CommentCreateView.as_view(), name='comment_create'),
     path('search/', views.ProductSearchView.as_view(), name='product_search'),
-    path('category/<str:category>/', views.product_list_by_category, name='product_list_by_category'),
+    path('categories/', views.category_list, name='product_category'),
+    path('categories/<str:category>/', views.product_list_by_category, name='product_list_by_category'),
+
 ]
 
 

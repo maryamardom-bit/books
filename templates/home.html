@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block page_title %}
-{% trans "Home" %} | {% trans "Kasra Architecture Bookstore" %}
+{% trans "Home" %}
 {% endblock %}
 
 {% block extra_css %}
@@ -12,11 +12,18 @@
     .home-section {
         background: #faf8f6;
         padding: 30px 0 60px;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .home-section .container {
+        width: 100%;
     }
 
     .home-section .section-header {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 50px;
     }
 
     .home-section .section-header .section-badge {
@@ -59,121 +66,184 @@
         border-radius: 2px;
     }
 
-    /* ===== گرید دسته‌بندی‌ها ===== */
-    .category-grid {
+    /* ===== گرید اصلی ===== */
+    .main-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
     }
 
-    .category-card {
+    .main-card {
         background: #ffffff;
-        padding: 28px 16px 22px;
+        padding: 40px 20px 35px;
         text-align: center;
         border: 1px solid #f0ece8;
-        border-radius: 12px;
+        border-radius: 16px;
         transition: all 0.4s ease;
-        cursor: pointer;
         text-decoration: none;
         color: #1a1a2e;
         position: relative;
         overflow: hidden;
+        cursor: pointer;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    .category-card::before {
+    .main-card::before {
         content: '';
         position: absolute;
         top: 0;
         right: 0;
         left: 0;
-        height: 3px;
+        height: 4px;
         background: #c9a84c;
         transform: scaleX(0);
         transition: transform 0.4s ease;
         transform-origin: center;
     }
 
-    .category-card:hover::before {
+    .main-card:hover::before {
         transform: scaleX(1);
     }
 
-    .category-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    .main-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 50px rgba(0, 0, 0, 0.08);
         border-color: #c9a84c;
     }
 
-    .category-card .cat-icon {
-        font-size: 32px;
-        margin-bottom: 12px;
+    .main-card .card-icon {
+        font-size: 44px;
+        margin-bottom: 16px;
         display: block;
         transition: transform 0.4s ease;
     }
 
-    .category-card:hover .cat-icon {
+    .main-card:hover .card-icon {
         transform: scale(1.1) rotate(-3deg);
     }
 
-    .category-card .cat-name {
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        font-family: 'Georgia', serif;
-        display: block;
-        color: #1a1a2e;
-        line-height: 1.4;
-    }
-
-    .category-card .cat-count {
-        display: block;
-        font-size: 12px;
-        color: #8a7a6a;
-        margin-top: 6px;
-        font-weight: 300;
-    }
-
-    .category-card .cat-count strong {
-        color: #c9a84c;
+    .main-card .card-title {
+        font-size: 18px;
         font-weight: 600;
+        font-family: 'Georgia', serif;
+        color: #1a1a2e;
+        display: block;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
     }
 
-    .category-card .cat-line {
+    .main-card .card-subtitle {
+        font-size: 13px;
+        color: #8a7a6a;
+        font-weight: 300;
+        display: block;
+    }
+
+    .main-card .card-line {
         display: block;
         width: 30px;
         height: 2px;
         background: #c9a84c;
-        margin: 10px auto 0;
+        margin: 12px auto 0;
         transition: all 0.4s ease;
         opacity: 0;
         border-radius: 2px;
     }
 
-    .category-card:hover .cat-line {
+    .main-card:hover .card-line {
         opacity: 1;
         width: 50px;
     }
 
-    /* ===== ریسپانسیو ===== */
-    @media (max-width: 1200px) {
-        .category-grid {
-            gap: 16px;
-        }
+    /* ===== رنگ‌های متفاوت برای هر باکس ===== */
+    .main-card:nth-child(1) {
+        border-top: 4px solid #c9a84c;
+    }
+    .main-card:nth-child(2) {
+        border-top: 4px solid #4a90d9;
+    }
+    .main-card:nth-child(3) {
+        border-top: 4px solid #27ae60;
+    }
+    .main-card:nth-child(4) {
+        border-top: 4px solid #e67e22;
     }
 
+    .main-card:nth-child(1):hover {
+        border-color: #c9a84c;
+    }
+    .main-card:nth-child(2):hover {
+        border-color: #4a90d9;
+    }
+    .main-card:nth-child(3):hover {
+        border-color: #27ae60;
+    }
+    .main-card:nth-child(4):hover {
+        border-color: #e67e22;
+    }
+
+    .main-card:nth-child(1)::before {
+        background: #c9a84c;
+    }
+    .main-card:nth-child(2)::before {
+        background: #4a90d9;
+    }
+    .main-card:nth-child(3)::before {
+        background: #27ae60;
+    }
+    .main-card:nth-child(4)::before {
+        background: #e67e22;
+    }
+
+    .main-card:nth-child(1) .card-line {
+        background: #c9a84c;
+    }
+    .main-card:nth-child(2) .card-line {
+        background: #4a90d9;
+    }
+    .main-card:nth-child(3) .card-line {
+        background: #27ae60;
+    }
+    .main-card:nth-child(4) .card-line {
+        background: #e67e22;
+    }
+
+    /* ===== ریسپانسیو ===== */
     @media (max-width: 992px) {
-        .category-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+        .main-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 700px;
         }
 
         .home-section .section-header h2 {
             font-size: 28px;
+        }
+
+        .main-card {
+            min-height: 170px;
+            padding: 30px 16px 25px;
+        }
+
+        .main-card .card-icon {
+            font-size: 36px;
+        }
+
+        .main-card .card-title {
+            font-size: 16px;
         }
     }
 
     @media (max-width: 768px) {
         .home-section {
             padding: 20px 0 40px;
+            min-height: auto;
         }
 
         .home-section .section-header h2 {
@@ -184,53 +254,32 @@
             font-size: 14px;
         }
 
-        .category-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        .main-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            max-width: 100%;
         }
 
-        .category-card {
-            padding: 20px 12px 16px;
+        .main-card {
+            min-height: 150px;
+            padding: 24px 14px 20px;
         }
 
-        .category-card .cat-icon {
-            font-size: 26px;
-            margin-bottom: 8px;
+        .main-card .card-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
         }
 
-        .category-card .cat-name {
+        .main-card .card-title {
+            font-size: 14px;
+        }
+
+        .main-card .card-subtitle {
             font-size: 12px;
-        }
-
-        .category-card .cat-count {
-            font-size: 11px;
         }
     }
 
     @media (max-width: 576px) {
-        .category-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .category-card {
-            padding: 16px 10px 14px;
-        }
-
-        .category-card .cat-icon {
-            font-size: 22px;
-            margin-bottom: 6px;
-        }
-
-        .category-card .cat-name {
-            font-size: 11px;
-            letter-spacing: 0.3px;
-        }
-
-        .category-card .cat-count {
-            font-size: 10px;
-        }
-
         .home-section .section-header h2 {
             font-size: 20px;
         }
@@ -239,28 +288,58 @@
             font-size: 10px;
             padding: 3px 14px;
         }
-    }
 
-    @media (max-width: 400px) {
-        .category-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+        .main-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
 
-        .category-card {
-            padding: 12px 8px 10px;
+        .main-card {
+            min-height: 120px;
+            padding: 18px 10px 16px;
+            border-radius: 12px;
         }
 
-        .category-card .cat-icon {
-            font-size: 18px;
-            margin-bottom: 4px;
+        .main-card .card-icon {
+            font-size: 26px;
+            margin-bottom: 6px;
         }
 
-        .category-card .cat-name {
+        .main-card .card-title {
+            font-size: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .main-card .card-subtitle {
             font-size: 10px;
         }
 
-        .category-card .cat-count {
+        .main-card .card-line {
+            margin-top: 8px;
+            height: 2px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .main-grid {
+            gap: 8px;
+        }
+
+        .main-card {
+            min-height: 100px;
+            padding: 14px 8px 12px;
+        }
+
+        .main-card .card-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .main-card .card-title {
+            font-size: 10px;
+        }
+
+        .main-card .card-subtitle {
             font-size: 9px;
         }
     }
@@ -268,119 +347,48 @@
 {% endblock %}
 
 {% block content %}
-<!-- ===== بخش دسته‌بندی‌ها ===== -->
+<!-- ===== صفحه اصلی ===== -->
 <section class="home-section">
     <div class="container">
-        <!-- هدر بخش -->
+        <!-- هدر اصلی -->
         <div class="section-header">
-            <p>{% trans "Discover our curated collection of architectural books" %}</p>
+            <h2>{% trans "Kasra Architecture Bookstore" %}</h2>
+            <p>{% trans "Discover the finest collection of architecture and design books" %}</p>
             <div class="header-line"></div>
         </div>
 
-        <!-- گرید دسته‌بندی‌ها -->
-        <div class="category-grid">
-            <!-- BUSINESS -->
-            <a href="{% url 'product:product_list_by_category' category='BUSINESS' %}" class="category-card">
-                <span class="cat-icon">💼</span>
-                <span class="cat-name">{% trans "Business & Management" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
+        <!-- ===== گرید ۴ باکس اصلی ===== -->
+        <div class="main-grid">
+            <!-- ۱. تازه‌های نشر -->
+            <a href="{% url 'product:product_list' %}?sort=-datetime_created" class="main-card">
+                <span class="card-icon">📖</span>
+                <span class="card-title">{% trans "New Releases" %}</span>
+                <span class="card-subtitle">{% trans "Latest architectural books" %}</span>
+                <span class="card-line"></span>
             </a>
 
-            <!-- ARCH_DESIGN -->
-            <a href="{% url 'product:product_list_by_category' category='ARCH_DESIGN' %}" class="category-card">
-                <span class="cat-icon">🏗️</span>
-                <span class="cat-name">{% trans "Architectural Design" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
+            <!-- ۲. دسته‌بندی محصولات -->
+            <a href="{% url 'product:product_category' %}" class="main-card">
+                <span class="card-icon">📚</span>
+                <span class="card-title">{% trans "Categories" %}</span>
+                <span class="card-subtitle">{% trans "Browse by subject" %}</span>
+                <span class="card-line"></span>
             </a>
 
-            <!-- INTERIOR -->
-            <a href="{% url 'product:product_list_by_category' category='INTERIOR' %}" class="category-card">
-                <span class="cat-icon">🛋️</span>
-                <span class="cat-name">{% trans "Interior Design" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
+            <!-- ۳. بسته‌ها و مجموعه‌ها -->
+            <a href="{% url 'product:product_list_by_category' category='PACKAGES' %}" class="main-card">
+                <span class="card-icon">📦</span>
+                <span class="card-title">{% trans "Packages & Sets" %}</span>
+                <span class="card-subtitle">{% trans "Curated collections" %}</span>
+                <span class="card-line"></span>
             </a>
 
-            <!-- URBAN -->
-            <a href="{% url 'product:product_list_by_category' category='URBAN' %}" class="category-card">
-                <span class="cat-icon">🏙️</span>
-                <span class="cat-name">{% trans "Urban Studies" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- LANDSCAPE -->
-            <a href="{% url 'product:product_list_by_category' category='LANDSCAPE' %}" class="category-card">
-                <span class="cat-icon">🌳</span>
-                <span class="cat-name">{% trans "Landscape" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- DESIGN_GUIDE -->
-            <a href="{% url 'product:product_list_by_category' category='DESIGN_GUIDE' %}" class="category-card">
-                <span class="cat-icon">📖</span>
-                <span class="cat-name">{% trans "Design Guide" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- HISTORY -->
-            <a href="{% url 'product:product_list_by_category' category='HISTORY' %}" class="category-card">
-                <span class="cat-icon">🏛️</span>
-                <span class="cat-name">{% trans "History & Theory" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- DESIGN_BASICS -->
-            <a href="{% url 'product:product_list_by_category' category='DESIGN_BASICS' %}" class="category-card">
-                <span class="cat-icon">✏️</span>
-                <span class="cat-name">{% trans "Design Basics" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- DIGITAL -->
-            <a href="{% url 'product:product_list_by_category' category='DIGITAL' %}" class="category-card">
-                <span class="cat-icon">💻</span>
-                <span class="cat-name">{% trans "Digital & Parametric" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- SUSTAIN -->
-            <a href="{% url 'product:product_list_by_category' category='SUSTAIN' %}" class="category-card">
-                <span class="cat-icon">🌿</span>
-                <span class="cat-name">{% trans "Sustainability" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- SAMPLES -->
-            <a href="{% url 'product:product_list_by_category' category='SAMPLES' %}" class="category-card">
-                <span class="cat-icon">📐</span>
-                <span class="cat-name">{% trans "Project Samples" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- OTHER -->
-            <a href="{% url 'product:product_list_by_category' category='OTHER' %}" class="category-card">
-                <span class="cat-icon">📦</span>
-                <span class="cat-name">{% trans "Other Books" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
-            </a>
-
-            <!-- PACKAGES -->
-            <a href="{% url 'product:product_list_by_category' category='PACKAGES' %}" class="category-card">
-                <span class="cat-icon">📚</span>
-                <span class="cat-name">{% trans "Packages & Sets" %}</span>
-                <span class="cat-count"><strong>0</strong> {% trans "books" %}</span>
-                <span class="cat-line"></span>
+            <!-- ۴. تخفیف‌دارها -->
+            <a href="{% url 'product:product_list' %}?discount=true" class="main-card">
+                <span class="card-icon">🏷️</span>
+                <span class="card-title">{% trans "On Sale" %}</span>
+                <span class="card-subtitle">{% trans "Best discounts" %}</span>
+                <span class="card-line"></span>
             </a>
         </div>
     </div>

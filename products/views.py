@@ -14,7 +14,7 @@ from cart.forms import AddToCartProductForm
 
 class ProductListView(generic.ListView):
     model = Product
-    queryset = Product.objects.filter(active=True)
+    queryset = Product.objects.filter(active=True).order_by('-datetime_created')
     paginate_by = 12 
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
@@ -76,6 +76,45 @@ class ProductSearchView(generic.ListView):
         context['query'] = self.request.GET.get('q', '')
         context['results_count'] = self.get_queryset().count()
         return context
+
+def category_list(request):
+    """
+    نمایش همه دسته‌بندی‌ها در یک صفحه گرید
+    """
+    categories = []
+    
+    # دریافت همه دسته‌بندی‌ها از مدل
+    for category_code, category_name in Product.Category.choices:
+        # شمارش کتاب‌های هر دسته
+        product_count = Product.objects.filter(category=category_code, active=True).count()
+        
+        # دیکشنری آیکون‌ها
+        icons = {
+            'BUSINESS': '💼',
+            'ARCH_DESIGN': '🏗️',
+            'INTERIOR': '🛋️',
+            'URBAN': '🏙️',
+            'LANDSCAPE': '🌳',
+            'DESIGN_GUIDE': '📖',
+            'HISTORY': '🏛️',
+            'DESIGN_BASICS': '✏️',
+            'DIGITAL': '💻',
+            'SUSTAIN': '🌿',
+            'SAMPLES': '📐',
+            'OTHER': '📦',
+            'PACKAGES': '📚',
+        }
+        
+        categories.append({
+            'code': category_code,
+            'name': category_name,
+            'icon': icons.get(category_code, '📚'),
+            'count': product_count,
+        })
+    
+    return render(request, 'Products/category_list.html', {
+        'categories': categories,
+    })
 
 
 def product_list_by_category(request, category):
