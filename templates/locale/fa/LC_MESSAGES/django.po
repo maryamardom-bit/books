@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-23 18:49+0330\n"
-"PO-Revision-Date: 2026-07-22 16:40+0330\n"
+"PO-Revision-Date: 2026-07-26 10:32+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -275,13 +275,13 @@ msgstr "درباره فروشگاه"
 
 #: templates/footer.html:18
 msgid ""
-"Welcome to the website and online store of 'Kasri Library' publications. You "
-"can order available products directly from the publisher and use priority "
+"Welcome to the website and online store of 'Kasri Library' publications. You"
+" can order available products directly from the publisher and use priority "
 "mail delivery for all orders."
 msgstr ""
 "به وبسایت و فروشــگاه اینترنتی انتشــارات «کتابــکده کســری» خـوش آمدیــد. "
-"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده و "
-"از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
+"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده "
+"و از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
 
 #: templates/footer.html:28
 msgid "Quick Links"
@@ -328,20 +328,18 @@ msgid "Home"
 msgstr "خانه"
 
 #: templates/home.html:356
-#, fuzzy
 #| msgid "Discover our curated collection of architectural books"
 msgid "Discover the finest collection of architecture and design books"
 msgstr "کلکسیون منتخب کتاب‌های معماری "
 
 #: templates/home.html:365
 msgid "New Releases"
-msgstr ""
+msgstr "تازه های منتشر شده"
 
 #: templates/home.html:366
-#, fuzzy
 #| msgid "Kasra Architecture Bookstore"
 msgid "Latest architectural books"
-msgstr "کتابفروشی کسری"
+msgstr "جدیدترین کتاب های معماری"
 
 #: templates/home.html:373
 msgid "Categories"
@@ -349,7 +347,7 @@ msgstr "دسته‌بندی‌ها"
 
 #: templates/home.html:374
 msgid "Browse by subject"
-msgstr ""
+msgstr "مرور بر اساس موضوع"
 
 #: templates/home.html:382
 msgid "Packages & Sets"
@@ -357,15 +355,15 @@ msgstr "بسته‌ها و مجموعه‌ها"
 
 #: templates/home.html:383
 msgid "Curated collections"
-msgstr ""
+msgstr "مجموعه‌های منتخب"
 
 #: templates/home.html:390
 msgid "On Sale"
-msgstr ""
+msgstr "تخفیف دارها"
 
 #: templates/home.html:391
 msgid "Best discounts"
-msgstr ""
+msgstr "تخفیف دارها"
 
 #: templates/topheader.html:59
 msgid "logout"

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-23 18:49+0330\n"
-"PO-Revision-Date: 2026-07-23 18:54+0330\n"
+"POT-Creation-Date: 2026-07-26 10:25+0330\n"
+"PO-Revision-Date: 2026-07-26 10:29+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,85 +19,86 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: products/admin.py:20 products/models.py:159 products/models.py:296
-msgid "package"
-msgstr "بسته"
-
-#: products/admin.py:21 products/models.py:160 products/models.py:297
-#| msgid "pages"
-msgid "packages"
-msgstr "بسته ها"
-
-#: products/admin.py:33
-msgid "Package"
-msgstr "بسته"
-
-#: products/admin.py:42 products/admin.py:172
-#| msgid "Product Price"
-msgid "Package Price"
-msgstr "قیمت بسته"
-
-#: products/admin.py:55 products/admin.py:115
+#: products/admin.py:27 products/admin.py:68
 msgid "Basic Information"
 msgstr "اطلاعات اولیه"
 
-#: products/admin.py:64
+#: products/admin.py:30
 msgid "Book Details"
 msgstr "جزییات "
 
-#: products/admin.py:80
+#: products/admin.py:38
 msgid "Status & Dates"
 msgstr "وضعیت و تاریخ‌ها"
 
-#: products/admin.py:118 products/templates/products/product_list.html:8
-msgid "Products"
-msgstr "محصولات"
+#: products/admin.py:71
+#| msgid "No products found in this category."
+msgid "Products in this Package"
+msgstr "محصولات موجود در این بسته"
 
-#: products/admin.py:120
+#: products/admin.py:73
 msgid "Select the products that belong to this package"
 msgstr "محصولاتی را که متعلق به این بسته هستند انتخاب کنید"
 
-#: products/admin.py:122
-msgid "Pricing"
+#: products/admin.py:75
+#| msgid "Pricing"
+msgid "Pricing & Stock"
 msgstr "قیمت گذاری"
 
-#: products/admin.py:124
-msgid "Set the package price. Original price is auto-calculated."
-msgstr "قیمت بسته را تنظیم کنید. قیمت اصلی به صورت خودکار محاسبه می‌شود."
+#: products/admin.py:77
+msgid "Original price is auto-calculated. Set discount percentage and stock."
+msgstr ""
+"قیمت اصلی به صورت خودکار محاسبه می‌شود. درصد تخفیف و موجودی را تنظیم کنید."
 
-#: products/admin.py:126
-#| msgid "Status & Dates"
-msgid "Status"
-msgstr "وضعیت و تاریخ‌ها"
+#: products/admin.py:79
+msgid "Dates"
+msgstr "تاریخ‌ها"
 
-#: products/admin.py:143
-#| msgid "No Products Found"
-msgid "Products Count"
-msgstr "تعداد محصولات"
+#: products/admin.py:91
+#| msgid "books"
+msgid "Books"
+msgstr "کتاب ها"
 
-#: products/admin.py:155
+#: products/admin.py:101
 msgid "Original Price"
 msgstr "قیمت اصلی"
 
-#: products/admin.py:185
+#: products/admin.py:113
+#| msgid "Original Price"
+msgid "Final Price"
+msgstr "قیمت نهایی"
+
+#: products/admin.py:123
 msgid "Discount"
 msgstr "تخفیف"
 
-#: products/admin.py:199
+#: products/admin.py:134
 msgid "Savings"
 msgstr "صرفه جویی"
 
-#: products/admin.py:220
+#: products/admin.py:146
+msgid "Stock"
+msgstr "موجودی"
+
+#: products/admin.py:174
 msgid "Activate selected packages"
 msgstr "فعال کردن بسته‌های انتخاب شده"
 
-#: products/admin.py:225
+#: products/admin.py:179
 msgid "Deactivate selected packages"
 msgstr "غیرفعال کردن بسته‌های انتخاب شده"
 
-#: products/admin.py:237
-msgid "apply 10 percent discount"
+#: products/admin.py:186
+#, python-format
+#| msgid "apply 10 percent discount"
+msgid "Apply 10%%discount"
 msgstr "اعمال 10 درصد تخفیف"
+
+#: products/admin.py:193
+#, python-format
+#| msgid "apply 10 percent discount"
+msgid "Apply 20%% discount"
+msgstr "اعمال 20 درصد تخفیف"
 
 #: products/models.py:12
 msgid "BUSINESS"
@@ -187,19 +188,23 @@ msgstr "نام محصول"
 msgid "product_category"
 msgstr "دسته بندی محصول"
 
-#: products/models.py:45 products/models.py:115 products/models.py:253
+#: products/models.py:45 products/models.py:121 products/models.py:239
+#: products/models.py:354 products/models.py:492
 msgid "description"
 msgstr "توضیحات محصول"
 
-#: products/models.py:46 products/models.py:129 products/models.py:266
+#: products/models.py:46 products/models.py:144 products/models.py:261
+#: products/models.py:368 products/models.py:505
 msgid "price"
 msgstr "قیمت "
 
-#: products/models.py:47 products/models.py:154 products/models.py:291
+#: products/models.py:47 products/models.py:166 products/models.py:283
+#: products/models.py:393 products/models.py:530
 msgid "active"
 msgstr "فعال"
 
-#: products/models.py:48 products/models.py:116 products/models.py:254
+#: products/models.py:48 products/models.py:122 products/models.py:240
+#: products/models.py:355 products/models.py:493
 msgid "image"
 msgstr "تصویر:"
 
@@ -291,56 +296,84 @@ msgstr "امتیاز شما به این محصول کدام است؟"
 msgid "Comment_Active"
 msgstr "نظر فعال"
 
-#: products/models.py:113 products/models.py:251
+#: products/models.py:119 products/models.py:237 products/models.py:352
+#: products/models.py:490
 msgid "title"
 msgstr "عنوان"
 
-#: products/models.py:114 products/models.py:252
+#: products/models.py:120 products/models.py:238 products/models.py:353
+#: products/models.py:491
 msgid "slug"
 msgstr "اسلاگ"
 
-#: products/models.py:122 products/models.py:260
-#| msgid "Products"
+#: products/models.py:128 products/models.py:246 products/models.py:361
+#: products/models.py:499
 msgid "products"
 msgstr "محصولات"
 
-#: products/models.py:134 products/models.py:270
-msgid "Total price for this package"
-msgstr "قیمت کل این بسته"
-
-#: products/models.py:139 products/models.py:275
+#: products/models.py:135 products/models.py:252 products/models.py:378
+#: products/models.py:514
 msgid "original price"
 msgstr "قیمت اصلی"
 
-#: products/models.py:144 products/models.py:281
+#: products/models.py:139 products/models.py:256 products/models.py:383
+#: products/models.py:520
 msgid "Sum of all product prices (auto-calculated)"
 msgstr "جمع قیمت تمام محصولات (محاسبه خودکار)"
 
-#: products/models.py:149 products/models.py:286
+#: products/models.py:149 products/models.py:266
+#| msgid "apply 10 percent discount"
+msgid "Final price after discount"
+msgstr "قیمت نهایی بعد از تخفیف"
+
+#: products/models.py:154 products/models.py:271 products/models.py:388
+#: products/models.py:525
 msgid "discount percent"
 msgstr "درصد تخفیف"
 
-#: products/models.py:151 products/models.py:288
+#: products/models.py:156 products/models.py:273 products/models.py:390
+#: products/models.py:527
 msgid "Discount percentage for this package"
 msgstr "درصد تخفیف برای این بسته"
 
-#: products/models.py:155 products/models.py:292
-#| msgid "datetime_created"
+#: products/models.py:161 products/models.py:278
+msgid "stock"
+msgstr "موجودی"
+
+#: products/models.py:163 products/models.py:280
+#| msgid "Total price for this package"
+msgid "Available stock for this package"
+msgstr "موجودی برای این بسته"
+
+#: products/models.py:167 products/models.py:284 products/models.py:394
+#: products/models.py:531
 msgid "created"
 msgstr "زمان_ایجاد:"
 
-#: products/models.py:156 products/models.py:293
-#| msgid "datetime_modified"
+#: products/models.py:168 products/models.py:285 products/models.py:395
+#: products/models.py:532
 msgid "modified"
 msgstr "زمان آخرین تغییرات در محصول:"
 
+#: products/models.py:171 products/models.py:288 products/models.py:398
+#: products/models.py:535
+msgid "package"
+msgstr "بسته"
+
+#: products/models.py:172 products/models.py:289 products/models.py:399
+#: products/models.py:536
+msgid "packages"
+msgstr "بسته ها"
+
+#: products/models.py:373 products/models.py:509
+msgid "Total price for this package"
+msgstr "قیمت کل این بسته"
+
 #: products/templates/products/category_list.html:6
-#| msgid "categories"
 msgid "Categories"
 msgstr " دسته بندی"
 
 #: products/templates/products/category_list.html:244
-#| msgid "categories"
 msgid "Book Categories"
 msgstr "دسته بندی کتاب ها"
 
@@ -349,14 +382,83 @@ msgid "Discover our curated collection of architectural books"
 msgstr "مجموعه منتخب ما از کتاب‌های معماری را کشف کنید"
 
 #: products/templates/products/category_list.html:254
-#| msgid "book_size"
+#: products/templates/products/package_list.html:430
 msgid "books"
 msgstr "کتاب ها"
 
 #: products/templates/products/category_list.html:258
-#| msgid "categories"
 msgid "No categories found"
 msgstr "هیچ دسته بندی ای یافت نشد"
+
+#: products/templates/products/package_detail.html:395
+#: products/templates/products/package_list.html:335
+msgid "Home"
+msgstr "خانه"
+
+#: products/templates/products/package_detail.html:398
+#: products/templates/products/package_list.html:338
+#| msgid "Package"
+msgid "Packages"
+msgstr "بسته"
+
+#: products/templates/products/package_detail.html:416
+#: products/templates/products/package_list.html:6
+#: products/templates/products/package_list.html:350
+#: products/templates/products/package_list.html:384
+msgid "Package"
+msgstr "بسته"
+
+#: products/templates/products/package_detail.html:455
+#: products/templates/products/product_list.html:461
+msgid "Add to Cart"
+msgstr "اضافه کردن به سبد خرید"
+
+#: products/templates/products/package_detail.html:455
+msgid "Out of Stock"
+msgstr "موجود نیست"
+
+#: products/templates/products/package_list.html:359
+#| msgid "books found"
+msgid "books included"
+msgstr "کتاب ها شامل ..."
+
+#: products/templates/products/package_list.html:367
+#| msgid "Discount"
+msgid "discount"
+msgstr "تخفیف"
+
+#: products/templates/products/package_list.html:374
+#| msgid "created"
+msgid "Created"
+msgstr "زمان_ایجاد:"
+
+#: products/templates/products/package_list.html:405
+msgid "Save"
+msgstr "موجود نیست"
+
+#: products/templates/products/package_list.html:417
+#| msgid "Add to Cart"
+msgid "Add Package to Cart"
+msgstr "اضافه کردن به سبد خرید"
+
+#: products/templates/products/package_list.html:426
+#| msgid "Total price for this package"
+msgid "Books in this Package"
+msgstr "کتاب های موجود در این بسته"
+
+#: products/templates/products/package_list.html:428
+msgid "This package includes"
+msgstr "این بسته شامل موارد زیر است:"
+
+#: products/templates/products/package_list.html:454
+#| msgid "No products found in this category."
+msgid "No products in this package yet."
+msgstr "هنوز هیچ محصولی در این بسته وجود ندارد."
+
+#: products/templates/products/package_list.html:463
+#| msgid "Back to products"
+msgid "Back to Packages"
+msgstr "برو به محصولات"
 
 #: products/templates/products/product_detail.html:44
 #: products/templates/products/product_detail.html:165
@@ -490,6 +592,10 @@ msgid "to write a review"
 msgstr "برای نوشتن نظر"
 
 #: products/templates/products/product_list.html:8
+msgid "Products"
+msgstr "محصولات"
+
+#: products/templates/products/product_list.html:8
 #: products/templates/products/product_search_result.html:8
 msgid "Kasra Architecture Bookstore"
 msgstr "کتابفروشی کسری"
@@ -502,10 +608,6 @@ msgstr "کتاب های معماری"
 #: products/templates/products/product_search_result.html:520
 msgid "New"
 msgstr "جدید"
-
-#: products/templates/products/product_list.html:461
-msgid "Add to Cart"
-msgstr "اضافه کردن به سبد خرید"
 
 #: products/templates/products/product_list.html:471
 msgid "No Products Found"
@@ -588,9 +690,21 @@ msgstr "از کلمات کلیدی متفاوت استفاده کنید"
 msgid "Browse All Books"
 msgstr "مرور همه کتاب‌ها"
 
-#: products/views.py:46
+#: products/views.py:59
 msgid "your comment has been successfully registered"
 msgstr "نظر شما با موفقیت ثبت شد"
+
+#~ msgid "Package Price"
+#~ msgstr "قیمت بسته"
+
+#~ msgid "Set the package price. Original price is auto-calculated."
+#~ msgstr "قیمت بسته را تنظیم کنید. قیمت اصلی به صورت خودکار محاسبه می‌شود."
+
+#~ msgid "Status"
+#~ msgstr "وضعیت و تاریخ‌ها"
+
+#~ msgid "Products Count"
+#~ msgstr "تعداد محصولات"
 
 #~ msgid "Edition"
 #~ msgstr "مترجم"

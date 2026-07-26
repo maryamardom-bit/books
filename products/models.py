@@ -106,7 +106,353 @@ class Comment(models.Model):
         return reverse('product_detail', args=[self.product.id])
     
 
+
 class Package(models.Model):
+    """
+    مدل پکیج‌ها و مجموعه‌های کتاب
+    """
+    title = models.CharField(_('title'), max_length=200)
+    slug = models.SlugField(_('slug'), max_length=200, unique=True, allow_unicode=True)
+    description = models.TextField(_('description'), blank=True)
+    image = models.ImageField(_('image'), upload_to='packages/', blank=True, null=True)
+    
+    # کتاب‌های موجود در این پکیج
+    products = models.ManyToManyField(
+        'Product',
+        related_name='packages',
+        verbose_name=_('products'),
+        limit_choices_to={'active': True},
+        blank=True
+    )
+    
+    # قیمت اصلی (مجموع قیمت کتاب‌ها)
+    original_price = models.DecimalField(
+        _('original price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        help_text=_('Sum of all product prices (auto-calculated)')
+    )
+    
+    # قیمت نهایی با تخفیف
+    price = models.DecimalField(
+        _('price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_('Final price after discount')
+    )
+    
+    # درصد تخفیف
+    discount_percent = models.PositiveSmallIntegerField(
+        _('discount percent'),
+        default=0,
+        help_text=_('Discount percentage for this package')
+    )
+    
+    # موجودی
+    stock = models.PositiveIntegerField(
+        _('stock'),
+        default=0,
+        help_text=_('Available stock for this package')
+    )
+    
+    active = models.BooleanField(_('active'), default=True)
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    datetime_modified = models.DateTimeField(_('modified'), auto_now=True)
+    
+    class Meta:
+        verbose_name = _('package')
+        verbose_name_plural = _('packages')
+        ordering = ['-datetime_created']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('product:package_detail', args=[self.slug])
+    
+    def calculate_original_price(self):
+        """محاسبه مجموع قیمت کتاب‌های موجود در پکیج"""
+        try:
+            return sum(product.price for product in self.products.all())
+        except Exception:
+            return 0
+    
+    def get_products_count(self):
+        """تعداد کتاب‌های موجود در پکیج"""
+        try:
+            return self.products.count()
+        except Exception:
+            return 0
+    
+    def get_savings(self):
+        """میزان صرفه‌جویی"""
+        try:
+            return float(self.original_price) - float(self.price)
+        except Exception:
+            return 0
+    
+    def is_in_stock(self):
+        """بررسی موجودی"""
+        return self.stock > 0
+    
+    def save(self, *args, **kwargs):
+        # اگر پکیج جدید است، فقط ذخیره کن
+        if not self.pk:
+            super().save(*args, **kwargs)
+            return
+        
+        # محاسبه قیمت‌ها
+        try:
+            self.original_price = self.calculate_original_price()
+            
+            if self.discount_percent > 0 and self.original_price > 0:
+                self.price = self.original_price * (1 - self.discount_percent / 100)
+            else:
+                self.price = self.original_price
+                
+            self.price = int(self.price)
+            self.original_price = int(self.original_price)
+        except Exception:
+            self.price = 0
+            self.original_price = 0
+        
+        super().save(*args, **kwargs)
+    """
+    مدل پکیج‌ها و مجموعه‌های کتاب
+    """
+    title = models.CharField(_('title'), max_length=200)
+    slug = models.SlugField(_('slug'), max_length=200, unique=True, allow_unicode=True)
+    description = models.TextField(_('description'), blank=True)
+    image = models.ImageField(_('image'), upload_to='packages/', blank=True, null=True)
+    
+    # کتاب‌های موجود در این پکیج
+    products = models.ManyToManyField(
+        'Product',
+        related_name='packages',
+        verbose_name=_('products'),
+        limit_choices_to={'active': True},
+        blank=True
+    )
+    
+    # قیمت اصلی (مجموع قیمت کتاب‌ها)
+    original_price = models.DecimalField(
+        _('original price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,  # مقدار پیش‌فرض
+        help_text=_('Sum of all product prices (auto-calculated)')
+    )
+    
+    # قیمت نهایی با تخفیف
+    price = models.DecimalField(
+        _('price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,  # مقدار پیش‌فرض - این مهم است!
+        validators=[MinValueValidator(0)],
+        help_text=_('Final price after discount')
+    )
+    
+    # درصد تخفیف
+    discount_percent = models.PositiveSmallIntegerField(
+        _('discount percent'),
+        default=0,
+        help_text=_('Discount percentage for this package')
+    )
+    
+    # موجودی
+    stock = models.PositiveIntegerField(
+        _('stock'),
+        default=0,
+        help_text=_('Available stock for this package')
+    )
+    
+    active = models.BooleanField(_('active'), default=True)
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    datetime_modified = models.DateTimeField(_('modified'), auto_now=True)
+    
+    class Meta:
+        verbose_name = _('package')
+        verbose_name_plural = _('packages')
+        ordering = ['-datetime_created']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('product:package_detail', args=[self.slug])
+    
+    def calculate_original_price(self):
+        """محاسبه مجموع قیمت کتاب‌های موجود در پکیج"""
+        try:
+            if self.pk:
+                return sum(product.price for product in self.products.all())
+            return 0
+        except Exception:
+            return 0
+    
+    def get_products_count(self):
+        """تعداد کتاب‌های موجود در پکیج"""
+        try:
+            return self.products.count()
+        except Exception:
+            return 0
+    
+    def get_savings(self):
+        """میزان صرفه‌جویی"""
+        try:
+            return self.original_price - self.price
+        except Exception:
+            return 0
+    
+    def is_in_stock(self):
+        """بررسی موجودی"""
+        return self.stock > 0
+    
+    def save(self, *args, **kwargs):
+        try:
+            # فقط در صورتی که شیء قبلاً ذخیره شده باشد
+            if self.pk:
+                # محاسبه قیمت اصلی
+                self.original_price = self.calculate_original_price()
+                
+                # محاسبه قیمت نهایی با تخفیف
+                if self.discount_percent > 0 and self.original_price > 0:
+                    self.price = self.original_price * (1 - self.discount_percent / 100)
+                else:
+                    self.price = self.original_price
+                    
+                # گرد کردن به عدد صحیح
+                self.price = int(self.price)
+                self.original_price = int(self.original_price)
+            else:
+                # برای ایجاد جدید، مقدار پیش‌فرض بگذار
+                self.original_price = 0
+                self.price = 0
+                
+        except Exception as e:
+            self.price = 0
+            self.original_price = 0
+            
+        super().save(*args, **kwargs)
+    """
+    مدل پکیج‌ها و مجموعه‌های کتاب
+    """
+    title = models.CharField(_('title'), max_length=200)
+    slug = models.SlugField(_('slug'), max_length=200, unique=True, allow_unicode=True)
+    description = models.TextField(_('description'), blank=True)
+    image = models.ImageField(_('image'), upload_to='packages/', blank=True, null=True)
+    
+    # کتاب‌های موجود در این پکیج
+    products = models.ManyToManyField(
+        'Product',
+        related_name='packages',
+        verbose_name=_('products'),
+        limit_choices_to={'active': True}
+    )
+    
+    # قیمت اصلی (مجموع قیمت کتاب‌ها)
+    original_price = models.DecimalField(
+        _('original price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        help_text=_('Sum of all product prices (auto-calculated)')
+    )
+    
+    # قیمت نهایی با تخفیف
+    price = models.DecimalField(
+        _('price'),
+        max_digits=10,
+        decimal_places=0,
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_('Final price after discount')
+    )
+    
+    # درصد تخفیف
+    discount_percent = models.PositiveSmallIntegerField(
+        _('discount percent'),
+        default=0,
+        help_text=_('Discount percentage for this package')
+    )
+    
+    # موجودی
+    stock = models.PositiveIntegerField(
+        _('stock'),
+        default=0,
+        help_text=_('Available stock for this package')
+    )
+    
+    active = models.BooleanField(_('active'), default=True)
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    datetime_modified = models.DateTimeField(_('modified'), auto_now=True)
+    
+    class Meta:
+        verbose_name = _('package')
+        verbose_name_plural = _('packages')
+        ordering = ['-datetime_created']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('product:package_detail', args=[self.slug])
+    
+    def calculate_original_price(self):
+        """محاسبه مجموع قیمت کتاب‌های موجود در پکیج"""
+        try:
+            return sum(product.price for product in self.products.all())
+        except Exception:
+            return 0
+    
+    def get_products_count(self):
+        """تعداد کتاب‌های موجود در پکیج"""
+        try:
+            return self.products.count()
+        except Exception:
+            return 0
+    
+    def get_savings(self):
+        """میزان صرفه‌جویی"""
+        try:
+            return self.original_price - self.price
+        except Exception:
+            return 0
+    
+    def is_in_stock(self):
+        """بررسی موجودی"""
+        return self.stock > 0
+    
+    def save(self, *args, **kwargs):
+        try:
+            # فقط در صورتی که شیء قبلاً ذخیره شده باشد (pk وجود دارد)
+            if self.pk:
+                # محاسبه قیمت اصلی
+                self.original_price = self.calculate_original_price()
+                
+                # محاسبه قیمت نهایی با تخفیف
+                if self.discount_percent > 0 and self.original_price > 0:
+                    self.price = self.original_price * (1 - self.discount_percent / 100)
+                else:
+                    self.price = self.original_price
+                    
+                # گرد کردن به عدد صحیح
+                self.price = int(self.price)
+                self.original_price = int(self.original_price)
+            else:
+                # برای ایجاد جدید، مقدار پیش‌فرض بگذار
+                self.original_price = 0
+                self.price = 0
+                
+        except Exception:
+            self.price = 0
+            self.original_price = 0
+            
+        super().save(*args, **kwargs)
     """
     مدل پکیج‌های کتاب‌های معماری
     """

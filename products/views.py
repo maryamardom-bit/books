@@ -1,13 +1,26 @@
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-from django.views import generic
-from django.shortcuts import get_object_or_404, render
+from django.views import generic  
+from django.shortcuts import get_object_or_404, render, redirect    
 from django.contrib import messages
 from django.db.models import Q, Count, Avg, Value, IntegerField
 from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Product, Comment
+from .models import Product, Comment, Package
+from .forms import CommentForm
+from cart.forms import AddToCartProductForm
+
+from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+from django.views import generic  # <-- این خط را اضافه کنید
+from django.shortcuts import get_object_or_404, render, redirect  # redirect را هم اضافه کنید
+from django.contrib import messages
+from django.db.models import Q, Count, Avg, Value, IntegerField
+from django.db.models.functions import Coalesce
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from .models import Product, Comment, Package
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
@@ -77,6 +90,31 @@ class ProductSearchView(generic.ListView):
         context['results_count'] = self.get_queryset().count()
         return context
 
+
+class PackageListView(generic.ListView):
+    """نمایش لیست پکیج‌ها"""
+    model = Package
+    template_name = 'Products/package_list.html'
+    context_object_name = 'packages'
+    paginate_by = 12
+    
+    def get_queryset(self):
+        return Package.objects.filter(active=True).prefetch_related('products')
+
+
+class PackageDetailView(generic.DetailView):
+    """نمایش جزییات یک پکیج"""
+    model = Package
+    template_name = 'Products/package_detail.html'
+    context_object_name = 'package'
+    slug_url_kwarg = 'slug'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['add_to_cart_form'] = AddToCartProductForm()
+        return context
+
+
 def category_list(request):
     """
     نمایش همه دسته‌بندی‌ها در یک صفحه گرید (به جز PACKAGES)
@@ -88,17 +126,17 @@ def category_list(request):
     
     # دیکشنری آیکون‌ها - با کلیدهای درست
     icons = {
-        'BUSINESS_MANAGEMENT': '💼',
-        'ARCHITECTURAL_DESIGN': '🏗️',
-        'INTERIOR_DESIGN': '🛋️',
-        'URBAN_STUDIES': '🏙️',
+        'BUSINESS': '💼',
+        'ARCH_DESIGN': '🏗️',
+        'INTERIOR': '🛋️',
+        'URBAN': '🏙️',
         'LANDSCAPE': '🌳',
         'DESIGN_GUIDE': '📖',
-        'HISTORY_CRITICISM': '🏛️',
-        'DESIGN_FUNDAMENTALS': '✏️',
-        'DIGITAL_PARAMETRIC': '💻',
-        'SUSTAINABILITY': '🌿',
-        'PROJECT_SAMPLES': '📐',
+        'HISTORY': '🏛️',
+        'DESIGN_BASICS': '✏️',
+        'DIGITAL': '💻',
+        'SUSTAIN': '🌿',
+        'SAMPLES': '📐',
         'OTHER': '📦',
     }
     
@@ -121,6 +159,8 @@ def category_list(request):
     return render(request, 'Products/category_list.html', {
         'categories': categories,
     })
+
+
 def product_list_by_category(request, category):
     """
     نمایش کتاب‌های یک دسته خاص با صفحه‌بندی
@@ -155,17 +195,17 @@ def product_list_by_category(request, category):
     
     # دیکشنری آیکون‌ها برای هر دسته
     category_icons = {
-        'BUSINESS_MANAGEMENT': '💼',
-        'ARCHITECTURAL_DESIGN': '🏗️',
-        'INTERIOR_DESIGN': '🛋️',
-        'URBAN_STUDIES': '🏙️',
+        'BUSINESS': '💼',
+        'ARCH_DESIGN': '🏗️',
+        'INTERIOR': '🛋️',
+        'URBAN': '🏙️',
         'LANDSCAPE': '🌳',
         'DESIGN_GUIDE': '📖',
-        'HISTORY_CRITICISM': '🏛️',
-        'DESIGN_FUNDAMENTALS': '✏️',
-        'DIGITAL_PARAMETRIC': '💻',
-        'SUSTAINABILITY': '🌿',
-        'PROJECT_SAMPLES': '📐',
+        'HISTORY': '🏛️',
+        'DESIGN_BASICS': '✏️',
+        'DIGITAL': '💻',
+        'SUSTAIN': '🌿',
+        'SAMPLES': '📐',
         'OTHER': '📦',
         'PACKAGES': '📚',
     }
@@ -183,27 +223,31 @@ def product_list_by_category(request, category):
         'page_obj': products,
     })
 
-from .models import Product, Comment, Package
 
-class PackageListView(generic.ListView):
-    """نمایش لیست پکیج‌ها"""
-    model = Package
-    template_name = 'Products/package_list.html'
-    context_object_name = 'packages'
-    paginate_by = 12
+def package_comment(request, slug):
+    """ثبت نظر برای پکیج"""
+    if request.method == 'POST':
+        package = get_object_or_404(Package, slug=slug)
+        body = request.POST.get('body')
+        stars = request.POST.get('stars')
+        
+        if body and stars:
+            # نظر به اولین کتاب پکیج متصل می‌شود
+            first_product = package.products.first()
+            if first_product:
+                Comment.objects.create(
+                    product=first_product,
+                    author=request.user,
+                    body=body,
+                    stars=int(stars),
+                    active=True
+                )
+                messages.success(request, 'نظر شما با موفقیت ثبت شد.')
+            else:
+                messages.error(request, 'این پکیج هیچ کتابی ندارد.')
+        else:
+            messages.error(request, 'لطفاً همه فیلدها را پر کنید.')
+        
+        return redirect('product:package_detail', slug=slug)
     
-    def get_queryset(self):
-        return Package.objects.filter(active=True).prefetch_related('products')
-
-class PackageDetailView(generic.DetailView):
-    """نمایش جزییات یک پکیج"""
-    model = Package
-    template_name = 'Products/package_detail.html'
-    context_object_name = 'package'
-    slug_url_kwarg = 'slug'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # اضافه کردن فرم اضافه به سبد خرید
-        context['add_to_cart_form'] = AddToCartProductForm()
-        return context
+    return redirect('product:package_detail', slug=slug)
