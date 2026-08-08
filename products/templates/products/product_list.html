@@ -5,7 +5,11 @@
 {% load humanize %}
 
 {% block page_title %}
-{% trans "Products" %} | {% trans "Kasra Architecture Bookstore" %}
+    {% if discount_filter %}
+        {% trans "Discounted Products" %} | {% trans "Kasra Architecture Bookstore" %}
+    {% else %}
+        {% trans "Products" %} | {% trans "Kasra Architecture Bookstore" %}
+    {% endif %}
 {% endblock %}
 
 {% block extra_css %}
@@ -16,18 +20,19 @@
         padding: 30px 0 60px;
     }
 
-    .shop-page-wrapper .page-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 28px;
-        font-weight: 600;
-        color: #1a1a2e;
+    .shop-page-wrapper .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
         margin-bottom: 30px;
         padding-bottom: 15px;
         border-bottom: 3px solid #c9a84c;
         position: relative;
     }
 
-    .shop-page-wrapper .page-title::after {
+    .shop-page-wrapper .page-header::after {
         content: '';
         position: absolute;
         bottom: -3px;
@@ -37,9 +42,72 @@
         background: #c9a84c;
     }
 
+    .shop-page-wrapper .page-title {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        font-size: 28px;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
     .shop-page-wrapper .page-title i {
         color: #c9a84c;
-        margin-left: 12px;
+    }
+
+    /* ===== بنر تخفیف در هدر ===== */
+    .discount-header-badge {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        padding: 8px 24px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
+        animation: pulse-badge 2s infinite;
+    }
+
+    @keyframes pulse-badge {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .discount-header-badge i {
+        font-size: 18px;
+        color: white;
+    }
+
+    .discount-header-badge .badge-count {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+    }
+
+    /* ===== لینک بازگشت ===== */
+    .back-to-all-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #8a7a6a;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+        padding: 5px 0;
+    }
+
+    .back-to-all-link:hover {
+        color: #c9a84c;
+    }
+
+    .back-to-all-link i {
+        font-size: 16px;
     }
 
     /* ===== کارت محصول ===== */
@@ -51,6 +119,8 @@
         transition: all 0.3s ease;
         height: 100%;
         position: relative;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card:hover {
@@ -59,11 +129,23 @@
         border-color: #c9a84c;
     }
 
+    /* ===== کارت محصول تخفیف‌دار ===== */
+    .product-card.discounted {
+        border-color: #e74c3c;
+        border-width: 2px;
+    }
+
+    .product-card.discounted:hover {
+        border-color: #c0392b;
+        box-shadow: 0 12px 40px rgba(231, 76, 60, 0.12);
+    }
+
     .product-card .product-image {
         position: relative;
         overflow: hidden;
         background: #f5f0eb;
         height: 220px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -80,6 +162,7 @@
         transform: scale(1.05);
     }
 
+    /* ===== نشان‌های روی تصویر ===== */
     .product-card .product-image .product-badge {
         position: absolute;
         top: 12px;
@@ -92,10 +175,65 @@
         font-weight: 600;
         letter-spacing: 0.5px;
         font-family: 'Georgia', serif;
+        z-index: 5;
+    }
+
+    /* ===== نشان تخفیف روی تصویر ===== */
+    .product-card .product-image .discount-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: #fff;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        z-index: 10;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+
+    /* ===== روبان تخفیف ===== */
+    .product-card .product-image .sale-ribbon {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 90px;
+        height: 90px;
+        overflow: hidden;
+        z-index: 10;
+    }
+
+    .product-card .product-image .sale-ribbon span {
+        position: absolute;
+        top: 22px;
+        right: -26px;
+        transform: rotate(45deg);
+        width: 130px;
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 0;
+        letter-spacing: 1px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        text-transform: uppercase;
     }
 
     .product-card .product-info {
         padding: 18px 20px 22px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card .product-title {
@@ -127,6 +265,17 @@
         color: #8a7a6a;
         margin: 0 0 10px;
         font-style: italic;
+        min-height: 20px;
+    }
+
+    /* ===== قیمت‌ها ===== */
+    .product-card .product-price-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+        min-height: 32px;
     }
 
     .product-card .product-price {
@@ -142,6 +291,35 @@
         color: #8a7a6a;
     }
 
+    .product-card .old-price {
+        font-size: 15px;
+        color: #999;
+        text-decoration: line-through;
+        font-weight: 400;
+    }
+
+    .product-card .discounted-price {
+        color: #e74c3c;
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .product-card .discounted-price .price-unit {
+        color: #e74c3c;
+    }
+
+    .product-card .savings-badge {
+        background: #27ae60;
+        color: white;
+        padding: 2px 14px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    /* ===== دکمه افزودن به سبد خرید ===== */
     .product-card .btn-add-cart {
         display: inline-flex;
         align-items: center;
@@ -160,6 +338,7 @@
         text-decoration: none;
         width: 100%;
         justify-content: center;
+        margin-top: auto;
     }
 
     .product-card .btn-add-cart:hover {
@@ -178,7 +357,7 @@
         align-items: center;
         border-top: 1px solid #f0ece8;
         padding-top: 14px;
-        margin-top: 4px;
+        margin-top: 10px;
     }
 
     .product-card .product-meta .meta-item {
@@ -196,11 +375,18 @@
         color: #8a7a6a;
         font-size: 14px;
         margin-bottom: 20px;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0ece8;
     }
 
     .products-count strong {
         color: #1a1a2e;
         font-weight: 600;
+    }
+
+    .products-count .count-highlight {
+        color: #e74c3c;
+        font-weight: 700;
     }
 
     /* ===== صفحه‌بندی ===== */
@@ -271,14 +457,14 @@
     /* ===== حالت خالی ===== */
     .empty-products {
         text-align: center;
-        padding: 60px 20px;
+        padding: 80px 20px;
         background: #ffffff;
         border-radius: 12px;
         border: 2px dashed #e8e0d8;
     }
 
     .empty-products .empty-icon {
-        font-size: 56px;
+        font-size: 64px;
         color: #c9a84c;
         opacity: 0.3;
         margin-bottom: 16px;
@@ -288,11 +474,31 @@
         font-family: 'Playfair Display', 'Georgia', serif;
         color: #1a1a2e;
         margin-bottom: 8px;
+        font-size: 22px;
     }
 
     .empty-products p {
         color: #8a7a6a;
-        font-size: 15px;
+        font-size: 16px;
+        max-width: 400px;
+        margin: 0 auto 20px;
+    }
+
+    .empty-products .btn-shop {
+        display: inline-block;
+        background: #c9a84c;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .empty-products .btn-shop:hover {
+        background: #b8973a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(201, 168, 76, 0.3);
     }
 
     /* ===== ریسپانسیو ===== */
@@ -317,9 +523,19 @@
         .product-card .product-price {
             font-size: 17px;
         }
+
+        .discount-header-badge {
+            font-size: 12px;
+            padding: 6px 16px;
+        }
     }
 
     @media (max-width: 768px) {
+        .shop-page-wrapper .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
         .product-card .product-image {
             height: 160px;
         }
@@ -352,6 +568,11 @@
             font-size: 12px;
             padding: 0 10px;
         }
+
+        .discount-header-badge {
+            font-size: 11px;
+            padding: 5px 14px;
+        }
     }
 
     @media (max-width: 576px) {
@@ -361,6 +582,16 @@
 
         .product-card .product-image {
             height: 140px;
+        }
+
+        .product-card .product-image .discount-badge {
+            font-size: 12px;
+            padding: 4px 12px;
+        }
+
+        .product-card .product-image .sale-ribbon span {
+            font-size: 10px;
+            padding: 3px 0;
         }
 
         .product-card .product-info {
@@ -376,8 +607,22 @@
             font-size: 11px;
         }
 
+        .product-card .product-price-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
         .product-card .product-price {
             font-size: 14px;
+        }
+
+        .product-card .discounted-price {
+            font-size: 16px;
+        }
+
+        .product-card .old-price {
+            font-size: 13px;
         }
 
         .product-card .btn-add-cart {
@@ -399,6 +644,27 @@
         .products-count {
             font-size: 12px;
         }
+
+        .discount-header-badge {
+            font-size: 10px;
+            padding: 4px 12px;
+            gap: 6px;
+        }
+
+        .discount-header-badge i {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .product-card .product-image {
+            height: 110px;
+        }
+        
+        .product-card .product-title {
+            font-size: 11px;
+            height: 26px;
+        }
     }
 </style>
 {% endblock %}
@@ -408,31 +674,78 @@
 <div class="shop-page-wrapper">
     <div class="container">
         <!-- هدر صفحه -->
-        <div class="row">
-            <div class="col-12">
-                <h1 class="display-5 fw-normal mb-4 pb-3" style="border-bottom: 2px solid #c9a84c; letter-spacing: -0.02em;">
-                    <i class="fa fa-book"></i> {% trans "Architecture Books" %}
+        <div class="page-header">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <h1 class="page-title">
+                    <i class="fa fa-book"></i>
+                    {% if discount_filter %}
+                        {% trans "Discounted Products" %}
+                    {% else %}
+                        {% trans "Architecture Books" %}
+                    {% endif %}
                 </h1>
+                {% if discount_filter %}
+                    <a href="{% url 'product:product_list' %}" class="back-to-all-link">
+                        <i class="fa fa-arrow-right"></i>
+                        {% trans "Show All Products" %}
+                    </a>
+                {% endif %}
             </div>
+            
+            {% if discount_filter %}
+                <div class="discount-header-badge">
+                    <i class="fa fa-tag"></i>
+                    {% trans "On Sale" %}
+                    <span class="badge-count">{{ products|length }}</span>
+                </div>
+            {% endif %}
         </div>
+
+        <!-- تعداد محصولات -->
+        <div class="products-count">
+            {% if discount_filter %}
+                <i class="fa fa-tag text-danger"></i>
+                <strong>{{ products|length }}</strong> 
+                {% trans "discounted products found" %}
+                <span class="count-highlight">🏷️</span>
+            {% else %}
+                <i class="fa fa-book"></i>
+                <strong>{{ products|length }}</strong> 
+                {% trans "products available" %}
+            {% endif %}
+        </div>
+
         <!-- لیست محصولات -->
         <div class="row">
             {% for product in products %}
                 <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-4">
-                    <div class="product-card">
+                    <div class="product-card {% if product.on_sale %}discounted{% endif %}">
                         <!-- تصویر -->
                         <div class="product-image">
                             {% if product.image %}
                                 <a href="{{ product.get_absolute_url }}">
-                                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                    <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
                                 </a>
                             {% else %}
                                 <a href="{{ product.get_absolute_url }}">
-                                    <img src="{% static 'img/placeholder-book.jpg' %}" alt="No Image">
+                                    <img src="{% static 'img/placeholder-book.jpg' %}" alt="{% trans 'No Image' %}" loading="lazy">
                                 </a>
                             {% endif %}
+
+                            <!-- نشان جدید -->
                             {% if product.is_new %}
                                 <span class="product-badge">{% trans "New" %}</span>
+                            {% endif %}
+
+                            <!-- نشان تخفیف (درصد) - استفاده از property -->
+                            {% if product.on_sale %}
+                                <div class="discount-badge">
+                                    -{{ product.discount_percent_display }}%
+                                </div>
+                                <!-- روبان تخفیف -->
+                                <div class="sale-ribbon">
+                                    <span>{% trans "SALE" %}</span>
+                                </div>
                             {% endif %}
                         </div>
 
@@ -445,31 +758,91 @@
                                 <p class="product-author">{{ product.author }}</p>
                             {% endif %}
 
-                            <div class="product-meta">
-                                <span class="product-price">
-                                    {{ product.price|intcomma:False|translate_number }}
-                                    <span class="price-unit">{% trans "$" %}</span>
-                                </span>
+                            <!-- قیمت‌ها - استفاده از property‌ها -->
+                            <div class="product-price-wrapper">
+                                {% if product.on_sale %}
+                                    <div>
+                                        <span class="old-price">
+                                            {{ product.price|intcomma:False|translate_number }}
+                                            <span class="price-unit">{% trans "$" %}</span>
+                                        </span>
+                                        <span class="discounted-price">
+                                            {{ product.discounted_price|intcomma:False|translate_number }}
+                                            <span class="price-unit">{% trans "$" %}</span>
+                                        </span>
+                                    </div>
+                                    <span class="savings-badge">
+                                        {% trans "Save" %} {{ product.savings|intcomma:False|translate_number }}
+                                    </span>
+                                {% else %}
+                                    <span class="product-price">
+                                        {{ product.price|intcomma:False|translate_number }}
+                                        <span class="price-unit">{% trans "$" %}</span>
+                                    </span>
+                                {% endif %}
                             </div>
 
                             <!-- دکمه افزودن به سبد خرید -->
                             <form action="{% url 'cart:cart_add' product.id %}" method="post" class="mt-2">
                                 {% csrf_token %}
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="btn-add-cart">
-                                    <i class="fa fa-shopping-cart"></i>
+                                <button type="submit" class="btn-add-cart" aria-label="{% trans 'Add to Cart' %}">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                     {% trans "Add to Cart" %}
                                 </button>
                             </form>
+
+                            <!-- متا اطلاعات -->
+                            <div class="product-meta">
+                                <span class="meta-item">
+                                    <i class="fa fa-tag" aria-hidden="true"></i>
+                                    {{ product.get_category_display }}
+                                </span>
+                                {% if product.on_sale %}
+                                    <span class="meta-item" style="color: #e74c3c;">
+                                        <i class="fa fa-percent" aria-hidden="true"></i>
+                                        {% trans "Discount" %}
+                                    </span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
             {% empty %}
                 <div class="col-12">
                     <div class="empty-products">
-                        <div class="empty-icon">📚</div>
-                        <h4>{% trans "No Products Found" %}</h4>
-                        <p>{% trans "There are no products available at the moment." %}</p>
+                        <div class="empty-icon" aria-hidden="true">
+                            {% if discount_filter %}
+                                🏷️
+                            {% else %}
+                                📚
+                            {% endif %}
+                        </div>
+                        <h4>
+                            {% if discount_filter %}
+                                {% trans "No Discounted Products" %}
+                            {% else %}
+                                {% trans "No Products Found" %}
+                            {% endif %}
+                        </h4>
+                        <p>
+                            {% if discount_filter %}
+                                {% trans "There are no products with discount at the moment. Check back later!" %}
+                            {% else %}
+                                {% trans "There are no products available at the moment." %}
+                            {% endif %}
+                        </p>
+                        {% if discount_filter %}
+                            <a href="{% url 'product:product_list' %}" class="btn-shop">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                {% trans "View All Products" %}
+                            </a>
+                        {% else %}
+                            <a href="{% url 'product:product_list' %}" class="btn-shop">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                                {% trans "Refresh" %}
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -477,18 +850,22 @@
 
         <!-- ===== صفحه‌بندی ===== -->
         {% if is_paginated %}
-            <nav class="pagination-wrap">
+            <nav class="pagination-wrap" aria-label="{% trans 'Page navigation' %}">
                 <ul class="pagination">
                     <!-- قبلی -->
                     {% if page_obj.has_previous %}
                         <li>
-                            <a href="?page={{ page_obj.previous_page_number }}" class="page-number prev">
-                                <i class="fa fa-angle-right"></i>
+                            <a href="?page={{ page_obj.previous_page_number }}{% if discount_filter %}&discount=true{% endif %}" 
+                               class="page-number prev" 
+                               aria-label="{% trans 'Previous page' %}">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </a>
                         </li>
                     {% else %}
-                        <li class="disabled">
-                            <span class="page-number prev"><i class="fa fa-angle-right"></i></span>
+                        <li class="disabled" aria-disabled="true">
+                            <span class="page-number prev" aria-hidden="true">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </span>
                         </li>
                     {% endif %}
 
@@ -496,11 +873,15 @@
                     {% for num in paginator.page_range %}
                         {% if page_obj.number == num %}
                             <li>
-                                <span class="page-number current">{{ num }}</span>
+                                <span class="page-number current" aria-current="page">{{ num }}</span>
                             </li>
                         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                             <li>
-                                <a href="?page={{ num }}" class="page-number">{{ num }}</a>
+                                <a href="?page={{ num }}{% if discount_filter %}&discount=true{% endif %}" 
+                                   class="page-number"
+                                   aria-label="{% trans 'Page' %} {{ num }}">
+                                    {{ num }}
+                                </a>
                             </li>
                         {% endif %}
                     {% endfor %}
@@ -508,13 +889,17 @@
                     <!-- بعدی -->
                     {% if page_obj.has_next %}
                         <li>
-                            <a href="?page={{ page_obj.next_page_number }}" class="page-number next">
-                                <i class="fa fa-angle-left"></i>
+                            <a href="?page={{ page_obj.next_page_number }}{% if discount_filter %}&discount=true{% endif %}" 
+                               class="page-number next"
+                               aria-label="{% trans 'Next page' %}">
+                                <i class="fa fa-angle-left" aria-hidden="true"></i>
                             </a>
                         </li>
                     {% else %}
-                        <li class="disabled">
-                            <span class="page-number next"><i class="fa fa-angle-left"></i></span>
+                        <li class="disabled" aria-disabled="true">
+                            <span class="page-number next" aria-hidden="true">
+                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </span>
                         </li>
                     {% endif %}
                 </ul>

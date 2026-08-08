@@ -7,7 +7,7 @@ class ContactInfo(models.Model):
     address = models.TextField(verbose_name=_("address"))
     postal_code = models.CharField(max_length=20, verbose_name=_("postal cart"))
     phone = models.CharField(max_length=20, verbose_name=_("phone"))
-    whatsapp = models.CharField(max_length=20, verbose_name=_("whatsapp"))
+    whatsapp = models.CharField(max_length=50, verbose_name=_("whatsapp"),null= True)
     email = models.EmailField(verbose_name=_("email"))
     
     class Meta:

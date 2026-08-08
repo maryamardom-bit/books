@@ -14,6 +14,7 @@ class CommentsInLine(admin.TabularInline):
     readonly_fields = ['datetime_created']
 
 
+@admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ['title', 'category', 'author', 'publisher', 'price', 'active']
     list_filter = ['category', 'active', 'book_size', 'cover_type', 'year_of_publication', 'datetime_created']
@@ -43,6 +44,7 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     inlines = [CommentsInLine]
 
 
+@admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     list_display = [
         'title',
@@ -51,7 +53,8 @@ class PackageAdmin(admin.ModelAdmin):
         'price_display',
         'discount_display',
         'savings_display',
-        'stock_display',
+        'stock',  # فیلد اصلی stock برای نمایش عدد
+        'stock_display',  # نمایش زیبا با آیکون
         'active',
         'datetime_created'
     ]
@@ -60,7 +63,7 @@ class PackageAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description', 'products__title']
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('products',)
-    list_editable = ['active', 'stock']  
+    list_editable = ['active', 'stock']  # stock قابل ویرایش مستقیم در لیست
     
     fieldsets = (
         (_('Basic Information'), {
@@ -70,12 +73,23 @@ class PackageAdmin(admin.ModelAdmin):
             'fields': ('products',),
             'description': _('Select the products that belong to this package')
         }),
-        (_('Pricing & Stock'), {
-            'fields': ('discount_percent', 'original_price', 'price', 'stock'),
-            'description': _('Original price is auto-calculated. Set discount percentage and stock.')
+        (_('Pricing'), {
+            'fields': (
+                'discount_percent', 
+                'manual_price',
+                'original_price', 
+                'price',
+            ),
+            'description': _(
+                '⚠️ <b>راهنمای قیمت‌گذاری:</b><br>'
+                '1️⃣ قیمت اصلی به‌صورت خودکار از مجموع کتاب‌ها محاسبه می‌شود<br>'
+                '2️⃣ برای تخفیف درصدی: فقط درصد تخفیف را وارد کنید<br>'
+                '3️⃣ برای قیمت دستی: قیمت مورد نظر را در فیلد "قیمت دستی" وارد کنید<br>'
+                '4️⃣ فیلد "قیمت نهایی" به‌صورت خودکار تنظیم می‌شود'
+            )
         }),
-        (_('Dates'), {
-            'fields': ('datetime_created', 'datetime_modified'),
+        (_('Stock & Dates'), {
+            'fields': ('stock', 'datetime_created', 'datetime_modified'),
             'classes': ('collapse',)
         }),
     )
@@ -90,7 +104,7 @@ class PackageAdmin(admin.ModelAdmin):
     def original_price_display(self, obj):
         if obj.original_price:
             return format_html(
-                '<span style="color: #999; text-decoration: line-through;">{:,} تومان</span>',
+                '<span style="color: #999; text-decoration: line-through;">{:} تومان</span>',
                 obj.original_price
             )
         return '-'
@@ -98,19 +112,28 @@ class PackageAdmin(admin.ModelAdmin):
     
     def price_display(self, obj):
         if obj.price:
-            color = '#28a745' if obj.discount_percent > 0 else '#1a1a2e'
-            return format_html(
-                '<span style="color: {}; font-weight: bold; font-size: 14px;">{:,} تومان</span>',
-                color,
-                obj.price
-            )
+            if obj.manual_price and obj.manual_price > 0:
+                return format_html(
+                    '<span style="color: #8e44ad; font-weight: bold; font-size: 14px;">{:} تومان ✏️</span>',
+                    obj.price
+                )
+            elif obj.discount_percent > 0:
+                return format_html(
+                    '<span style="color: #27ae60; font-weight: bold; font-size: 14px;">{:} تومان 🏷️</span>',
+                    obj.price
+                )
+            else:
+                return format_html(
+                    '<span style="color: #1a1a2e; font-weight: bold; font-size: 14px;">{:} تومان</span>',
+                    obj.price
+                )
         return '-'
     price_display.short_description = _('Final Price')
     
     def discount_display(self, obj):
         if obj.discount_percent > 0:
             return format_html(
-                '<span style="color: #dc3545; font-weight: bold;">{}% تخفیف</span>',
+                '<span style="color: #dc3545; font-weight: bold">% تخفیف</span>',
                 obj.discount_percent
             )
         return '-'
@@ -120,22 +143,23 @@ class PackageAdmin(admin.ModelAdmin):
         savings = obj.get_savings()
         if savings > 0:
             return format_html(
-                '<span style="color: #28a745; font-weight: bold;">صرفه‌جویی {:,} تومان</span>',
+                '<span style="color: #28a745; font-weight: bold;">صرفه‌جویی {:} تومان</span>',
                 savings
             )
         return '-'
     savings_display.short_description = _('Savings')
     
     def stock_display(self, obj):
+        """نمایش وضعیت موجودی با آیکون"""
         if obj.stock > 0:
             return format_html(
-                '<span style="color: #28a745; font-weight: bold;">✓ {:,}</span>',
+                '<span style="color: #28a745; font-weight: bold;">✓ {:}</span>',
                 obj.stock
             )
         return format_html(
             '<span style="color: #dc3545; font-weight: bold;">✗ ناموجود</span>'
         )
-    stock_display.short_description = _('Stock')
+    stock_display.short_description = _('Stock Status')
     
     def save_model(self, request, obj, form, change):
         """ذخیره مدل با محاسبه خودکار قیمت‌ها"""
@@ -147,17 +171,20 @@ class PackageAdmin(admin.ModelAdmin):
         if obj.pk:
             obj.original_price = obj.calculate_original_price()
             
-            if obj.discount_percent > 0 and obj.original_price > 0:
+            if obj.manual_price and obj.manual_price > 0:
+                obj.price = obj.manual_price
+            elif obj.discount_percent > 0 and obj.original_price > 0:
                 obj.price = obj.original_price * (1 - obj.discount_percent / 100)
+                obj.price = int(obj.price)
             else:
                 obj.price = obj.original_price
             
-            obj.price = int(obj.price)
             obj.original_price = int(obj.original_price)
+            obj.price = int(obj.price)
             
             obj.save(update_fields=['original_price', 'price'])
     
-    actions = ['activate_packages', 'deactivate_packages', 'set_discount_10', 'set_discount_20']
+    actions = ['activate_packages', 'deactivate_packages']
     
     def activate_packages(self, request, queryset):
         updated = queryset.update(active=True)
@@ -168,22 +195,9 @@ class PackageAdmin(admin.ModelAdmin):
         updated = queryset.update(active=False)
         self.message_user(request, f'{updated} packages deactivated.')
     deactivate_packages.short_description = _('Deactivate selected packages')
-    
-    def set_discount_10(self, request, queryset):
-        for package in queryset:
-            package.discount_percent = 10
-            package.save()
-        self.message_user(request, f'10% discount applied to {queryset.count()} packages.')
-    set_discount_10.short_description = _('Apply 10%% discount')
-    
-    def set_discount_20(self, request, queryset):
-        for package in queryset:
-            package.discount_percent = 20
-            package.save()
-        self.message_user(request, f'20% discount applied to {queryset.count()} packages.')
-    set_discount_20.short_description = _('Apply 20%% discount')
 
 
+@admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['product', 'author', 'body', 'stars', 'active']
     list_filter = ['active', 'stars', 'datetime_created']
@@ -191,5 +205,3 @@ class CommentAdmin(admin.ModelAdmin):
     list_editable = ['active']
     list_per_page = 20
     ordering = ['-datetime_created']
-
-

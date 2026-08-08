@@ -11,28 +11,27 @@ from .models import Product, Comment, Package
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
-from django.views import generic  # <-- این خط را اضافه کنید
-from django.shortcuts import get_object_or_404, render, redirect  # redirect را هم اضافه کنید
-from django.contrib import messages
-from django.db.models import Q, Count, Avg, Value, IntegerField
-from django.db.models.functions import Coalesce
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from .models import Product, Comment, Package
-from .forms import CommentForm
-from cart.forms import AddToCartProductForm
 
 
 class ProductListView(generic.ListView):
     model = Product
-    queryset = Product.objects.filter(active=True).order_by('-datetime_created')
-    paginate_by = 12 
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
+    paginate_by = 12
 
-
+    def get_queryset(self):
+        queryset = Product.objects.filter(active=True).order_by('-datetime_created')
+        discount_filter = self.request.GET.get('discount', '')
+        
+        if discount_filter == 'true':
+            return [product for product in queryset if product.on_sale]
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
+        return context
 class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'Products/product_detail.html'
@@ -41,6 +40,14 @@ class ProductDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
+        
+        # محاسبه قیمت تخفیف‌خورده برای محصول
+        product = context['product']
+        product.discounted_price = product.get_discounted_price()
+        product.discount_percent_display = product.get_discount_percent_display()
+        product.is_on_sale = product.is_on_sale()
+        product.savings = product.get_savings()
+        
         return context
 
 

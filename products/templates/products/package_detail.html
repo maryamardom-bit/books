@@ -392,7 +392,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{% url 'home' %}">{% trans "Home" %}</a>
+                    <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{% url 'product:package_list' %}">{% trans "Packages" %}</a>
@@ -446,7 +446,7 @@
                             {% endif %}
 
                             <!-- Add to Cart -->
-                            <form action="{% url 'cart:add_to_cart' %}" method="post">
+                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ package.id }}">
                                 <input type="hidden" name="quantity" value="1">
