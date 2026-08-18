@@ -12,7 +12,6 @@ from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
 
-
 class ProductListView(generic.ListView):
     model = Product
     template_name = 'Products/product_list.html'
@@ -21,17 +20,29 @@ class ProductListView(generic.ListView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(active=True).order_by('-datetime_created')
+        
         discount_filter = self.request.GET.get('discount', '')
         
         if discount_filter == 'true':
-            return [product for product in queryset if product.on_sale]
+            # استفاده از ProductManager برای فیلتر تخفیف
+            queryset = Product.objects.get_on_sale_products().order_by('-datetime_created')
         
         return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
+        
+        # اضافه کردن اطلاعات تخفیف برای هر محصول
+        if context.get('products'):
+            for product in context['products']:
+                product.final_price = product.get_discounted_price()
+                product.savings_amount = product.get_savings()
+                product.discount_percentage = product.get_discount_percent_display()
+        
         return context
+
+
 class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'Products/product_detail.html'
@@ -41,12 +52,12 @@ class ProductDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         
-        # محاسبه قیمت تخفیف‌خورده برای محصول
+        # اطلاعات تخفیف
         product = context['product']
-        product.discounted_price = product.get_discounted_price()
-        product.discount_percent_display = product.get_discount_percent_display()
-        product.is_on_sale = product.is_on_sale()
-        product.savings = product.get_savings()
+        context['is_on_sale'] = product.is_on_sale()
+        context['discounted_price'] = product.get_discounted_price()
+        context['savings'] = product.get_savings()
+        context['discount_percentage'] = product.get_discount_percent_display()
         
         return context
 

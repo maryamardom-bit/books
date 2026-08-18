@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Q
 
 
 class ProductManager(models.Manager):
@@ -15,12 +16,27 @@ class ProductManager(models.Manager):
         return self.filter(active=True)
     
     def get_on_sale_products(self):
-        """دریافت محصولات دارای تخفیف"""
-        on_sale_products = []
-        for product in self.filter(active=True):
-            if product.is_on_sale():
-                on_sale_products.append(product)
-        return on_sale_products
+        """دریافت محصولات دارای تخفیف با کوئری بهینه"""
+        current_time = timezone.now()
+        
+        # شرایط تخفیف با استفاده از Q objects
+        on_sale_condition = (
+            Q(special_price__gt=0) |
+            (
+                Q(discount_percent__gt=0) &
+                (
+                    Q(discount_start_date__isnull=True) |
+                    Q(discount_start_date__lte=current_time)
+                ) &
+                (
+                    Q(discount_end_date__isnull=True) |
+                    Q(discount_end_date__gte=current_time)
+                )
+            )
+        )
+        
+        # اعمال فیلتر
+        return self.filter(active=True).filter(on_sale_condition)
 
 
 class Product(models.Model):
@@ -57,7 +73,7 @@ class Product(models.Model):
     # ==========================================
     title = models.CharField(max_length=100, verbose_name=_('product_title'))
     category = models.CharField(
-        max_length=20,
+        max_length=50,  # تغییر از 20 به 50 برای پشتیبانی از مقادیر طولانی‌تر
         choices=Category.choices,
         default=Category.OTHER,
         verbose_name=_('product_category')
@@ -133,32 +149,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product:product_detail', args=[self.pk])
     
-    def get_discounted_price(self):
-        """محاسبه قیمت با تخفیف"""
-        current_time = timezone.now()
-        
-        # بررسی اعتبار تخفیف از نظر زمانی
-        if self.discount_start_date and self.discount_end_date:
-            if not (self.discount_start_date <= current_time <= self.discount_end_date):
-                return self.price
-        
-        # اگر قیمت ویژه وارد شده باشد
-        if self.special_price > 0:
-            return self.special_price
-        
-        # تخفیف درصدی
-        if self.discount_percent > 0:
-            discounted = self.price * (1 - self.discount_percent / 100)
-            return int(discounted)
-        
-        return self.price
-    
-    def get_discount_percent_display(self):
-        """دریافت درصد تخفیف واقعی"""
-        if self.price > 0 and self.get_discounted_price() < self.price:
-            return int(((self.price - self.get_discounted_price()) / self.price) * 100)
-        return 0
-    
     def is_on_sale(self):
         """بررسی اینکه محصول در حال تخفیف است یا نه"""
         current_time = timezone.now()
@@ -169,45 +159,51 @@ class Product(models.Model):
         
         # بررسی تخفیف درصدی با زمان‌بندی
         if self.discount_percent > 0:
-            if self.discount_start_date and self.discount_end_date:
-                if self.discount_start_date <= current_time <= self.discount_end_date:
-                    return True
-            else:
-                # اگر تاریخ شروع و پایان تعیین نشده، تخفیف همیشه فعال است
+            # اگر تاریخ شروع و پایان تعیین نشده، تخفیف همیشه فعال است
+            if not self.discount_start_date and not self.discount_end_date:
                 return True
+            
+            # اگر تاریخ شروع تعیین شده و هنوز شروع نشده
+            if self.discount_start_date and current_time < self.discount_start_date:
+                return False
+            
+            # اگر تاریخ پایان تعیین شده و گذشته
+            if self.discount_end_date and current_time > self.discount_end_date:
+                return False
+            
+            # در غیر این صورت تخفیف فعال است
+            return True
         
         return False
+    
+    def get_discounted_price(self):
+        """محاسبه قیمت با تخفیف"""
+        if not self.is_on_sale():
+            return self.price
         
+        # اگر قیمت ویژه وارد شده باشد
+        if self.special_price > 0:
+            return min(self.special_price, self.price)
+        
+        # تخفیف درصدی
+        if self.discount_percent > 0:
+            discounted = self.price * (1 - self.discount_percent / 100)
+            return max(int(discounted), 0)
+        
+        return self.price
+    
     def get_savings(self):
-        """میزان صرفه‌جویی به صورت عدد صحیح"""
-        if self.is_on_sale():
-            return self.price - self.get_discounted_price()
-        return 0
-
-    # ==========================================
-    # Propertyها (جایگزین attributeهای ویو)
-    # ==========================================
-    @property
-    def savings(self):
-        """میزان صرفه‌جویی به صورت عدد صحیح (به عنوان property)"""
+        """میزان صرفه‌جویی"""
         if self.is_on_sale():
             return self.price - self.get_discounted_price()
         return 0
     
-    @property
-    def discounted_price(self):
-        """قیمت با تخفیف (به عنوان property)"""
-        return self.get_discounted_price()
-    
-    @property
-    def discount_percent_display(self):
-        """درصد تخفیف (به عنوان property)"""
-        return self.get_discount_percent_display()
-    
-    @property
-    def on_sale(self):
-        """آیا در تخفیف است (به عنوان property)"""
-        return self.is_on_sale()
+    def get_discount_percent_display(self):
+        """درصد تخفیف واقعی"""
+        if self.is_on_sale() and self.price > 0:
+            discounted_price = self.get_discounted_price()
+            return int(((self.price - discounted_price) / self.price) * 100)
+        return 0
     
     @property
     def is_new(self):

@@ -16,10 +16,28 @@ class CommentsInLine(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ['title', 'category', 'author', 'publisher', 'price', 'active']
-    list_filter = ['category', 'active', 'book_size', 'cover_type', 'year_of_publication', 'datetime_created']
+    list_display = [
+        'title', 
+        'category', 
+        'author', 
+        'publisher', 
+        'price_display',
+        'discount_display',
+        'active'
+    ]
+    list_filter = [
+        'category', 
+        'active', 
+        'book_size', 
+        'cover_type', 
+        'year_of_publication', 
+        'datetime_created',
+        'discount_percent',
+        'discount_start_date',
+        'discount_end_date'
+    ]
     search_fields = ['title', 'description', 'author', 'publisher', 'isbn']
-    list_editable = ['price', 'active']
+    list_editable = ['active']
     readonly_fields = ['datetime_created', 'datetime_modified']
     list_per_page = 20
     
@@ -35,6 +53,22 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
             ),
             'classes': ('wide', 'extrapretty'),
         }),
+        (_('Discount Settings'), {
+            'fields': (
+                'discount_percent',
+                'special_price',
+                'discount_start_date',
+                'discount_end_date',
+            ),
+            'classes': ('wide',),
+            'description': _(
+                '🛈 <b>راهنمای تخفیف:</b><br>'
+                '• برای تخفیف درصدی: فقط "درصد تخفیف" را وارد کنید<br>'
+                '• برای قیمت ویژه: "قیمت ویژه" را وارد کنید (اولویت با قیمت ویژه است)<br>'
+                '• برای تخفیف زمان‌دار: تاریخ شروع و پایان را مشخص کنید<br>'
+                '• اگر تاریخ مشخص نشود، تخفیف همیشه فعال است'
+            )
+        }),
         (_('Status & Dates'), {
             'fields': ('active', 'datetime_created', 'datetime_modified'),
             'classes': ('collapse',),
@@ -42,6 +76,30 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     )
     
     inlines = [CommentsInLine]
+    
+    def price_display(self, obj):
+        if obj.is_on_sale():
+            discounted = obj.get_discounted_price()
+            return format_html(
+                '<del style="color: #999;">{:}</del> '
+                '<span style="color: #28a745; font-weight: bold;">{:}</span>',
+                obj.price,
+                discounted
+            )
+        return format_html('<span style="font-weight: bold;">{:}</span>', obj.price)
+    price_display.short_description = _('Price (Toman)')
+    
+    def discount_display(self, obj):
+        if obj.is_on_sale():
+            percent = obj.get_discount_percent_display()
+            savings = obj.get_savings()
+            return format_html(
+                '<span style="color: #dc3545; font-weight: bold;">🏷️ {}% - صرفه‌جویی: {}</span>',
+                percent,
+                savings
+            )
+        return '-'
+    discount_display.short_description = _('Discount')
 
 
 @admin.register(Package)
@@ -53,8 +111,8 @@ class PackageAdmin(admin.ModelAdmin):
         'price_display',
         'discount_display',
         'savings_display',
-        'stock',  # فیلد اصلی stock برای نمایش عدد
-        'stock_display',  # نمایش زیبا با آیکون
+        'stock',
+        'stock_display',
         'active',
         'datetime_created'
     ]
@@ -63,7 +121,7 @@ class PackageAdmin(admin.ModelAdmin):
     search_fields = ['title', 'description', 'products__title']
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('products',)
-    list_editable = ['active', 'stock']  # stock قابل ویرایش مستقیم در لیست
+    list_editable = ['active', 'stock']
     
     fieldsets = (
         (_('Basic Information'), {
@@ -140,7 +198,7 @@ class PackageAdmin(admin.ModelAdmin):
     discount_display.short_description = _('Discount')
     
     def savings_display(self, obj):
-        savings = obj.get_savings()
+        savings = obj.calculate_savings()
         if savings > 0:
             return format_html(
                 '<span style="color: #28a745; font-weight: bold;">صرفه‌جویی {:} تومان</span>',
