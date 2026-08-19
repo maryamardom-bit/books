@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-23 18:49+0330\n"
+"POT-Creation-Date: 2026-08-19 05:28+0000\n"
 "PO-Revision-Date: 2026-07-26 10:32+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -275,13 +275,13 @@ msgstr "درباره فروشگاه"
 
 #: templates/footer.html:18
 msgid ""
-"Welcome to the website and online store of 'Kasri Library' publications. You"
-" can order available products directly from the publisher and use priority "
+"Welcome to the website and online store of 'Kasri Library' publications. You "
+"can order available products directly from the publisher and use priority "
 "mail delivery for all orders."
 msgstr ""
 "به وبسایت و فروشــگاه اینترنتی انتشــارات «کتابــکده کســری» خـوش آمدیــد. "
-"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده "
-"و از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
+"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده و "
+"از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
 
 #: templates/footer.html:28
 msgid "Quick Links"
@@ -328,7 +328,6 @@ msgid "Home"
 msgstr "خانه"
 
 #: templates/home.html:356
-#| msgid "Discover our curated collection of architectural books"
 msgid "Discover the finest collection of architecture and design books"
 msgstr "کلکسیون منتخب کتاب‌های معماری "
 
@@ -337,7 +336,6 @@ msgid "New Releases"
 msgstr "تازه های منتشر شده"
 
 #: templates/home.html:366
-#| msgid "Kasra Architecture Bookstore"
 msgid "Latest architectural books"
 msgstr "جدیدترین کتاب های معماری"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-22 16:31+0330\n"
+"POT-Creation-Date: 2026-08-19 05:28+0000\n"
 "PO-Revision-Date: 2026-07-17 19:11+0330\n"
 "Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,7 +208,7 @@ msgstr "تعطیل"
 msgid "Our Location"
 msgstr "موقعیت ما"
 
-#: pages/templates/pages/contactus.html:392
+#: pages/templates/pages/contactus.html:391
 msgid "Open in Maps"
 msgstr "نمایش روی نقشه"
 
