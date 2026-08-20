@@ -1,6 +1,6 @@
 import json
 import requests
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.conf import settings
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -14,23 +14,19 @@ def payment_process(request):
     """
     شروع فرآیند پرداخت با زرین‌پال
     """
-    # Get order id from session
     order_id = request.session.get('order_id')
     
     if not order_id:
         messages.error(request, _('No order found. Please try again.'))
         return redirect('cart:cart_detail')
 
-    # Get the order object
     order = get_object_or_404(Order, id=order_id)
     
-    # Check if order is already paid
     if order.is_paid:
         messages.info(request, _('This order has already been paid.'))
         return redirect('page:home')
 
-    toman_total_price = order.get_total_price()
-    rial_total_price = toman_total_price * 10
+    rial_total_price = order.total_price * 10
 
     zarinpal_request_url = 'https://payment.zarinpal.com/pg/v4/payment/request.json'
 
@@ -96,8 +92,7 @@ def payment_verify(request):
     
     order = get_object_or_404(Order, id=order_id)
     
-    toman_total_price = order.get_total_price()
-    rial_total_price = toman_total_price * 10
+    rial_total_price = order.total_price * 10
     
     zarinpal_verify_url = 'https://payment.zarinpal.com/pg/v4/payment/verify.json'
     
@@ -125,11 +120,9 @@ def payment_verify(request):
         if response.status_code == 200 and response_data.get('data'):
             data = response_data['data']
             if data.get('code') == 100:
-                # Payment successful
                 order.is_paid = True
                 order.save()
                 
-                # Clear session
                 if 'order_id' in request.session:
                     del request.session['order_id']
                 

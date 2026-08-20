@@ -13,6 +13,10 @@ class Order(models.Model):
     address = models.CharField(_('address'), max_length=700)
     order_notes = models.CharField(_("note"), max_length=700, blank=True)
 
+    # فیلدهای جدید
+    total_weight = models.PositiveIntegerField(_('total weight'), default=0, help_text=_('وزن کل سفارش (گرم)'))
+    total_price = models.PositiveIntegerField(_('total price'), default=0, help_text=_('مبلغ کل سفارش (تومان)'))
+
     datetime_created = models.DateTimeField(_('Date Time of Creation'), auto_now_add=True)
     datetime_modified = models.DateTimeField(_('Date Time of Modified'), auto_now=True)
 
@@ -23,13 +27,37 @@ class Order(models.Model):
         """محاسبه قیمت کل سفارش"""
         return sum(item.quantity * item.price for item in self.items.all())
 
+    def get_total_weight(self):
+        """محاسبه وزن کل سفارش"""
+        return sum(item.get_weight() for item in self.items.all())
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='order_items')
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE, related_name='order_items', null=True, blank=True)
+    package = models.ForeignKey('products.Package', on_delete=models.CASCADE, related_name='order_items', null=True, blank=True)
     quantity = models.PositiveBigIntegerField(default=1)
     price = models.PositiveIntegerField(verbose_name=_('Product Price'))
 
     def __str__(self):
-        return f'OrderItem {self.id}: {self.product} * {self.quantity} (price: {self.price})'
-    
+        if self.product:
+            return f'OrderItem {self.id}: {self.product.title} * {self.quantity} (price: {self.price})'
+        elif self.package:
+            return f'OrderItem {self.id}: {self.package.title} * {self.quantity} (price: {self.price})'
+        return f'OrderItem {self.id}'
+
+    def get_weight(self):
+        """وزن این آیتم"""
+        if self.product and self.product.weight:
+            return self.product.weight * self.quantity
+        if self.package:
+            return self.package.get_total_weight() * self.quantity
+        return 0
+
+    def get_title(self):
+        """عنوان آیتم"""
+        if self.product:
+            return self.product.title
+        elif self.package:
+            return self.package.title
+        return 'Unknown'
