@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from jalali_date.admin import ModelAdminJalaliMixin
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Sum
+
 
 from .models import Product, Comment, Package
 
@@ -17,38 +17,38 @@ class CommentsInLine(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = [
-        'title', 
-        'category', 
-        'author', 
-        'publisher', 
+        'title',
+        'category',
+        'author',
+        'publisher',
         'price_display',
         'discount_display',
         'weight',
-        'active'
+        'active',
     ]
     list_filter = [
-        'category', 
-        'active', 
-        'book_size', 
-        'cover_type', 
-        'year_of_publication', 
+        'category',
+        'active',
+        'book_size',
+        'cover_type',
+        'year_of_publication',
         'datetime_created',
         'discount_percent',
         'discount_start_date',
-        'discount_end_date'
+        'discount_end_date',
     ]
     search_fields = ['title', 'description', 'author', 'publisher', 'isbn']
     list_editable = ['active']
     readonly_fields = ['datetime_created', 'datetime_modified']
     list_per_page = 20
-    
+
     fieldsets = (
         (_('Basic Information'), {
             'fields': ('title', 'category', 'description', 'price', 'image')
         }),
         (_('Book Details'), {
             'fields': (
-                'author', 'edition', 'book_size', 'number_of_pages', 
+                'author', 'edition', 'book_size', 'number_of_pages',
                 'cover_type', 'weight', 'publication_date', 'printing_series',
                 'year_of_publication', 'publisher', 'isbn'
             ),
@@ -75,9 +75,9 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
-    
+
     inlines = [CommentsInLine]
-    
+
     def price_display(self, obj):
         if obj.is_on_sale():
             discounted = obj.get_discounted_price()
@@ -89,7 +89,7 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
             )
         return format_html('<span style="font-weight: bold;">{:}</span>', obj.price)
     price_display.short_description = _('Price (Toman)')
-    
+
     def discount_display(self, obj):
         if obj.is_on_sale():
             percent = obj.get_discount_percent_display()
@@ -112,18 +112,19 @@ class PackageAdmin(admin.ModelAdmin):
         'price_display',
         'discount_display',
         'savings_display',
+        'total_weight_display',
         'stock',
         'stock_display',
         'active',
-        'datetime_created'
+        'datetime_created',
     ]
-    
+
     list_filter = ['active', 'datetime_created', 'discount_percent']
     search_fields = ['title', 'description', 'products__title']
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('products',)
     list_editable = ['active', 'stock']
-    
+
     fieldsets = (
         (_('Basic Information'), {
             'fields': ('title', 'slug', 'description', 'image', 'active')
@@ -134,9 +135,9 @@ class PackageAdmin(admin.ModelAdmin):
         }),
         (_('Pricing'), {
             'fields': (
-                'discount_percent', 
+                'discount_percent',
                 'manual_price',
-                'original_price', 
+                'original_price',
                 'price',
             ),
             'description': _(
@@ -152,14 +153,14 @@ class PackageAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     readonly_fields = ['datetime_created', 'datetime_modified', 'original_price', 'price']
-    
+
     def get_products_count_display(self, obj):
         count = obj.get_products_count()
         return format_html('<span style="font-weight: bold;">📚 {}</span>', count)
     get_products_count_display.short_description = _('Books')
-    
+
     def original_price_display(self, obj):
         if obj.original_price:
             return format_html(
@@ -168,7 +169,7 @@ class PackageAdmin(admin.ModelAdmin):
             )
         return '-'
     original_price_display.short_description = _('Original Price')
-    
+
     def price_display(self, obj):
         if obj.price:
             if obj.manual_price and obj.manual_price > 0:
@@ -188,7 +189,7 @@ class PackageAdmin(admin.ModelAdmin):
                 )
         return '-'
     price_display.short_description = _('Final Price')
-    
+
     def discount_display(self, obj):
         if obj.discount_percent > 0:
             return format_html(
@@ -197,7 +198,7 @@ class PackageAdmin(admin.ModelAdmin):
             )
         return '-'
     discount_display.short_description = _('Discount')
-    
+
     def savings_display(self, obj):
         savings = obj.calculate_savings()
         if savings > 0:
@@ -207,9 +208,18 @@ class PackageAdmin(admin.ModelAdmin):
             )
         return '-'
     savings_display.short_description = _('Savings')
-    
+
+    def total_weight_display(self, obj):
+        weight = obj.get_total_weight()
+        if weight > 0:
+            return format_html(
+                '<span style="color: #6c757d;">⚖️ {} گرم</span>',
+                weight
+            )
+        return '-'
+    total_weight_display.short_description = _('Total Weight')
+
     def stock_display(self, obj):
-        """نمایش وضعیت موجودی با آیکون"""
         if obj.stock > 0:
             return format_html(
                 '<span style="color: #28a745; font-weight: bold;">✓ {:}</span>',
@@ -219,17 +229,17 @@ class PackageAdmin(admin.ModelAdmin):
             '<span style="color: #dc3545; font-weight: bold;">✗ ناموجود</span>'
         )
     stock_display.short_description = _('Stock Status')
-    
+
     def save_model(self, request, obj, form, change):
         """ذخیره مدل با محاسبه خودکار قیمت‌ها"""
         if not change:
             obj.save()
-        
+
         form.save_m2m()
-        
+
         if obj.pk:
             obj.original_price = obj.calculate_original_price()
-            
+
             if obj.manual_price and obj.manual_price > 0:
                 obj.price = obj.manual_price
             elif obj.discount_percent > 0 and obj.original_price > 0:
@@ -237,19 +247,19 @@ class PackageAdmin(admin.ModelAdmin):
                 obj.price = int(obj.price)
             else:
                 obj.price = obj.original_price
-            
+
             obj.original_price = int(obj.original_price)
             obj.price = int(obj.price)
-            
+
             obj.save(update_fields=['original_price', 'price'])
-    
+
     actions = ['activate_packages', 'deactivate_packages']
-    
+
     def activate_packages(self, request, queryset):
         updated = queryset.update(active=True)
         self.message_user(request, f'{updated} packages activated.')
     activate_packages.short_description = _('Activate selected packages')
-    
+
     def deactivate_packages(self, request, queryset):
         updated = queryset.update(active=False)
         self.message_user(request, f'{updated} packages deactivated.')
@@ -258,9 +268,10 @@ class PackageAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['product', 'author', 'body', 'stars', 'active']
+    list_display = ['product', 'author', 'body', 'stars', 'active', 'datetime_created']
     list_filter = ['active', 'stars', 'datetime_created']
     search_fields = ['author__username', 'product__title', 'body']
     list_editable = ['active']
     list_per_page = 20
     ordering = ['-datetime_created']
+    
