@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-from django.views import generic  
-from django.shortcuts import get_object_or_404, render, redirect    
+from django.views import generic
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.db.models import Q, Count, Avg, Value, IntegerField
 from django.db.models.functions import Coalesce
@@ -21,8 +21,8 @@ class ProductListView(generic.ListView):
     def get_queryset(self):
         queryset = Product.objects.filter(active=True)
         
+        # فیلتر تخفیف
         discount_filter = self.request.GET.get('discount', '')
-        
         if discount_filter == 'true':
             queryset = Product.objects.get_on_sale_products()
         
@@ -35,11 +35,17 @@ class ProductListView(generic.ListView):
             queryset = queryset.order_by('-price')
         elif sort == 'title':
             queryset = queryset.order_by('title')
+        elif sort == 'author':
+            queryset = queryset.order_by('author')
+        elif sort == 'newest':
+            queryset = queryset.order_by('-datetime_created')
+        elif sort == 'oldest':
+            queryset = queryset.order_by('datetime_created')
         else:
             queryset = queryset.order_by('-datetime_created')
         
         return queryset
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
@@ -53,7 +59,8 @@ class ProductListView(generic.ListView):
                 product.discount_percentage = product.get_discount_percent_display()
         
         return context
-    
+
+
 class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'Products/product_detail.html'
@@ -70,7 +77,7 @@ class ProductDetailView(generic.DetailView):
         context['savings'] = product.get_savings()
         context['discount_percentage'] = product.get_discount_percent_display()
         
-        # محصولات مرتبط (همین دسته، همون نویسنده)
+        # محصولات مرتبط (همین دسته یا همین نویسنده)
         related_products = Product.objects.filter(
             active=True
         ).filter(
@@ -79,7 +86,17 @@ class ProductDetailView(generic.DetailView):
         
         context['related_products'] = related_products
         
+        # کتاب‌های دیگر همین نویسنده
+        if product.author:
+            author_books = Product.objects.filter(
+                active=True,
+                author=product.author
+            ).exclude(id=product.id)[:6]
+            context['author_books'] = author_books
+        
         return context
+
+
 class CommentCreateView(generic.CreateView):
     model = Comment
     form_class = CommentForm
@@ -92,7 +109,7 @@ class CommentCreateView(generic.CreateView):
         product = get_object_or_404(Product, id=product_id)
         obj.product = product
         
-        messages.success(self.request, _('your comment has been successfully registered'))
+        messages.success(self.request, _('Your comment has been successfully registered.'))
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -112,6 +129,9 @@ class ProductSearchView(generic.ListView):
             return Product.objects.filter(
                 Q(title__icontains=query) |
                 Q(description__icontains=query) |
+                Q(author__icontains=query) |
+                Q(publisher__icontains=query) |
+                Q(isbn__icontains=query) |
                 Q(comments__body__icontains=query)
             ).filter(active=True).annotate(
                 comments_count=Count('comments', filter=Q(comments__active=True)),
@@ -139,6 +159,7 @@ class PackageListView(generic.ListView):
 
 
 class PackageDetailView(generic.DetailView):
+    """نمایش جزییات یک پکیج"""
     model = Package
     template_name = 'Products/package_detail.html'
     context_object_name = 'package'
@@ -150,16 +171,14 @@ class PackageDetailView(generic.DetailView):
         context['is_in_stock'] = context['package'].is_in_stock()
         context['total_weight'] = context['package'].get_total_weight()
         return context
+
+
 def category_list(request):
-    """
-    نمایش همه دسته‌بندی‌ها در یک صفحه گرید (به جز PACKAGES)
-    """
+    """نمایش همه دسته‌بندی‌ها"""
     categories = []
     
-    # لیست دسته‌بندی‌هایی که باید حذف بشن
     EXCLUDED_CATEGORIES = ['PACKAGES']
     
-    # دیکشنری آیکون‌ها - با کلیدهای درست
     icons = {
         'BUSINESS': '💼',
         'ARCH_DESIGN': '🏗️',
@@ -175,13 +194,10 @@ def category_list(request):
         'OTHER': '📦',
     }
     
-    # دریافت همه دسته‌بندی‌ها از مدل
     for category_code, category_name in Product.Category.choices:
-        # رد کردن دسته‌بندی‌های حذف شده
         if category_code in EXCLUDED_CATEGORIES:
             continue
             
-        # شمارش کتاب‌های هر دسته
         product_count = Product.objects.filter(category=category_code, active=True).count()
         
         categories.append({
@@ -197,22 +213,28 @@ def category_list(request):
 
 
 def product_list_by_category(request, category):
-    """
-    نمایش کتاب‌های یک دسته خاص با صفحه‌بندی
-    """
-    # دریافت همه دسته‌بندی‌های معتبر از مدل
+    """نمایش کتاب‌های یک دسته خاص"""
     valid_categories = dict(Product.Category.choices)
     
-    # بررسی معتبر بودن دسته
     if category not in valid_categories:
         return render(request, 'Products/product_list_by_category.html', {
             'products': Product.objects.none(),
             'category': None,
-            'error': 'دسته‌بندی نامعتبر است'
+            'error': 'دسته‌بندی نامعتبر است',
         })
     
-    # فیلتر کردن محصولات بر اساس category
     products_list = Product.objects.filter(category=category, active=True)
+    
+    # مرتب‌سازی
+    sort = request.GET.get('sort', '-datetime_created')
+    if sort == 'price':
+        products_list = products_list.order_by('price')
+    elif sort == '-price':
+        products_list = products_list.order_by('-price')
+    elif sort == 'title':
+        products_list = products_list.order_by('title')
+    else:
+        products_list = products_list.order_by('-datetime_created')
     
     # صفحه‌بندی
     paginator = Paginator(products_list, 12)
@@ -225,10 +247,8 @@ def product_list_by_category(request, category):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
     
-    # دریافت نام نمایشی دسته‌بندی
     category_display = valid_categories.get(category, category)
     
-    # دیکشنری آیکون‌ها برای هر دسته
     category_icons = {
         'BUSINESS': '💼',
         'ARCH_DESIGN': '🏗️',
@@ -256,6 +276,7 @@ def product_list_by_category(request, category):
         'paginator': paginator,
         'is_paginated': products.has_other_pages(),
         'page_obj': products,
+        'sort': sort,
     })
 
 
@@ -267,7 +288,6 @@ def package_comment(request, slug):
         stars = request.POST.get('stars')
         
         if body and stars:
-            # نظر به اولین کتاب پکیج متصل می‌شود
             first_product = package.products.first()
             if first_product:
                 Comment.objects.create(
@@ -275,7 +295,7 @@ def package_comment(request, slug):
                     author=request.user,
                     body=body,
                     stars=int(stars),
-                    active=True
+                    active=True,
                 )
                 messages.success(request, 'نظر شما با موفقیت ثبت شد.')
             else:
