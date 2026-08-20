@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-19 05:28+0000\n"
-"PO-Revision-Date: 2026-08-19 09:07+0330\n"
+"PO-Revision-Date: 2026-08-19 09:10+0330\n"
 "Last-Translator:   <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -46,7 +46,7 @@ msgstr "وضعیت و تاریخ‌ها"
 
 #: products/admin.py:90
 msgid "Price (Toman)"
-msgstr ""
+msgstr "تومان"
 
 #: products/admin.py:102 products/admin.py:198
 msgid "Discount"

@@ -23,6 +23,7 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         'publisher', 
         'price_display',
         'discount_display',
+        'weight',
         'active'
     ]
     list_filter = [

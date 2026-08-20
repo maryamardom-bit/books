@@ -1,91 +1,81 @@
-from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
-from products.models import Product
+from products.models import Product, Package
+
 
 class Cart:
     def __init__(self, request):
-        """
-        initialize the cart
-        """
         self.request = request
-        
         self.session = request.session
         
         cart = self.session.get('cart')
-
         if not cart:
             cart = self.session['cart'] = {}
-            # cart = self.session['cart']
-
         self.cart = cart
 
-
-    def add(self , product, quantity = 1  , replace_current_quantity = False):
+    def add(self, obj, quantity=1, replace_current_quantity=False, is_package=False):
         """
-        Add the spacified product to the cart if it exist
+        Add product or package to cart.
         """
-        product_id = str(product.id)
-
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0}
-            
+        item_key = f"{'package' if is_package else 'product'}_{obj.id}"
+        
+        if item_key not in self.cart:
+            self.cart[item_key] = {
+                'quantity': 0,
+                'is_package': is_package,
+            }
+        
         if replace_current_quantity:
-            self.cart[product_id]['quantity'] = quantity
-            messages.success(self.request,_('product successfully updated to cart'))
+            self.cart[item_key]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
-            messages.success(self.request,_('product successfully added to cart'))
-
+            self.cart[item_key]['quantity'] += quantity
+        
         self.save()
 
-    def remove(self, product):
-        """
-        Remove a product from the cart
-        """
-        product_id = str(product.id)
-
-        if product_id in self.cart:
-            del self.cart[product_id]
+    def remove(self, obj, is_package=False):
+        item_key = f"{'package' if is_package else 'product'}_{obj.id}"
+        if item_key in self.cart:
+            del self.cart[item_key]
             self.save()
-            messages.success(self.request,_('product successfully removed from cart'))
-    
-    def save(self):
-        """
-        Mark session as modified to save changes
-        """
-        self.session.modified =True
 
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in = product_ids)
-
         cart = self.cart.copy()
-
-        for product in products:
-            cart[str(product.id)]['product_obj'] = product
-
-        for item in cart.values():
-            item['total_price'] = item['product_obj'].price *item['quantity']
-            yield item
         
+        product_ids = [key.replace('product_', '') for key in cart.keys() if key.startswith('product_')]
+        package_ids = [key.replace('package_', '') for key in cart.keys() if key.startswith('package_')]
+        
+        products = Product.objects.filter(id__in=product_ids)
+        packages = Package.objects.filter(id__in=package_ids)
+        
+        for product in products:
+            key = f'product_{product.id}'
+            cart[key]['product_obj'] = product
+            cart[key]['title'] = product.title
+            cart[key]['price'] = product.get_discounted_price()
+            cart[key]['image'] = product.image
+        
+        for package in packages:
+            key = f'package_{package.id}'
+            cart[key]['package_obj'] = package
+            cart[key]['title'] = package.title
+            cart[key]['price'] = package.price
+            cart[key]['image'] = package.image
+        
+        for item in cart.values():
+            item['total_price'] = item['price'] * item['quantity']
+            yield item
+
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
-        # return len(self.cart.keys())
-    
+
+    def get_total_price(self):
+        return sum(item['total_price'] for item in self)
+
     def clear(self):
         del self.session['cart']
         self.save()
 
-    def get_total_price(self):
-        product_ids = self.cart.keys()
-
-
-        return sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())
-    
     def is_empty(self):
-        if self.cart:
-            return False
-        return True
-    
+        return len(self.cart) == 0
 
-
+    def save(self):
+        self.session.modified = True

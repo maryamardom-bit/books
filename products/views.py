@@ -19,19 +19,31 @@ class ProductListView(generic.ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = Product.objects.filter(active=True).order_by('-datetime_created')
+        queryset = Product.objects.filter(active=True)
         
         discount_filter = self.request.GET.get('discount', '')
         
         if discount_filter == 'true':
-            # استفاده از ProductManager برای فیلتر تخفیف
-            queryset = Product.objects.get_on_sale_products().order_by('-datetime_created')
+            queryset = Product.objects.get_on_sale_products()
+        
+        # مرتب‌سازی
+        sort = self.request.GET.get('sort', '-datetime_created')
+        
+        if sort == 'price':
+            queryset = queryset.order_by('price')
+        elif sort == '-price':
+            queryset = queryset.order_by('-price')
+        elif sort == 'title':
+            queryset = queryset.order_by('title')
+        else:
+            queryset = queryset.order_by('-datetime_created')
         
         return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
+        context['sort'] = self.request.GET.get('sort', '-datetime_created')
         
         # اضافه کردن اطلاعات تخفیف برای هر محصول
         if context.get('products'):
@@ -41,8 +53,7 @@ class ProductListView(generic.ListView):
                 product.discount_percentage = product.get_discount_percent_display()
         
         return context
-
-
+    
 class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'Products/product_detail.html'
@@ -59,9 +70,16 @@ class ProductDetailView(generic.DetailView):
         context['savings'] = product.get_savings()
         context['discount_percentage'] = product.get_discount_percent_display()
         
+        # محصولات مرتبط (همین دسته، همون نویسنده)
+        related_products = Product.objects.filter(
+            active=True
+        ).filter(
+            Q(category=product.category) | Q(author=product.author)
+        ).exclude(id=product.id).distinct()[:4]
+        
+        context['related_products'] = related_products
+        
         return context
-
-
 class CommentCreateView(generic.CreateView):
     model = Comment
     form_class = CommentForm
@@ -121,7 +139,6 @@ class PackageListView(generic.ListView):
 
 
 class PackageDetailView(generic.DetailView):
-    """نمایش جزییات یک پکیج"""
     model = Package
     template_name = 'Products/package_detail.html'
     context_object_name = 'package'
@@ -130,9 +147,9 @@ class PackageDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['add_to_cart_form'] = AddToCartProductForm()
+        context['is_in_stock'] = context['package'].is_in_stock()
+        context['total_weight'] = context['package'].get_total_weight()
         return context
-
-
 def category_list(request):
     """
     نمایش همه دسته‌بندی‌ها در یک صفحه گرید (به جز PACKAGES)

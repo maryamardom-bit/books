@@ -19,7 +19,6 @@ class ProductManager(models.Manager):
         """دریافت محصولات دارای تخفیف با کوئری بهینه"""
         current_time = timezone.now()
         
-        # شرایط تخفیف با استفاده از Q objects
         on_sale_condition = (
             Q(special_price__gt=0) |
             (
@@ -35,7 +34,6 @@ class ProductManager(models.Manager):
             )
         )
         
-        # اعمال فیلتر
         return self.filter(active=True).filter(on_sale_condition)
 
 
@@ -71,9 +69,9 @@ class Product(models.Model):
     # ==========================================
     # فیلدهای اصلی
     # ==========================================
-    title = models.CharField(max_length=100, verbose_name=_('product_title'))
+    title = models.CharField(max_length=200, verbose_name=_('product_title'))  # افزایش به 200
     category = models.CharField(
-        max_length=50,  # تغییر از 20 به 50 برای پشتیبانی از مقادیر طولانی‌تر
+        max_length=50,  # 50 کاراکتر
         choices=Category.choices,
         default=Category.OTHER,
         verbose_name=_('product_category')
@@ -88,12 +86,12 @@ class Product(models.Model):
     # ==========================================
     author = models.CharField(max_length=200, blank=True, verbose_name=_('author'))
     publisher = models.CharField(max_length=200, blank=True, verbose_name=_('publisher'))
-    isbn = models.CharField(max_length=20, blank=True, verbose_name=_('isbn'))
+    isbn = models.CharField(max_length=30, blank=True, verbose_name=_('isbn'))  # افزایش به 30
     year_of_publication = models.IntegerField(null=True, blank=True, verbose_name=_('year_of_publication'))
-    edition = models.CharField(max_length=50, blank=True, verbose_name=_('edition'))
+    edition = models.CharField(max_length=100, blank=True, verbose_name=_('edition'))  # افزایش به 100
     number_of_pages = models.IntegerField(null=True, blank=True, verbose_name=_('number_of_pages'))
-    book_size = models.CharField(max_length=20, choices=BookSize.choices, blank=True, null=True, verbose_name=_('book_size'))
-    cover_type = models.CharField(max_length=20, choices=CoverType.choices, blank=True, null=True, verbose_name=_('cover_type'))
+    book_size = models.CharField(max_length=30, choices=BookSize.choices, blank=True, null=True, verbose_name=_('book_size'))  # افزایش به 30
+    cover_type = models.CharField(max_length=30, choices=CoverType.choices, blank=True, null=True, verbose_name=_('cover_type'))  # افزایش به 30
     publication_date = models.IntegerField(null=True, blank=True, verbose_name=_('publication_date'))
     printing_series = models.CharField(max_length=100, null=True, blank=True, verbose_name=_('printing_series'))
     weight = models.IntegerField(null=True, blank=True, verbose_name=_('weight'))
@@ -125,7 +123,7 @@ class Product(models.Model):
     special_price = models.PositiveIntegerField(
         _('special price'),
         default=0,
-        help_text=_('قیمت ویژه (اگر وارد شود، تخفیف به صورت مبلغ ثابت اعمال می‌شود)'),
+        help_text=_('قیمت ویژه'),
         validators=[MinValueValidator(0)]
     )
 
@@ -153,25 +151,19 @@ class Product(models.Model):
         """بررسی اینکه محصول در حال تخفیف است یا نه"""
         current_time = timezone.now()
         
-        # اگر قیمت ویژه وارد شده باشد
         if self.special_price > 0:
             return True
         
-        # بررسی تخفیف درصدی با زمان‌بندی
         if self.discount_percent > 0:
-            # اگر تاریخ شروع و پایان تعیین نشده، تخفیف همیشه فعال است
             if not self.discount_start_date and not self.discount_end_date:
                 return True
             
-            # اگر تاریخ شروع تعیین شده و هنوز شروع نشده
             if self.discount_start_date and current_time < self.discount_start_date:
                 return False
             
-            # اگر تاریخ پایان تعیین شده و گذشته
             if self.discount_end_date and current_time > self.discount_end_date:
                 return False
             
-            # در غیر این صورت تخفیف فعال است
             return True
         
         return False
@@ -181,11 +173,9 @@ class Product(models.Model):
         if not self.is_on_sale():
             return self.price
         
-        # اگر قیمت ویژه وارد شده باشد
         if self.special_price > 0:
             return min(self.special_price, self.price)
         
-        # تخفیف درصدی
         if self.discount_percent > 0:
             discounted = self.price * (1 - self.discount_percent / 100)
             return max(int(discounted), 0)
@@ -207,13 +197,13 @@ class Product(models.Model):
     
     @property
     def is_new(self):
-        """آیا محصول جدید است (کمتر از 30 روز)"""
+        """آیا محصول جدید است"""
         return (timezone.now() - self.datetime_created).days < 30
 
 
 class ActiveCommentsManager(models.Manager):
     def get_queryset(self):
-        return super(ActiveCommentsManager, self).get_queryset().filter(active=True)
+        return super().get_queryset().filter(active=True)
 
 
 class Comment(models.Model):
@@ -245,7 +235,17 @@ class Comment(models.Model):
     active_comments_manager = ActiveCommentsManager()
 
     def get_absolute_url(self):
-        return reverse('product_detail', args=[self.product.id])
+        return reverse('product:product_detail', args=[self.product.id])
+    
+    def clean(self):
+        """اعتبارسنجی ستاره‌ها"""
+        from django.core.exceptions import ValidationError
+        if self.stars < 1 or self.stars > 5:
+            raise ValidationError(_('Stars must be between 1 and 5.'))
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Package(models.Model):
@@ -277,7 +277,7 @@ class Package(models.Model):
     discount_percent = models.PositiveSmallIntegerField(
         _('discount percent'),
         default=0,
-        help_text=_('Discount percentage (if set, price will be auto-calculated)')
+        help_text=_('Discount percentage')
     )
     
     manual_price = models.PositiveIntegerField(
@@ -289,7 +289,7 @@ class Package(models.Model):
     stock = models.PositiveIntegerField(
         _('stock'),
         default=0,
-        help_text=_('Available stock for this package'),
+        help_text=_('Available stock'),
         validators=[MinValueValidator(0)]
     )
     
@@ -315,6 +315,12 @@ class Package(models.Model):
     def get_products_count(self):
         """تعداد کتاب‌های موجود در پکیج"""
         return self.products.filter(active=True).count()
+    
+    # ⬇️ اینجا اضافه کن ⬇️
+    def get_total_weight(self):
+        """محاسبه وزن کل پکیج"""
+        return sum(product.weight or 0 for product in self.products.filter(active=True))
+    # ⬆️ اینجا اضافه کن ⬆️
     
     def calculate_savings(self):
         """میزان صرفه‌جویی به صورت عدد صحیح"""
