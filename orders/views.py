@@ -14,6 +14,69 @@ def order_create_view(request):
     cart = Cart(request)
 
     if len(cart) == 0:
+        messages.warning(request, _("سبد خرید شما خالی است."))
+        return redirect('product:product_list')
+
+    if request.method == 'POST':
+        order_form = OrderForm(request.POST)
+
+        if order_form.is_valid():
+            order_obj = order_form.save(commit=False)
+            order_obj.user = request.user
+            order_obj.save()
+
+            total_weight = 0
+            total_price = 0
+
+            for item in cart:
+                price = item['price']
+                quantity = item['quantity']
+                
+                if item['is_package']:
+                    package = item.get('package_obj')
+                    if package:
+                        OrderItem.objects.create(
+                            order=order_obj,
+                            package=package,
+                            quantity=quantity,
+                            price=price,
+                        )
+                        total_weight += package.get_total_weight() * quantity
+                else:
+                    product = item.get('product_obj')
+                    if product:
+                        OrderItem.objects.create(
+                            order=order_obj,
+                            product=product,
+                            quantity=quantity,
+                            price=price,
+                        )
+                        total_weight += (product.weight or 0) * quantity
+                
+                total_price += price * quantity
+
+            order_obj.total_weight = total_weight
+            order_obj.total_price = total_price
+            order_obj.save()
+
+            cart.clear()
+
+            request.user.first_name = order_obj.first_name
+            request.user.last_name = order_obj.last_name
+            request.user.save()
+
+            request.session['order_id'] = order_obj.id
+            return redirect('payment:payment_process')
+        else:
+            messages.error(request, _('لطفاً خطاهای فرم را اصلاح کنید.'))
+
+    return render(request, 'orders/order_create.html', {
+        'form': order_form,
+    })
+    new_func(order_form)
+    cart = Cart(request)
+
+    if len(cart) == 0:
         messages.warning(request, _("You can't proceed to checkout because your cart is empty."))
         return redirect('product:product_list')
 
@@ -73,4 +136,8 @@ def order_create_view(request):
     return render(request, 'orders/order_create.html', {
         'form': order_form,
     })
+
+def new_func(order_form):
+    order_form = OrderForm()
+
 

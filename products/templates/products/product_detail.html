@@ -1,566 +1,361 @@
 {% extends '_base.html' %}
-
 {% load static %}
 {% load i18n %}
-{% load crispy_forms_tags %}
-{% load comment_tags %}
 {% load persian_translation_tags %}
-{% load jalali_tags %}
 {% load humanize %}
 
+{% block page_title %}{{ product.title }} | انتشارات کسری{% endblock %}
+
 {% block content %}
-  <!-- Main Wrapper Start -->
-  <div class="wrapper">
-    <!-- Main Content Wrapper Start -->
-    <div class="main-content-wrapper">
-      <div class="page-content-inner ptb--80">
-        <div class="container">
-          <!-- Product Main Section -->
-          <div class="row no-gutters mb--80 product-main-section">
-            <!-- Product Image -->
-            <div class="col-12 col-lg-5 product-main-image d-flex align-content-center">
-              <div class="image-wrapper position-relative w-100">
-                {% if product.image %}
-                  <img class="m-auto w-100" style="max-height: 500px; object-fit: contain;" src="{{ product.image.url }}" alt="{{ product.title }}" />
-                {% endif %}
-              </div>
-            </div>
-
-            <!-- Product Details -->
-            <div class="col-12 col-lg-7 product-main-details mt-md--50">
-              <div class="product-summary pl-lg--40 pl-md--0 pr-lg--20 p-4">
-                <!-- Category -->
-                <div class="product-category mb-2">
-                  <a href="{% url 'product:product_list_by_category' category=product.category %}" class="text-uppercase" style="color: #7f8c8d; font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; text-decoration: none;">{{ product.get_category_display }}</a>
-                </div>
-
-                <!-- Title -->
-                <h3 class="product-title mb-3" style="font-size: 2.2rem; font-weight: 700; color: #2c3e50; line-height: 1.3;">{{ product.title }}</h3>
-
-                <!-- Author & Edition (as Translator) -->
-                <div class="product-author mb-3" style="font-size: 1.1rem; color: #555;">
-                  <div>
-                    <i class="fa fa-user ml-2" style="color: #7f8c8d;"></i>
-                    <span style="font-weight: 500;">{% trans 'Author' %}: {{ product.author|default:'-' }}</span>
-                  </div>
-                  {% if product.edition %}
-                    <div class="mt-1">
-                      <i class="fa fa-language ml-2" style="color: #7f8c8d;"></i>
-                      <span style="font-weight: 500;">{% trans 'Translator' %}: {{ product.edition }}</span>
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav style="font-size: 13px; color: #777; margin-bottom: 25px; background: #fff; padding: 10px 20px; border-radius: 8px; border: 1px solid #eee;">
+            <a href="{% url 'page:home' %}" style="color: #777; text-decoration: none;">خانه</a>
+            <span style="margin: 0 8px;">&rsaquo;</span>
+            <a href="{% url 'product:product_list' %}" style="color: #777; text-decoration: none;">کتاب‌ها</a>
+            <span style="margin: 0 8px;">&rsaquo;</span>
+            <a href="{% url 'product:product_list_by_category' category=product.category %}" style="color: #777; text-decoration: none;">{{ product.get_category_display }}</a>
+            <span style="margin: 0 8px;">&rsaquo;</span>
+            <span style="color: #c9a84c; font-weight: 600;">{{ product.title }}</span>
+        </nav>
+        
+        <div class="row g-4">
+            <!-- تصویر محصول -->
+            <div class="col-lg-5 col-md-6">
+                <div style="background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #eee; position: sticky; top: 90px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="position: relative;">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 420px; object-fit: contain; padding: 20px; transition: transform 0.3s;">
+                        {% else %}
+                        <div style="height: 420px; display: flex; align-items: center; justify-content: center; background: #faf8f6;">
+                            <span style="font-size: 80px; opacity: 0.2;">&#128218;</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Badge ها -->
+                        <div style="position: absolute; top: 15px; right: 15px; display: flex; flex-direction: column; gap: 8px;">
+                            {% if product.is_on_sale %}
+                            <span style="background: linear-gradient(135deg, #dc3545, #c82333); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);">
+                                %{{ product.get_discount_percent_display }}- تخفیف
+                            </span>
+                            {% endif %}
+                            {% if product.is_new %}
+                            <span style="background: linear-gradient(135deg, #17a2b8, #138496); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;">
+                                جدید
+                            </span>
+                            {% endif %}
+                        </div>
                     </div>
-                  {% endif %}
                 </div>
-
-                <!-- Rating - Real Average -->
-                <div class="product-rating mb-3 d-flex align-items-center">
-                  <div class="stars" style="color: #f39c12; font-size: 1.1rem;">
-                    {% with avg_rating=product.comments.all|only_active_comments|average_rating %}
-                      {% for i in '12345'|make_list %}
-                        {% with star_num=forloop.counter %}
-                          {% if star_num <= avg_rating %}
-                            ★
-                          {% elif star_num <= avg_rating|add:0.5 %}
-                            ★
-                          {% else %}
-                            ☆
-                          {% endif %}
-                        {% endwith %}
-                      {% endfor %}
-                    {% endwith %}
-                  </div>
-                  <span class="ml-2 text-muted" style="font-size: 0.9rem;">({{ product.comments.all|only_active_comments|length }} {% trans 'reviews' %})</span>
+            </div>
+            
+            <!-- اطلاعات محصول -->
+            <div class="col-lg-7 col-md-6">
+                <div style="background: #fff; border-radius: 16px; padding: 30px; border: 1px solid #eee; box-shadow: 0 4px 20px rgba(0,0,0,0.04); height: 100%;">
+                    <!-- دسته‌بندی و نویسنده -->
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                        <a href="{% url 'product:product_list_by_category' category=product.category %}" 
+                           style="font-size: 11px; color: #c9a84c; text-decoration: none; font-weight: 700; background: rgba(201, 168, 76, 0.1); padding: 4px 12px; border-radius: 15px; letter-spacing: 0.5px;">
+                            {{ product.get_category_display }}
+                        </a>
+                        {% if product.author %}
+                        <span style="font-size: 13px; color: #777;">
+                            | {{ product.author }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- عنوان -->
+                    <h1 style="font-size: 24px; font-weight: 700; color: #1a1a2e; margin: 10px 0 12px; line-height: 1.6;">
+                        {{ product.title }}
+                    </h1>
+                    
+                    <!-- امتیاز -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <span style="color: #f39c12; font-size: 16px; letter-spacing: 2px;">
+                            {% if product.avg_rating > 0 %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= product.avg_rating %}&#11088;{% else %}&#9734;{% endif %}
+                                {% endfor %}
+                            {% else %}
+                                &#9734;&#9734;&#9734;&#9734;&#9734;
+                            {% endif %}
+                        </span>
+                        <span style="font-size: 13px; color: #777;">({{ product.comments.count }} نظر)</span>
+                    </div>
+                    
+                    <!-- توضیح کوتاه -->
+                    <div style="border-right: 4px solid #c9a84c; padding: 12px 20px; margin-bottom: 20px; background: #faf8f6; border-radius: 0 10px 10px 0;">
+                        <p style="font-size: 14px; color: #666; line-height: 2.2; margin: 0;">
+                            {{ product.description|truncatewords:30|safe }}
+                        </p>
+                    </div>
+                    
+                    <!-- قیمت -->
+                    <div style="background: linear-gradient(135deg, #faf8f6, #f5f0eb); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #f0ece8;">
+                        {% if product.is_on_sale %}
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                            <span style="text-decoration: line-through; color: #999; font-size: 15px;">
+                                {{ product.price|intcomma:False|translate_number }}
+                            </span>
+                            <span style="background: #dc3545; color: #fff; padding: 3px 12px; border-radius: 15px; font-size: 11px; font-weight: 700;">
+                                %{{ product.get_discount_percent_display }}-
+                            </span>
+                        </div>
+                        <div style="font-size: 28px; font-weight: 700; color: #dc3545;">
+                            {{ product.get_discounted_price|intcomma:False|translate_number }} 
+                            <span style="font-size: 14px; color: #777; font-weight: 400;">تومان</span>
+                        </div>
+                        <div style="color: #28a745; font-size: 12px; margin-top: 5px; background: rgba(40, 167, 69, 0.1); padding: 3px 10px; border-radius: 10px; display: inline-block;">
+                            صرفه‌جویی: {{ product.get_savings|intcomma:False|translate_number }} تومان
+                        </div>
+                        {% else %}
+                        <div style="font-size: 28px; font-weight: 700; color: #1a1a2e;">
+                            {{ product.price|intcomma:False|translate_number }} 
+                            <span style="font-size: 14px; color: #777; font-weight: 400;">تومان</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- موجودی و خرید -->
+                    {% if product.available_stock > 0 %}
+                    <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 15px;">
+                        <span style="width: 10px; height: 10px; background: #28a745; border-radius: 50%; display: inline-block;"></span>
+                        <span style="color: #28a745; font-size: 14px; font-weight: 600;">
+                            موجود در انبار ({{ product.available_stock }} عدد)
+                        </span>
+                    </div>
+                    
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap;">
+                        {% csrf_token %}
+                        <input type="hidden" name="inplace" value="false">
+                        
+                        <!-- تعداد -->
+                        <div style="display: flex; align-items: center; border: 2px solid #e8e0d8; border-radius: 10px; overflow: hidden; height: 50px; background: #fff;">
+                            <button type="button" onclick="decreaseQty()" 
+                                    style="border: none; background: #faf8f6; padding: 0 18px; cursor: pointer; font-size: 18px; color: #555; height: 100%; transition: all 0.3s;">
+                                -
+                            </button>
+                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.available_stock }}"
+                                   style="width: 55px; border: none; text-align: center; font-size: 16px; font-weight: 700; outline: none; height: 100%; font-family: inherit;">
+                            <button type="button" onclick="increaseQty()" 
+                                    style="border: none; background: #faf8f6; padding: 0 18px; cursor: pointer; font-size: 18px; color: #555; height: 100%; transition: all 0.3s;">
+                                +
+                            </button>
+                        </div>
+                        
+                        <!-- دکمه خرید -->
+                        <button type="submit" 
+                                style="background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: none; padding: 0 35px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; height: 50px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);">
+                            <span style="font-size: 18px;">&#128722;</span>
+                            افزودن به سبد خرید
+                        </button>
+                    </form>
+                    {% else %}
+                    <div style="background: #fef0ef; border: 1px solid #f5c6cb; border-radius: 10px; padding: 15px 20px; color: #dc3545; font-size: 14px; font-weight: 600;">
+                        &#10007; ناموجود
+                    </div>
+                    {% endif %}
+                    
                 </div>
-
-                <!-- Short Description -->
-                <div class="product-short-description mb-4" style="border-right: 3px solid #2c3e50; padding-right: 15px;">
-                  <p style="font-size: 1rem; line-height: 1.8; color: #555; font-weight: 400;">{{ product.description|truncatewords:40|safe }}</p>
+            </div>
+        </div>
+        
+        <!-- Tab ها -->
+        <div style="margin-top: 40px;">
+            <!-- Tab Navigation -->
+            <ul class="nav nav-tabs" id="productTabs" role="tablist" 
+                style="border-bottom: none; background: #fff; border-radius: 12px 12px 0 0; padding: 0; display: flex; gap: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.03); overflow: hidden;">
+                <li class="nav-item" role="presentation" style="flex: 1;">
+                    <button class="nav-link active" id="nav-description-tab" data-bs-toggle="tab" data-bs-target="#nav-description" type="button" role="tab" aria-selected="true"
+                            style="width: 100%; font-size: 14px; font-weight: 700; color: #c9a84c; border: none; background: #fff; padding: 15px 20px; cursor: pointer; border-bottom: 3px solid #c9a84c; transition: all 0.3s;">
+                        توضیحات
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation" style="flex: 1;">
+                    <button class="nav-link" id="nav-info-tab" data-bs-toggle="tab" data-bs-target="#nav-info" type="button" role="tab" aria-selected="false"
+                            style="width: 100%; font-size: 14px; font-weight: 600; color: #777; border: none; background: #faf8f6; padding: 15px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s;">
+                        مشخصات
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation" style="flex: 1;">
+                    <button class="nav-link" id="nav-reviews-tab" data-bs-toggle="tab" data-bs-target="#nav-reviews" type="button" role="tab" aria-selected="false"
+                            style="width: 100%; font-size: 14px; font-weight: 600; color: #777; border: none; background: #faf8f6; padding: 15px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s;">
+                        نظرات ({{ product.comments.count }})
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Tab Content -->
+            <div class="tab-content" id="productTabsContent" style="background: #fff; border: 1px solid #eee; border-top: none; border-radius: 0 0 12px 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                <!-- توضیحات -->
+                <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
+                    <div style="padding: 30px;">
+                        <div style="font-size: 14px; line-height: 2.5; color: #555; text-align: justify;">
+                            {{ product.description|safe }}
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Price -->
-                <div class="product-price-wrapper mb-4">
-                  <span class="money" style="font-size: 2rem; font-weight: 700; color: #2c3e50;">{{ product.price|intcomma:False|translate_number }} {% trans '$' %}</span>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="product-action mb-4">
-                  <form action="{% url 'cart:cart_add' product.id %}" method="post" class="d-flex align-items-center flex-wrap" style="gap: 10px;">
-                    {% csrf_token %}
-
-                    <!-- Quantity Box -->
-                    <div class="quantity d-flex align-items-center" style="border: 2px solid #ecf0f1; border-radius: 6px; background: #fff; overflow: visible; flex-shrink: 0; height: 34px;">
-                      <button type="button" class="btn-quantity btn-minus" data-id="{{ product.id }}" style="border: none; background: transparent; padding: 4px 10px; cursor: pointer; transition: all 0.3s; border-radius: 4px 0 0 4px; height: 100%; display: flex; align-items: center; justify-content: center;"><i class="fa fa-minus" style="color: #2c3e50; font-size: 11px;"></i></button>
-                      <input type="number" class="quantity-input text-center" name="quantity" id="qty-{{ product.id }}" value="1" min="1" max="500" style="width: 40px; border: none; padding: 0; text-align: center; font-weight: 600; outline: none; background: #fff; height: 100%; font-size: 13px;" />
-                      <button type="button" class="btn-quantity btn-plus" data-id="{{ product.id }}" style="border: none; background: transparent; padding: 4px 10px; cursor: pointer; transition: all 0.3s; border-radius: 0 4px 4px 0; height: 100%; display: flex; align-items: center; justify-content: center;"><i class="fa fa-plus" style="color: #2c3e50; font-size: 11px;"></i></button>
+                <!-- مشخصات -->
+                <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+                    <div style="padding: 30px;">
+                        <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; width: 25%; font-weight: 700; color: #1a1a2e; background: #faf8f6; font-size: 13px;">نویسنده</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.author|default:'-' }}</td>
+                                </tr>
+                                {% if product.publisher %}
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">ناشر</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.publisher }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if product.isbn %}
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">شابک</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.isbn }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if product.year_of_publication %}
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">سال انتشار</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.year_of_publication }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if product.number_of_pages %}
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">صفحات</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.number_of_pages }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if product.book_size %}
+                                <tr style="border-bottom: 1px solid #f0ece8;">
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">قطع</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.get_book_size_display }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if product.weight %}
+                                <tr>
+                                    <td style="padding: 14px 20px; font-weight: 700; background: #faf8f6; font-size: 13px;">وزن</td>
+                                    <td style="padding: 14px 20px; color: #555;">{{ product.weight }} گرم</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!-- Add to Cart Button -->
-                    <button type="submit" class="btn-add-to-cart" style="background: #027476; color: #fff; border: none; padding: 3px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; transition: all 0.3s; box-shadow: 0 2px 8px rgba(2, 116, 118, 0.15); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; height: 32px; line-height: 1;">
-                      <i class="fa fa-shopping-cart" style="font-size: 10px;"></i>
-                      {% trans 'Add_to_cart' %}
-                    </button>
-                  </form>
                 </div>
-
-                <!-- Product Meta (Complete Info) -->
-                 <div class="product-footer-meta pt-3" style="border-top: 1px solid #ecf0f1;">
-  <div class="d-flex flex-wrap" style="gap: 15px;">
-    <div class="d-flex align-items-center">
-      <i class="fa fa-book" style="color: #7f8c8d;"></i>
-      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Publisher' %}: {{ product.publisher|default:'-' }}</span>
-    </div>
-    <div class="d-flex align-items-center">
-      <i class="fa fa-calendar" style="color: #7f8c8d;"></i>
-      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Year' %}: {{ product.year_of_publication|default:'-' }}</span>
-    </div>
-    <div class="d-flex align-items-center">
-      <i class="fa fa-file-text" style="color: #7f8c8d;"></i>
-      <span style="color: #555; font-size: 0.9rem; margin-right: 5px;">{% trans 'Pages' %}: {{ product.number_of_pages|default:'-' }}</span>
-    </div>
-  </div>
-</div>
-
-              </div>
-            </div>
-          </div>
-          
-          <!-- Tabs Section -->
-          <div class="row justify-content-center">
-            <div class="col-12">
-              <div class="product-data-tab tab-style-3">
-                <!-- Tab Navigation -->
-                <div class="nav nav-tabs product-data-tab__head" id="product-tab" role="tablist" style="border-bottom: 3px solid #2c3e50; justify-content: center;">
-                  <a class="m-0 product-data-tab__link nav-link active" id="nav-description-tab" data-toggle="tab" href="#nav-description" role="tab" aria-selected="true" style="padding: 12px 25px; color: #555; font-weight: 600; border: none; background: transparent; transition: all 0.3s;">
-                    <i class="fa fa-book-open ml-2"></i>
-                    <span>{% trans 'Description' %}</span>
-                  </a>
-                  <a class="m-0 product-data-tab__link nav-link" id="nav-info-tab" data-toggle="tab" href="#nav-info" role="tab" aria-selected="true" style="padding: 12px 25px; color: #555; font-weight: 600; border: none; background: transparent; transition: all 0.3s;">
-                    <i class="fa fa-info-circle ml-2"></i>
-                    <span>{% trans 'Specifications' %}</span>
-                  </a>
-                  <a class="m-0 product-data-tab__link nav-link" id="nav-reviews-tab" data-toggle="tab" href="#nav-reviews" role="tab" aria-selected="true" style="padding: 12px 25px; color: #555; font-weight: 600; border: none; background: transparent; transition: all 0.3s;">
-                    <i class="fa fa-comments ml-2"></i>
-                    <span>{% trans 'Reviews' %}({{ product.comments.all|only_active_comments|length }})</span>
-                  </a>
-                </div>
-
-                <!-- Tab Content -->
-                <div class="tab-content product-data-tab__content" id="product-tabContent">
-                  <!-- Description Tab -->
-                  <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
-                    <div class="product-description text-justify p-4" style="background: #fafafa; border-radius: 8px;">
-                      <h4 class="mb-4 pb-3" style="border-bottom: 2px solid #2c3e50; color: #2c3e50; font-weight: 700;"><i class="fa fa-align-right ml-2"></i>{% trans 'Book Introduction' %}</h4>
-                      <div class="description-content" style="font-size: 1.05rem; line-height: 2; color: #444;">{{ product.description|safe }}</div>
-                    </div>
-                  </div>
-
-                  <!-- Specifications Tab -->
-                  <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
-                    <div class="table-content table-responsive p-4" style="background: #fafafa; border-radius: 8px;">
-                      <h4 class="mb-4 pb-3" style="border-bottom: 2px solid #2c3e50; color: #2c3e50; font-weight: 700;"><i class="fa fa-list-ul ml-2"></i>{% trans 'Complete Specifications' %}</h4>
-                      <table class="table table-bordered table-hover shop_attributes" style="background: #fff; border-radius: 8px; overflow: hidden;">
-                        <tbody>
-
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-user ml-2"></i>{% trans 'Author' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.author|default:'-' }}</td>
-                          </tr>
-                          {% if product.edition %}
-                            <tr>
-                              <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                                <i class="fa fa-language ml-2"></i>{% trans 'edition' %}
-                              </th>
-                              <td style="font-weight: 500;">{{ product.edition }}</td>
-                            </tr>
-                          {% endif %}
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-arrows-alt ml-2"></i>{% trans 'Book Size' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.get_book_size_display|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-file-alt ml-2"></i>{% trans 'Number of Pages' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.number_of_pages|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-paint-brush ml-2"></i>{% trans 'Cover Type' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.get_cover_type_display|default:'-' }}</td>
-                          </tr>
-                            <tr>
-                            <th class="bg-light" style="width: 35%; font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-weight ml-2"></i>{% trans 'Weight' %}
-                            </th>
-                            <td style="font-weight: 500;">
-                              {% if product.weight %}
-                                {{ product.weight }} g
-                              {% else %}
-                                <span style="color: #999; font-style: italic;">{% trans 'Not entered' %}</span>
-                              {% endif %}
-                            </td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-calendar-alt ml-2"></i>{% trans 'Publication Date' %}
-                            </th>
-                            <td style="font-weight: 500;">
-                              {% if product.publication_date %}
-                                {{ product.publication_date }}
-                              {% else %}
-                                <span style="color: #999; font-style: italic;">{% trans 'Not entered' %}</span>
-                              {% endif %}
-                            </td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-calendar-alt ml-2"></i>{% trans 'Printing Series' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.printing_series|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-calendar ml-2"></i>{% trans 'Publication Year' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.year_of_publication|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-building ml-2"></i>{% trans 'Publisher' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.publisher|default:'-' }}</td>
-                          </tr>
-                          <tr>
-                            <th class="bg-light" style="font-weight: 600; color: #2c3e50;">
-                              <i class="fa fa-barcode ml-2"></i>{% trans 'ISBN' %}
-                            </th>
-                            <td style="font-weight: 500;">{{ product.isbn|default:'-' }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <!-- Reviews Tab -->
-                  <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
-                    <div class="product-reviews p-4" style="background: #fafafa; border-radius: 8px;">
-                      <!-- Reviews Header -->
-                      <div class="d-flex justify-content-between align-items-center mb-4 pb-3" style="border-bottom: 2px solid #2c3e50;">
-                        <h4 class="mb-0" style="color: #2c3e50; font-weight: 700;">
-                          <i class="fa fa-star ml-2"></i>{% trans "Readers' Reviews" %}
-                          <span class="badge ml-2" style="background: #2c3e50; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem;">{{ product.comments.all|only_active_comments|length }}</span>
-                        </h4>
-                      </div>
-
-                      <!-- Reviews List -->
-                      {% if product.comments.all|only_active_comments %}
-                        <ul class="review__list list-unstyled">
-                          {% for comment in product.comments.all|only_active_comments %}
-                            <li class="review__item mb-4 p-4" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.05); border: 1px solid #ecf0f1 !important; transition: all 0.3s;">
-                              <div class="review__container">
-                                <div class="review__text">
-                                  <div class="d-flex">
-                                    <!-- Avatar -->
-                                    <div class="review__avatar-wrapper flex-shrink-0 ml-3">
-                                      <div style="width: 50px; height: 50px; background: #2c3e50; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.2rem;">{{ comment.author.username|first|upper }}</div>
+                
+                <!-- نظرات -->
+                <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
+                    <div style="padding: 30px;">
+                        {% for comment in product.comments.all %}
+                            {% if comment.active %}
+                            <div style="background: #faf8f6; border-radius: 10px; padding: 15px 20px; margin-bottom: 15px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #c9a84c, #b8963e); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 16px; box-shadow: 0 2px 8px rgba(201, 168, 76, 0.3);">
+                                        {{ comment.author.username|first|upper }}
                                     </div>
-                                    <!-- Review Content -->
-                                    <div class="flex-grow-1">
-                                      <div class="d-flex align-items-center flex-wrap mb-2">
-                                        <strong class="review__author ml-2" style="font-size: 1.1rem; color: #2c3e50;">{{ comment.author.username }}</strong>
-                                        {% if comment.author.is_staff or comment.author.is_superuser %}
-                                          <span class="badge ml-2" style="background: #2c3e50; color: #fff; padding: 2px 12px; border-radius: 20px; font-size: 0.65rem;"><i class="fa fa-check ml-1"></i>{% trans 'Author' %}</span>
-                                        {% endif %}
-                                        <div class="stars ml-2" style="color: #f39c12; font-size: 0.9rem;">
-                                          {% for i in '12345'|make_list %}
-                                            {% with star_num=forloop.counter %}
-                                              {% if star_num <= comment.stars %}
-                                                ★
-                                              {% else %}
-                                                ☆
-                                              {% endif %}
-                                            {% endwith %}
-                                          {% endfor %}
-                                        </div>
-                                      </div>
-                                      <div class="review__date mb-2">
-                                        <span style="color: #95a5a6; font-size: 0.85rem;">
-                                          <i class="fa fa-calendar-alt ml-1"></i>
-                                          {{ comment.datetime_created|to_jalali:'%Y/%m/%d' }}
+                                    <div>
+                                        <strong style="font-size: 14px; color: #1a1a2e; display: block;">{{ comment.author.username }}</strong>
+                                        <span style="color: #f39c12; font-size: 12px;">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= comment.stars %}&#11088;{% else %}&#9734;{% endif %}
+                                            {% endfor %}
                                         </span>
-                                      </div>
-                                      <div class="review__description">
-                                        <p style="font-size: 1rem; line-height: 1.8; color: #444;">{{ comment.body }}</p>
-                                      </div>
                                     </div>
-                                  </div>
+                                    <span style="font-size: 11px; color: #999; margin-right: auto;">{{ comment.datetime_created|date:"Y/m/d" }}</span>
                                 </div>
-                              </div>
-                            </li>
-                          {% endfor %}
-                        </ul>
-                      {% else %}
-                        <div class="text-center py-5" style="background: #fff; border-radius: 12px; border: 2px dashed #ecf0f1;">
-                          <i class="fa fa-book-open" style="font-size: 3rem; color: #bdc3c7;"></i>
-                          <p class="mt-3 mb-1" style="font-size: 1.1rem; color: #555; font-weight: 500;">
-                            {% trans 'No reviews yet for this book.' %}
-                          </p>
-                          <p style="color: #95a5a6; font-size: 0.95rem;">
-                            {% trans 'Be the first to share your opinion!' %}
-                          </p>
-                        </div>
-                      {% endif %}
-                      
-                      <!-- Add Review Form -->
-                      <div class="review-form-wrapper mt-4 pt-4" style="border-top: 2px solid #ecf0f1;">
-                        <div class="row">
-                          <div class="col-lg-10 mx-auto">
-                            {% if user.is_authenticated %}
-                              <h5 class="mb-3" style="color: #2c3e50; font-weight: 600;">
-                                <i class="fa fa-pen ml-2"></i>
-                                {% trans 'Write Your Review' %}
-                              </h5>
-                              <form action="{% url 'product:comment_create' product.id %}" method="POST" style="background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.05);">
-                                {% csrf_token %}
-                                <div class="form-group">{{ comment_form|crispy }}</div>
-                                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                  <button type="submit" class="btn" style="background: #2c3e50; color: #fff; padding: 10px 35px; border-radius: 8px; font-weight: 600; transition: all 0.3s; border: none;"><i class="fa fa-send ml-2"></i>{% trans 'Submit Review' %}</button>
-                                  <small style="color: #95a5a6; font-size: 0.85rem;">
-                                    <i class="fa fa-info-circle ml-1"></i>
-                                    {% trans 'Your review will be published after moderation' %}
-                                  </small>
-                                </div>
-                              </form>
-                            {% else %}
-                              <div class="text-center py-4" style="background: #fff; border-radius: 12px; border: 1px solid #f39c12; background: #fef9e7;">
-                                <i class="fa fa-user" style="color: #f39c12; font-size: 2rem;"></i>
-                                <p class="mt-2" style="color: #555;">
-                                  {% trans 'Please' %}
-                                  <a href="{% url 'account_login' %}" style="color: #2c3e50; font-weight: 600; text-decoration: underline;">{% trans 'Log in to your account' %}</a>
-                                  {% trans 'to write a review' %}
-                                </p>
-                              </div>
+                                <p style="font-size: 14px; color: #555; margin: 0; line-height: 2;">{{ comment.body }}</p>
+                            </div>
                             {% endif %}
-                          </div>
+                        {% empty %}
+                        <p style="text-align: center; color: #777; padding: 30px 0;">هنوز نظری ثبت نشده.</p>
+                        {% endfor %}
+                        
+                        {% if user.is_authenticated %}
+                        <div style="margin-top: 25px; padding-top: 25px; border-top: 2px solid #f0ece8;">
+                            <h5 style="font-weight: 700; font-size: 15px; margin-bottom: 8px;">ارسال دیدگاه</h5>
+                            <p style="font-size: 12px; color: #999; margin-bottom: 20px;">دیدگاه شما پس از تایید مدیر نمایش داده خواهد شد.</p>
+                            <form method="post" action="{% url 'product:comment_create' product.id %}">
+                                {% csrf_token %}
+                                <div style="margin-bottom: 15px;">
+                                    <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">امتیاز:</label>
+                                    <select name="stars" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; width: 200px; background: #fff;">
+                                        <option value="5">&#11088;&#11088;&#11088;&#11088;&#11088; - عالی</option>
+                                        <option value="4">&#11088;&#11088;&#11088;&#11088; - خوب</option>
+                                        <option value="3">&#11088;&#11088;&#11088; - معمولی</option>
+                                        <option value="2">&#11088;&#11088; - بد</option>
+                                        <option value="1">&#11088; - خیلی بد</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">دیدگاه:</label>
+                                    <textarea name="body" rows="4" required
+                                              style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; transition: border-color 0.3s;"
+                                              onfocus="this.style.borderColor='#c9a84c'" onblur="this.style.borderColor='#ddd'"></textarea>
+                                </div>
+                                <button type="submit" 
+                                        style="background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);">
+                                    ارسال دیدگاه
+                                </button>
+                            </form>
                         </div>
-                      </div>
+                        {% else %}
+                        <div style="text-align: center; padding: 20px; background: #faf8f6; border-radius: 10px; margin-top: 20px;">
+                            <a href="{% url 'account_login' %}?next={{ request.path }}" style="color: #c9a84c; font-weight: 700;">وارد شوید</a>
+                            تا دیدگاه ثبت کنید.
+                        </div>
+                        {% endif %}
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</section>
 
-  <style>
-    .product-main-section {
-      background: #fff;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+<style>
+    .nav-tabs .nav-link.active {
+        color: #c9a84c !important;
+        background: #fff !important;
+        border-bottom: 3px solid #c9a84c !important;
     }
     
-    .btn-quantity:hover {
-      background: #e8ecf0 !important;
+    .nav-tabs .nav-link:not(.active) {
+        color: #777 !important;
+        background: #faf8f6 !important;
+        border-bottom: 3px solid transparent !important;
     }
     
-    .btn-quantity:active {
-      transform: scale(0.95);
+    .nav-tabs .nav-link:not(.active):hover {
+        color: #c9a84c !important;
+        background: #fff !important;
     }
     
-    .btn-add-to-cart:hover {
-      background: #025a5c !important;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 116, 118, 0.3) !important;
+    button[type="submit"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4) !important;
     }
-    
-    .product-data-tab__link.active {
-      color: #2c3e50 !important;
-      border-bottom: 3px solid #2c3e50 !important;
-      background: transparent !important;
-    }
-    
-    .product-data-tab__link:hover {
-      color: #2c3e50 !important;
-      background: #f8f9fa !important;
-    }
-    
-    .review__item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-    }
-    
-    .error-message {
-      animation: fadeInUp 0.3s ease;
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(5px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .product-main-section {
-        padding: 15px;
-      }
-      .product-summary {
-        padding: 20px 10px !important;
-      }
-      .product-title {
-        font-size: 1.5rem !important;
-      }
-      .product-data-tab__link {
-        padding: 8px 15px !important;
-        font-size: 0.8rem !important;
-      }
-    }
-    
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2c3e50;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #1a252f;
-    }
-    
-    .quantity-input::-webkit-inner-spin-button,
-    .quantity-input::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    .quantity-input {
-      -moz-appearance: textfield;
-    }
-  </style>
+</style>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      function showError(productId, message) {
-        var errorElement = document.getElementById('error-message-' + productId)
-        var inputElement = document.getElementById('qty-' + productId)
-    
-        if (!errorElement && inputElement) {
-          var parent = inputElement.parentElement
-          var errorDiv = document.createElement('div')
-          errorDiv.id = 'error-message-' + productId
-          errorDiv.className = 'error-message'
-          errorDiv.style.cssText = 'color: #e74c3c; font-size: 11px; margin-top: 3px; display: none; width: 100%;'
-          errorDiv.innerHTML = '<i class="fa fa-exclamation-circle ml-1"></i> <span></span>'
-          parent.parentElement.appendChild(errorDiv)
-          errorElement = errorDiv
+<script>
+    function decreaseQty() {
+        var input = document.getElementById('quantity');
+        var current = parseInt(input.value);
+        if (current > 1) {
+            input.value = current - 1;
         }
+    }
     
-        if (errorElement) {
-          var span = errorElement.querySelector('span')
-          if (span) span.textContent = message
-          errorElement.style.display = 'block'
-          if (inputElement) {
-            inputElement.style.borderColor = '#e74c3c'
-            inputElement.style.boxShadow = '0 0 0 2px rgba(231, 76, 60, 0.2)'
-          }
-          clearTimeout(errorElement._timeout)
-          errorElement._timeout = setTimeout(function () {
-            errorElement.style.display = 'none'
-            if (inputElement) {
-              inputElement.style.borderColor = ''
-              inputElement.style.boxShadow = ''
-            }
-          }, 3000)
+    function increaseQty() {
+        var input = document.getElementById('quantity');
+        var max = parseInt(input.max);
+        var current = parseInt(input.value);
+        if (current < max) {
+            input.value = current + 1;
         }
-      }
-    
-      function hideError(productId) {
-        var errorElement = document.getElementById('error-message-' + productId)
-        var inputElement = document.getElementById('qty-' + productId)
-        if (errorElement) {
-          errorElement.style.display = 'none'
-          if (inputElement) {
-            inputElement.style.borderColor = ''
-            inputElement.style.boxShadow = ''
-          }
-          clearTimeout(errorElement._timeout)
-        }
-      }
-    
-      document.querySelectorAll('.btn-minus').forEach(function (button) {
-        button.addEventListener('click', function (e) {
-          e.preventDefault()
-          var productId = this.getAttribute('data-id')
-          var input = document.getElementById('qty-' + productId)
-          var currentValue = parseInt(input.value)
-          if (currentValue > 1) {
-            input.value = currentValue - 1
-            hideError(productId)
-            var form = this.closest('form')
-            if (form) form.submit()
-          } else {
-            showError(productId, 'حداقل تعداد مجاز 1 عدد است!')
-          }
-        })
-      })
-    
-      document.querySelectorAll('.btn-plus').forEach(function (button) {
-        button.addEventListener('click', function (e) {
-          e.preventDefault()
-          var productId = this.getAttribute('data-id')
-          var input = document.getElementById('qty-' + productId)
-          var currentValue = parseInt(input.value)
-          if (currentValue < 500) {
-            input.value = currentValue + 1
-            hideError(productId)
-            var form = this.closest('form')
-            if (form) form.submit()
-          } else {
-            showError(productId, 'حداکثر تعداد مجاز 500 عدد است!')
-          }
-        })
-      })
-    
-      document.querySelectorAll('.quantity-input').forEach(function (input) {
-        input.addEventListener('change', function () {
-          var productId = this.id.replace('qty-', '')
-          var value = parseInt(this.value)
-          if (isNaN(value) || value < 1) {
-            this.value = 1
-            showError(productId, 'حداقل تعداد مجاز 1 عدد است!')
-            return
-          }
-          if (value > 500) {
-            this.value = 500
-            showError(productId, 'حداکثر تعداد مجاز 500 عدد است!')
-            return
-          }
-          hideError(productId)
-          var form = this.closest('form')
-          if (form) form.submit()
-        })
-    
-        input.addEventListener('focus', function () {
-          var productId = this.id.replace('qty-', '')
-          hideError(productId)
-        })
-      })
-    })
-  </script>
+    }
+</script>
 {% endblock %}

@@ -196,3 +196,6 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+
+# SEP Payment Gateway
+SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")

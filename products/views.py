@@ -97,25 +97,27 @@ class ProductDetailView(generic.DetailView):
         return context
 
 
-class CommentCreateView(generic.CreateView):
-    model = Comment
-    form_class = CommentForm
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.author = self.request.user
-        
-        product_id = int(self.kwargs['product_id'])
+class CommentCreateView(generic.View):
+    """ثبت نظر جدید"""
+    
+    def post(self, request, product_id):
         product = get_object_or_404(Product, id=product_id)
-        obj.product = product
+        body = request.POST.get('body')
+        stars = request.POST.get('stars')
         
-        messages.success(self.request, _('Your comment has been successfully registered.'))
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse('product:product_detail', args=[self.object.product.id])
-
-
+        if body and stars:
+            Comment.objects.create(
+                product=product,
+                author=request.user,
+                body=body,
+                stars=int(stars),
+                active=False,  # ← نظر جدید غیرفعال باشه
+            )
+            messages.success(request, 'دیدگاه شما ثبت شد و پس از تایید نمایش داده خواهد شد.')
+        else:
+            messages.error(request, 'لطفاً همه فیلدها را پر کنید.')
+        
+        return redirect('product:product_detail', pk=product_id)
 class ProductSearchView(generic.ListView):
     model = Product
     template_name = 'Products/product_search_result.html'
