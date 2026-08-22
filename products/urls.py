@@ -13,7 +13,4 @@ urlpatterns = [
     path('packages/', views.PackageListView.as_view(), name='package_list'),
     path('packages/<slug:slug>/', views.PackageDetailView.as_view(), name='package_detail'),
     path('packages/<slug:slug>/comment/', views.package_comment, name='package_comment'),
-
 ]
-
-

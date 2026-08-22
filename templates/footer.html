@@ -1,123 +1,150 @@
 {% load static %}
 {% load i18n %}
 
-<!-- ===== Footer Start ===== -->
-<footer class="footer" style="background: #f5f0eb; border-top: 3px solid #c9a84c; margin-top: 40px;">
-  <!-- Main Footer Content -->
-  <div class="footer-top pt--50 pb--40">
-    <div class="container">
-      <div class="row">
-        <!-- About Section -->
-        <div class="col-lg-4 col-md-6 mb--30">
-          <div class="footer-widget">
-            <h4 class="footer-widget__title" style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; position: relative; padding-bottom: 12px;">
-              {% trans 'About Architecture Book' %}
-              <span style="position: absolute; bottom: 0; right: 0; width: 105px; height: 3px; background: #c9a84c; border-radius: 2px;"></span>
-            </h4>
-            <p style="color: #4a3a2a; font-size: 14px; line-height: 1.8; text-align: justify; margin-bottom: 15px;">
-              {% trans "Welcome to the website and online store of 'Kasri Library' publications. You can order available products directly from the publisher and use priority mail delivery for all orders." %}
-            </p>
-            <div style="display: flex; gap: 15px; margin-top: 15px;"></div>
-          </div>
+<footer style="background: #1a1a2e; color: #ccc; margin-top: 50px;">
+    <!-- بخش اصلی فوتر -->
+    <div style="padding: 50px 0 30px;">
+        <div class="container">
+            <div class="row">
+                <!-- درباره ما -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 style="color: #c9a84c; font-weight: 700; margin-bottom: 20px; font-size: 16px;">
+                        انتشارات کسری
+                    </h5>
+                    <p style="font-size: 13px; line-height: 2; color: #aaa; text-align: justify;">
+                        به وب‌سایت و فروشگاه اینترنتی انتشارات کسری خوش آمدید. 
+                        شما می‌توانید محصولات موجود را مستقیماً از ناشر سفارش دهید 
+                        و از ارسال پستی ویژه برای تمام سفارش‌ها استفاده کنید.
+                    </p>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: #fff; text-decoration: none; transition: all 0.3s;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: #fff; text-decoration: none; transition: all 0.3s;">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: #fff; text-decoration: none; transition: all 0.3s;">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- دسترسی سریع -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 style="color: #c9a84c; font-weight: 700; margin-bottom: 20px; font-size: 16px;">
+                        دسترسی سریع
+                    </h5>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'product:product_list' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                همه کتاب‌ها
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'product:product_list' %}?discount=true" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                تخفیف‌دارها
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'product:package_list' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                پکیج‌ها
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'page:aboutus' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                درباره ما
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'page:contactus' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                ارتباط با ما
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- خدمات مشتریان -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 style="color: #c9a84c; font-weight: 700; margin-bottom: 20px; font-size: 16px;">
+                        خدمات مشتریان
+                    </h5>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'page:orderus' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                شرایط سفارش
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <a href="{% url 'page:workingus' %}" style="color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-angle-left" style="color: #c9a84c; font-size: 11px;"></i>
+                                همکاری با ما
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- اطلاعات تماس -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 style="color: #c9a84c; font-weight: 700; margin-bottom: 20px; font-size: 16px;">
+                        اطلاعات تماس
+                    </h5>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; color: #aaa; font-size: 13px;">
+                            <i class="fas fa-map-marker-alt" style="color: #c9a84c; margin-top: 4px;"></i>
+                            <span>مشهد - فلسطین ۱۴ - پلاک ۱۰</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #aaa; font-size: 13px;">
+                            <i class="fas fa-phone" style="color: #c9a84c;"></i>
+                            <span>051-37670019</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #aaa; font-size: 13px;">
+                            <i class="fas fa-envelope" style="color: #c9a84c;"></i>
+                            <span>kasrapublishing@gmail.com</span>
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: #aaa; font-size: 13px;">
+                            <i class="fas fa-clock" style="color: #c9a84c;"></i>
+                            <span>شنبه تا پنجشنبه: ۹ تا ۱۴</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        
-        <!-- Quick Links -->
-        <div class="col-lg-4 col-md-6 mb--30">
-          <div class="footer-widget">
-            <h4 class="footer-widget__title" style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; position: relative; padding-bottom: 12px;">
-              {% trans 'Quick Links' %}
-              <span style="position: absolute; bottom: 0; right: 0; width: 105px; height: 3px; background: #c9a84c; border-radius: 2px;"></span>
-            </h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="margin-bottom: 10px;">
-                <a href="{% url 'product:product_list' %}" style="color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                  <i class="fa fa-angle-left" style="color: #c9a84c; font-size: 12px;"></i>
-                  {% trans 'All Books' %}
-                </a>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <a href="{% url 'product:product_list' %}" style="color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                  <i class="fa fa-angle-left" style="color: #c9a84c; font-size: 12px;"></i>
-                  {% trans 'New Books' %}
-                </a>
-              </li>
-              <li style="margin-bottom: 10px;">
-                <a href="{% url 'page:aboutus' %}" style="color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                  <i class="fa fa-angle-left" style="color: #c9a84c; font-size: 12px;"></i>
-                  {% trans 'About Us' %}
-                </a>
-              </li>
-              <li>
-                <a href="{% url 'page:contactus' %}" style="color: #4a3a2a; text-decoration: none; font-size: 14px; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                  <i class="fa fa-angle-left" style="color: #c9a84c; font-size: 12px;"></i>
-                  {% trans 'Contact Us' %}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Contact Info -->
-        <div class="col-lg-4 col-md-6 mb--30">
-          <div class="footer-widget">
-            <h4 class="footer-widget__title" style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; position: relative; padding-bottom: 12px;">
-              {% trans 'Contact Information' %}
-              <span style="position: absolute; bottom: 0; right: 0; width: 105px; height: 3px; background: #c9a84c; border-radius: 2px;"></span>
-            </h4>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; color: #4a3a2a; font-size: 14px;">
-                <i class="fa fa-map-marker" style="color: #c9a84c; font-size: 18px; margin-top: 2px;"></i>
-                <span>مشهد - فلسطین ۱۴ - پلاک ۱۰ </span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #4a3a2a; font-size: 14px;">
-                <i class="fa fa-phone" style="color: #c9a84c; font-size: 16px;"></i>
-                <span>5137670019 98+</span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #4a3a2a; font-size: 14px;">
-                <i class="fa fa-envelope" style="color: #c9a84c; font-size: 16px;"></i>
-                <span>kasrapublishing@gmail.com</span>
-              </li>
-              <li style="display: flex; align-items: center; gap: 12px; color: #4a3a2a; font-size: 14px;">
-                <i class="fa fa-clock-o" style="color: #c9a84c; font-size: 16px;"></i>
-                <span>{% trans 'Sat - Thu: 9:00 - 14:00' %}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- ===== Copyright Section ===== -->
-  <div style="background: #e8e0d8; padding: 15px 0; border-top: 1px solid #d5cdc5;">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6 text-md-right text-center">
-          <p style="margin: 0; color: #4a3a2a; font-size: 13px;">
-            &copy; {% now "Y" %} {% trans 'Kasra Architecture Bookstore' %} 
-            <span style="color: #c9a84c;">|</span> 
-            {% trans 'All Rights Reserved' %}
-          </p>
+    
+    <!-- کپی رایت -->
+    <div style="background: rgba(0,0,0,0.3); padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p style="margin: 0; font-size: 12px; color: #888;">
+                        © {% now "Y" %} انتشارات کسری | تمامی حقوق محفوظ است.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span style="font-size: 12px; color: #888;">
+                        <i class="fas fa-heart" style="color: #c9a84c;"></i>
+                        طراحی شده برای معماران
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 text-md-left text-center">
-          <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
-            <a href="{% url "page:contactus" %}" style="color: #4a3a2a; transition: color 0.3s; font-size: 16px;">
-              <i class="fa fa-instagram"></i>
-            </a>
-            <a href="{% url "page:contactus" %}" style="color: #4a3a2a; transition: color 0.3s; font-size: 16px;">
-              <i class="fa fa-telegram"></i>
-            </a>
-            <a href="{% url "page:contactus" %}" style="color: #4a3a2a; transition: color 0.3s; font-size: 16px;">
-              <i class="fa fa-whatsapp"></i>
-            </a>
-            <span style="color: #c9a84c; margin: 0 5px;">|</span>
-            <span style="color: #4a3a2a; font-size: 12px;">
-              <i class="fa fa-heart" style="color: #c9a84c;"></i>
-              {% trans 'Architecture' %}
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </footer>
+
+<style>
+    footer a:hover {
+        color: #c9a84c !important;
+        transform: translateX(-3px);
+    }
+    
+    footer .fab:hover {
+        background: #c9a84c !important;
+        transform: translateY(-3px);
+    }
+</style>

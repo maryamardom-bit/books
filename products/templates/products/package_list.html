@@ -2,466 +2,69 @@
 {% load static %}
 {% load i18n %}
 
-{% block page_title %}
-{{ package.title }} - {% trans "Package" %}
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .package-detail-section {
-        background: #faf8f6;
-        padding: 40px 0 60px;
-    }
-
-    .package-detail-section .breadcrumb {
-        background: transparent;
-        padding: 0;
-        margin-bottom: 30px;
-    }
-
-    .package-detail-section .breadcrumb-item a {
-        color: #8a7a6a;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .package-detail-section .breadcrumb-item.active {
-        color: #1a1a2e;
-        font-weight: 500;
-    }
-
-    .package-header {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-        border: 1px solid #f0ece8;
-    }
-
-    .package-header .package-badge {
-        display: inline-block;
-        background: #c9a84c;
-        color: #fff;
-        font-size: 12px;
-        padding: 4px 16px;
-        border-radius: 20px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-    }
-
-    .package-header h1 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 32px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 12px;
-    }
-
-    .package-header .package-description {
-        color: #5a4a3a;
-        font-size: 16px;
-        line-height: 1.8;
-        max-width: 700px;
-    }
-
-    .package-header .package-meta {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .package-header .package-meta .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #6a5a4a;
-        font-size: 14px;
-    }
-
-    .package-header .package-meta .meta-item .icon {
-        font-size: 18px;
-    }
-
-    .package-header .package-meta .meta-item strong {
-        color: #1a1a2e;
-        font-weight: 600;
-    }
-
-    /* Pricing Section */
-    .pricing-section {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        margin-bottom: 30px;
-        border: 1px solid #f0ece8;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .pricing-section .price-row {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .pricing-section .original-price {
-        font-size: 20px;
-        color: #999;
-        text-decoration: line-through;
-    }
-
-    .pricing-section .final-price {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-
-    .pricing-section .discount-badge {
-        display: inline-block;
-        background: #dc3545;
-        color: #fff;
-        padding: 4px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .pricing-section .savings-text {
-        color: #28a745;
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    .pricing-section .add-to-cart-btn {
-        background: #c9a84c;
-        color: #fff;
-        border: none;
-        padding: 14px 40px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .pricing-section .add-to-cart-btn:hover {
-        background: #b8973a;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.3);
-    }
-
-    /* Products List */
-    .products-section {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        border: 1px solid #f0ece8;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .products-section .section-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 24px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 6px;
-    }
-
-    .products-section .section-subtitle {
-        color: #8a7a6a;
-        font-size: 14px;
-        margin-bottom: 24px;
-    }
-
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-    }
-
-    .product-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 20px 16px;
-        background: #faf8f6;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        color: #1a1a2e;
-        border: 1px solid transparent;
-    }
-
-    .product-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        border-color: #c9a84c;
-        background: #fff;
-    }
-
-    .product-item .product-image {
-        width: 100%;
-        aspect-ratio: 1;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        background: #f0ece8;
-    }
-
-    .product-item .product-title {
-        font-size: 14px;
-        font-weight: 500;
-        color: #1a1a2e;
-        line-height: 1.4;
-        margin-bottom: 4px;
-    }
-
-    .product-item .product-author {
-        font-size: 12px;
-        color: #8a7a6a;
-    }
-
-    .product-item .product-price {
-        font-size: 16px;
-        font-weight: 600;
-        color: #c9a84c;
-        margin-top: 8px;
-    }
-
-    .product-item .product-number {
-        display: inline-block;
-        background: #c9a84c;
-        color: #fff;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 28px;
-        font-size: 12px;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    /* Package Image */
-    .package-image-wrapper {
-        position: relative;
-        border-radius: 12px;
-        overflow: hidden;
-        margin-bottom: 20px;
-    }
-
-    .package-image-wrapper img {
-        width: 100%;
-        max-height: 300px;
-        object-fit: cover;
-    }
-
-    .package-image-wrapper .package-badge-large {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background: #c9a84c;
-        color: #fff;
-        padding: 6px 20px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .package-header h1 {
-            font-size: 24px;
-        }
-
-        .pricing-section .final-price {
-            font-size: 26px;
-        }
-
-        .products-grid {
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 12px;
-        }
-
-        .package-header .package-meta {
-            gap: 16px;
-        }
-
-        .pricing-section .price-row {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .pricing-section .add-to-cart-btn {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .products-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .package-header {
-            padding: 20px;
-        }
-
-        .pricing-section {
-            padding: 20px;
-        }
-
-        .products-section {
-            padding: 20px;
-        }
-    }
-</style>
-{% endblock %}
+{% block page_title %}پکیج‌ها | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="package-detail-section">
+<section style="padding: 40px 0;">
     <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{% url 'product:package_list' %}">{% trans "Packages" %}</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    {{ package.title }}
-                </li>
-            </ol>
-        </nav>
-
-        <!-- Package Header -->
-        <div class="package-header">
-            <div class="row align-items-start">
-                <div class="col-lg-8">
-                    <span class="package-badge">📦 {% trans "Package" %}</span>
-                    <h1>{{ package.title }}</h1>
-                    <p class="package-description">{{ package.description|safe }}</p>
-                    
-                    <div class="package-meta">
-                        <div class="meta-item">
-                            <span class="icon">📚</span>
-                            <span>
-                                <strong>{{ package.get_products_count }}</strong> 
-                                {% trans "books included" %}
-                            </span>
-                        </div>
-                        {% if package.discount_percent > 0 %}
-                        <div class="meta-item">
-                            <span class="icon">🏷️</span>
-                            <span>
-                                <strong>{{ package.discount_percent }}%</strong> 
-                                {% trans "discount" %}
-                            </span>
-                        </div>
+        <div class="section-title">
+            <h2>📦 پکیج‌های ویژه</h2>
+            <p>مجموعه‌های منتخب با تخفیف ویژه</p>
+        </div>
+        
+        <div class="row g-4">
+            {% for package in packages %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card-custom" style="height: 100%; display: flex; flex-direction: column;">
+                    <!-- تصویر -->
+                    <div style="height: 200px; background: #f5f0eb; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        {% if package.image %}
+                        <img src="{{ package.image.url }}" alt="{{ package.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                        <span style="font-size: 50px;">📦</span>
                         {% endif %}
-                        <div class="meta-item">
-                            <span class="icon">📅</span>
-                            <span>
-                                {% trans "Created" %}: 
-                                <strong>{{ package.datetime_created|date:"Y/m/d" }}</strong>
+                    </div>
+                    
+                    <!-- اطلاعات -->
+                    <div style="padding: 20px; flex: 1; display: flex; flex-direction: column;">
+                        <h5 style="font-weight: 700; margin-bottom: 8px;">{{ package.title }}</h5>
+                        
+                        <p style="font-size: 13px; color: #777; margin-bottom: 12px;">
+                            {{ package.get_products_count }} کتاب
+                        </p>
+                        
+                        <!-- قیمت -->
+                        <div style="margin-top: auto;">
+                            {% if package.discount_percent > 0 %}
+                            <span style="text-decoration: line-through; color: #999; font-size: 13px;">
+                                {{ package.original_price|floatformat:0 }}
                             </span>
+                            <span style="background: #dc3545; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; margin: 0 5px;">
+                                {{ package.get_discount_percent_display }}%-
+                            </span>
+                            <div style="font-size: 18px; font-weight: 700; color: #dc3545; margin-top: 5px;">
+                                {{ package.price|floatformat:0 }} تومان
+                            </div>
+                            {% else %}
+                            <div style="font-size: 18px; font-weight: 700; color: #1a1a2e;">
+                                {{ package.price|floatformat:0 }} تومان
+                            </div>
+                            {% endif %}
                         </div>
+                        
+                        <!-- دکمه -->
+                        <a href="{{ package.get_absolute_url }}" 
+                           style="display: block; text-align: center; background: #1a1a2e; color: #fff; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600; margin-top: 15px; transition: all 0.3s;">
+                            مشاهده جزئیات
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    {% if package.image %}
-                    <div class="package-image-wrapper">
-                        <img src="{{ package.image.url }}" alt="{{ package.title }}">
-                        <span class="package-badge-large">{% trans "Package" %}</span>
-                    </div>
-                    {% endif %}
-                </div>
             </div>
-        </div>
-
-        <!-- Pricing Section -->
-        <div class="pricing-section">
-            <div class="price-row">
-                <div>
-                    {% if package.original_price and package.original_price != package.price %}
-                    <div class="original-price">${{ package.original_price|floatformat:0 }}</div>
-                    {% endif %}
-                    <div class="final-price">${{ package.price|floatformat:0 }}</div>
-                </div>
-                
-                {% if package.discount_percent > 0 %}
-                <div>
-                    <span class="discount-badge">-{{ package.discount_percent }}%</span>
-                    <span class="savings-text">
-                        {% trans "Save" %} ${{ package.get_savings|floatformat:0 }}
-                    </span>
-                </div>
-                {% endif %}
-
-                <div style="margin-left: auto;">
-                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="product_id" value="{{ package.id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <input type="hidden" name="is_package" value="true">
-                        <button type="submit" class="add-to-cart-btn">
-                            🛒 {% trans "Add Package to Cart" %}
-                        </button>
-                    </form>
-                </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p style="color: #777;">پکیجی موجود نیست.</p>
             </div>
-        </div>
-
-        <!-- Products List -->
-        <div class="products-section">
-            <h2 class="section-title">📚 {% trans "Books in this Package" %}</h2>
-            <p class="section-subtitle">
-                {% trans "This package includes" %} 
-                <strong>{{ package.get_products_count }}</strong> 
-                {% trans "books" %}
-            </p>
-
-            <div class="products-grid">
-                {% for product in package.products.all %}
-                <a href="{{ product.get_absolute_url }}" class="product-item">
-                    <span class="product-number">#{{ forloop.counter }}</span>
-                    
-                    {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-image">
-                    {% else %}
-                    <div class="product-image" style="background: #f0ece8; display: flex; align-items: center; justify-content: center; font-size: 48px;">
-                        📖
-                    </div>
-                    {% endif %}
-                    
-                    <div class="product-title">{{ product.title }}</div>
-                    {% if product.author %}
-                    <div class="product-author">{{ product.author }}</div>
-                    {% endif %}
-                    <div class="product-price">${{ product.price|floatformat:0 }}</div>
-                </a>
-                {% empty %}
-                <p style="grid-column: 1/-1; text-align: center; color: #8a7a6a; padding: 40px 0;">
-                    {% trans "No products in this package yet." %}
-                </p>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Back Button -->
-        <div style="margin-top: 30px; text-align: center;">
-            <a href="{% url 'product:package_list' %}" class="btn btn-outline-secondary">
-                ← {% trans "Back to Packages" %}
-            </a>
+            {% endfor %}
         </div>
     </div>
 </section>

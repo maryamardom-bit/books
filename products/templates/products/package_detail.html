@@ -2,558 +2,132 @@
 {% load static %}
 {% load i18n %}
 
-{% block page_title %}
-{{ package.title }}
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .package-detail-section {
-        background: #faf8f6;
-        padding: 40px 0 60px;
-    }
-
-    .package-detail-section .breadcrumb {
-        background: transparent;
-        padding: 0;
-        margin-bottom: 30px;
-    }
-
-    .package-detail-section .breadcrumb-item a {
-        color: #8a7a6a;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .package-detail-section .breadcrumb-item.active {
-        color: #1a1a2e;
-        font-weight: 500;
-    }
-
-    .package-main {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        border: 1px solid #f0ece8;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .package-main .package-image {
-        width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 12px;
-        background: #f5f0eb;
-    }
-
-    .package-main .package-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 28px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 8px;
-    }
-
-    .package-main .package-badge {
-        display: inline-block;
-        background: #c9a84c;
-        color: #fff;
-        font-size: 12px;
-        padding: 4px 16px;
-        border-radius: 20px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-    }
-
-    .package-main .price-section {
-        background: #f8f6f4;
-        padding: 20px;
-        border-radius: 12px;
-        margin: 20px 0;
-    }
-
-    .package-main .price-section .original-price {
-        font-size: 20px;
-        color: #999;
-        text-decoration: line-through;
-        margin-left: 12px;
-    }
-
-    .package-main .price-section .final-price {
-        font-size: 32px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-
-    .package-main .price-section .discount-tag {
-        display: inline-block;
-        background: #dc3545;
-        color: #fff;
-        padding: 4px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 600;
-        margin-left: 12px;
-    }
-
-    .package-main .price-section .savings-text {
-        color: #28a745;
-        font-size: 14px;
-        font-weight: 500;
-        display: block;
-        margin-top: 8px;
-    }
-
-    .package-main .stock-status {
-        display: inline-block;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-        margin: 10px 0;
-    }
-
-    .package-main .stock-status.in-stock {
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .package-main .stock-status.out-of-stock {
-        background: #ffebee;
-        color: #c62828;
-    }
-
-    .package-main .add-to-cart-btn {
-        background: #c9a84c;
-        color: #fff;
-        border: none;
-        padding: 14px 40px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .package-main .add-to-cart-btn:hover {
-        background: #b8973a;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.3);
-    }
-
-    .package-main .add-to-cart-btn:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-
-    .package-main .package-description {
-        color: #5a4a3a;
-        font-size: 15px;
-        line-height: 1.8;
-        margin-top: 16px;
-    }
-
-    .package-main .package-meta {
-        display: flex;
-        gap: 24px;
-        flex-wrap: wrap;
-        margin: 16px 0;
-        padding: 16px 0;
-        border-top: 1px solid #f0ece8;
-        border-bottom: 1px solid #f0ece8;
-    }
-
-    .package-main .package-meta .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #6a5a4a;
-        font-size: 14px;
-    }
-
-    .package-main .package-meta .meta-item .icon {
-        font-size: 18px;
-    }
-
-    .package-main .package-meta .meta-item strong {
-        color: #1a1a2e;
-    }
-
-    /* Products List in Package */
-    .products-in-package {
-        margin-top: 30px;
-    }
-
-    .products-in-package .section-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 16px;
-    }
-
-    .products-in-package .product-item {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 12px 16px;
-        background: #faf8f6;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        color: #1a1a2e;
-        border: 1px solid transparent;
-    }
-
-    .products-in-package .product-item:hover {
-        background: #fff;
-        border-color: #c9a84c;
-        transform: translateX(4px);
-    }
-
-    .products-in-package .product-item .product-number {
-        display: inline-block;
-        background: #c9a84c;
-        color: #fff;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 28px;
-        font-size: 12px;
-        font-weight: 600;
-        flex-shrink: 0;
-    }
-
-    .products-in-package .product-item .product-info {
-        flex: 1;
-    }
-
-    .products-in-package .product-item .product-info .product-title {
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    .products-in-package .product-item .product-info .product-author {
-        font-size: 12px;
-        color: #8a7a6a;
-    }
-
-    .products-in-package .product-item .product-price {
-        font-weight: 600;
-        color: #c9a84c;
-        font-size: 14px;
-    }
-
-    /* Comments Section */
-    .comments-section {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 30px;
-        margin-top: 30px;
-        border: 1px solid #f0ece8;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .comments-section .section-title {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 16px;
-    }
-
-    .comments-section .comment {
-        padding: 16px 0;
-        border-bottom: 1px solid #f0ece8;
-    }
-
-    .comments-section .comment:last-child {
-        border-bottom: none;
-    }
-
-    .comments-section .comment .comment-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .comments-section .comment .comment-header .comment-author {
-        font-weight: 600;
-        color: #1a1a2e;
-    }
-
-    .comments-section .comment .comment-header .comment-date {
-        font-size: 12px;
-        color: #8a7a6a;
-    }
-
-    .comments-section .comment .comment-body {
-        color: #5a4a3a;
-        line-height: 1.6;
-        font-size: 14px;
-    }
-
-    .comments-section .comment .stars {
-        color: #f5b342;
-        font-size: 14px;
-        letter-spacing: 2px;
-    }
-
-    .comments-section .no-comments {
-        color: #8a7a6a;
-        text-align: center;
-        padding: 30px 0;
-    }
-
-    .comments-section .comment-form {
-        margin-top: 24px;
-        padding-top: 24px;
-        border-top: 1px solid #f0ece8;
-    }
-
-    .comments-section .comment-form .form-group {
-        margin-bottom: 16px;
-    }
-
-    .comments-section .comment-form label {
-        font-weight: 500;
-        color: #1a1a2e;
-        display: block;
-        margin-bottom: 4px;
-    }
-
-    .comments-section .comment-form input,
-    .comments-section .comment-form textarea,
-    .comments-section .comment-form select {
-        width: 100%;
-        padding: 10px 14px;
-        border: 1px solid #e0d8d0;
-        border-radius: 8px;
-        font-size: 14px;
-        transition: border-color 0.3s ease;
-    }
-
-    .comments-section .comment-form input:focus,
-    .comments-section .comment-form textarea:focus,
-    .comments-section .comment-form select:focus {
-        border-color: #c9a84c;
-        outline: none;
-    }
-
-    .comments-section .comment-form .submit-btn {
-        background: #c9a84c;
-        color: #fff;
-        border: none;
-        padding: 10px 30px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .comments-section .comment-form .submit-btn:hover {
-        background: #b8973a;
-    }
-
-    @media (max-width: 768px) {
-        .package-main .package-title {
-            font-size: 22px;
-        }
-
-        .package-main .price-section .final-price {
-            font-size: 26px;
-        }
-
-        .package-main .add-to-cart-btn {
-            max-width: 100%;
-        }
-
-        .package-main .package-meta {
-            gap: 12px;
-            flex-direction: column;
-        }
-    }
-</style>
-{% endblock %}
+{% block page_title %}{{ package.title }} | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="package-detail-section">
+<section style="padding: 40px 0;">
     <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{% url 'product:package_list' %}">{% trans "Packages" %}</a>
-                </li>
-                <li class="breadcrumb-item active">{{ package.title }}</li>
-            </ol>
+        <!-- breadcrumb -->
+        <nav style="font-size: 13px; color: #777; margin-bottom: 25px;">
+            <a href="{% url 'page:home' %}" style="color: #777; text-decoration: none;">خانه</a>
+            <span style="margin: 0 8px;">›</span>
+            <a href="{% url 'product:package_list' %}" style="color: #777; text-decoration: none;">پکیج‌ها</a>
+            <span style="margin: 0 8px;">›</span>
+            <span style="color: #1a1a2e; font-weight: 600;">{{ package.title }}</span>
         </nav>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="package-main">
-                    <div class="row">
-                        {% if package.image %}
-                        <div class="col-md-4">
-                            <img src="{{ package.image.url }}" alt="{{ package.title }}" class="package-image">
-                        </div>
-                        <div class="col-md-8">
-                        {% else %}
-                        <div class="col-md-12">
-                        {% endif %}
-                            <span class="package-badge">📦 {% trans "Package" %}</span>
-                            <h1 class="package-title">{{ package.title }}</h1>
-
-                            <!-- Price Section -->
-                            <div class="price-section">
-                                <div>
-                                    {% if package.discount_percent > 0 %}
-                                    <span class="original-price">{{ package.original_price|floatformat:0 }} تومان</span>
-                                    {% endif %}
-                                    <span class="final-price">{{ package.price|floatformat:0 }} تومان</span>
-                                    {% if package.discount_percent > 0 %}
-                                    <span class="discount-tag">-{{ package.discount_percent }}%</span>
-                                    {% endif %}
-                                </div>
-                                {% if package.discount_percent > 0 %}
-                                <div class="savings-text">
-                                    💰 صرفه‌جویی {{ package.get_savings|floatformat:0 }} تومان
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Stock Status -->
-                            {% if package.stock > 0 %}
-                            <div class="stock-status in-stock">
-                                ✓ موجود در انبار ({{ package.stock }} عدد)
-                            </div>
-                            {% else %}
-                            <div class="stock-status out-of-stock">
-                                ✗ ناموجود
-                            </div>
-                            {% endif %}
-
-                            <!-- Add to Cart -->
-                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{ package.id }}">
-                                <input type="hidden" name="quantity" value="1">
-                                <input type="hidden" name="is_package" value="true">
-                                <button type="submit" class="add-to-cart-btn" {% if not package.stock > 0 %}disabled{% endif %}>
-                                    🛒 {% if package.stock > 0 %}{% trans "Add to Cart" %}{% else %}{% trans "Out of Stock" %}{% endif %}
-                                </button>
-                            </form>
-
-                            <!-- Meta Info -->
-                            <div class="package-meta">
-                                <div class="meta-item">
-                                    <span class="icon">📚</span>
-                                    <span><strong>{{ package.get_products_count }}</strong> کتاب در این مجموعه</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="icon">🏷️</span>
-                                    <span>موضوع اصلی: <strong>{{ package.products.first.category|default:"متفرقه" }}</strong></span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="icon">📅</span>
-                                    <span>تاریخ انتشار: <strong>{{ package.datetime_created|date:"Y/m/d" }}</strong></span>
-                                </div>
-                            </div>
-
-                            <!-- Description -->
-                            <div class="package-description">
-                                {{ package.description|safe }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Products in Package -->
-                    <div class="products-in-package">
-                        <h3 class="section-title">📖 کتاب‌های موجود در این مجموعه</h3>
-                        {% for product in package.products.all %}
-                        <a href="{{ product.get_absolute_url }}" class="product-item">
-                            <span class="product-number">{{ forloop.counter }}</span>
-                            <div class="product-info">
-                                <div class="product-title">{{ product.title }}</div>
-                                {% if product.author %}
-                                <div class="product-author">{{ product.author }}</div>
-                                {% endif %}
-                            </div>
-                            <div class="product-price">{{ product.price|floatformat:0 }} تومان</div>
-                        </a>
-                        {% empty %}
-                        <p style="color: #8a7a6a; padding: 20px 0;">هیچ کتابی در این مجموعه وجود ندارد.</p>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Comments Section -->
-                <div class="comments-section">
-                    <h3 class="section-title">💬 نظرات ({{ package.comments.count }})</h3>
-                    
-                    {% for comment in package.comments.all %}
-                    <div class="comment">
-                        <div class="comment-header">
-                            <div>
-                                <span class="comment-author">{{ comment.author.get_full_name|default:comment.author.username }}</span>
-                                <span class="stars">
-                                    {% for i in "12345"|make_list %}
-                                        {% if forloop.counter <= comment.stars %}⭐{% endif %}
-                                    {% endfor %}
-                                </span>
-                            </div>
-                            <span class="comment-date">{{ comment.datetime_created|date:"Y/m/d H:i" }}</span>
-                        </div>
-                        <div class="comment-body">{{ comment.body }}</div>
-                    </div>
-                    {% empty %}
-                    <div class="no-comments">
-                        <p>هیچ دیدگاهی برای این محصول نوشته نشده است.</p>
-                        <p style="font-size: 13px;">اولین نفری باشید که دیدگاهی را ارسال می کنید برای "{{ package.title }}"</p>
-                    </div>
-                    {% endfor %}
-
-                    <!-- Comment Form -->
-                    {% if user.is_authenticated %}
-                    <div class="comment-form">
-                        <h4>ارسال دیدگاه</h4>
-                        <form method="post" action="{% url 'product:package_comment' package.slug %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="stars">امتیاز شما</label>
-                                <select name="stars" id="stars" class="form-control">
-                                    <option value="1">1 - خیلی ضعیف</option>
-                                    <option value="2">2 - ضعیف</option>
-                                    <option value="3">3 - معمولی</option>
-                                    <option value="4">4 - خوب</option>
-                                    <option value="5">5 - عالی</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="body">دیدگاه شما *</label>
-                                <textarea name="body" id="body" rows="4" class="form-control" required></textarea>
-                            </div>
-                            <button type="submit" class="submit-btn">ارسال دیدگاه</button>
-                        </form>
-                    </div>
+        
+        <div class="row g-4">
+            <!-- تصویر -->
+            <div class="col-lg-5">
+                <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+                    {% if package.image %}
+                    <img src="{{ package.image.url }}" alt="{{ package.title }}" style="width: 100%; height: 350px; object-fit: cover;">
                     {% else %}
-                    <div style="text-align: center; padding: 16px; background: #f8f6f4; border-radius: 8px; margin-top: 20px;">
-                        <a href="{% url 'account_login' %}?next={{ request.path }}">وارد شوید</a> تا بتوانید دیدگاه ثبت کنید.
+                    <div style="height: 350px; display: flex; align-items: center; justify-content: center; background: #f5f0eb;">
+                        <span style="font-size: 80px;">📦</span>
                     </div>
                     {% endif %}
                 </div>
+            </div>
+            
+            <!-- اطلاعات -->
+            <div class="col-lg-7">
+                <h1 style="font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 10px;">
+                    {{ package.title }}
+                </h1>
+                
+                <div style="margin-bottom: 15px;">
+                    <span style="background: #c9a84c; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600;">
+                        📚 {{ package.get_products_count }} کتاب
+                    </span>
+                    {% if total_weight %}
+                    <span style="background: #f5f0eb; color: #555; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 8px;">
+                        ⚖️ {{ total_weight }} گرم
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <!-- قیمت -->
+                <div style="background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                    {% if package.discount_percent > 0 %}
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span style="text-decoration: line-through; color: #999; font-size: 16px;">
+                            {{ package.original_price|floatformat:0 }} تومان
+                        </span>
+                        <span style="background: #dc3545; color: #fff; padding: 3px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
+                            {{ package.get_discount_percent_display }}% تخفیف
+                        </span>
+                    </div>
+                    <div style="font-size: 24px; font-weight: 700; color: #dc3545;">
+                        {{ package.price|floatformat:0 }} تومان
+                    </div>
+                    <div style="color: #28a745; font-size: 13px; margin-top: 5px;">
+                        💰 صرفه‌جویی: {{ package.calculate_savings|floatformat:0 }} تومان
+                    </div>
+                    {% else %}
+                    <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">
+                        {{ package.price|floatformat:0 }} تومان
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- وضعیت موجودی -->
+                {% if package.is_in_stock %}
+                <div style="color: #28a745; font-size: 14px; margin-bottom: 15px;">
+                    ✓ موجود در انبار ({{ package.stock }} عدد)
+                </div>
+                <form action="{% url 'cart:cart_add_package' package.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" style="background: #c9a84c; color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                        🛒 افزودن به سبد خرید
+                    </button>
+                </form>
+                {% else %}
+                <div style="color: #dc3545; font-size: 14px; margin-bottom: 15px;">
+                    ✗ ناموجود
+                </div>
+                {% endif %}
+                
+                <!-- توضیحات -->
+                {% if package.description %}
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <h5 style="font-weight: 700; margin-bottom: 10px;">توضیحات</h5>
+                    <div style="font-size: 14px; color: #555; line-height: 2;">
+                        {{ package.description|safe }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- کتاب‌های پکیج -->
+        <div style="margin-top: 40px;">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px;">📖 کتاب‌های این پکیج</h3>
+            
+            <div class="row g-3">
+                {% for product in package.products.all %}
+                <div class="col-lg-3 col-md-4 col-6">
+                    <a href="{{ product.get_absolute_url }}" style="text-decoration: none; color: inherit;">
+                        <div class="card-custom" style="padding: 15px; text-align: center; height: 100%;">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+                            {% else %}
+                            <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: #f5f0eb; border-radius: 8px; margin-bottom: 10px;">
+                                <span style="font-size: 30px;">📖</span>
+                            </div>
+                            {% endif %}
+                            
+                            <h6 style="font-weight: 700; font-size: 13px; margin-bottom: 5px;">{{ product.title }}</h6>
+                            {% if product.author %}
+                            <p style="font-size: 12px; color: #777; margin: 0;">{{ product.author }}</p>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <p style="color: #777;">هیچ کتابی در این پکیج نیست.</p>
+                {% endfor %}
             </div>
         </div>
     </div>
