@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}{% trans 'Edit Profile' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background: #fff; border-radius: 12px; padding: 30px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <h1 style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 25px; text-align: center;">
+                    {% trans 'Edit Profile' %}
+                </h1>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <small style="color: #dc3545; font-size: 12px;">{{ field.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <button type="submit" 
+                            style="width: 100%; background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);">
+                        {% trans 'Save Changes' %}
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="{% url 'accounts:dashboard' %}" style="font-size: 13px; color: #777; text-decoration: none;">
+                        {% trans 'Back to Dashboard' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+{% block page_title %}{{ author }} | انتشارات کسری{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav style="font-size: 13px; color: #777; margin-bottom: 25px; background: #fff; padding: 10px 20px; border-radius: 8px; border: 1px solid #eee;">
+            <a href="{% url 'page:home' %}" style="color: #777; text-decoration: none;">خانه</a>
+            <span style="margin: 0 8px;">&rsaquo;</span>
+            <a href="{% url 'product:product_list' %}" style="color: #777; text-decoration: none;">کتاب‌ها</a>
+            <span style="margin: 0 8px;">&rsaquo;</span>
+            <span style="color: #c9a84c; font-weight: 600;">{{ author }}</span>
+        </nav>
+        
+        <!-- عنوان -->
+        <div style="background: #fff; border-radius: 12px; padding: 25px; margin-bottom: 25px; border: 1px solid #eee; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+            <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #c9a84c, #b8963e); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 24px; margin: 0 auto 10px;">
+                {{ author|first|upper }}
+            </div>
+            <h1 style="font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 0 0 5px;">
+                {{ author }}
+            </h1>
+            <p style="font-size: 13px; color: #777; margin: 0;">
+                {{ total_books }} کتاب
+            </p>
+        </div>
+        
+        <!-- گرید کتاب‌ها -->
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="{{ product.get_absolute_url }}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+                    <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; height: 100%; display: flex; flex-direction: column; position: relative; transition: all 0.3s;"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
+                        
+                        {% if product.is_on_sale %}
+                        <span style="position: absolute; top: 10px; right: 10px; background: #dc3545; color: #fff; padding: 4px 12px; border-radius: 15px; font-size: 11px; font-weight: 700; z-index: 10;">
+                            %{{ product.get_discount_percent_display }}-
+                        </span>
+                        {% endif %}
+                        
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #faf8f6;">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                            <span style="font-size: 50px; opacity: 0.2;">&#128218;</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div style="padding: 15px; flex: 1; display: flex; flex-direction: column;">
+                            <h5 style="font-weight: 700; font-size: 14px; margin-bottom: 8px; min-height: 42px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1a1a2e;">
+                                {{ product.title }}
+                            </h5>
+                            
+                            <div style="margin-top: auto;">
+                                {% if product.is_on_sale %}
+                                <div style="font-size: 15px; font-weight: 700; color: #dc3545;">
+                                    {{ product.get_discounted_price|intcomma:False|translate_number }} تومان
+                                </div>
+                                {% else %}
+                                <div style="font-size: 15px; font-weight: 700; color: #1a1a2e;">
+                                    {{ product.price|intcomma:False|translate_number }} تومان
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div style="background: #fff; border-radius: 12px; padding: 50px 20px; text-align: center; border: 2px dashed #e8e0d8;">
+                    <p style="color: #777;">کتابی از این نویسنده یافت نشد.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav style="display: flex; justify-content: center; margin-top: 30px;">
+            <ul style="display: flex; gap: 5px; list-style: none; padding: 0;">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}" style="padding: 10px 18px; background: #fff; border: 1px solid #e8e0d8; border-radius: 8px; color: #555; text-decoration: none; font-size: 13px;">قبلی</a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                <li>
+                    <a href="?page={{ num }}" style="padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none;
+                              {% if page_obj.number == num %}background: #c9a84c; color: #fff;{% else %}background: #fff; color: #555; border: 1px solid #e8e0d8;{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}" style="padding: 10px 18px; background: #fff; border: 1px solid #e8e0d8; border-radius: 8px; color: #555; text-decoration: none; font-size: 13px;">بعدی</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.db.models import Q, Count, Avg, Value, IntegerField
+from django.db.models import Q, Count, Avg, Value, IntegerField, Sum
 from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -308,3 +308,52 @@ def package_comment(request, slug):
         return redirect('product:package_detail', slug=slug)
     
     return redirect('product:package_detail', slug=slug)
+
+def author_books_view(request, author_name):
+    """Display books by a specific author"""
+    books = Product.objects.filter(
+        author=author_name,
+        active=True
+    ).order_by('-datetime_created')
+    
+    # Pagination
+    paginator = Paginator(books, 12)
+    page = request.GET.get('page', 1)
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    
+    context = {
+        'author': author_name,
+        'products': products,
+        'total_books': books.count(),
+        'is_paginated': products.has_other_pages(),
+        'page_obj': products,
+    }
+    
+    return render(request, 'Products/author_books.html', context)
+
+
+class BestSellersView(generic.ListView):
+    """Best selling products based on order items"""
+    model = Product
+    template_name = 'Products/best_sellers.html'
+    context_object_name = 'products'
+    paginate_by = 12
+    
+    def get_queryset(self):
+        return Product.objects.filter(
+            active=True,
+            order_items__order__is_paid=True
+        ).annotate(
+            total_sold=Sum('order_items__quantity')
+        ).order_by('-total_sold')[:20]
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Best Sellers'
+        return context

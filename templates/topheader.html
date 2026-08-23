@@ -2,20 +2,20 @@
 {% load i18n %}
 
 <header style="background: #fff; border-bottom: 3px solid #c9a84c; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000;">
-    <!-- نوار بالا -->
+    <!-- Top bar -->
     <div class="container">
         <div class="row align-items-center py-3">
-            <!-- لوگو -->
+            <!-- Logo -->
             <div class="col-lg-3 col-6">
                 <a href="{% url 'page:home' %}" style="text-decoration: none;">
                     <img src="{% static 'img/kasrapublishing.jpg' %}" alt="Logo" style="max-height: 60px;">
                 </a>
             </div>
             
-            <!-- جستجو -->
+            <!-- Search -->
             <div class="col-lg-6 d-none d-lg-block">
                 <form action="{% url 'product:product_search' %}" method="get" style="display: flex; background: #f5f0eb; border-radius: 30px; overflow: hidden; border: 2px solid #e8e0d8;">
-                    <input type="text" name="q" placeholder="جستجوی کتاب، نویسنده، ناشر..." 
+                    <input type="text" name="q" placeholder="{% trans 'Search books, authors, publishers...' %}" 
                            style="flex: 1; border: none; padding: 12px 20px; background: transparent; outline: none; font-size: 14px; font-family: inherit;">
                     <button type="submit" style="background: #c9a84c; border: none; padding: 0 25px; cursor: pointer; color: #fff; font-size: 16px;">
                         <i class="fas fa-search"></i>
@@ -23,10 +23,10 @@
                 </form>
             </div>
             
-            <!-- کاربر و سبد -->
+            <!-- User and Cart -->
             <div class="col-lg-3 col-6 text-end">
                 <div style="display: flex; gap: 15px; justify-content: flex-end; align-items: center;">
-                    <!-- سبد خرید -->
+                    <!-- Cart -->
                     <a href="{% url 'cart:cart_detail' %}" style="position: relative; text-decoration: none; color: #1a1a2e; font-size: 22px;">
                         <i class="fas fa-shopping-bag"></i>
                         <span style="position: absolute; top: -8px; right: -8px; background: #c9a84c; color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700;">
@@ -34,26 +34,26 @@
                         </span>
                     </a>
                     
-                    <!-- کاربر -->
+                    <!-- User -->
                     {% if user.is_authenticated %}
-                    <a href="{% url 'account_logout' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px;">
+                    <a href="{% url 'accounts:dashboard' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px;">
                         <i class="fas fa-user"></i>
                         {{ user.username|truncatechars:10 }}
                     </a>
                     {% else %}
                     <a href="{% url 'account_login' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px;">
                         <i class="fas fa-user"></i>
-                        ورود
+                        {% trans 'Login' %}
                     </a>
                     {% endif %}
                 </div>
             </div>
         </div>
         
-        <!-- جستجو موبایل -->
+        <!-- Mobile Search -->
         <div class="d-lg-none pb-3">
             <form action="{% url 'product:product_search' %}" method="get" style="display: flex; background: #f5f0eb; border-radius: 30px; overflow: hidden; border: 2px solid #e8e0d8;">
-                <input type="text" name="q" placeholder="جستجو..." 
+                <input type="text" name="q" placeholder="{% trans 'Search...' %}" 
                        style="flex: 1; border: none; padding: 10px 15px; background: transparent; outline: none; font-size: 13px; font-family: inherit;">
                 <button type="submit" style="background: #c9a84c; border: none; padding: 0 20px; cursor: pointer; color: #fff;">
                     <i class="fas fa-search"></i>
@@ -62,38 +62,54 @@
         </div>
     </div>
     
-    <!-- منوی اصلی -->
+    <!-- Main Menu -->
     <nav style="background: #1a1a2e;">
         <div class="container">
-            <ul style="display: flex; list-style: none; margin: 0; padding: 0; justify-content: space-between; align-items: center;">
+            <ul style="display: flex; list-style: none; margin: 0; padding: 0; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:home' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        خانه
+                        {% trans 'Home' %}
                     </a>
                 </li>
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'product:product_list' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        محصولات
+                        {% trans 'Products' %}
                     </a>
                 </li>
                 <li style="flex: 1; text-align: center;">
+                    <a href="{% url 'product:best_sellers' %}" 
+                       style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; text-align: center; transition: all 0.3s; border-bottom: 3px solid transparent;">
+                        {% trans 'Best Sellers' %}
+                    </a>
+                </li>
+                
+                {% if user.is_authenticated %}
+                <li style="flex: 1; text-align: center;">
+                    <a href="{% url 'accounts:dashboard' %}" 
+                       style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; text-align: center; transition: all 0.3s; border-bottom: 3px solid transparent;">
+                        {% trans 'Dashboard' %}
+                    </a>
+                </li>
+                {% endif %}
+                
+                <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:orderus' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        شرایط سفارش
+                        {% trans 'Order Conditions' %}
                     </a>
                 </li>
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:aboutus' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        درباره ما
+                        {% trans 'About Us' %}
                     </a>
                 </li>
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:contactus' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        ارتباط با ما
+                        {% trans 'Contact Us' %}
                     </a>
                 </li>
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:workingus' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        همکاری با ما
+                        {% trans 'Work With Us' %}
                     </a>
                 </li>
             </ul>
@@ -106,5 +122,14 @@
         background: rgba(201, 168, 76, 0.15);
         border-bottom-color: #c9a84c !important;
         color: #c9a84c !important;
+    }
+    
+    @media (max-width: 768px) {
+        nav ul {
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            flex: 0 0 33.333% !important;
+        }
     }
 </style>

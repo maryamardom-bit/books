@@ -1,0 +1,58 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+{% block page_title %}{% trans 'Order History' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h1 style="font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 0;">{% trans 'Order History' %}</h1>
+            <a href="{% url 'accounts:dashboard' %}" style="font-size: 13px; color: #777; text-decoration: none;">{% trans 'Back' %}</a>
+        </div>
+        
+        {% if orders %}
+        <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; font-size: 14px; min-width: 600px;">
+                    <thead>
+                        <tr style="background: #faf8f6; border-bottom: 2px solid #c9a84c;">
+                            <th style="padding: 15px; text-align: right;">#</th>
+                            <th style="padding: 15px; text-align: right;">{% trans 'Date' %}</th>
+                            <th style="padding: 15px; text-align: right;">{% trans 'Total' %}</th>
+                            <th style="padding: 15px; text-align: right;">{% trans 'Weight' %}</th>
+                            <th style="padding: 15px; text-align: right;">{% trans 'Status' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr style="border-bottom: 1px solid #f0ece8;">
+                            <td style="padding: 15px;">#{{ order.id }}</td>
+                            <td style="padding: 15px;">{{ order.datetime_created|date:"Y/m/d H:i" }}</td>
+                            <td style="padding: 15px;">{{ order.total_price|intcomma:False|translate_number }}</td>
+                            <td style="padding: 15px;">{{ order.total_weight|translate_number }} {% trans 'g' %}</td>
+                            <td style="padding: 15px;">
+                                {% if order.is_paid %}
+                                <span style="color: #28a745; font-weight: 600;">{% trans 'Paid' %}</span>
+                                {% else %}
+                                <span style="color: #dc3545; font-weight: 600;">{% trans 'Pending' %}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div style="background: #fff; border-radius: 12px; padding: 60px 20px; text-align: center; border: 2px dashed #e8e0d8;">
+            <p style="color: #777; margin: 0;">{% trans 'No orders yet.' %}</p>
+            <a href="{% url 'product:product_list' %}" style="color: #c9a84c; font-weight: 600;">{% trans 'Browse Books' %}</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
