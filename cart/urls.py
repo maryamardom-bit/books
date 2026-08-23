@@ -6,6 +6,8 @@ from .views import (
     remove_from_cart,
     remove_package_from_cart,
     clear_cart,
+    apply_discount_code_view,
+    remove_discount_code_view,
 )
 
 app_name = 'cart'
@@ -17,4 +19,6 @@ urlpatterns = [
     path('remove/<int:product_id>/', remove_from_cart, name='cart_remove'),
     path('remove-package/<int:package_id>/', remove_package_from_cart, name='cart_remove_package'),
     path('clear/', clear_cart, name='cart_clear'),
+    path('apply-discount/', apply_discount_code_view, name='apply_discount'),
+    path('remove-discount/', remove_discount_code_view, name='remove_discount'),
 ]
