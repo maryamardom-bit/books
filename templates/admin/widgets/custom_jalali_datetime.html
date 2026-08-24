@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<div class="custom-datetime-wrapper" style="position: relative; display: inline-block; width: 100%;">
+    <input type="text" 
+           name="{{ widget.name }}"
+           value="{{ widget.value|default:'' }}"
+           class="form-control custom-jalali-datetime-input"
+           id="{{ widget.attrs.id }}"
+           dir="ltr"
+           readonly
+           style="cursor: pointer; background: #fff; padding-left: 35px; width: 100%;"
+           {% for name, value in widget.attrs.items %}{% if name != 'id' and name != 'class' and name != 'dir' and name != 'readonly' and name != 'style' %}{{ name }}="{{ value }}" {% endif %}{% endfor %}>
+    
+    <span onclick="toggleCustomCalendar(event, '{{ widget.attrs.id }}')" 
+          style="position:absolute; left:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:16px;">
+        📅
+    </span>
+    
+    <div class="custom-jalali-calendar" 
+         id="calendar-{{ widget.attrs.id }}" 
+         style="display:none; position:absolute; top:45px; right:0; background:#fff; border:1px solid #ddd; border-radius:10px; box-shadow:0 5px 25px rgba(0,0,0,0.15); z-index:9999; padding:15px; width:300px;">
+    </div>
+</div>

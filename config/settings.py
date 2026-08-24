@@ -196,6 +196,25 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+JALALI_DATE_DEFAULTS = {
+    'Strftime': {
+        'date': '%y/%m/%d',
+        'datetime': '%H:%M:%S _ %y/%m/%d',
+    },
+    'Static': {
+        'js': [
+            'admin/js/django_jalali.min.js',
+            'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc.min.js',
+            'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc-fa.min.js',
+        ],
+        'css': {
+            'all': [
+                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+            ]
+        }
+    },
+}
+
 
 # SEP Payment Gateway
-SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")
+# SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")

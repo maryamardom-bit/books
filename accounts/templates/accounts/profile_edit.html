@@ -12,28 +12,41 @@
                 <h1 style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 25px; text-align: center;">
                     {% trans 'Edit Profile' %}
                 </h1>
-                
+
                 <form method="post">
                     {% csrf_token %}
-                    
+
                     {% for field in form %}
                     <div style="margin-bottom: 15px;">
                         <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">
                             {{ field.label }}
                         </label>
+
+                        {% if field.name == 'birth_date' %}
+                        <div class="birth-date-wrapper" style="position: relative;">
+                            {{ field }}
+                            <span onclick="toggleCalendar(event)" 
+                                  style="position:absolute; left:12px; top:50%; transform:translateY(-50%); cursor:pointer; color:#c9a84c; font-size:18px; display:flex; align-items:center; justify-content:center; height:100%;">
+                                📅
+                            </span>
+                            <div id="jalali-calendar" style="display:none; position:absolute; top:50px; right:0; background:#fff; border:1px solid #ddd; border-radius:12px; box-shadow:0 5px 25px rgba(0,0,0,0.15); z-index:9999; padding:15px; width:300px;"></div>
+                        </div>
+                        {% else %}
                         {{ field }}
+                        {% endif %}
+
                         {% if field.errors %}
                         <small style="color: #dc3545; font-size: 12px;">{{ field.errors.0 }}</small>
                         {% endif %}
                     </div>
                     {% endfor %}
-                    
-                    <button type="submit" 
+
+                    <button type="submit"
                             style="width: 100%; background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);">
                         {% trans 'Save Changes' %}
                     </button>
                 </form>
-                
+
                 <div style="text-align: center; margin-top: 15px;">
                     <a href="{% url 'accounts:dashboard' %}" style="font-size: 13px; color: #777; text-decoration: none;">
                         {% trans 'Back to Dashboard' %}
@@ -43,4 +56,175 @@
         </div>
     </div>
 </section>
+
+<script>
+// =============================================
+// تقویم شمسی اختصاصی با انتخاب سال و ماه
+// =============================================
+let currentYear = 1403;
+let currentMonth = 1;
+let selectedDate = null;
+let calendarOpen = false;
+
+const monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+
+function toggleCalendar(event) {
+    event.stopPropagation();
+    const cal = document.getElementById('jalali-calendar');
+    calendarOpen = !calendarOpen;
+    cal.style.display = calendarOpen ? 'block' : 'none';
+    if (calendarOpen) renderCalendar();
+}
+
+function closeCalendar() {
+    calendarOpen = false;
+    document.getElementById('jalali-calendar').style.display = 'none';
+}
+
+function renderCalendar() {
+    const cal = document.getElementById('jalali-calendar');
+    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+    const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+
+    let html = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <button type="button" onclick="changeMonth(-1)" style="border:none; background:#faf8f6; cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700;">→</button>
+            
+            <div style="display:flex; gap:5px; align-items:center;">
+                <span onclick="toggleYearDropdown(event)" style="cursor:pointer; font-weight:700; color:#1a1a2e; padding:3px 8px; border-radius:5px;">${currentYear}</span>
+                <span style="color:#ccc;">/</span>
+                <span onclick="toggleMonthDropdown(event)" style="cursor:pointer; font-weight:700; color:#1a1a2e; padding:3px 8px; border-radius:5px;">${monthNames[currentMonth-1]}</span>
+            </div>
+            
+            <button type="button" onclick="changeMonth(1)" style="border:none; background:#faf8f6; cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700;">←</button>
+        </div>
+        <div id="year-dropdown" style="display:none;"></div>
+        <div id="month-dropdown" style="display:none;"></div>
+        <table style="width:100%; text-align:center; margin-top:5px;">
+            <tr>
+                <th style="padding:5px;">ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th>
+            </tr>
+            <tr>
+    `;
+
+    for (let i = 0; i < firstDay; i++) {
+        html += '<td></td>';
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        if ((firstDay + day - 1) % 7 === 0 && day > 1) {
+            html += '</tr><tr>';
+        }
+        const isSelected = selectedDate && selectedDate.year === currentYear && selectedDate.month === currentMonth && selectedDate.day === day;
+        html += `<td onclick="selectDate(${day})" style="padding:8px; cursor:pointer; border-radius:6px; transition:all 0.2s; ${isSelected ? 'background:#c9a84c; color:#fff; font-weight:700;' : 'hover:background:#f5f0eb;'}">${day}</td>`;
+    }
+
+    html += '</tr></table>';
+    cal.innerHTML = html;
+}
+
+function toggleYearDropdown(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('year-dropdown');
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        return;
+    }
+    let years = '';
+    for (let y = currentYear - 60; y <= currentYear + 10; y++) {
+        years += `<option value="${y}">${y}</option>`;
+    }
+    dropdown.innerHTML = `<select onchange="selectYear(this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:6px; font-family:inherit;">${years}</select>`;
+    dropdown.style.display = 'block';
+}
+
+function toggleMonthDropdown(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('month-dropdown');
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        return;
+    }
+    let months = '';
+    monthNames.forEach((name, index) => {
+        months += `<option value="${index+1}">${name}</option>`;
+    });
+    dropdown.innerHTML = `<select onchange="selectMonth(this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:6px; font-family:inherit;">${months}</select>`;
+    dropdown.style.display = 'block';
+}
+
+function selectYear(year) {
+    currentYear = parseInt(year);
+    document.getElementById('year-dropdown').style.display = 'none';
+    renderCalendar();
+}
+
+function selectMonth(month) {
+    currentMonth = parseInt(month);
+    document.getElementById('month-dropdown').style.display = 'none';
+    renderCalendar();
+}
+
+function getDaysInMonth(year, month) {
+    const monthDays = [31,31,31,31,31,31,30,30,30,30,30,29];
+    if (month === 12 && isLeapYear(year)) return 30;
+    return monthDays[month - 1];
+}
+
+function isLeapYear(year) {
+    return year % 33 % 4 === 1;
+}
+
+function getFirstDayOfMonth(year, month) {
+    const baseYear = 1403;
+    const baseDay = 6;
+    let totalDays = 0;
+    for (let y = baseYear; y < year; y++) {
+        totalDays += isLeapYear(y) ? 366 : 365;
+    }
+    for (let m = 1; m < month; m++) {
+        totalDays += getDaysInMonth(year, m);
+    }
+    return (totalDays + baseDay) % 7;
+}
+
+function changeMonth(delta) {
+    currentMonth += delta;
+    if (currentMonth < 1) {
+        currentMonth = 12;
+        currentYear--;
+    } else if (currentMonth > 12) {
+        currentMonth = 1;
+        currentYear++;
+    }
+    renderCalendar();
+}
+
+function selectDate(day) {
+    selectedDate = { year: currentYear, month: currentMonth, day: day };
+    const formatted = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+    document.getElementById('birth-date-input').value = formatted;
+    closeCalendar();
+}
+
+// بستن تقویم با کلیک خارج از آن
+document.addEventListener('click', function(e) {
+    const wrapper = document.querySelector('.birth-date-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+        closeCalendar();
+    }
+});
+
+// راه‌اندازی اولیه
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('birth-date-input');
+    if (input && input.value) {
+        const parts = input.value.split('/');
+        if (parts.length === 3) {
+            currentYear = parseInt(parts[0]);
+            currentMonth = parseInt(parts[1]);
+        }
+    }
+});
+</script>
 {% endblock %}

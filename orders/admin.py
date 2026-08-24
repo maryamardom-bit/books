@@ -1,5 +1,8 @@
 from django.contrib import admin
+from django.db import models as django_models
 from jalali_date.admin import ModelAdminJalaliMixin
+from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
+import jdatetime
 
 from .models import Order, OrderItem
 
@@ -21,15 +24,9 @@ class OrderItemInLine(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = [
-        'id',
-        'user',
-        'first_name',
-        'last_name',
-        'phone_number',
-        'total_price_display',
-        'total_weight_display',
-        'is_paid',
-        'datetime_created',
+        'id', 'user', 'first_name', 'last_name', 'phone_number',
+        'total_price_display', 'total_weight_display', 'is_paid',
+        'datetime_created_jalali',  # ← نمایش شمسی
     ]
     list_filter = ['is_paid', 'datetime_created']
     search_fields = ['user__username', 'first_name', 'last_name', 'phone_number']
@@ -37,22 +34,18 @@ class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_per_page = 20
 
     fieldsets = (
-        ('User Info', {
-            'fields': ('user', 'first_name', 'last_name', 'phone_number')
-        }),
-        ('Address', {
-            'fields': ('address', 'order_notes')
-        }),
-        ('Payment', {
-            'fields': ('is_paid', 'total_price', 'total_weight')
-        }),
-        ('Dates', {
-            'fields': ('datetime_created', 'datetime_modified'),
-            'classes': ('collapse',)
-        }),
+        ('User Info', {'fields': ('user', 'first_name', 'last_name', 'phone_number')}),
+        ('Address', {'fields': ('address', 'order_notes')}),
+        ('Payment', {'fields': ('is_paid', 'total_price', 'total_weight')}),
+        ('Dates', {'fields': ('datetime_created', 'datetime_modified'), 'classes': ('collapse',)}),
     )
 
     inlines = [OrderItemInLine]
+
+    formfield_overrides = {
+        django_models.DateField: {'widget': AdminJalaliDateWidget},
+        django_models.DateTimeField: {'widget': AdminSplitJalaliDateTime},
+    }
 
     def total_price_display(self, obj):
         return f'{obj.total_price:,} تومان'
@@ -63,6 +56,14 @@ class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
             return f'{obj.total_weight:,} گرم'
         return '-'
     total_weight_display.short_description = 'وزن کل'
+
+    def datetime_created_jalali(self, obj):
+        """نمایش تاریخ شمسی با ساعت"""
+        if obj.datetime_created:
+            jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.datetime_created)
+            return jalali_date.strftime('%Y/%m/%d %H:%M')
+        return '-'
+    datetime_created_jalali.short_description = 'تاریخ ایجاد'
 
 
 @admin.register(OrderItem)
@@ -82,4 +83,3 @@ class OrderItemAdmin(admin.ModelAdmin):
             return f'{weight} گرم'
         return '-'
     get_weight_display.short_description = 'وزن'
-    

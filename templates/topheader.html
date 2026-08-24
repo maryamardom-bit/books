@@ -34,14 +34,33 @@
                         </span>
                     </a>
                     
-                    <!-- User -->
+                    <!-- User Dropdown -->
                     {% if user.is_authenticated %}
-                    <a href="{% url 'accounts:dashboard' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px;">
-                        <i class="fas fa-user"></i>
-                        {{ user.username|truncatechars:10 }}
-                    </a>
+                    <div style="position: relative; display: inline-block;" id="userDropdown">
+                        <!-- Trigger -->
+                        <a href="{% url 'accounts:dashboard' %}" 
+                           style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 20px; background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.15);">
+                            <i class="fas fa-user"></i>
+                            {{ user.username|truncatechars:10 }}
+                            <i class="fas fa-chevron-down" style="font-size: 10px;"></i>
+                        </a>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="userDropdownMenu" style="display: none; position: absolute; top: calc(100% + 0px); left: 0; background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); min-width: 180px; z-index: 1000; border: 1px solid #e8e0d8; overflow: hidden; padding-top: 5px;">
+                            <a href="{% url 'accounts:dashboard' %}" 
+                               style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; color: #555; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.3s; border-bottom: 1px solid #f0ece8;">
+                                <i class="fas fa-user-circle" style="color: #c9a84c;"></i>
+                                {% trans 'Dashboard' %}
+                            </a>
+                            <a href="{% url 'account_logout' %}" 
+                               style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; color: #dc3545; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.3s;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                {% trans 'Logout' %}
+                            </a>
+                        </div>
+                    </div>
                     {% else %}
-                    <a href="{% url 'account_login' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px;">
+                    <a href="{% url 'account_login' %}" style="text-decoration: none; color: #1a1a2e; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 20px; background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.15);">
                         <i class="fas fa-user"></i>
                         {% trans 'Login' %}
                     </a>
@@ -82,16 +101,6 @@
                         {% trans 'Best Sellers' %}
                     </a>
                 </li>
-                
-                {% if user.is_authenticated %}
-                <li style="flex: 1; text-align: center;">
-                    <a href="{% url 'accounts:dashboard' %}" 
-                       style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; text-align: center; transition: all 0.3s; border-bottom: 3px solid transparent;">
-                        {% trans 'Dashboard' %}
-                    </a>
-                </li>
-                {% endif %}
-                
                 <li style="flex: 1; text-align: center;">
                     <a href="{% url 'page:orderus' %}" style="display: block; padding: 14px 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.3s; border-bottom: 3px solid transparent;">
                         {% trans 'Order Conditions' %}
@@ -124,6 +133,15 @@
         color: #c9a84c !important;
     }
     
+    #userDropdownMenu a:hover {
+        background: #faf8f6;
+        color: #1a1a2e !important;
+    }
+    
+    #userDropdownMenu a:last-child:hover {
+        background: #fef0ef;
+    }
+    
     @media (max-width: 768px) {
         nav ul {
             flex-wrap: wrap;
@@ -133,3 +151,52 @@
         }
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.getElementById('userDropdown');
+    var menu = document.getElementById('userDropdownMenu');
+    var closeTimer = null;
+    
+    if (dropdown && menu) {
+        // Show menu on hover
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(closeTimer);
+            menu.style.display = 'block';
+        });
+        
+        // Hide menu with delay when leaving
+        dropdown.addEventListener('mouseleave', function() {
+            closeTimer = setTimeout(function() {
+                menu.style.display = 'none';
+            }, 300); // 300ms delay
+        });
+        
+        // Keep menu open when hovering on menu itself
+        menu.addEventListener('mouseenter', function() {
+            clearTimeout(closeTimer);
+            menu.style.display = 'block';
+        });
+        
+        menu.addEventListener('mouseleave', function() {
+            closeTimer = setTimeout(function() {
+                menu.style.display = 'none';
+            }, 300);
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!dropdown.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+        
+        // Close menu on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                menu.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
