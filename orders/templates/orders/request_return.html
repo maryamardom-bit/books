@@ -1,0 +1,57 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+{% block page_title %}{% trans 'Return Request' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background: #fff; border-radius: 12px; padding: 30px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <h1 style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 20px; text-align: center;">
+                    {% trans 'Return Request' %}
+                </h1>
+                
+                <div style="background: #faf8f6; border-radius: 10px; padding: 15px 20px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 13px; color: #777;">{% trans 'Order' %}:</span>
+                        <span style="font-size: 13px; font-weight: 700;">#{{ order.id }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 13px; color: #777;">{% trans 'Total Amount' %}:</span>
+                        <span style="font-size: 13px; font-weight: 700; color: #c9a84c;">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">
+                            {% trans 'Reason for Return' %}
+                        </label>
+                        {{ form.reason }}
+                        {% if form.reason.errors %}
+                        <small style="color: #dc3545;">{{ form.reason.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" 
+                            style="width: 100%; background: linear-gradient(135deg, #dc3545, #c82333); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer;">
+                        {% trans 'Submit Return Request' %}
+                    </button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="{% url 'accounts:order_history' %}" style="font-size: 13px; color: #777; text-decoration: none;">
+                        {% trans 'Back to Order History' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

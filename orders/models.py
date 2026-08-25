@@ -61,3 +61,51 @@ class OrderItem(models.Model):
         elif self.package:
             return self.package.title
         return 'Unknown'
+
+class ReturnRequest(models.Model):
+    """درخواست برگشت کالا"""
+    
+    class ReturnStatus(models.TextChoices):
+        PENDING = 'PENDING', _('Pending')
+        APPROVED = 'APPROVED', _('Approved')
+        REJECTED = 'REJECTED', _('Rejected')
+        RETURNED = 'RETURNED', _('Returned')
+    
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='return_requests', verbose_name=_('order'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='return_requests', verbose_name=_('user'))
+    
+    reason = models.TextField(_('reason'), help_text=_('Reason for return'))
+    status = models.CharField(
+        _('status'),
+        max_length=20,
+        choices=ReturnStatus.choices,
+        default=ReturnStatus.PENDING,
+    )
+    
+    admin_note = models.TextField(_('admin note'), blank=True, help_text=_('Admin note'))
+    
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    datetime_updated = models.DateTimeField(_('updated'), auto_now=True)
+    
+    class Meta:
+        verbose_name = _('Return Request')
+        verbose_name_plural = _('Return Requests')
+        ordering = ['-datetime_created']
+    
+    def __str__(self):
+        return f'Return #{self.id} - Order #{self.order.id}'
+    
+    def is_approved(self):
+        return self.status == self.ReturnStatus.APPROVED
+    
+    def is_rejected(self):
+        return self.status == self.ReturnStatus.REJECTED
+    
+    def is_returned(self):
+        return self.status == self.ReturnStatus.RETURNED
+    
+    def can_request_return(self):
+        """بررسی ۳ روز مهلت"""
+        from django.utils import timezone
+        days_since_order = (timezone.now() - self.order.datetime_created).days
+        return days_since_order <= 3 and self.order.is_paid

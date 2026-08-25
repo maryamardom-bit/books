@@ -1,0 +1,53 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+{% block page_title %}{% trans 'My Returns' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section style="padding: 40px 0; background: #f8f9fa;">
+    <div class="container">
+        <h1 style="font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 25px;">
+            {% trans 'My Return Requests' %}
+        </h1>
+        
+        {% if returns %}
+        <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+            {% for return_req in returns %}
+            <div style="padding: 20px; border-bottom: 1px solid #f0ece8; {% if not forloop.last %}border-bottom: 1px solid #f0ece8;{% endif %}">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <span style="font-weight: 700;">{% trans 'Return' %} #{{ return_req.id }}</span>
+                        <span style="font-size: 12px; color: #999; margin-right: 10px;">{{ return_req.datetime_created|date:"Y/m/d" }}</span>
+                    </div>
+                    <div>
+                        {% if return_req.status == 'PENDING' %}
+                        <span style="background: #fff3cd; color: #856404; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{% trans 'Pending' %}</span>
+                        {% elif return_req.status == 'APPROVED' %}
+                        <span style="background: #d4edda; color: #155724; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{% trans 'Approved' %}</span>
+                        {% elif return_req.status == 'REJECTED' %}
+                        <span style="background: #f8d7da; color: #721c24; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{% trans 'Rejected' %}</span>
+                        {% elif return_req.status == 'RETURNED' %}
+                        <span style="background: #cce5ff; color: #004085; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{% trans 'Returned' %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #555; margin: 10px 0 0;">{{ return_req.reason }}</p>
+                {% if return_req.admin_note %}
+                <p style="font-size: 12px; color: #999; margin: 5px 0 0;">
+                    {% trans 'Admin Note' %}: {{ return_req.admin_note }}
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="background: #fff; border-radius: 12px; padding: 60px 20px; text-align: center; border: 2px dashed #e8e0d8;">
+            <p style="color: #777;">{% trans 'No return requests.' %}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

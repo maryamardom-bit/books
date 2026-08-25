@@ -2,15 +2,13 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.db import models as django_models
-from jalali_date.admin import ModelAdminJalaliMixin
-from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
-import jdatetime
+from jalali_date.admin import ModelAdminJalaliMixin, TabularInlineJalaliMixin
+from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime  # ← این import لازمه
 
 from .models import Product, Comment, Package
-from .widgets import CustomJalaliDateTimeWidget
 
 
-class CommentsInLine(admin.TabularInline):
+class CommentsInLine(TabularInlineJalaliMixin, admin.TabularInline):
     model = Comment
     fields = ['author', 'body', 'stars', 'active']
     extra = 0
@@ -35,9 +33,9 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     )
 
     inlines = [CommentsInLine]
-    
+
     formfield_overrides = {
-        django_models.DateTimeField: {'widget': CustomJalaliDateTimeWidget},
+        django_models.DateTimeField: {'widget': AdminSplitJalaliDateTime},
     }
 
     def price_display(self, obj):
@@ -69,10 +67,6 @@ class PackageAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         (_('Pricing'), {'fields': ('discount_percent', 'manual_price', 'original_price', 'price')}),
         (_('Stock & Dates'), {'fields': ('stock', 'datetime_created', 'datetime_modified'), 'classes': ('collapse',)}),
     )
-    
-    formfield_overrides = {
-        django_models.DateTimeField: {'widget': CustomJalaliDateTimeWidget},
-    }
 
     def get_products_count_display(self, obj):
         return format_html('<b>{}</b>', obj.get_products_count())

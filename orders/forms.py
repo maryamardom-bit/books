@@ -1,5 +1,6 @@
 from django import forms
-from .models import Order
+from .models import Order,ReturnRequest
+from django.utils.translation import gettext_lazy as _
 
 
 class OrderForm(forms.ModelForm):
@@ -20,3 +21,19 @@ class OrderForm(forms.ModelForm):
             self.fields['last_name'].initial = user.last_name
             self.fields['phone_number'].initial = getattr(user, 'phone_number', '')
             self.fields['address'].initial = getattr(user, 'address', '')
+
+
+class ReturnRequestForm(forms.ModelForm):
+    class Meta:
+        model = ReturnRequest
+        fields = ['reason']
+        widgets = {
+            'reason': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Reason for return...',
+            }),
+        }
+        labels = {
+            'reason': _('Reason'),
+        }
