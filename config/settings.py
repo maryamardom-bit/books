@@ -197,5 +197,8 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+# Kavenegar SMS
+KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY", default="test_api_key")
+KAVENEGAR_SENDER = env("KAVENEGAR_SENDER", default="1000596446")
 # SEP Payment Gateway
 # SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")

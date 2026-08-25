@@ -7,6 +7,7 @@ from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
 import jdatetime
 
 from .models import Order, OrderItem, ReturnRequest
+from services.sms import SMSService
 
 
 class OrderItemInLine(admin.TabularInline):
@@ -18,7 +19,7 @@ class OrderItemInLine(admin.TabularInline):
     def get_weight_display(self, obj):
         weight = obj.get_weight()
         if weight > 0:
-            return f'{weight} g'
+            return f'{weight} {_("g")}'
         return '-'
     get_weight_display.short_description = _('Weight')
 
@@ -183,6 +184,14 @@ class ReturnRequestAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
                 # Refund to wallet
                 return_request.user.wallet_balance += return_request.order.total_price
                 return_request.user.save(update_fields=['wallet_balance'])
+
+                # Send SMS confirmation
+                if return_request.user.phone_number:
+                    SMSService.send_return_confirmation_sms(
+                        return_request.user,
+                        return_request.order,
+                        return_request
+                    )
 
                 count += 1
 

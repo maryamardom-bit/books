@@ -7,6 +7,7 @@ from django.utils import timezone
 from cart.cart import Cart
 from .forms import OrderForm, ReturnRequestForm
 from .models import Order, OrderItem, ReturnRequest
+from services.sms import SMSService
 
 
 @login_required
@@ -61,7 +62,7 @@ def order_create_view(request):
             order_obj.total_price = total_price
             order_obj.save()
 
-            # کاهش موجودی
+            # Decrease stock
             for item in cart:
                 if not item['is_package']:
                     product = item.get('product_obj')
@@ -80,6 +81,11 @@ def order_create_view(request):
             request.user.save()
 
             request.session['order_id'] = order_obj.id
+
+            # Send order confirmation SMS
+            if request.user.phone_number:
+                SMSService.send_order_confirmation_sms(request.user, order_obj)
+
             return redirect('payment:payment_process')
         else:
             messages.error(request, _('Please correct the errors below.'))
@@ -94,18 +100,15 @@ def request_return_view(request, order_id):
     """User submits return request"""
     order = get_object_or_404(Order, id=order_id, user=request.user)
 
-    # Check if order is paid
     if not order.is_paid:
         messages.error(request, _('This order is not paid.'))
         return redirect('accounts:order_history')
 
-    # Check 3-day return period
     days_since_order = (timezone.now() - order.datetime_created).days
     if days_since_order > 3:
         messages.error(request, _('Return period has expired (3 days).'))
         return redirect('accounts:order_history')
 
-    # Check if already has return request
     existing_return = ReturnRequest.objects.filter(order=order, user=request.user).first()
     if existing_return:
         messages.warning(request, _('You already have a return request for this order.'))
