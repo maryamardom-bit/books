@@ -402,4 +402,87 @@ class TieredDiscount(models.Model):
         self.current_tier = 0
         self.save(update_fields=['current_tier'])
 
+class ProductBlog(models.Model):
+    """وبلاگ محصول - مقالات، اخبار، داستان"""
+    
+    class BlogType(models.TextChoices):
+        ARTICLE = 'ARTICLE', _('Article')
+        NEWS = 'NEWS', _('News')
+        STORY = 'STORY', _('Story')
+    
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='blogs',
+        verbose_name=_('product'),
+    )
+    title = models.CharField(_('title'), max_length=200)
+    content = RichTextField(_('content'))
+    blog_type = models.CharField(
+        _('type'),
+        max_length=20,
+        choices=BlogType.choices,
+        default=BlogType.ARTICLE,
+    )
+    video = models.FileField(
+        _('video'),
+        upload_to='products/videos/',
+        blank=True,
+        null=True,
+        help_text=_('Upload video file'),
+    )
+    author_name = models.CharField(_('author name'), max_length=200, blank=True)
+    is_active = models.BooleanField(_('active'), default=True)
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    datetime_updated = models.DateTimeField(_('updated'), auto_now=True)
+    
+    class Meta:
+        verbose_name = _('Product Blog')
+        verbose_name_plural = _('Product Blogs')
+        ordering = ['-datetime_created']
+    
+    def __str__(self):
+        return f'{self.product.title} - {self.title}'
+    
+    def has_video(self):
+        return bool(self.video)
+
+
+class InstallmentPlan(models.Model):
+    """طرح اقساطی اسنپ‌پی"""
+    
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='installment_plans',
+        verbose_name=_('product'),
+    )
+    month_count = models.PositiveSmallIntegerField(_('month count'), default=3)
+    prepayment_percent = models.PositiveSmallIntegerField(
+        _('prepayment percent'),
+        default=30,
+        help_text=_('Prepayment percentage'),
+    )
+    is_active = models.BooleanField(_('active'), default=True)
+    
+    class Meta:
+        verbose_name = _('Installment Plan')
+        verbose_name_plural = _('Installment Plans')
+    
+    def __str__(self):
+        return f'{self.product.title} - {self.month_count} {_("months")}'
+    
+    def calculate_monthly_payment(self):
+        """محاسبه قسط ماهانه"""
+        product_price = self.product.get_discounted_price()
+        prepayment = int(product_price * self.prepayment_percent / 100)
+        remaining = product_price - prepayment
+        monthly = remaining // self.month_count
+        return {
+            'prepayment': prepayment,
+            'remaining': remaining,
+            'monthly': monthly,
+            'total_with_installment': prepayment + (monthly * self.month_count),
+        }
+
         

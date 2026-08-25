@@ -3,9 +3,10 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.db import models as django_models
 from jalali_date.admin import ModelAdminJalaliMixin, TabularInlineJalaliMixin
-from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime  # ← این import لازمه
+from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
+import jdatetime
 
-from .models import Product, Comment, Package
+from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
 
 
 class CommentsInLine(TabularInlineJalaliMixin, admin.TabularInline):
@@ -115,3 +116,40 @@ class CommentAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_editable = ['active']
     list_per_page = 20
     ordering = ['-datetime_created']
+
+
+@admin.register(ProductBlog)
+class ProductBlogAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['title', 'product', 'blog_type', 'author_name', 'is_active', 'datetime_created_jalali']
+    list_filter = ['blog_type', 'is_active', 'datetime_created']
+    search_fields = ['title', 'content', 'product__title', 'author_name']
+    list_editable = ['is_active']
+    list_per_page = 20
+
+    fieldsets = (
+        (_('Info'), {'fields': ('product', 'title', 'blog_type', 'content', 'author_name')}),
+        (_('Video'), {'fields': ('video',)}),
+        (_('Status'), {'fields': ('is_active', 'datetime_created', 'datetime_updated'), 'classes': ('collapse',)}),
+    )
+
+    readonly_fields = ['datetime_created', 'datetime_updated']
+
+    def datetime_created_jalali(self, obj):
+        if obj.datetime_created:
+            jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.datetime_created)
+            return jalali_date.strftime('%Y/%m/%d %H:%M')
+        return '-'
+    datetime_created_jalali.short_description = _('Created')
+
+
+@admin.register(InstallmentPlan)
+class InstallmentPlanAdmin(admin.ModelAdmin):
+    list_display = ['product', 'month_count', 'prepayment_percent', 'is_active']
+    list_filter = ['is_active', 'month_count']
+    search_fields = ['product__title']
+    list_editable = ['is_active', 'prepayment_percent']
+    list_per_page = 20
+
+    fieldsets = (
+        (_('Info'), {'fields': ('product', 'month_count', 'prepayment_percent', 'is_active')}),
+    )

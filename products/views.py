@@ -7,12 +7,13 @@ from django.db.models import Q, Count, Avg, Value, IntegerField, Sum
 from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Product, Comment, Package
+from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
 
 class ProductListView(generic.ListView):
+    """List products with filters and sorting"""
     model = Product
     template_name = 'Products/product_list.html'
     context_object_name = 'products'
@@ -21,28 +22,25 @@ class ProductListView(generic.ListView):
     def get_queryset(self):
         queryset = Product.objects.filter(active=True)
         
-        # فیلتر تخفیف
+        # Discount filter
         discount_filter = self.request.GET.get('discount', '')
         if discount_filter == 'true':
             queryset = Product.objects.get_on_sale_products()
         
-        # مرتب‌سازی
+        # Sorting
         sort = self.request.GET.get('sort', '-datetime_created')
         
-        if sort == 'price':
-            queryset = queryset.order_by('price')
-        elif sort == '-price':
-            queryset = queryset.order_by('-price')
-        elif sort == 'title':
-            queryset = queryset.order_by('title')
-        elif sort == 'author':
-            queryset = queryset.order_by('author')
-        elif sort == 'newest':
-            queryset = queryset.order_by('-datetime_created')
-        elif sort == 'oldest':
-            queryset = queryset.order_by('datetime_created')
-        else:
-            queryset = queryset.order_by('-datetime_created')
+        sort_options = {
+            'price': 'price',
+            '-price': '-price',
+            'title': 'title',
+            'author': 'author',
+            'newest': '-datetime_created',
+            'oldest': 'datetime_created',
+        }
+        
+        sort_field = sort_options.get(sort, '-datetime_created')
+        queryset = queryset.order_by(sort_field)
         
         return queryset
 
@@ -51,17 +49,11 @@ class ProductListView(generic.ListView):
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
         context['sort'] = self.request.GET.get('sort', '-datetime_created')
         
-        # اضافه کردن اطلاعات تخفیف برای هر محصول
-        if context.get('products'):
-            for product in context['products']:
-                product.final_price = product.get_discounted_price()
-                product.savings_amount = product.get_savings()
-                product.discount_percentage = product.get_discount_percent_display()
-        
         return context
 
 
 class ProductDetailView(generic.DetailView):
+    """Product detail with related products, blogs, and installments"""
     model = Product
     template_name = 'Products/product_detail.html'
     context_object_name = 'product'
@@ -70,23 +62,21 @@ class ProductDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         
-        # اطلاعات تخفیف
         product = context['product']
         context['is_on_sale'] = product.is_on_sale()
         context['discounted_price'] = product.get_discounted_price()
         context['savings'] = product.get_savings()
         context['discount_percentage'] = product.get_discount_percent_display()
         
-        # محصولات مرتبط (همین دسته یا همین نویسنده)
+        # Related products
         related_products = Product.objects.filter(
             active=True
         ).filter(
             Q(category=product.category) | Q(author=product.author)
         ).exclude(id=product.id).distinct()[:4]
-        
         context['related_products'] = related_products
         
-        # کتاب‌های دیگر همین نویسنده
+        # Author books
         if product.author:
             author_books = Product.objects.filter(
                 active=True,
@@ -94,11 +84,17 @@ class ProductDetailView(generic.DetailView):
             ).exclude(id=product.id)[:6]
             context['author_books'] = author_books
         
+        # Product blogs
+        context['blogs'] = product.blogs.filter(is_active=True)
+        
+        # Installment plans
+        context['installment_plans'] = product.installment_plans.filter(is_active=True)
+        
         return context
 
 
 class CommentCreateView(generic.View):
-    """ثبت نظر جدید"""
+    """Submit new comment"""
     
     def post(self, request, product_id):
         product = get_object_or_404(Product, id=product_id)
@@ -111,14 +107,17 @@ class CommentCreateView(generic.View):
                 author=request.user,
                 body=body,
                 stars=int(stars),
-                active=False,  # ← نظر جدید غیرفعال باشه
+                active=False,
             )
-            messages.success(request, 'دیدگاه شما ثبت شد و پس از تایید نمایش داده خواهد شد.')
+            messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
         else:
-            messages.error(request, 'لطفاً همه فیلدها را پر کنید.')
+            messages.error(request, _('Please fill all fields.'))
         
         return redirect('product:product_detail', pk=product_id)
+
+
 class ProductSearchView(generic.ListView):
+    """Search products"""
     model = Product
     template_name = 'Products/product_search_result.html'
     context_object_name = 'results'
@@ -150,7 +149,7 @@ class ProductSearchView(generic.ListView):
 
 
 class PackageListView(generic.ListView):
-    """نمایش لیست پکیج‌ها"""
+    """List packages"""
     model = Package
     template_name = 'Products/package_list.html'
     context_object_name = 'packages'
@@ -161,7 +160,7 @@ class PackageListView(generic.ListView):
 
 
 class PackageDetailView(generic.DetailView):
-    """نمایش جزییات یک پکیج"""
+    """Package detail"""
     model = Package
     template_name = 'Products/package_detail.html'
     context_object_name = 'package'
@@ -176,7 +175,7 @@ class PackageDetailView(generic.DetailView):
 
 
 def category_list(request):
-    """نمایش همه دسته‌بندی‌ها"""
+    """Display all categories"""
     categories = []
     
     EXCLUDED_CATEGORIES = ['PACKAGES']
@@ -215,19 +214,18 @@ def category_list(request):
 
 
 def product_list_by_category(request, category):
-    """نمایش کتاب‌های یک دسته خاص"""
+    """Display books by category"""
     valid_categories = dict(Product.Category.choices)
     
     if category not in valid_categories:
         return render(request, 'Products/product_list_by_category.html', {
             'products': Product.objects.none(),
             'category': None,
-            'error': 'دسته‌بندی نامعتبر است',
+            'error': _('Invalid category'),
         })
     
     products_list = Product.objects.filter(category=category, active=True)
     
-    # مرتب‌سازی
     sort = request.GET.get('sort', '-datetime_created')
     if sort == 'price':
         products_list = products_list.order_by('price')
@@ -238,7 +236,6 @@ def product_list_by_category(request, category):
     else:
         products_list = products_list.order_by('-datetime_created')
     
-    # صفحه‌بندی
     paginator = Paginator(products_list, 12)
     page = request.GET.get('page', 1)
     
@@ -283,7 +280,7 @@ def product_list_by_category(request, category):
 
 
 def package_comment(request, slug):
-    """ثبت نظر برای پکیج"""
+    """Submit comment for package"""
     if request.method == 'POST':
         package = get_object_or_404(Package, slug=slug)
         body = request.POST.get('body')
@@ -297,26 +294,26 @@ def package_comment(request, slug):
                     author=request.user,
                     body=body,
                     stars=int(stars),
-                    active=True,
+                    active=False,
                 )
-                messages.success(request, 'نظر شما با موفقیت ثبت شد.')
+                messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
             else:
-                messages.error(request, 'این پکیج هیچ کتابی ندارد.')
+                messages.error(request, _('This package has no products.'))
         else:
-            messages.error(request, 'لطفاً همه فیلدها را پر کنید.')
+            messages.error(request, _('Please fill all fields.'))
         
         return redirect('product:package_detail', slug=slug)
     
     return redirect('product:package_detail', slug=slug)
 
+
 def author_books_view(request, author_name):
-    """Display books by a specific author"""
+    """Display books by specific author"""
     books = Product.objects.filter(
         author=author_name,
         active=True
     ).order_by('-datetime_created')
     
-    # Pagination
     paginator = Paginator(books, 12)
     page = request.GET.get('page', 1)
     
@@ -339,7 +336,7 @@ def author_books_view(request, author_name):
 
 
 class BestSellersView(generic.ListView):
-    """Best selling products based on order items"""
+    """Best selling products"""
     model = Product
     template_name = 'Products/best_sellers.html'
     context_object_name = 'products'
@@ -355,5 +352,4 @@ class BestSellersView(generic.ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Best Sellers'
         return context
