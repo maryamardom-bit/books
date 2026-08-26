@@ -87,8 +87,6 @@ class ProductDetailView(generic.DetailView):
         # Product blogs
         context['blogs'] = product.blogs.filter(is_active=True)
         
-        # Installment plans
-        context['installment_plans'] = product.installment_plans.filter(is_active=True)
         
         return context
 

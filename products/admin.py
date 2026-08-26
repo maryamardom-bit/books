@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models as django_models
 from jalali_date.admin import ModelAdminJalaliMixin, TabularInlineJalaliMixin
 from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
-import jdatetime
 
 from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
 
@@ -19,7 +18,7 @@ class CommentsInLine(TabularInlineJalaliMixin, admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ['title', 'category', 'author', 'publisher', 'price_display', 'discount_display', 'stock', 'active']
-    list_filter = ['category', 'active', 'book_size', 'cover_type', 'year_of_publication', 'datetime_created']
+    list_filter = ['category', 'active', 'book_size', 'cover_type', 'datetime_created', 'discount_percent']
     search_fields = ['title', 'description', 'author', 'publisher', 'isbn']
     list_editable = ['active']
     readonly_fields = ['datetime_created', 'datetime_modified']
@@ -29,7 +28,9 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         (_('Basic Information'), {'fields': ('title', 'category', 'description', 'price', 'image')}),
         (_('Book Details'), {'fields': ('author', 'edition', 'book_size', 'number_of_pages', 'cover_type', 'weight', 'publication_date', 'printing_series', 'year_of_publication', 'publisher', 'isbn')}),
         (_('Stock Management'), {'fields': ('stock', 'reserved_stock')}),
-        (_('Discount Settings'), {'fields': ('discount_percent', 'special_price', 'discount_start_date', 'discount_end_date')}),
+        (_('Discount Settings'), {
+            'fields': ('discount_percent', 'special_price', 'discount_start_date', 'discount_end_date'),
+        }),
         (_('Status & Dates'), {'fields': ('active', 'datetime_created', 'datetime_modified'), 'classes': ('collapse',)}),
     )
 
@@ -50,12 +51,13 @@ class ProductAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
             return format_html('<span style="color:#dc3545;">{}% - {}</span>', obj.get_discount_percent_display(), obj.get_savings())
         return '-'
     discount_display.short_description = _('Discount')
+    
 
 
 @admin.register(Package)
 class PackageAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ['title', 'get_products_count_display', 'original_price_display', 'price_display', 'discount_display', 'stock', 'active']
-    list_filter = ['active', 'datetime_created']
+    list_filter = ['active', 'datetime_created', 'discount_percent']
     search_fields = ['title', 'description', 'products__title']
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('products',)
@@ -120,26 +122,12 @@ class CommentAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
 
 @admin.register(ProductBlog)
 class ProductBlogAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
-    list_display = ['title', 'product', 'blog_type', 'author_name', 'is_active', 'datetime_created_jalali']
+    list_display = ['title', 'product', 'blog_type', 'author_name', 'is_active', 'datetime_created']
     list_filter = ['blog_type', 'is_active', 'datetime_created']
     search_fields = ['title', 'content', 'product__title', 'author_name']
     list_editable = ['is_active']
     list_per_page = 20
-
-    fieldsets = (
-        (_('Info'), {'fields': ('product', 'title', 'blog_type', 'content', 'author_name')}),
-        (_('Video'), {'fields': ('video',)}),
-        (_('Status'), {'fields': ('is_active', 'datetime_created', 'datetime_updated'), 'classes': ('collapse',)}),
-    )
-
     readonly_fields = ['datetime_created', 'datetime_updated']
-
-    def datetime_created_jalali(self, obj):
-        if obj.datetime_created:
-            jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.datetime_created)
-            return jalali_date.strftime('%Y/%m/%d %H:%M')
-        return '-'
-    datetime_created_jalali.short_description = _('Created')
 
 
 @admin.register(InstallmentPlan)
@@ -149,7 +137,3 @@ class InstallmentPlanAdmin(admin.ModelAdmin):
     search_fields = ['product__title']
     list_editable = ['is_active', 'prepayment_percent']
     list_per_page = 20
-
-    fieldsets = (
-        (_('Info'), {'fields': ('product', 'month_count', 'prepayment_percent', 'is_active')}),
-    )
