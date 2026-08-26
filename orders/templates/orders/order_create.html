@@ -11,572 +11,435 @@
 
 {% block extra_css %}
 <style>
-    /* ===== استایل‌های اختصاصی صفحه تسویه حساب ===== */
     .checkout-section {
         padding: 40px 0 60px;
-        background: #faf8f6;
+        background: #f8f9fa;
+        min-height: 80vh;
     }
-
-    .checkout-title h2 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 28px;
-        font-weight: 600;
+    
+    .checkout-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        height: 100%;
+    }
+    
+    .checkout-card h2 {
+        font-size: 20px;
+        font-weight: 700;
         color: #1a1a2e;
         margin-bottom: 25px;
         padding-bottom: 15px;
         border-bottom: 2px solid #c9a84c;
-        position: relative;
     }
-
-    .checkout-title h2::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        right: 0;
-        width: 60px;
-        height: 2px;
-        background: #c9a84c;
-    }
-
-    /* ===== حذف اسلش breadcrumb ===== */
-    .breadcrumb-arch {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-        margin-bottom: 20px;
-        list-style: none;
-        background: transparent;
-    }
-
-    .breadcrumb-arch .breadcrumb-item {
-        display: flex;
-        align-items: center;
-        color: #8a7a6a;
-        font-size: 14px;
-    }
-
-    /* حذف اسلش پیش‌فرض */
-    .breadcrumb-arch .breadcrumb-item + .breadcrumb-item::before {
-        content: none !important;
-        display: none !important;
-    }
-
-    /* جداکننده با فلش */
-    .breadcrumb-arch .breadcrumb-item:not(:last-child)::after {
-        content: "›";
+    
+    .checkout-card h2 i {
         color: #c9a84c;
-        padding: 0 10px;
-        font-size: 18px;
-        font-weight: 300;
+        margin-left: 8px;
     }
-
-    .breadcrumb-arch .breadcrumb-item a {
-        color: #8a7a6a;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .breadcrumb-arch .breadcrumb-item a:hover {
-        color: #c9a84c;
-    }
-
-    .breadcrumb-arch .breadcrumb-item.active {
-        color: #c9a84c;
-        font-weight: 600;
-    }
-
-    .breadcrumb-arch .breadcrumb-item i {
-        margin-left: 6px;
+    
+    .form-label {
         font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
     }
-
-    /* ===== فرم ===== */
-    .form--checkout .form__label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #2c3e50;
-        margin-bottom: 6px;
-        display: block;
-    }
-
-    .form--checkout .form__label .required {
-        color: #e74c3c;
-    }
-
-    .form--checkout .form__input {
-        width: 100%;
-        padding: 10px 15px;
+    
+    .form-control {
         border: 1px solid #e8e0d8;
-        border-radius: 6px;
+        border-radius: 10px;
+        padding: 12px 15px;
         font-size: 14px;
-        transition: all 0.3s ease;
+        transition: all 0.3s;
         background: #fff;
-        color: #2c3e50;
     }
-
-    .form--checkout .form__input:focus {
+    
+    .form-control:focus {
         border-color: #c9a84c;
         box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
         outline: none;
     }
-
-    .form--checkout .form__input--textarea {
-        min-height: 120px;
-        resize: vertical;
-    }
-
-    .form--checkout .btn-submit {
-        background: #1a1a2e;
-        color: #fff;
-        border: none;
-        padding: 12px 40px;
-        border-radius: 6px;
-        font-size: 16px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        margin-top: 10px;
-        font-family: 'Playfair Display', 'Georgia', serif;
-        letter-spacing: 1px;
-    }
-
-    .form--checkout .btn-submit:hover {
-        background: #c9a84c;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(201, 168, 76, 0.3);
-    }
-
-    /* ===== جدول سفارش ===== */
-    .order-details {
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
-        border: 1px solid #f0ece8;
-    }
-
-    .order-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .order-table thead th {
-        padding: 12px 8px;
-        border-bottom: 2px solid #e8e0d8;
-        font-size: 14px;
-        font-weight: 600;
-        color: #1a1a2e;
-        text-align: right;
-        font-family: 'Playfair Display', 'Georgia', serif;
-        letter-spacing: 0.5px;
-    }
-
-    .order-table tbody td,
-    .order-table tbody th {
-        padding: 12px 8px;
-        border-bottom: 1px solid #f0ece8;
-        font-size: 14px;
-        color: #2c3e50;
-        vertical-align: middle;
-    }
-
-    .order-table tbody th {
-        font-weight: 500;
-    }
-
-    .order-table tbody th strong {
-        color: #c9a84c;
-        margin-right: 4px;
-    }
-
-    .order-table tfoot tr {
-        border-top: 2px solid #e8e0d8;
-    }
-
-    .order-table tfoot th {
-        padding: 15px 8px 8px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #1a1a2e;
-    }
-
-    .order-table tfoot td {
-        padding: 15px 8px 8px;
-        font-size: 18px;
-        font-weight: 700;
-        color: #c9a84c;
-    }
-
-    /* ===== روش پرداخت ===== */
-    .checkout-payment {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #f0ece8;
-    }
-
-    .checkout-payment h2 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: #1a1a2e;
-        margin-bottom: 15px;
-    }
-
-    .payment-radio {
+    
+    .payment-option {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 12px 16px;
+        gap: 12px;
+        padding: 15px 20px;
         background: #faf8f6;
-        border-radius: 8px;
+        border-radius: 12px;
         border: 2px solid transparent;
-        transition: all 0.3s ease;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 10px;
     }
-
-    .payment-radio:hover {
+    
+    .payment-option:hover {
         border-color: #c9a84c;
+        background: #fff;
     }
-
-    .payment-radio input[type="radio"] {
+    
+    .payment-option.selected {
+        border-color: #c9a84c;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(201, 168, 76, 0.15);
+    }
+    
+    .payment-option input[type="radio"] {
         width: 18px;
         height: 18px;
         accent-color: #c9a84c;
         cursor: pointer;
+        flex-shrink: 0;
     }
-
-    .payment-radio .payment-label {
+    
+    .payment-option .payment-content {
+        flex: 1;
+    }
+    
+    .payment-option .payment-title {
         font-size: 14px;
-        font-weight: 500;
-        color: #2c3e50;
-        cursor: pointer;
-        margin: 0;
-    }
-
-    .payment-radio .payment-icon {
-        font-size: 24px;
-        margin-right: auto;
-    }
-
-    /* ===== سبد خرید خالی ===== */
-    .empty-cart-box {
-        text-align: center;
-        padding: 60px 20px;
-        background: #fff;
-        border-radius: 12px;
-        border: 2px dashed #e8e0d8;
-    }
-
-    .empty-cart-box .empty-icon {
-        font-size: 64px;
-        color: #c9a84c;
-        opacity: 0.4;
-        margin-bottom: 20px;
-    }
-
-    .empty-cart-box h3 {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 24px;
+        font-weight: 700;
         color: #1a1a2e;
-        margin-bottom: 10px;
     }
-
-    .empty-cart-box p {
-        color: #8a7a6a;
+    
+    .payment-option .payment-desc {
+        font-size: 12px;
+        color: #999;
+        margin-top: 2px;
+    }
+    
+    .payment-option .payment-icon {
+        font-size: 28px;
+    }
+    
+    .btn-submit-order {
+        width: 100%;
+        background: linear-gradient(135deg, #c9a84c, #b8963e);
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
         font-size: 16px;
-        margin-bottom: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
     }
-
-    .empty-cart-box .btn-shop {
-        display: inline-block;
-        padding: 12px 35px;
-        background: #1a1a2e;
-        color: #fff;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        font-family: 'Playfair Display', 'Georgia', serif;
-    }
-
-    .empty-cart-box .btn-shop:hover {
-        background: #c9a84c;
+    
+    .btn-submit-order:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(201, 168, 76, 0.3);
-        color: #fff;
+        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
     }
-
-    /* ===== ریسپانسیو ===== */
-    @media (max-width: 992px) {
-        .checkout-section {
-            padding: 30px 0 40px;
-        }
-
-        .checkout-title h2 {
-            font-size: 24px;
-        }
-
-        .order-details {
-            padding: 20px;
-            margin-top: 30px;
-        }
+    
+    .installment-box {
+        background: #f0f7ff;
+        border: 1px solid #b8daff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
     }
-
-    @media (max-width: 576px) {
-        .checkout-title h2 {
-            font-size: 20px;
-        }
-
-        .form--checkout .btn-submit {
-            width: 100%;
-            text-align: center;
-        }
-
-        .order-details {
-            padding: 15px;
-        }
-
-        .order-table thead th,
-        .order-table tbody td,
-        .order-table tbody th {
-            font-size: 12px;
-            padding: 8px 4px;
-        }
-
-        .payment-radio {
-            padding: 10px 12px;
-        }
-
-        .breadcrumb-arch .breadcrumb-item {
-            font-size: 12px;
-        }
-
-        .breadcrumb-arch .breadcrumb-item:not(:last-child)::after {
-            font-size: 14px;
-            padding: 0 6px;
-        }
+    
+    .installment-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-size: 13px;
+    }
+    
+    .installment-row .label {
+        color: #555;
+    }
+    
+    .installment-row .value {
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+    
+    .installment-row.highlight .value {
+        color: #c9a84c;
+        font-size: 16px;
+    }
+    
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0ece8;
+    }
+    
+    .order-item:last-child {
+        border-bottom: none;
+    }
+    
+    .order-item .item-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+    
+    .order-item .item-qty {
+        font-size: 12px;
+        color: #999;
+    }
+    
+    .order-item .item-price {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+    
+    .order-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-top: 2px solid #c9a84c;
+        margin-top: 10px;
+    }
+    
+    .order-total .total-label {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+    
+    .order-total .total-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #c9a84c;
+    }
+    
+    .breadcrumb-arch {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin-bottom: 25px;
+        list-style: none;
+        background: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+    }
+    
+    .breadcrumb-arch .breadcrumb-item {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        color: #777;
+    }
+    
+    .breadcrumb-arch .breadcrumb-item:not(:last-child)::after {
+        content: "›";
+        color: #c9a84c;
+        padding: 0 10px;
+        font-size: 16px;
+    }
+    
+    .breadcrumb-arch .breadcrumb-item a {
+        color: #777;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-arch .breadcrumb-item a:hover {
+        color: #c9a84c;
+    }
+    
+    .breadcrumb-arch .breadcrumb-item.active {
+        color: #c9a84c;
+        font-weight: 600;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- ===== بخش تسویه حساب ===== -->
 <section class="checkout-section">
     <div class="container">
-        {% trans "Checkout" as header_name %}
-        <div class="row pt--50 pt-md--40 pt-sm--20">
-            <div class="col-12">
-                <!-- ===== Breadcrumb بدون اسلش ===== -->
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb-arch">
-                        <li class="breadcrumb-item">
-                            <a href="{% url 'page:home' %}">
-                                <i class="fa fa-home"></i> {% trans "Home" %}
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="{% url 'cart:cart_detail' %}">
-                                {% trans "Cart" %}
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            {% trans "Checkout" %}
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-
-        <div class="row pb--80 pb-md--60 pb-sm--40">
-            <!-- ===== ستون فرم ===== -->
-            <div class="col-lg-6">
-                <div class="checkout-title mt--10">
-                    <h2><i class="fa fa-pencil-alt ml-2" style="color: #c9a84c;"></i> {% trans "Order Details" %}</h2>
-                </div>
-
-                <div class="checkout-form">
-                    {% if cart %}
-                        <form action="" method="post" class="form form--checkout">
-                            {% csrf_token %}
-
-                            {% if form.non_field_errors %}
-                                <div class="alert alert-danger">
-                                    {{ form.non_field_errors }}
-                                </div>
-                            {% endif %}
-
-                            <!-- نام و نام خانوادگی -->
-                            <div class="form-row mb--20">
-                                <div class="form__group col-md-6 mb-sm--30">
-                                    <label for="billing_fname" class="form__label form__label--2">
-                                        {% trans "First Name" %} <span class="required">*</span>
-                                    </label>
-                                    <input 
-                                        type="text" 
-                                        name="{{ form.first_name.name }}" 
-                                        id="billing_fname" 
-                                        class="form__input form__input--2"
-                                        value="{{ form.first_name.value|default:'' }}"
-                                        required
-                                    >
-                                    {% if form.first_name.errors %}
-                                        <small class="text-danger">{{ form.first_name.errors }}</small>
-                                    {% endif %}
-                                </div>
-
-                                <div class="form__group col-md-6">
-                                    <label for="billing_lname" class="form__label form__label--2">
-                                        {% trans "Last Name" %} <span class="required">*</span>
-                                    </label>
-                                    <input 
-                                        type="text" 
-                                        name="{{ form.last_name.name }}" 
-                                        id="billing_lname" 
-                                        class="form__input form__input--2"
-                                        value="{{ form.last_name.value|default:'' }}"
-                                        required
-                                    >
-                                    {% if form.last_name.errors %}
-                                        <small class="text-danger">{{ form.last_name.errors }}</small>
-                                    {% endif %}
-                                </div>
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb-arch">
+                <li class="breadcrumb-item">
+                    <a href="{% url 'page:home' %}"><i class="fa fa-home ml-1"></i>{% trans "Home" %}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'cart:cart_detail' %}">{% trans "Cart" %}</a>
+                </li>
+                <li class="breadcrumb-item active">{% trans "Checkout" %}</li>
+            </ol>
+        </nav>
+        
+        {% if cart %}
+        <div class="row g-4">
+            <!-- فرم اطلاعات -->
+            <div class="col-lg-7">
+                <div class="checkout-card">
+                    <h2><i class="fa fa-user"></i>{% trans "Order Details" %}</h2>
+                    
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "First Name" %} *</label>
+                                <input type="text" name="{{ form.first_name.name }}" class="form-control" value="{{ form.first_name.value|default:'' }}" required>
                             </div>
-
-                            <!-- آدرس -->
-                            <div class="form-row mb--20">
-                                <div class="form__group col-12">
-                                    <label for="billing_address" class="form__label form__label--2">
-                                        {% trans "Address" %}
-                                    </label>
-                                    <input 
-                                        type="text" 
-                                        name="{{ form.address.name }}" 
-                                        id="billing_address" 
-                                        class="form__input form__input--2"
-                                        value="{{ form.address.value|default:'' }}"
-                                    >
-                                    {% if form.address.errors %}
-                                        <small class="text-danger">{{ form.address.errors }}</small>
-                                    {% endif %}
-                                </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "Last Name" %} *</label>
+                                <input type="text" name="{{ form.last_name.name }}" class="form-control" value="{{ form.last_name.value|default:'' }}" required>
                             </div>
-
-                            <!-- شماره تلفن -->
-                            <div class="form-row mb--20">
-                                <div class="form__group col-12">
-                                    <label for="billing_phone" class="form__label form__label--2">
-                                        {% trans "Phone Number" %} <span class="required">*</span>
-                                    </label>
-                                    <input 
-                                        type="text" 
-                                        name="{{ form.phone_number.name }}" 
-                                        id="billing_phone" 
-                                        class="form__input form__input--2"
-                                        value="{{ form.phone_number.value|default:'' }}"
-                                        required
-                                    >
-                                    {% if form.phone_number.errors %}
-                                        <small class="text-danger">{{ form.phone_number.errors }}</small>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <!-- یادداشت -->
-                            <div class="form-row mb--20">
-                                <div class="form__group col-12">
-                                    <label for="orderNotes" class="form__label form__label--2">
-                                        {% trans "Order Notes" %}
-                                    </label>
-                                    <textarea 
-                                        class="form__input form__input--2 form__input--textarea" 
-                                        id="orderNotes" 
-                                        name="{{ form.order_notes.name }}"
-                                        placeholder="{% trans 'If you have any notes, enter them here...' %}"
-                                    >{{ form.order_notes.value|default:'' }}</textarea>
-                                    {% if form.order_notes.errors %}
-                                        <small class="text-danger">{{ form.order_notes.errors }}</small>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                            <button class="btn-submit" type="submit">
-                                <i class="fa fa-check ml-2"></i> {% trans "Submit Order" %}
-                            </button>
-                        </form>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- ===== ستون خلاصه سفارش ===== -->
-            <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
-                <div class="order-details">
-                    <div class="checkout-title mt--10">
-                        <h2><i class="fa fa-shopping-bag ml-2" style="color: #c9a84c;"></i> {% trans "Your Order" %}</h2>
-                    </div>
-
-                    {% if cart %}
-                        <div class="table-content table-responsive mb--30">
-                            <table class="table order-table">
-                                <thead>
-                                    <tr>
-                                        <th>{% trans "Product" %}</th>
-                                        <th class="text-left">{% trans "Price" %}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in cart %}
-                                        <tr>
-                                            <th>
-                                                {{ item.product_obj.title }}
-                                                <strong><span>&#10005;</span>{{ item.quantity|translate_number }}</strong>
-                                            </th>
-                                            <td class="text-left">
-                                                {{ item.product_obj.price|intcomma:False|translate_number }} {% trans "$" %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                                <tfoot>
-                                    <tr class="cart-subtotal">
-                                        <th>{% trans "Total" %}</th>
-                                        <td class="text-left">
-                                            <strong>{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "$" %}</strong>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
                         </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "Phone Number" %} *</label>
+                            <input type="text" name="{{ form.phone_number.name }}" class="form-control" value="{{ form.phone_number.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "Address" %}</label>
+                            <textarea name="{{ form.address.name }}" class="form-control" rows="3">{{ form.address.value|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "Order Notes" %}</label>
+                            <textarea name="{{ form.order_notes.name }}" class="form-control" rows="2" placeholder="{% trans 'Optional' %}">{{ form.order_notes.value|default:'' }}</textarea>
+                        </div>
+                        
                         <!-- روش پرداخت -->
-                        <div class="checkout-payment">
-                            <h2><i class="fa fa-credit-card ml-2" style="color: #c9a84c;"></i> {% trans "Payment Method" %}</h2>
-                            <div class="payment-group mb--10">
-                                <div class="payment-radio">
-                                    <input type="radio" value="bank" name="payment-method" id="bank" checked>
-                                    <label class="payment-label" for="bank">
-                                        <i class="fa fa-check-circle" style="color: #c9a84c;"></i>
-                                        {% trans "Online Payment (Zarinpal)" %}
-                                    </label>
-                                    <span class="payment-icon">🏦</span>
-                                </div>
+                        <h2><i class="fa fa-credit-card"></i>{% trans "Payment Method" %}</h2>
+                        
+                        <!-- پرداخت آنلاین -->
+                        <div class="payment-option selected" id="payment-online-option">
+                            <input type="radio" value="online" name="payment-method" id="online" checked>
+                            <div class="payment-content">
+                                <div class="payment-title">{% trans "Online Payment" %}</div>
+                                <div class="payment-desc">{% trans "Pay securely via SEP gateway" %}</div>
                             </div>
-                            <p class="mt-3 text-muted" style="font-size: 13px;">
-                                <i class="fa fa-info-circle ml-1"></i>
-                                {% trans "You will be redirected to the payment gateway after submitting the order." %}
-                            </p>
+                            <span class="payment-icon">🏦</span>
                         </div>
-                    {% else %}
-                        <!-- سبد خرید خالی -->
-                        <div class="empty-cart-box">
-                            <div class="empty-icon">🛒</div>
-                            <h3>{% trans "Your Cart is Empty" %}</h3>
-                            <p>{% trans "Please add some books to your cart before checking out." %}</p>
-                            <a href="{% url 'product:product_list' %}" class="btn-shop">
-                                <i class="fa fa-shopping-cart ml-2"></i> {% trans "Go Shopping" %}
-                            </a>
+                        
+                        <!-- پرداخت اقساطی -->
+                        <div class="payment-option" id="payment-installment-option">
+                            <input type="radio" value="installment" name="payment-method" id="installment">
+                            <div class="payment-content">
+                                <div class="payment-title">{% trans "Installment (3 Months)" %}</div>
+                                <div class="payment-desc">{% trans "30% prepayment + 3 monthly installments" %}</div>
+                            </div>
+                            <span class="payment-icon">📅</span>
                         </div>
+                        
+                        <!-- جزئیات اقساط -->
+                        <div id="installment-details" style="display: none;">
+                            <div class="installment-box">
+                                <div class="installment-row">
+                                    <span class="label">{% trans "Total Amount" %}:</span>
+                                    <span class="value">{{ installment_info.total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                                </div>
+                                <div class="installment-row">
+                                    <span class="label">{% trans "Prepayment" %} (30%):</span>
+                                    <span class="value" style="color: #e67e22;">{{ installment_info.prepayment_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                                </div>
+                                <div class="installment-row">
+                                    <span class="label">{% trans "Remaining" %}:</span>
+                                    <span class="value">{{ installment_info.remaining_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                                </div>
+                                <div class="installment-row highlight" style="border-top: 2px dashed #b8daff; padding-top: 12px;">
+                                    <span class="label">{% trans "Monthly Payment" %} (3 {% trans "months" %}):</span>
+                                    <span class="value">{{ installment_info.monthly_payment|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                                </div>
+                                <input type="hidden" name="installment_plan_id" value="3_months_30_percent">
+                            </div>
+                        </div>
+                        
+                        <!-- دکمه ثبت -->
+                        <button class="btn-submit-order" type="submit">
+                            <i class="fa fa-check ml-2"></i> {% trans "Submit Order" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- خلاصه سفارش -->
+            <div class="col-lg-5">
+                <div class="checkout-card">
+                    <h2><i class="fa fa-shopping-bag"></i>{% trans "Your Order" %}</h2>
+                    
+                    {% for item in cart %}
+                    <div class="order-item">
+                        <div>
+                            <div class="item-title">{{ item.title }}</div>
+                            <div class="item-qty">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }}</div>
+                        </div>
+                        <div class="item-price">
+                            {% widthratio item.quantity 1 item.price as item_total %}
+                            {{ item_total|intcomma:False|translate_number }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="order-total">
+                        <span class="total-label">{% trans "Total" %}:</span>
+                        <span class="total-value">{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                    </div>
+                    
+                    {% if total_weight > 0 %}
+                    <div style="font-size: 12px; color: #999; text-align: left;">
+                        {% trans "Total Weight" %}: {{ total_weight|translate_number }} {% trans "g" %}
+                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
+        {% else %}
+        <div class="checkout-card text-center py-5">
+            <span style="font-size: 60px; display: block; margin-bottom: 15px; opacity: 0.3;">🛒</span>
+            <h3 style="font-weight: 700; color: #1a1a2e;">{% trans "Your Cart is Empty" %}</h3>
+            <p style="color: #777;">{% trans "Please add some books to your cart before checking out." %}</p>
+            <a href="{% url 'product:product_list' %}" class="btn-submit-order" style="display: inline-block; text-align: center; text-decoration: none; padding: 12px 40px; width: auto;">
+                {% trans "Go Shopping" %}
+            </a>
+        </div>
+        {% endif %}
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const onlineRadio = document.getElementById('online');
+    const installmentRadio = document.getElementById('installment');
+    const installmentDetails = document.getElementById('installment-details');
+    const onlineOption = document.getElementById('payment-online-option');
+    const installmentOption = document.getElementById('payment-installment-option');
+    
+    function updatePaymentUI() {
+        if (installmentRadio.checked) {
+            installmentDetails.style.display = 'block';
+            onlineOption.classList.remove('selected');
+            installmentOption.classList.add('selected');
+        } else {
+            installmentDetails.style.display = 'none';
+            onlineOption.classList.add('selected');
+            installmentOption.classList.remove('selected');
+        }
+    }
+    
+    onlineRadio.addEventListener('change', updatePaymentUI);
+    installmentRadio.addEventListener('change', updatePaymentUI);
+    
+    // کلیک روی کل کادر
+    onlineOption.addEventListener('click', function() {
+        onlineRadio.checked = true;
+        updatePaymentUI();
+    });
+    
+    installmentOption.addEventListener('click', function() {
+        installmentRadio.checked = true;
+        updatePaymentUI();
+    });
+});
+</script>
 {% endblock %}

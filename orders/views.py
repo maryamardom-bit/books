@@ -20,12 +20,37 @@ def order_create_view(request):
         messages.warning(request, _('Your cart is empty.'))
         return redirect('product:product_list')
 
+    # محاسبه اقساط
+    total_cart_price = cart.get_total_price()
+    prepayment_percent = 30
+    month_count = 3
+    
+    prepayment_amount = int(total_cart_price * prepayment_percent / 100)
+    remaining_amount = total_cart_price - prepayment_amount
+    monthly_payment = remaining_amount // month_count
+    
+    installment_info = {
+        'total_price': total_cart_price,
+        'prepayment_percent': prepayment_percent,
+        'prepayment_amount': prepayment_amount,
+        'remaining_amount': remaining_amount,
+        'month_count': month_count,
+        'monthly_payment': monthly_payment,
+    }
+    
+    has_installment_products = True  # همه سبد می‌تونه اقساطی باشه
+
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
+        payment_method = request.POST.get('payment-method', 'online')
+        installment_plan_id = request.POST.get('installment_plan_id', '')
 
         if order_form.is_valid():
             order_obj = order_form.save(commit=False)
             order_obj.user = request.user
+            order_obj.payment_method = payment_method
+            if installment_plan_id:
+                order_obj.installment_plan_id = installment_plan_id
             order_obj.save()
 
             total_weight = 0
@@ -92,6 +117,8 @@ def order_create_view(request):
 
     return render(request, 'orders/order_create.html', {
         'form': order_form,
+        'has_installment_products': has_installment_products,
+        'installment_info': installment_info,
     })
 
 
