@@ -1,0 +1,234 @@
+{% load i18n %}
+
+<div style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: inherit;">
+
+    <button type="button" onclick="toggleChatPanel()"
+            style="width: 65px; height: 65px; background: linear-gradient(135deg, #c9a84c, #b8963e); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 25px rgba(201, 168, 76, 0.5); transition: all 0.3s;">
+        <span id="chatIconBtn" style="font-size: 30px;">💬</span>
+        <span style="position: absolute; top: 5px; right: 5px; width: 12px; height: 12px; background: #4cd964; border-radius: 50%; border: 2px solid #fff;"></span>
+    </button>
+
+    <div id="chatPanelBox" 
+         style="display: none; position: absolute; bottom: 80px; right: 0; width: 380px; max-height: 550px; background: #fff; border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid #eee;">
+
+        <div style="background: #1a1a2e; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 24px;">🤖</span>
+                <div>
+                    <div style="color: #fff; font-weight: 700; font-size: 14px;">{% trans 'Support' %}</div>
+                    <div style="color: #4cd964; font-size: 11px;">● {% trans 'Online' %}</div>
+                </div>
+            </div>
+            <button type="button" onclick="toggleChatPanel()" 
+                    style="background: transparent; border: none; color: #fff; font-size: 18px; cursor: pointer;">✕</button>
+        </div>
+
+        <div id="chatMsgArea" style="height: 300px; overflow-y: auto; padding: 15px; background: #faf8f6;">
+            
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <span>🤖</span>
+                <div style="background: #fff; border-radius: 10px; padding: 10px 15px; max-width: 85%;">
+                    <p style="font-size: 13px; color: #555; margin: 0;">
+                        {% trans 'Hello! How can I help?' %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- سوالات اولیه -->
+            <div id="initialQuestions" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0;">
+                <button type="button" onclick="askQuestion('delivery')" class="quick-btn">🚚 {% trans 'Delivery' %}</button>
+                <button type="button" onclick="askQuestion('payment')" class="quick-btn">💳 {% trans 'Payment' %}</button>
+                <button type="button" onclick="askQuestion('order')" class="quick-btn">📦 {% trans 'Order' %}</button>
+                <button type="button" onclick="askQuestion('return')" class="quick-btn">🔄 {% trans 'Return' %}</button>
+            </div>
+        </div>
+
+        <div style="padding: 10px 15px; background: #fff; border-top: 1px solid #eee; display: flex; gap: 8px;">
+            <input type="text" id="chatInputField" placeholder="{% trans 'Type here...' %}"
+                   style="flex: 1; padding: 10px 15px; border: 1px solid #e8e0d8; border-radius: 20px; font-size: 13px; outline: none;"
+                   onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button type="button" onclick="sendChatMessage()"
+                    style="width: 40px; height: 40px; background: #c9a84c; border: none; border-radius: 50%; cursor: pointer; color: #fff; font-size: 16px;">➤</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .quick-btn {
+        background: #fff;
+        border: 1px solid #c9a84c;
+        color: #c9a84c;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .quick-btn:hover {
+        background: #c9a84c;
+        color: #fff;
+    }
+</style>
+
+<script>
+    // داده‌های FAQ از سرور
+    var faqData = {{ faqs_json|safe }};
+    
+    function toggleChatPanel() {
+        var panel = document.getElementById('chatPanelBox');
+        var icon = document.getElementById('chatIconBtn');
+        
+        if (panel.style.display === 'none' || panel.style.display === '') {
+            panel.style.display = 'block';
+            icon.textContent = '✕';
+        } else {
+            panel.style.display = 'none';
+            icon.textContent = '💬';
+        }
+    }
+    
+    // سوالات پیش‌فرض
+    function askQuestion(topic) {
+        var initial = document.getElementById('initialQuestions');
+        if (initial) initial.style.display = 'none';
+        
+        var questions = {
+            'delivery': '{% trans "What is the delivery time?" %}',
+            'payment': '{% trans "What payment methods are available?" %}',
+            'order': '{% trans "How can I track my order?" %}',
+            'return': '{% trans "How can I return an item?" %}'
+        };
+        
+        addUserMsg(questions[topic]);
+        
+        setTimeout(function() {
+            var answer = getAnswerForTopic(topic);
+            addBotMsg(answer);
+            
+            // نمایش سوالات بعدی
+            var followUps = getFollowUpQuestions(topic);
+            if (followUps.length > 0) {
+                showFollowUpQuestions(followUps);
+            }
+        }, 600);
+    }
+    
+    function sendChatMessage() {
+        var input = document.getElementById('chatInputField');
+        var message = input.value.trim();
+        
+        if (!message) return;
+        
+        addUserMsg(message);
+        input.value = '';
+        
+        setTimeout(function() {
+            var lowerMsg = message.toLowerCase();
+            var topic = detectTopic(lowerMsg);
+            
+            if (topic) {
+                addBotMsg(getAnswerForTopic(topic));
+                var followUps = getFollowUpQuestions(topic);
+                if (followUps.length > 0) {
+                    showFollowUpQuestions(followUps);
+                }
+            } else {
+                // جستجو در FAQ
+                var found = false;
+                for (var i = 0; i < faqData.length; i++) {
+                    if (message.includes(faqData[i].question.slice(0, 15))) {
+                        addBotMsg(faqData[i].answer);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    addBotMsg('{% trans "Contact support: 051-37670019" %}');
+                }
+            }
+        }, 600);
+    }
+    
+    function detectTopic(msg) {
+        if (msg.includes('delivery') || msg.includes('shipping') || msg.includes('ارسال') || msg.includes('تحویل')) return 'delivery';
+        if (msg.includes('payment') || msg.includes('pay') || msg.includes('پرداخت')) return 'payment';
+        if (msg.includes('order') || msg.includes('track') || msg.includes('سفارش') || msg.includes('پیگیری')) return 'order';
+        if (msg.includes('return') || msg.includes('refund') || msg.includes('برگشت')) return 'return';
+        if (msg.includes('discount') || msg.includes('code') || msg.includes('تخفیف')) return 'discount';
+        return null;
+    }
+    
+    function getAnswerForTopic(topic) {
+        var answers = {
+            'delivery': '{% trans "3-5 days in Tehran, 5-7 days other cities. Free shipping over 1,000,000 Toman." %}',
+            'payment': '{% trans "Online (SEP), Installment (SnappPay), Wallet balance, Discount codes." %}',
+            'order': '{% trans "Check Dashboard → Order History." %}',
+            'return': '{% trans "Return within 3 days. After approval, refund to wallet." %}',
+            'discount': '{% trans "Use discount codes at checkout. Check dashboard for tiered discounts." %}'
+        };
+        return answers[topic] || '{% trans "Contact support for more info." %}';
+    }
+    
+    function getFollowUpQuestions(topic) {
+        var followUps = {
+            'delivery': [
+                {question: '{% trans "Is shipping free?" %}', topic: 'free_shipping'},
+                {question: '{% trans "How to track my order?" %}', topic: 'order'}
+            ],
+            'payment': [
+                {question: '{% trans "How to use discount code?" %}', topic: 'discount'},
+                {question: '{% trans "Is installment available?" %}', topic: 'installment'}
+            ],
+            'order': [
+                {question: '{% trans "What is the return policy?" %}', topic: 'return'},
+                {question: '{% trans "How to contact support?" %}', topic: 'contact'}
+            ],
+            'return': [
+                {question: '{% trans "How long does refund take?" %}', topic: 'refund_time'},
+                {question: '{% trans "How to contact support?" %}', topic: 'contact'}
+            ],
+        };
+        
+        return followUps[topic] || [];
+    }
+    
+    function showFollowUpQuestions(followUps) {
+        var msgArea = document.getElementById('chatMsgArea');
+        var div = document.createElement('div');
+        div.style.cssText = 'display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 10px 38px;';
+        
+        var html = '';
+        followUps.forEach(function(followUp) {
+            html += '<button type="button" onclick="askFollowUp(\'' + followUp.topic + '\')" class="quick-btn" style="font-size: 11px;">' + followUp.question + '</button>';
+        });
+        
+        div.innerHTML = html;
+        msgArea.appendChild(div);
+        msgArea.scrollTop = msgArea.scrollHeight;
+    }
+    
+    function askFollowUp(topic) {
+        addUserMsg('...');
+        setTimeout(function() {
+            addBotMsg(getAnswerForTopic(topic));
+        }, 500);
+    }
+    
+    function addUserMsg(text) {
+        var msgArea = document.getElementById('chatMsgArea');
+        var div = document.createElement('div');
+        div.style.cssText = 'display: flex; justify-content: flex-end; margin-bottom: 10px;';
+        div.innerHTML = '<div style="background: #c9a84c; color: #fff; border-radius: 10px; padding: 10px 15px; max-width: 85%; font-size: 13px;">' + text + '</div>';
+        msgArea.appendChild(div);
+        msgArea.scrollTop = msgArea.scrollHeight;
+    }
+    
+    function addBotMsg(text) {
+        var msgArea = document.getElementById('chatMsgArea');
+        var div = document.createElement('div');
+        div.style.cssText = 'display: flex; gap: 8px; margin-bottom: 10px;';
+        div.innerHTML = '<span>🤖</span><div style="background: #fff; border-radius: 10px; padding: 10px 15px; max-width: 85%; font-size: 13px; color: #555;">' + text + '</div>';
+        msgArea.appendChild(div);
+        msgArea.scrollTop = msgArea.scrollHeight;
+    }
+</script>

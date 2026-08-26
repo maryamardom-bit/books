@@ -403,3 +403,32 @@ class InstallmentPlan(models.Model):
             'remaining': remaining,
             'monthly': monthly,
         }
+
+
+class FAQ(models.Model):
+    """سوالات متداول برای ربات چت"""
+    
+    question = models.CharField(_('question'), max_length=300)
+    answer = models.TextField(_('answer'))
+    
+    # سوالات بعدی مرتبط
+    related_questions = models.ManyToManyField(
+        'self',
+        blank=True,
+        symmetrical=False,
+        related_name='related_to',
+        verbose_name=_('related questions'),
+        help_text=_('Questions to suggest after this answer'),
+    )
+    
+    order = models.PositiveIntegerField(_('display order'), default=0)
+    is_active = models.BooleanField(_('active'), default=True)
+    datetime_created = models.DateTimeField(_('created'), auto_now_add=True)
+    
+    class Meta:
+        verbose_name = _('FAQ')
+        verbose_name_plural = _('FAQs')
+        ordering = ['order', '-datetime_created']
+    
+    def __str__(self):
+        return self.question

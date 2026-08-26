@@ -4,8 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models as django_models
 from jalali_date.admin import ModelAdminJalaliMixin, TabularInlineJalaliMixin
 from jalali_date.widgets import AdminJalaliDateWidget, AdminSplitJalaliDateTime
+import jdatetime
 
-from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
+from .models import Product, Comment, Package, ProductBlog, InstallmentPlan, FAQ
 
 
 class CommentsInLine(TabularInlineJalaliMixin, admin.TabularInline):
@@ -137,3 +138,30 @@ class InstallmentPlanAdmin(admin.ModelAdmin):
     search_fields = ['product__title']
     list_editable = ['is_active', 'prepayment_percent']
     list_per_page = 20
+
+
+@admin.register(FAQ)
+class FAQAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['question', 'order', 'is_active', 'datetime_created_jalali']
+    list_filter = ['is_active', 'datetime_created']
+    search_fields = ['question', 'answer']
+    list_editable = ['is_active', 'order']
+    list_per_page = 20
+    readonly_fields = ['datetime_created']
+    
+    fieldsets = (
+        (_('Info'), {'fields': ('question', 'answer')}),
+        (_('Related Questions'), {'fields': ('related_questions',)}),
+        (_('Display'), {'fields': ('order', 'is_active')}),
+        (_('Dates'), {'fields': ('datetime_created',), 'classes': ('collapse',)}),
+    )
+    
+    filter_horizontal = ('related_questions',)
+    
+    def datetime_created_jalali(self, obj):
+        """Display Jalali datetime"""
+        if obj.datetime_created:
+            jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.datetime_created)
+            return jalali_date.strftime('%Y/%m/%d %H:%M')
+        return '-'
+    datetime_created_jalali.short_description = _('Created')
