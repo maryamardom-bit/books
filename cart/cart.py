@@ -37,6 +37,7 @@ class Cart:
                 'quantity': 0,
                 'price': str(item.price),
                 'item_type': item_type,
+                'is_package': is_package,  # اضافه کردن is_package
                 'title': item.title,
                 'weight': str(weight),
             }
@@ -66,27 +67,22 @@ class Cart:
         """
         Iterate over the items in the cart and get the products from the database.
         """
-        # کپی از آیتم‌ها برای جلوگیری از تغییر در حین iteration
         cart_items = self.cart.copy()
         
-        # جدا کردن محصولات و پکیج‌ها
         product_ids = []
         package_ids = []
         
         for item_id, item_data in cart_items.items():
-            # بررسی اینکه item_data دیکشنری است
             if isinstance(item_data, dict):
                 if item_data.get('item_type') == 'package':
                     package_ids.append(int(item_id))
                 else:
                     product_ids.append(int(item_id))
         
-        # دریافت محصولات از دیتابیس
         products = {p.id: p for p in Product.objects.filter(id__in=product_ids)}
         packages = {p.id: p for p in Package.objects.filter(id__in=package_ids)}
         
         for item_id, item_data in cart_items.items():
-            # فقط آیتم‌های واقعی (نه discount_code)
             if not isinstance(item_data, dict):
                 continue
             
@@ -97,12 +93,14 @@ class Cart:
                 package = packages.get(item_id_int)
                 if package:
                     item_data['package_obj'] = package
+                    item_data['is_package'] = True
                     item_data['price'] = str(package.price)
                     item_data['total_price'] = package.price * quantity
             else:
                 product = products.get(item_id_int)
                 if product:
                     item_data['product_obj'] = product
+                    item_data['is_package'] = False
                     item_data['price'] = str(product.get_discounted_price())
                     item_data['total_price'] = product.get_discounted_price() * quantity
             
@@ -160,21 +158,30 @@ class Cart:
         return int(total_savings)
     
     def clear(self):
-        # remove cart from session
-        del self.session[settings.CART_SESSION_ID]
-        self.session.modified = True
-        # ریست کردن self.cart در حافظه
+        """
+        Remove all items from cart.
+        """
+        # پاک کردن از session
+        if settings.CART_SESSION_ID in self.session:
+            del self.session[settings.CART_SESSION_ID]
+        
+        # ریست کردن state داخلی
         self.cart = {}
         self.discount_code = None
         self.discount_percent = 0
         self.discount_amount = 0
         
+        # ذخیره session خالی
+        self.session[settings.CART_SESSION_ID] = {}
+        self.session.modified = True
+    
     def is_empty(self):
-        # بررسی کن که cart واقعاً خالی است
+        """
+        Check if cart is empty.
+        """
         if not self.cart:
             return True
         
-        # بررسی کن که فقط آیتم‌های واقعی (دیکشنری) وجود دارند
         item_count = sum(1 for item in self.cart.values() if isinstance(item, dict))
         return item_count == 0
     

@@ -11,7 +11,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory('accounts.factories.UserFactory')
     first_name = factory.Faker('first_name')
     last_name = factory.Faker('last_name')
-    phone_number = factory.Faker('phone_number')
+    phone_number = factory.LazyFunction(lambda: '09123456789')  # شماره ثابت با طول مناسب
     address = factory.Faker('address')
     total_price = factory.Faker('random_int', min=100000, max=1000000)
     total_weight = factory.Faker('random_int', min=100, max=5000)
@@ -26,6 +26,7 @@ class OrderItemFactory(factory.django.DjangoModelFactory):
     
     order = factory.SubFactory(OrderFactory)
     product = factory.SubFactory('products.factories.ProductFactory')
+    package = None  # به صورت پیش‌فرض None
     quantity = factory.Faker('random_int', min=1, max=5)
     price = factory.Faker('random_int', min=50000, max=500000)
 

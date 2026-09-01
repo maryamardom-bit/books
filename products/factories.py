@@ -36,6 +36,8 @@ class PackageFactory(factory.django.DjangoModelFactory):
     stock = factory.Faker('random_int', min=1, max=50)
     original_price = 0
     price = 0
+    manual_price = 0
+    discount_percent = 0
     
     @factory.post_generation
     def products(self, create, extracted, **kwargs):
@@ -49,8 +51,6 @@ class PackageFactory(factory.django.DjangoModelFactory):
             
             # حالا قیمت‌ها را به‌روزرسانی کن
             self._update_prices()
-
-
 class CommentFactory(factory.django.DjangoModelFactory):
     """Factory for Comment model"""
     class Meta:
