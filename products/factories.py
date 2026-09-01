@@ -24,18 +24,18 @@ class ProductFactory(factory.django.DjangoModelFactory):
     weight = factory.Faker('random_int', min=100, max=2000)
     datetime_created = factory.LazyFunction(timezone.now)
 
-
 class PackageFactory(factory.django.DjangoModelFactory):
     """Factory for Package model"""
     class Meta:
         model = Package
-        skip_postgeneration_save = True
     
     title = factory.Sequence(lambda n: f'Package {n}')
     slug = factory.Sequence(lambda n: f'package-{n}')
     description = 'Test package'
     active = True
     stock = factory.Faker('random_int', min=1, max=50)
+    original_price = 0
+    price = 0
     
     @factory.post_generation
     def products(self, create, extracted, **kwargs):
@@ -43,8 +43,12 @@ class PackageFactory(factory.django.DjangoModelFactory):
             return
         
         if extracted:
+            # محصولات را اضافه کن
             for product in extracted:
                 self.products.add(product)
+            
+            # حالا قیمت‌ها را به‌روزرسانی کن
+            self._update_prices()
 
 
 class CommentFactory(factory.django.DjangoModelFactory):

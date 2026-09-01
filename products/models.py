@@ -274,7 +274,46 @@ class Package(models.Model):
             return True
         return False
     
+    def _update_prices(self):
+        """Calculate and update prices based on products"""
+        if self.pk:  # فقط وقتی id داریم
+            self.original_price = self.calculate_original_price()
+            
+            if self.manual_price and self.manual_price > 0:
+                self.price = self.manual_price
+            elif self.discount_percent > 0 and self.original_price > 0:
+                self.price = int(self.original_price * (1 - self.discount_percent / 100))
+            else:
+                self.price = self.original_price
+            
+            self.original_price = int(self.original_price)
+            self.price = int(self.price)
+            
+            # فقط فیلدهای قیمت را به‌روزرسانی کن
+            super().save(update_fields=['original_price', 'price'])
+    
     def save(self, *args, **kwargs):
+        """
+        Save package with price calculation.
+        First save to get pk, then calculate prices based on M2M products.
+        """
+        # اگر force_insert داریم، حذفش کن
+        if kwargs.get('force_insert', False):
+            kwargs.pop('force_insert')
+        
+        # ذخیره اولیه برای گرفتن pk
+        if not self.pk:
+            super().save(*args, **kwargs)
+            # بعد از گرفتن pk، قیمت‌ها را محاسبه کن
+            self._update_prices()
+        else:
+            # اگر pk داریم، فقط ذخیره کن
+            super().save(*args, **kwargs)
+
+
+def _update_prices(self):
+    """Calculate and update prices based on products"""
+    if self.pk:  # فقط وقتی id داریم
         self.original_price = self.calculate_original_price()
         
         if self.manual_price and self.manual_price > 0:
@@ -287,9 +326,9 @@ class Package(models.Model):
         self.original_price = int(self.original_price)
         self.price = int(self.price)
         
-        super().save(*args, **kwargs)
-
-
+        # فقط فیلدهای قیمت را به‌روزرسانی کن
+        super().save(update_fields=['original_price', 'price'])
+    
 @receiver(m2m_changed, sender=Package.products.through)
 def update_package_price_on_product_change(sender, instance, action, **kwargs):
     if action in ['post_add', 'post_remove', 'post_clear']:
