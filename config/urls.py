@@ -16,6 +16,7 @@ urlpatterns = [
     path('order/', include('orders.urls')),
     path('payment/', include('payment.urls')),
     path('rosetta/', include('rosetta.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

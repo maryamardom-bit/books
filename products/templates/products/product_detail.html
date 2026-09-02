@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load persian_translation_tags %}
 {% load humanize %}
+{% load jalali_tags %}
 
 {% block page_title %}{{ product.title }} | {% trans 'Kasra Publishing' %}{% endblock %}
 
@@ -240,7 +241,7 @@
                                             {% if forloop.counter <= comment.stars %}&#11088;{% else %}&#9734;{% endif %}
                                         {% endfor %}
                                     </span>
-                                    <span style="font-size: 11px; color: #999; margin-right: auto;">{{ comment.datetime_created|date:"Y/m/d" }}</span>
+                                    <span style="font-size: 11px; color: #999; margin-right: auto;">{{ comment.datetime_created|jalali_date }}</span>
                                 </div>
                                 <p style="font-size: 14px; color: #555; margin: 0;">{{ comment.body }}</p>
                             </div>

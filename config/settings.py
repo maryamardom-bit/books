@@ -5,6 +5,7 @@ Django settings for config project.
 from pathlib import Path
 from environs import Env
 import os
+from datetime import timedelta
 
 # for environment variables
 env = Env()
@@ -32,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sites',
 
+
     # third party
     'jalali_date',
     'crispy_forms',
@@ -53,6 +55,10 @@ INSTALLED_APPS = [
     'persian_translate.apps.PersianTranslateConfig',
     'orders.apps.OrdersConfig',
     'payment.apps.PaymentConfig',
+    'rest_framework',
+    'drf_yasg',
+    'api',
+    'rest_framework_simplejwt',
 ]
 
 SITE_ID = 1
@@ -206,3 +212,49 @@ CART_SESSION_ID = 'cart'
 SEP_TERMINAL_ID = 'test_terminal_id'  # برای تست
 # SEP Payment Gateway
 # SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': True,
+    'JSON_EDITOR': True,
+    'SUPPORTED_SUBMIT_METHODS': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+}
