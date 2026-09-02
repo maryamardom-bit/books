@@ -3,9 +3,11 @@ from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.db.models import Q, Count, Avg, Value, IntegerField, Sum
+from django.db.models import Q, Count, Avg, Value, IntegerField, Sum, F
 from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
 from .forms import CommentForm
@@ -20,16 +22,17 @@ class ProductListView(generic.ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        queryset = Product.objects.filter(active=True)
+        queryset = Product.objects.with_ratings().filter(active=True)
         
-        # Discount filter
         discount_filter = self.request.GET.get('discount', '')
         if discount_filter == 'true':
-            queryset = Product.objects.get_on_sale_products()
+            queryset = Product.objects.with_ratings().filter(
+                active=True
+            ).filter(
+                Q(special_price__gt=0) | Q(discount_percent__gt=0)
+            )
         
-        # Sorting
         sort = self.request.GET.get('sort', '-datetime_created')
-        
         sort_options = {
             'price': 'price',
             '-price': '-price',
@@ -37,18 +40,16 @@ class ProductListView(generic.ListView):
             'author': 'author',
             'newest': '-datetime_created',
             'oldest': 'datetime_created',
+            'rating': '-avg_rating',
         }
-        
         sort_field = sort_options.get(sort, '-datetime_created')
-        queryset = queryset.order_by(sort_field)
         
-        return queryset
+        return queryset.order_by(sort_field)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
         context['sort'] = self.request.GET.get('sort', '-datetime_created')
-        
         return context
 
 
@@ -57,6 +58,14 @@ class ProductDetailView(generic.DetailView):
     model = Product
     template_name = 'Products/product_detail.html'
     context_object_name = 'product'
+
+    def get_queryset(self):
+        return Product.objects.filter(active=True).prefetch_related(
+            'comments__author',
+            'blogs',
+            'installment_plans',
+            'packages',
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,25 +77,34 @@ class ProductDetailView(generic.DetailView):
         context['savings'] = product.get_savings()
         context['discount_percentage'] = product.get_discount_percent_display()
         
-        # Related products
-        related_products = Product.objects.filter(
-            active=True
-        ).filter(
-            Q(category=product.category) | Q(author=product.author)
-        ).exclude(id=product.id).distinct()[:4]
+        cache_key = f'related_products_{product.pk}'
+        related_products = cache.get(cache_key)
+        
+        if related_products is None:
+            related_products = Product.objects.filter(
+                active=True
+            ).filter(
+                Q(category=product.category) | Q(author=product.author)
+            ).exclude(id=product.id).distinct()[:4]
+            cache.set(cache_key, related_products, 600)
+        
         context['related_products'] = related_products
         
-        # Author books
         if product.author:
-            author_books = Product.objects.filter(
-                active=True,
-                author=product.author
-            ).exclude(id=product.id)[:6]
+            cache_key_author = f'author_books_{product.author}_{product.pk}'
+            author_books = cache.get(cache_key_author)
+            
+            if author_books is None:
+                author_books = Product.objects.filter(
+                    active=True,
+                    author=product.author
+                ).exclude(id=product.id)[:6]
+                cache.set(cache_key_author, author_books, 600)
+            
             context['author_books'] = author_books
         
-        # Product blogs
         context['blogs'] = product.blogs.filter(is_active=True)
-        
+        context['active_comments'] = product.comments.filter(active=True).select_related('author')
         
         return context
 
@@ -95,7 +113,7 @@ class CommentCreateView(generic.View):
     """Submit new comment"""
     
     def post(self, request, product_id):
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(Product, id=product_id, active=True)
         body = request.POST.get('body')
         stars = request.POST.get('stars')
         
@@ -125,16 +143,13 @@ class ProductSearchView(generic.ListView):
         query = self.request.GET.get('q', '').strip()
         
         if query:
-            return Product.objects.filter(
+            return Product.objects.with_ratings().filter(
                 Q(title__icontains=query) |
                 Q(description__icontains=query) |
                 Q(author__icontains=query) |
                 Q(publisher__icontains=query) |
-                Q(isbn__icontains=query) |
-                Q(comments__body__icontains=query)
-            ).filter(active=True).annotate(
-                comments_count=Count('comments', filter=Q(comments__active=True)),
-                avg_stars=Coalesce(Avg('comments__stars'), Value(0), output_field=IntegerField())
+                Q(isbn__icontains=query),
+                active=True
             ).order_by('-datetime_created').distinct()
         
         return Product.objects.none()
@@ -142,7 +157,6 @@ class ProductSearchView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q', '')
-        context['results_count'] = self.get_queryset().count()
         return context
 
 
@@ -164,6 +178,9 @@ class PackageDetailView(generic.DetailView):
     context_object_name = 'package'
     slug_url_kwarg = 'slug'
     
+    def get_queryset(self):
+        return Package.objects.filter(active=True).prefetch_related('products')
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['add_to_cart_form'] = AddToCartProductForm()
@@ -172,10 +189,10 @@ class PackageDetailView(generic.DetailView):
         return context
 
 
+@cache_page(60 * 5)
 def category_list(request):
-    """Display all categories"""
+    """Display all categories with counts"""
     categories = []
-    
     EXCLUDED_CATEGORIES = ['PACKAGES']
     
     icons = {
@@ -193,17 +210,21 @@ def category_list(request):
         'OTHER': '📦',
     }
     
+    category_counts = dict(
+        Product.objects.filter(active=True).values_list('category').annotate(
+            count=Count('id')
+        )
+    )
+    
     for category_code, category_name in Product.Category.choices:
         if category_code in EXCLUDED_CATEGORIES:
             continue
-            
-        product_count = Product.objects.filter(category=category_code, active=True).count()
         
         categories.append({
             'code': category_code,
             'name': category_name,
             'icon': icons.get(category_code, '📚'),
-            'count': product_count,
+            'count': category_counts.get(category_code, 0),
         })
     
     return render(request, 'Products/category_list.html', {
@@ -222,17 +243,16 @@ def product_list_by_category(request, category):
             'error': _('Invalid category'),
         })
     
-    products_list = Product.objects.filter(category=category, active=True)
+    products_list = Product.objects.with_ratings().filter(category=category, active=True)
     
     sort = request.GET.get('sort', '-datetime_created')
-    if sort == 'price':
-        products_list = products_list.order_by('price')
-    elif sort == '-price':
-        products_list = products_list.order_by('-price')
-    elif sort == 'title':
-        products_list = products_list.order_by('title')
-    else:
-        products_list = products_list.order_by('-datetime_created')
+    sort_options = {
+        'price': 'price',
+        '-price': '-price',
+        'title': 'title',
+        'rating': '-avg_rating',
+    }
+    products_list = products_list.order_by(sort_options.get(sort, '-datetime_created'))
     
     paginator = Paginator(products_list, 12)
     page = request.GET.get('page', 1)
@@ -280,7 +300,7 @@ def product_list_by_category(request, category):
 def package_comment(request, slug):
     """Submit comment for package"""
     if request.method == 'POST':
-        package = get_object_or_404(Package, slug=slug)
+        package = get_object_or_404(Package, slug=slug, active=True)
         body = request.POST.get('body')
         stars = request.POST.get('stars')
         
@@ -307,7 +327,7 @@ def package_comment(request, slug):
 
 def author_books_view(request, author_name):
     """Display books by specific author"""
-    books = Product.objects.filter(
+    books = Product.objects.with_ratings().filter(
         author=author_name,
         active=True
     ).order_by('-datetime_created')
@@ -341,13 +361,7 @@ class BestSellersView(generic.ListView):
     paginate_by = 12
     
     def get_queryset(self):
-        return Product.objects.filter(
+        return Product.objects.with_sales_count().filter(
             active=True,
             order_items__order__is_paid=True
-        ).annotate(
-            total_sold=Sum('order_items__quantity')
-        ).order_by('-total_sold')[:20]
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+        ).order_by('-total_sold_calc').distinct()[:20]

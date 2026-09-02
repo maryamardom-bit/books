@@ -23,13 +23,13 @@ environs==15.0.1
 factory_boy==3.3.3
 Faker==40.37.0
 filelock==3.20.3
+gunicorn==26.2.0
 idna==3.14
 inflection==0.5.1
 jalali_core==1.0.0
 jdatetime==5.3.0
 kavenegar==1.1.2
 marshmallow==4.3.0
-mysqlclient==2.2.8
 numpy==2.4.0
 packaging==26.0
 pandas==2.3.3
