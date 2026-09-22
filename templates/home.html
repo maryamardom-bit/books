@@ -5,98 +5,115 @@
 {% block page_title %}انتشارات کسری | کتاب‌فروشی تخصصی معماری{% endblock %}
 
 {% block content %}
-<section style="padding: 50px 0; background: #f8f9fa;">
-    <div class="container">
-        <!-- عنوان -->
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-size: 24px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px;">
-                انتشارات کسری
+<section class="bg-surface">
+    <div class="container grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
+        <div>
+            <p class="eyebrow">{% trans 'Kasra Publishing' %}</p>
+            <h1 class="mb-5 text-4xl font-bold leading-snug text-ink md:text-5xl">
+                کتابخانه تخصصی <span class="text-accent">معماری</span>
             </h1>
-            <p style="font-size: 14px; color: #777;">
-                مرجع تخصصی کتاب‌های معماری و طراحی
+            <p class="mb-8 max-w-lg text-muted">
+                از ناشر بخرید. معماری، داخلی، شهر و منظر — با اصالت نسخه، قیمت ناشر و ارسال سراسری.
             </p>
-            <div style="width: 60px; height: 3px; background: #c9a84c; margin: 12px auto 0; border-radius: 2px;"></div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'product:product_list' %}" class="btn btn--accent btn--lg">{% trans 'Browse catalog' %}</a>
+                <a href="{% url 'product:best_sellers' %}" class="btn btn--light btn--lg">{% trans 'Best Sellers' %}</a>
+            </div>
         </div>
-        
-        <!-- ۶ باکس اصلی -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto;">
-            
-            <!-- تازه‌های نشر -->
-            <a href="{% url 'product:product_list' %}" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#128218;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0;">تازه‌های نشر</h5>
-                <span style="font-size: 12px; color: #999;">جدیدترین کتاب‌ها</span>
-            </a>
-            
-            <!-- دسته‌بندی‌ها -->
-            <a href="{% url 'product:product_category' %}" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#128722;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0;">دسته‌بندی‌ها</h5>
-                <span style="font-size: 12px; color: #999;">مرور بر اساس موضوع</span>
-            </a>
-            
-            <!-- پکیج‌ها -->
-            <a href="{% url 'product:package_list' %}" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#128230;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0;">پکیج‌ها</h5>
-                <span style="font-size: 12px; color: #999;">مجموعه‌های ویژه</span>
-            </a>
-            
-            <!-- تخفیف‌دارها -->
-            <a href="{% url 'product:product_list' %}?discount=true" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#dc3545'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#127991;&#65039;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0; color: #dc3545;">تخفیف‌دارها</h5>
-                <span style="font-size: 12px; color: #999;">بهترین قیمت‌ها</span>
-            </a>
-            
-            <!-- پرفروش‌ترین‌ها -->
-            <a href="{% url 'product:best_sellers' %}" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#128293;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0;">پرفروش‌ترین‌ها</h5>
-                <span style="font-size: 12px; color: #999;">محبوب‌ترین کتاب‌ها</span>
-            </a>
-            
-            <!-- نویسندگان -->
-            <a href="{% url 'product:product_list' %}" 
-               style="background: #fff; border-radius: 12px; padding: 30px 20px; text-align: center; border: 1px solid #eee; text-decoration: none; color: #1a1a2e; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;"
-               onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#eee'">
-                <span style="font-size: 35px;">&#9997;&#65039;</span>
-                <h5 style="font-weight: 700; font-size: 15px; margin: 0;">نویسندگان</h5>
-                <span style="font-size: 12px; color: #999;">کتاب‌ها بر اساس نویسنده</span>
-            </a>
-            
+        <div class="relative mx-auto w-full max-w-sm">
+            <div class="flex aspect-[3/4] items-center justify-center rounded-2xl border border-line bg-paper shadow-lg">
+                <div class="text-center text-faint">
+                    <i class="fas fa-book-open mb-3 text-6xl text-accent/50"></i>
+                    <p class="text-sm">{% trans 'Nationwide publishing house' %}</p>
+                </div>
+            </div>
+            <div class="absolute -top-3 start-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md">
+                <strong class="block text-ink">+۵۰۰ {% trans 'titles' %}</strong>
+            </div>
+            <div class="absolute -bottom-3 end-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md">
+                <strong class="block text-ink">+۱۵۰ {% trans 'authors' %}</strong>
+            </div>
         </div>
     </div>
 </section>
 
-<style>
-    @media (max-width: 768px) {
-        div[style*="grid-template-columns"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        div[style*="grid-template-columns"] {
-            grid-template-columns: 1fr !important;
-        }
-    }
-</style>
+<section class="section">
+    <div class="container">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <div>
+                <p class="eyebrow">{% trans 'Catalog' %}</p>
+                <h2 class="text-2xl">{% trans 'Explore the library' %}</h2>
+            </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="{% url 'product:product_list' %}" class="feature">
+                <span class="feature__icon"><i class="fas fa-book-open"></i></span>
+                <h3 class="feature__title">{% trans 'All books' %}</h3>
+                <p class="feature__desc">{% trans 'Full publisher catalog' %}</p>
+            </a>
+            <a href="{% url 'product:product_category' %}" class="feature">
+                <span class="feature__icon"><i class="fas fa-th-large"></i></span>
+                <h3 class="feature__title">{% trans 'Categories' %}</h3>
+                <p class="feature__desc">{% trans 'By architectural field' %}</p>
+            </a>
+            <a href="{% url 'product:package_list' %}" class="feature">
+                <span class="feature__icon"><i class="fas fa-box-open"></i></span>
+                <h3 class="feature__title">{% trans 'Packages' %}</h3>
+                <p class="feature__desc">{% trans 'Curated bundles' %}</p>
+            </a>
+            <a href="{% url 'product:product_list' %}?discount=true" class="feature">
+                <span class="feature__icon"><i class="fas fa-tags"></i></span>
+                <h3 class="feature__title">{% trans 'Sale' %}</h3>
+                <p class="feature__desc">{% trans 'Publisher discounts' %}</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+{% if latest_books %}
+<section class="section pt-0">
+    <div class="container">
+        <div class="mb-8 flex items-end justify-between gap-4">
+            <div>
+                <p class="eyebrow">{% trans 'New Releases' %}</p>
+                <h2 class="text-2xl">{% trans 'Latest from the publisher' %}</h2>
+            </div>
+            <a href="{% url 'product:product_list' %}" class="text-sm font-bold text-accent-strong">{% trans 'View all' %}</a>
+        </div>
+        <div class="book-grid">
+            {% for product in latest_books %}
+                {% include "includes/book_card.html" with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section section--surface">
+    <div class="container">
+        <div class="trust-bar">
+            <div class="trust-bar__item">
+                <i class="fas fa-truck-fast text-accent"></i>
+                <div>
+                    <strong class="block text-ink">{% trans 'Fast Delivery' %}</strong>
+                    <span class="text-xs text-muted">{% trans 'Nationwide priority post' %}</span>
+                </div>
+            </div>
+            <div class="trust-bar__item">
+                <i class="fas fa-lock text-accent"></i>
+                <div>
+                    <strong class="block text-ink">{% trans 'Secure Payment' %}</strong>
+                    <span class="text-xs text-muted">{% trans 'Trusted gateways' %}</span>
+                </div>
+            </div>
+            <div class="trust-bar__item">
+                <i class="fas fa-rotate-left text-accent"></i>
+                <div>
+                    <strong class="block text-ink">{% trans 'Easy Returns' %}</strong>
+                    <span class="text-xs text-muted">{% trans '3-day return policy' %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

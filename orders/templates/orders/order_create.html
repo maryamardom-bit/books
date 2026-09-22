@@ -9,396 +9,146 @@
 {% trans "Checkout" %} | {% trans "Kasra Architecture Bookstore" %}
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    .checkout-section {
-        padding: 40px 0 60px;
-        background: #f8f9fa;
-        min-height: 80vh;
-    }
-    
-    .checkout-card {
-        background: #fff;
-        border-radius: 16px;
-        padding: 30px;
-        border: 1px solid #eee;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        height: 100%;
-    }
-    
-    .checkout-card h2 {
-        font-size: 20px;
-        font-weight: 700;
-        color: #1a1a2e;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #c9a84c;
-    }
-    
-    .checkout-card h2 i {
-        color: #c9a84c;
-        margin-left: 8px;
-    }
-    
-    .form-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: #555;
-        margin-bottom: 5px;
-    }
-    
-    .form-control {
-        border: 1px solid #e8e0d8;
-        border-radius: 10px;
-        padding: 12px 15px;
-        font-size: 14px;
-        transition: all 0.3s;
-        background: #fff;
-    }
-    
-    .form-control:focus {
-        border-color: #c9a84c;
-        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
-        outline: none;
-    }
-    
-    .payment-option {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 15px 20px;
-        background: #faf8f6;
-        border-radius: 12px;
-        border: 2px solid transparent;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-bottom: 10px;
-    }
-    
-    .payment-option:hover {
-        border-color: #c9a84c;
-        background: #fff;
-    }
-    
-    .payment-option.selected {
-        border-color: #c9a84c;
-        background: #fff;
-        box-shadow: 0 2px 10px rgba(201, 168, 76, 0.15);
-    }
-    
-    .payment-option input[type="radio"] {
-        width: 18px;
-        height: 18px;
-        accent-color: #c9a84c;
-        cursor: pointer;
-        flex-shrink: 0;
-    }
-    
-    .payment-option .payment-content {
-        flex: 1;
-    }
-    
-    .payment-option .payment-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-    
-    .payment-option .payment-desc {
-        font-size: 12px;
-        color: #999;
-        margin-top: 2px;
-    }
-    
-    .payment-option .payment-icon {
-        font-size: 28px;
-    }
-    
-    .btn-submit-order {
-        width: 100%;
-        background: linear-gradient(135deg, #c9a84c, #b8963e);
-        color: #fff;
-        border: none;
-        padding: 15px;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
-    }
-    
-    .btn-submit-order:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
-    }
-    
-    .installment-box {
-        background: #f0f7ff;
-        border: 1px solid #b8daff;
-        border-radius: 12px;
-        padding: 20px;
-        margin-top: 15px;
-    }
-    
-    .installment-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        font-size: 13px;
-    }
-    
-    .installment-row .label {
-        color: #555;
-    }
-    
-    .installment-row .value {
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-    
-    .installment-row.highlight .value {
-        color: #c9a84c;
-        font-size: 16px;
-    }
-    
-    .order-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid #f0ece8;
-    }
-    
-    .order-item:last-child {
-        border-bottom: none;
-    }
-    
-    .order-item .item-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1a1a2e;
-    }
-    
-    .order-item .item-qty {
-        font-size: 12px;
-        color: #999;
-    }
-    
-    .order-item .item-price {
-        font-size: 14px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-    
-    .order-total {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-        border-top: 2px solid #c9a84c;
-        margin-top: 10px;
-    }
-    
-    .order-total .total-label {
-        font-size: 15px;
-        font-weight: 700;
-        color: #1a1a2e;
-    }
-    
-    .order-total .total-value {
-        font-size: 20px;
-        font-weight: 700;
-        color: #c9a84c;
-    }
-    
-    .breadcrumb-arch {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0;
-        margin-bottom: 25px;
-        list-style: none;
-        background: #fff;
-        padding: 10px 20px;
-        border-radius: 8px;
-        border: 1px solid #eee;
-    }
-    
-    .breadcrumb-arch .breadcrumb-item {
-        display: flex;
-        align-items: center;
-        font-size: 13px;
-        color: #777;
-    }
-    
-    .breadcrumb-arch .breadcrumb-item:not(:last-child)::after {
-        content: "›";
-        color: #c9a84c;
-        padding: 0 10px;
-        font-size: 16px;
-    }
-    
-    .breadcrumb-arch .breadcrumb-item a {
-        color: #777;
-        text-decoration: none;
-    }
-    
-    .breadcrumb-arch .breadcrumb-item a:hover {
-        color: #c9a84c;
-    }
-    
-    .breadcrumb-arch .breadcrumb-item.active {
-        color: #c9a84c;
-        font-weight: 600;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<section class="checkout-section">
+<section class="section">
     <div class="container">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb-arch">
-                <li class="breadcrumb-item">
-                    <a href="{% url 'page:home' %}"><i class="fa fa-home ml-1"></i>{% trans "Home" %}</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{% url 'cart:cart_detail' %}">{% trans "Cart" %}</a>
-                </li>
-                <li class="breadcrumb-item active">{% trans "Checkout" %}</li>
-            </ol>
-        </nav>
-        
+        <div class="page-head" style="padding-top: 0;">
+            <nav class="crumb">
+                <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
+                <span class="sep">/</span>
+                <a href="{% url 'cart:cart_detail' %}">{% trans "Cart" %}</a>
+                <span class="sep">/</span>
+                <span>{% trans "Checkout" %}</span>
+            </nav>
+            <h1 class="page-head__title">{% trans "Checkout" %}</h1>
+        </div>
+
         {% if cart %}
-        <div class="row g-4">
-            <!-- فرم اطلاعات -->
-            <div class="col-lg-7">
-                <div class="checkout-card">
-                    <h2><i class="fa fa-user"></i>{% trans "Order Details" %}</h2>
-                    
+        <div class="grid gap-6 lg:grid-cols-12">
+            <div class="lg:col-span-7">
+                <div class="content-card">
+                    <h2 class="h-section">{% trans "Order Details" %}</h2>
+
                     <form action="" method="post">
                         {% csrf_token %}
-                        
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">{% trans "First Name" %} *</label>
-                                <input type="text" name="{{ form.first_name.name }}" class="form-control" value="{{ form.first_name.value|default:'' }}" required>
+
+                        <div class="mb-3 grid gap-3 md:grid-cols-2">
+                            <div>
+                                <div class="field">
+                                    <label>{% trans "First Name" %} *</label>
+                                    <input type="text" name="{{ form.first_name.name }}" class="input" value="{{ form.first_name.value|default:'' }}" required>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">{% trans "Last Name" %} *</label>
-                                <input type="text" name="{{ form.last_name.name }}" class="form-control" value="{{ form.last_name.value|default:'' }}" required>
+                            <div>
+                                <div class="field">
+                                    <label>{% trans "Last Name" %} *</label>
+                                    <input type="text" name="{{ form.last_name.name }}" class="input" value="{{ form.last_name.value|default:'' }}" required>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">{% trans "Phone Number" %} *</label>
-                            <input type="text" name="{{ form.phone_number.name }}" class="form-control" value="{{ form.phone_number.value|default:'' }}" required>
+
+                        <div class="field">
+                            <label>{% trans "Phone Number" %} *</label>
+                            <input type="text" name="{{ form.phone_number.name }}" class="input" value="{{ form.phone_number.value|default:'' }}" required>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">{% trans "Address" %}</label>
-                            <textarea name="{{ form.address.name }}" class="form-control" rows="3">{{ form.address.value|default:'' }}</textarea>
+
+                        <div class="field">
+                            <label>{% trans "Address" %}</label>
+                            <textarea name="{{ form.address.name }}" class="textarea" rows="3">{{ form.address.value|default:'' }}</textarea>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label class="form-label">{% trans "Order Notes" %}</label>
-                            <textarea name="{{ form.order_notes.name }}" class="form-control" rows="2" placeholder="{% trans 'Optional' %}">{{ form.order_notes.value|default:'' }}</textarea>
+
+                        <div class="field">
+                            <label>{% trans "Order Notes" %}</label>
+                            <textarea name="{{ form.order_notes.name }}" class="textarea" rows="2" placeholder="{% trans 'Optional' %}">{{ form.order_notes.value|default:'' }}</textarea>
                         </div>
-                        
-                        <!-- روش پرداخت -->
-                        <h2><i class="fa fa-credit-card"></i>{% trans "Payment Method" %}</h2>
-                        
-                        <!-- پرداخت آنلاین -->
-                        <div class="payment-option selected" id="payment-online-option">
+
+                        <h2 class="h-section" style="font-size: 19px;"><i class="fas fa-credit-card" style="color: var(--accent);"></i> {% trans "Payment Method" %}</h2>
+
+                        <div class="payment-option is-selected" id="payment-online-option">
                             <input type="radio" value="online" name="payment-method" id="online" checked>
-                            <div class="payment-content">
-                                <div class="payment-title">{% trans "Online Payment" %}</div>
-                                <div class="payment-desc">{% trans "Pay securely via SEP gateway" %}</div>
+                            <div class="payment-option__content">
+                                <div class="payment-option__title">{% trans "Online Payment" %}</div>
+                                <div class="payment-option__desc">{% trans "Pay securely via SEP gateway" %}</div>
                             </div>
-                            <span class="payment-icon">🏦</span>
+                            <span class="payment-option__icon"><i class="fas fa-building-columns"></i></span>
                         </div>
-                        
-                        <!-- پرداخت اقساطی -->
+
                         <div class="payment-option" id="payment-installment-option">
                             <input type="radio" value="installment" name="payment-method" id="installment">
-                            <div class="payment-content">
-                                <div class="payment-title">{% trans "Installment (3 Months)" %}</div>
-                                <div class="payment-desc">{% trans "30% prepayment + 3 monthly installments" %}</div>
+                            <div class="payment-option__content">
+                                <div class="payment-option__title">{% trans "Installment (3 Months)" %}</div>
+                                <div class="payment-option__desc">{% trans "30% prepayment + 3 monthly installments" %}</div>
                             </div>
-                            <span class="payment-icon">📅</span>
+                            <span class="payment-option__icon"><i class="fas fa-calendar-alt"></i></span>
                         </div>
-                        
-                        <!-- جزئیات اقساط -->
+
                         <div id="installment-details" style="display: none;">
                             <div class="installment-box">
                                 <div class="installment-row">
-                                    <span class="label">{% trans "Total Amount" %}:</span>
+                                    <span class="label">{% trans "Total Amount" %}</span>
                                     <span class="value">{{ installment_info.total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
                                 </div>
                                 <div class="installment-row">
-                                    <span class="label">{% trans "Prepayment" %} (30%):</span>
-                                    <span class="value" style="color: #e67e22;">{{ installment_info.prepayment_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                                    <span class="label">{% trans "Prepayment" %} (30%)</span>
+                                    <span class="value" style="color: var(--warning);">{{ installment_info.prepayment_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
                                 </div>
                                 <div class="installment-row">
-                                    <span class="label">{% trans "Remaining" %}:</span>
+                                    <span class="label">{% trans "Remaining" %}</span>
                                     <span class="value">{{ installment_info.remaining_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
                                 </div>
-                                <div class="installment-row highlight" style="border-top: 2px dashed #b8daff; padding-top: 12px;">
-                                    <span class="label">{% trans "Monthly Payment" %} (3 {% trans "months" %}):</span>
+                                <div class="installment-row installment-row--total">
+                                    <span class="label">{% trans "Monthly Payment" %} (3 {% trans "months" %})</span>
                                     <span class="value">{{ installment_info.monthly_payment|intcomma:False|translate_number }} {% trans "Toman" %}</span>
                                 </div>
                                 <input type="hidden" name="installment_plan_id" value="3_months_30_percent">
                             </div>
                         </div>
-                        
-                        <!-- دکمه ثبت -->
-                        <button class="btn-submit-order" type="submit">
-                            <i class="fa fa-check ml-2"></i> {% trans "Submit Order" %}
+
+                        <button class="btn btn--accent btn--lg btn--block" style="margin-top: 22px;" type="submit">
+                            <i class="fas fa-check"></i> {% trans "Submit Order" %}
                         </button>
                     </form>
                 </div>
             </div>
-            
-            <!-- خلاصه سفارش -->
-            <div class="col-lg-5">
-                <div class="checkout-card">
-                    <h2><i class="fa fa-shopping-bag"></i>{% trans "Your Order" %}</h2>
-                    
+
+            <!-- Order summary -->
+            <div class="lg:col-span-5">
+                <div class="summary">
+                    <h5 class="summary__title"><i class="fas fa-shopping-bag"></i> {% trans "Your Order" %}</h5>
+
                     {% for item in cart %}
                     <div class="order-item">
                         <div>
-                            <div class="item-title">{{ item.title }}</div>
-                            <div class="item-qty">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }}</div>
+                            <div class="order-item__title">{{ item.title }}</div>
+                            <div class="order-item__qty">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }} {% trans 'Toman' %}</div>
                         </div>
-                        <div class="item-price">
+                        <div class="order-item__price">
                             {% widthratio item.quantity 1 item.price as item_total %}
                             {{ item_total|intcomma:False|translate_number }}
                         </div>
                     </div>
                     {% endfor %}
-                    
-                    <div class="order-total">
-                        <span class="total-label">{% trans "Total" %}:</span>
-                        <span class="total-value">{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+
+                    <div class="summary__row summary__row--total">
+                        <span>{% trans "Total" %}</span>
+                        <span class="summary__value">{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
                     </div>
-                    
+
                     {% if total_weight > 0 %}
-                    <div style="font-size: 12px; color: #999; text-align: left;">
-                        {% trans "Total Weight" %}: {{ total_weight|translate_number }} {% trans "g" %}
-                    </div>
+                    <p class="text-faint" style="font-size: 12px; text-align: start; margin: 8px 0 0;">
+                        <i class="fas fa-weight-hanging"></i> {% trans "Total Weight" %}: {{ total_weight|translate_number }} {% trans "g" %}
+                    </p>
                     {% endif %}
                 </div>
             </div>
         </div>
         {% else %}
-        <div class="checkout-card text-center py-5">
-            <span style="font-size: 60px; display: block; margin-bottom: 15px; opacity: 0.3;">🛒</span>
-            <h3 style="font-weight: 700; color: #1a1a2e;">{% trans "Your Cart is Empty" %}</h3>
-            <p style="color: #777;">{% trans "Please add some books to your cart before checking out." %}</p>
-            <a href="{% url 'product:product_list' %}" class="btn-submit-order" style="display: inline-block; text-align: center; text-decoration: none; padding: 12px 40px; width: auto;">
-                {% trans "Go Shopping" %}
+        <div class="empty-state">
+            <span class="empty-state__icon"><i class="fas fa-shopping-bag"></i></span>
+            <h3 class="empty-state__title">{% trans "Your Cart is Empty" %}</h3>
+            <p class="empty-state__text">{% trans "Please add some books to your cart before checking out." %}</p>
+            <a href="{% url 'product:product_list' %}" class="btn btn--accent">
+                <i class="fas fa-book-open"></i> {% trans "Go Shopping" %}
             </a>
         </div>
         {% endif %}
@@ -414,28 +164,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const installmentDetails = document.getElementById('installment-details');
     const onlineOption = document.getElementById('payment-online-option');
     const installmentOption = document.getElementById('payment-installment-option');
-    
+
     function updatePaymentUI() {
         if (installmentRadio.checked) {
             installmentDetails.style.display = 'block';
-            onlineOption.classList.remove('selected');
-            installmentOption.classList.add('selected');
+            onlineOption.classList.remove('is-selected');
+            installmentOption.classList.add('is-selected');
         } else {
             installmentDetails.style.display = 'none';
-            onlineOption.classList.add('selected');
-            installmentOption.classList.remove('selected');
+            onlineOption.classList.add('is-selected');
+            installmentOption.classList.remove('is-selected');
         }
     }
-    
+
     onlineRadio.addEventListener('change', updatePaymentUI);
     installmentRadio.addEventListener('change', updatePaymentUI);
-    
-    // کلیک روی کل کادر
+
     onlineOption.addEventListener('click', function() {
         onlineRadio.checked = true;
         updatePaymentUI();
     });
-    
+
     installmentOption.addEventListener('click', function() {
         installmentRadio.checked = true;
         updatePaymentUI();

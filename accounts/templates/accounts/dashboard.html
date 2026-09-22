@@ -8,118 +8,112 @@
 {% block page_title %}{% trans 'Dashboard' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section style="padding: 40px 0; background: #f8f9fa;">
+<section class="section">
     <div class="container">
-        <h1 style="font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 25px;">
-            {% trans 'User Dashboard' %}
-        </h1>
-        
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div style="background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #c9a84c, #b8963e); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 30px; margin: 0 auto 10px;">
-                            {{ user.username|first|upper }}
-                        </div>
-                        <h5 style="font-weight: 700; color: #1a1a2e;">{{ user.get_full_name|default:user.username }}</h5>
-                        <p style="font-size: 13px; color: #777;">{{ user.email }}</p>
+        <div class="page-head" style="padding-top: 0;">
+            <span class="eyebrow"><i class="fas fa-user-circle"></i></span>
+            <h1 class="page-head__title">{% trans 'User Dashboard' %}</h1>
+        </div>
+        {% include "includes/account_nav.html" %}
+
+        <div class="dash-grid">
+            <!-- Profile column -->
+            <div>
+                <div class="dash-card">
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <span class="avatar" style="width: 72px; height: 72px; font-size: 28px;">{{ user.username|first|upper }}</span>
+                        <h5 style="margin: 10px 0 2px;">{{ user.get_full_name|default:user.username }}</h5>
+                        <p style="font-size: 13px; color: var(--muted); margin: 0;">{{ user.email }}</p>
                     </div>
-                    
-                    <div style="border-top: 1px solid #f0ece8; padding-top: 15px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="font-size: 13px; color: #777;">{% trans 'Wallet Balance' %}:</span>
-                            <span style="font-size: 14px; font-weight: 700; color: #28a745;">{{ user.wallet_balance|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
+
+                    <div style="border-top: 1px solid var(--line-2); padding-top: 12px;">
+                        <div class="dash-row">
+                            <span class="key">{% trans 'Wallet Balance' %}</span>
+                            <span class="val" style="color: var(--success);">{{ user.wallet_balance|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
                         </div>
-                        
                         {% if user.phone_number %}
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span style="font-size: 13px; color: #777;">{% trans 'Phone' %}:</span>
-                            <span style="font-size: 13px; font-weight: 600;">{{ user.phone_number }}</span>
+                        <div class="dash-row">
+                            <span class="key">{% trans 'Phone' %}</span>
+                            <span class="val">{{ user.phone_number }}</span>
                         </div>
                         {% endif %}
-                        
                         {% if user.birth_date %}
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                            <span style="font-size: 13px; color: #777;">{% trans 'Birth Date' %}:</span>
-                            <span style="font-size: 13px; font-weight: 600;">{{ user.birth_date|jalali_text }}</span>
+                        <div class="dash-row">
+                            <span class="key">{% trans 'Birth Date' %}</span>
+                            <span class="val">{{ user.birth_date|jalali_text }}</span>
                         </div>
                         {% endif %}
-                        
-                        <a href="{% url 'accounts:profile_edit' %}" 
-                           style="display: block; text-align: center; background: #faf8f6; color: #555; padding: 10px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; border: 1px solid #e8e0d8;">
-                            {% trans 'Edit Profile' %}
+                        <a href="{% url 'accounts:profile_edit' %}" class="btn btn--ghost btn--block btn--sm" style="margin-top: 12px;">
+                            <i class="fas fa-sliders-h"></i> {% trans 'Edit Profile' %}
                         </a>
                     </div>
                 </div>
-                
-                <!-- تخفیف پلکانی -->
-                <div style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #eee; margin-top: 15px;">
-                    <h6 style="font-weight: 700; color: #1a1a2e; margin-bottom: 10px;">{% trans 'Your Tiered Discount' %}</h6>
-                    
-                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                        <div style="flex: 1; text-align: center; padding: 8px; border-radius: 6px; {% if tiered.current_tier >= 1 %}background: #c9a84c; color: #fff;{% else %}background: #faf8f6; color: #999;{% endif %}">
-                            <div style="font-size: 14px; font-weight: 700;">%10</div>
-                            <div style="font-size: 10px;">{% trans 'First Purchase' %}</div>
+
+                <div class="dash-card">
+                    <h6 class="dash-card__title">{% trans 'Your Tiered Discount' %}</h6>
+                    <div class="tier-track">
+                        <div class="tier {% if tiered.current_tier >= 1 %}is-active{% endif %}">
+                            <div class="tier__pct">٪۱۰</div>
+                            <div class="tier__label">{% trans 'First Purchase' %}</div>
                         </div>
-                        <div style="flex: 1; text-align: center; padding: 8px; border-radius: 6px; {% if tiered.current_tier >= 2 %}background: #c9a84c; color: #fff;{% else %}background: #faf8f6; color: #999;{% endif %}">
-                            <div style="font-size: 14px; font-weight: 700;">%20</div>
-                            <div style="font-size: 10px;">{% trans 'Second Purchase' %}</div>
+                        <div class="tier {% if tiered.current_tier >= 2 %}is-active{% endif %}">
+                            <div class="tier__pct">٪۲۰</div>
+                            <div class="tier__label">{% trans 'Second Purchase' %}</div>
                         </div>
-                        <div style="flex: 1; text-align: center; padding: 8px; border-radius: 6px; {% if tiered.current_tier >= 3 %}background: #c9a84c; color: #fff;{% else %}background: #faf8f6; color: #999;{% endif %}">
-                            <div style="font-size: 14px; font-weight: 700;">%50</div>
-                            <div style="font-size: 10px;">{% trans 'Third Purchase' %}</div>
+                        <div class="tier {% if tiered.current_tier >= 3 %}is-active{% endif %}">
+                            <div class="tier__pct">٪۵۰</div>
+                            <div class="tier__label">{% trans 'Third Purchase' %}</div>
                         </div>
                     </div>
-                    
-                    <p style="font-size: 12px; color: #777; margin: 0; text-align: center;">
+                    <p style="font-size: 12px; color: var(--muted); margin: 0; text-align: center;">
                         {% if tier_percent > 0 %}
-                            {% trans 'Current discount' %}: <strong style="color: #c9a84c;">%{{ tier_percent }}</strong>
+                            {% trans 'Current discount' %}: <strong style="color: var(--accent-strong);">%{{ tier_percent }}</strong>
                         {% else %}
                             {% trans 'Get 10% discount on your first purchase' %}
                         {% endif %}
                     </p>
                 </div>
             </div>
-            
-            <!-- سفارشات -->
-            <div class="col-lg-8">
-                <div style="background: #fff; border-radius: 12px; padding: 25px; border: 1px solid #eee;">
-                    <h5 style="font-weight: 700; color: #1a1a2e; margin-bottom: 20px;">{% trans 'Recent Orders' %}</h5>
-                    
+
+            <!-- Orders column -->
+            <div>
+                <div class="dash-card">
+                    <h5 class="dash-card__title" style="font-size: 16px;">{% trans 'Recent Orders' %}</h5>
+
                     {% if orders %}
                     {% for order in orders %}
-                    <div style="border: 1px solid #f0ece8; border-radius: 10px; margin-bottom: 15px; overflow: hidden;">
-                        <div style="padding: 12px 20px; background: #faf8f6;">
-                            <span style="font-weight: 700;">{% trans 'Order' %} {{ order.id }}</span>
-                            <span style="font-size: 12px; color: #999; margin-right: 10px;">{{ order.datetime_created|to_jalali:'%Y/%m/%d' }}</span>
+                    <div class="order-card">
+                        <div class="order-card__head">
+                            <div class="flex-center" style="gap: 12px; flex-wrap: wrap;">
+                                <span class="order-card__id">{% trans 'Order' %} {{ order.id }}</span>
+                                <span class="order-card__date">{{ order.datetime_created|to_jalali:'%Y/%m/%d' }}</span>
+                            </div>
+                            <div class="flex-center" style="gap: 12px;">
+                                <span style="font-weight: 700; color: var(--ink);">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
+                                {% if order.is_paid %}
+                                <span class="badge badge--success">{% trans 'Paid' %}</span>
+                                {% else %}
+                                <span class="badge badge--sale">{% trans 'Pending' %}</span>
+                                {% endif %}
+                            </div>
                         </div>
-                        
-                        <div style="padding: 15px 20px;">
+                        <div class="order-card__body">
                             {% for item in order.items.all %}
-                            <div style="display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px;">
-                                <span>{{ item.get_title }}</span>
-                                <span>{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }}</span>
+                            <div class="order-card__row">
+                                <span style="font-size: 13px;">{{ item.get_title }}</span>
+                                <span class="text-muted" style="font-size: 13px;">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }}</span>
                             </div>
                             {% endfor %}
-                        </div>
-                        
-                        <div style="padding: 10px 20px; border-top: 1px solid #f0ece8; display: flex; justify-content: space-between;">
-                            <span style="font-weight: 700;">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                            {% if order.is_paid %}
-                            <span style="color: #28a745;">{% trans 'Paid' %}</span>
-                            {% else %}
-                            <span style="color: #dc3545;">{% trans 'Pending' %}</span>
-                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                     {% else %}
-                    <p style="text-align: center; color: #777;">{% trans 'No orders yet.' %}</p>
+                    <p class="text-muted" style="text-align: center; padding: 20px 0;">{% trans 'No orders yet.' %}</p>
                     {% endif %}
-                    
-                    <div style="text-align: center; margin-top: 15px;">
-                        <a href="{% url 'accounts:order_history' %}" style="font-size: 13px; color: #c9a84c; text-decoration: none; font-weight: 600;">
-                            {% trans 'View All Orders' %}
+
+                    <div style="text-align: center; margin-top: 8px;">
+                        <a href="{% url 'accounts:order_history' %}" style="font-size: 13px; color: var(--accent-strong); font-weight: 700;">
+                            {% trans 'View All Orders' %} <i class="fas fa-arrow-left"></i>
                         </a>
                     </div>
                 </div>
@@ -127,4 +121,4 @@
         </div>
     </div>
 </section>
-{% endblock %}docker-compose restart web
+{% endblock %}

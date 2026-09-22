@@ -1,132 +1,125 @@
 {% extends '_base.html' %}
 {% load static %}
 {% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
 
 {% block page_title %}{{ package.title }} | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section style="padding: 40px 0;">
+<section class="section">
     <div class="container">
-        <!-- breadcrumb -->
-        <nav style="font-size: 13px; color: #777; margin-bottom: 25px;">
-            <a href="{% url 'page:home' %}" style="color: #777; text-decoration: none;">خانه</a>
-            <span style="margin: 0 8px;">›</span>
-            <a href="{% url 'product:package_list' %}" style="color: #777; text-decoration: none;">پکیج‌ها</a>
-            <span style="margin: 0 8px;">›</span>
-            <span style="color: #1a1a2e; font-weight: 600;">{{ package.title }}</span>
+        <nav class="crumb">
+            <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+            <span class="sep">/</span>
+            <a href="{% url 'product:package_list' %}">{% trans 'Packages' %}</a>
+            <span class="sep">/</span>
+            <span>{{ package.title }}</span>
         </nav>
-        
-        <div class="row g-4">
-            <!-- تصویر -->
-            <div class="col-lg-5">
-                <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+
+        <div class="grid gap-6 lg:grid-cols-12">
+            <div class="lg:col-span-5">
+                <div class="content-card pdp-media">
                     {% if package.image %}
-                    <img src="{{ package.image.url }}" alt="{{ package.title }}" style="width: 100%; height: 350px; object-fit: cover;">
+                    <img src="{{ package.image.url }}" alt="{{ package.title }}" style="width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block;">
                     {% else %}
-                    <div style="height: 350px; display: flex; align-items: center; justify-content: center; background: #f5f0eb;">
-                        <span style="font-size: 80px;">📦</span>
+                    <div style="aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center; background: var(--surface);">
+                        <i class="fas fa-box-open" style="font-size: 80px; color: var(--faint); opacity: 0.5;"></i>
                     </div>
                     {% endif %}
                 </div>
             </div>
-            
-            <!-- اطلاعات -->
-            <div class="col-lg-7">
-                <h1 style="font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 10px;">
-                    {{ package.title }}
-                </h1>
-                
-                <div style="margin-bottom: 15px;">
-                    <span style="background: #c9a84c; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600;">
-                        📚 {{ package.get_products_count }} کتاب
-                    </span>
-                    {% if total_weight %}
-                    <span style="background: #f5f0eb; color: #555; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 8px;">
-                        ⚖️ {{ total_weight }} گرم
-                    </span>
+
+            <!-- Info -->
+            <div class="lg:col-span-7">
+                <div class="content-card" style="height: 100%;">
+                    <h1 class="page-head__title">{{ package.title }}</h1>
+
+                    <div class="flex-center" style="flex-wrap: wrap; margin-bottom: 20px;">
+                        <span class="tag"><i class="fas fa-book-open"></i> {{ package.get_products_count }} {% trans 'books' %}</span>
+                        {% if total_weight %}
+                        <span class="tag"><i class="fas fa-weight-hanging"></i> {{ total_weight|translate_number }} {% trans 'g' %}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="content-card" style="background: var(--surface); border-color: var(--line-2); margin-bottom: 20px;">
+                        {% if package.discount_percent > 0 %}
+                        <div class="flex-center" style="gap: 10px; margin-bottom: 6px; flex-wrap: wrap;">
+                            <span class="price--old" style="font-size: 15px;">{{ package.original_price|floatformat:0|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
+                            <span class="badge badge--sale">%{{ package.get_discount_percent_display }}-</span>
+                        </div>
+                        <div class="price price--sale" style="font-size: 28px;">
+                            {{ package.price|floatformat:0|intcomma:False|translate_number }}
+                            <span class="unit">{% trans 'Toman' %}</span>
+                        </div>
+                        <span class="text-success" style="font-size: 13px; font-weight: 700; display: block; margin-top: 4px;">
+                            <i class="fas fa-piggy-bank"></i> {% trans 'You save' %}: {{ package.calculate_savings|floatformat:0|intcomma:False|translate_number }} {% trans 'Toman' %}
+                        </span>
+                        {% else %}
+                        <div class="price" style="font-size: 28px;">
+                            {{ package.price|floatformat:0|intcomma:False|translate_number }}
+                            <span class="unit">{% trans 'Toman' %}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        {% if package.is_in_stock %}
+                        <span class="chip chip--success"><span class="dot"></span> {% trans 'In stock' %} ({{ package.stock|translate_number }})</span>
+                        {% else %}
+                        <span class="chip chip--danger"><span class="dot"></span> {% trans 'Out of stock' %}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if package.is_in_stock %}
+                    <form action="{% url 'cart:cart_add_package' package.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn--accent btn--lg">
+                            <i class="fas fa-plus"></i> {% trans 'Add to Cart' %}
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    {% if package.description %}
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line-2);">
+                        <h3 style="margin-bottom: 10px;">{% trans 'Description' %}</h3>
+                        <div class="panel__body--prose">{{ package.description|safe }}</div>
+                    </div>
                     {% endif %}
                 </div>
-                
-                <!-- قیمت -->
-                <div style="background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
-                    {% if package.discount_percent > 0 %}
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                        <span style="text-decoration: line-through; color: #999; font-size: 16px;">
-                            {{ package.original_price|floatformat:0 }} تومان
-                        </span>
-                        <span style="background: #dc3545; color: #fff; padding: 3px 12px; border-radius: 15px; font-size: 12px; font-weight: 700;">
-                            {{ package.get_discount_percent_display }}% تخفیف
-                        </span>
-                    </div>
-                    <div style="font-size: 24px; font-weight: 700; color: #dc3545;">
-                        {{ package.price|floatformat:0 }} تومان
-                    </div>
-                    <div style="color: #28a745; font-size: 13px; margin-top: 5px;">
-                        💰 صرفه‌جویی: {{ package.calculate_savings|floatformat:0 }} تومان
-                    </div>
-                    {% else %}
-                    <div style="font-size: 24px; font-weight: 700; color: #1a1a2e;">
-                        {{ package.price|floatformat:0 }} تومان
-                    </div>
-                    {% endif %}
-                </div>
-                
-                <!-- وضعیت موجودی -->
-                {% if package.is_in_stock %}
-                <div style="color: #28a745; font-size: 14px; margin-bottom: 15px;">
-                    ✓ موجود در انبار ({{ package.stock }} عدد)
-                </div>
-                <form action="{% url 'cart:cart_add_package' package.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" style="background: #c9a84c; color: #fff; border: none; padding: 12px 30px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                        🛒 افزودن به سبد خرید
-                    </button>
-                </form>
-                {% else %}
-                <div style="color: #dc3545; font-size: 14px; margin-bottom: 15px;">
-                    ✗ ناموجود
-                </div>
-                {% endif %}
-                
-                <!-- توضیحات -->
-                {% if package.description %}
-                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
-                    <h5 style="font-weight: 700; margin-bottom: 10px;">توضیحات</h5>
-                    <div style="font-size: 14px; color: #555; line-height: 2;">
-                        {{ package.description|safe }}
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
-        
-        <!-- کتاب‌های پکیج -->
-        <div style="margin-top: 40px;">
-            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px;">📖 کتاب‌های این پکیج</h3>
-            
-            <div class="row g-3">
+
+        <!-- Package books -->
+        <div style="margin-top: 48px;">
+            <div class="section-head">
+                <span class="eyebrow">{% trans 'Contents' %}</span>
+                <h2>{% trans 'Books in this package' %}</h2>
+            </div>
+
+            <div class="book-grid">
                 {% for product in package.products.all %}
-                <div class="col-lg-3 col-md-4 col-6">
-                    <a href="{{ product.get_absolute_url }}" style="text-decoration: none; color: inherit;">
-                        <div class="card-custom" style="padding: 15px; text-align: center; height: 100%;">
-                            {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
-                            {% else %}
-                            <div style="height: 150px; display: flex; align-items: center; justify-content: center; background: #f5f0eb; border-radius: 8px; margin-bottom: 10px;">
-                                <span style="font-size: 30px;">📖</span>
-                            </div>
-                            {% endif %}
-                            
-                            <h6 style="font-weight: 700; font-size: 13px; margin-bottom: 5px;">{{ product.title }}</h6>
-                            {% if product.author %}
-                            <p style="font-size: 12px; color: #777; margin: 0;">{{ product.author }}</p>
-                            {% endif %}
-                        </div>
+                <article class="book-card">
+                    <a href="{{ product.get_absolute_url }}" class="book-card__cover" aria-label="{{ product.title }}">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
+                        {% else %}
+                        <span class="no-cover"><i class="fas fa-book-open"></i></span>
+                        {% endif %}
                     </a>
-                </div>
+                    <div class="book-card__body">
+                        <span class="book-card__cat">{{ product.get_category_display }}</span>
+                        <h5 class="book-card__title">
+                            <a class="title-link" href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                        </h5>
+                        {% if product.author %}
+                        <span class="book-card__author">{{ product.author }}</span>
+                        {% endif %}
+                    </div>
+                </article>
                 {% empty %}
-                <p style="color: #777;">هیچ کتابی در این پکیج نیست.</p>
+                <p class="text-muted">{% trans 'No books in this package.' %}</p>
                 {% endfor %}
             </div>
         </div>

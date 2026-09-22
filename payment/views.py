@@ -2,6 +2,7 @@ import requests
 from django.shortcuts import get_object_or_404, redirect
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import F
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import gettext_lazy as _
@@ -19,7 +20,8 @@ def payment_process(request):
         messages.error(request, _('No order found. Please try again.'))
         return redirect('cart:cart_detail')
     
-    order = get_object_or_404(Order, id=order_id)
+    # فقط مالک سفارش می‌تواند پرداخت کند
+    order = get_object_or_404(Order, id=order_id, user=request.user)
     
     if order.is_paid:
         messages.info(request, _('This order has already been paid.'))
@@ -84,6 +86,11 @@ def payment_verify(request):
     
     order = get_object_or_404(Order, id=order_id)
     
+    # امنیت: سفارش باید متعلق به کاربر لاگین‌شده باشد
+    if request.user.is_authenticated and order.user_id != request.user.id:
+        messages.error(request, _('This order does not belong to you.'))
+        return redirect('cart:cart_detail')
+    
     sep_verify_url = 'https://sep.shaparak.ir/verifyTxnRandomSessionkey/ipg/VerifyTransaction'
     
     data = {
@@ -101,13 +108,24 @@ def payment_verify(request):
                 order.is_paid = True
                 order.save()
                 
-                # Decrease stock
+                # Decrease stock (اینجا تنها جاییست که موجودی کم می‌شود)
                 for item in order.items.all():
                     if item.product:
                         item.product.decrease_stock(item.quantity)
                     elif item.package:
                         item.package.stock -= item.quantity
                         item.package.save(update_fields=['stock'])
+                
+                # ثبت استفاده از کد تخفیف (در صورت وجود)
+                discount_code = request.session.get('order_discount_code')
+                if discount_code:
+                    from products.models import DiscountCode
+                    dc = DiscountCode.objects.filter(code=discount_code).first()
+                    if dc:
+                        dc.used_count = F('used_count') + 1
+                        dc.save(update_fields=['used_count'])
+                    if 'order_discount_code' in request.session:
+                        del request.session['order_discount_code']
                 
                 # Advance tiered discount
                 from products.models import TieredDiscount

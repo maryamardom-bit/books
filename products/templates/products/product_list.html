@@ -9,190 +9,102 @@
 {% endblock %}
 
 {% block content %}
-<section style="padding: 40px 0; background: #f8f9fa;">
+<section class="section">
     <div class="container">
-        <!-- عنوان و فیلتر -->
-        <div style="background: #fff; border-radius: 12px; padding: 20px 25px; margin-bottom: 25px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <h1 style="font-size: 20px; font-weight: 700; color: #1a1a2e; margin: 0;">
-                    {% if discount_filter %}
-                        🏷️ کتاب‌های تخفیف‌دار
-                    {% else %}
-                        📚 همه کتاب‌ها
-                    {% endif %}
-                </h1>
-                
-                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                    {% if discount_filter %}
-                    <a href="{% url 'product:product_list' %}" 
-                       style="background: #faf8f6; color: #555; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; border: 1px solid #e8e0d8; transition: all 0.3s;">
-                        ✕ حذف فیلتر
-                    </a>
-                    {% else %}
-                    <a href="{% url 'product:product_list' %}?discount=true" 
-                       style="background: linear-gradient(135deg, #dc3545, #c82333); color: #fff; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3); transition: all 0.3s;">
-                        🏷️ تخفیف‌دارها
-                    </a>
-                    {% endif %}
-                    
-                    <!-- مرتب‌سازی -->
-                    <select onchange="window.location.href=this.value" 
-                            style="padding: 8px 15px; border: 1px solid #e8e0d8; border-radius: 8px; font-size: 13px; font-family: inherit; background: #fff; cursor: pointer; color: #555;">
-                        <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>
-                            جدیدترین
-                        </option>
-                        <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'price' %}selected{% endif %}>
-                            ارزان‌ترین
-                        </option>
-                        <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-price' %}selected{% endif %}>
-                            گران‌ترین
-                        </option>
-                        <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'title' %}selected{% endif %}>
-                            عنوان
-                        </option>
-                    </select>
-                </div>
+        <!-- Page head -->
+        <div class="page-head" style="padding-top: 0;">
+            <nav class="crumb">
+                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+                <span class="sep">/</span>
+                <span>{% if discount_filter %}{% trans 'Discounted' %}{% else %}{% trans 'All Books' %}{% endif %}</span>
+            </nav>
+            <h1 class="page-head__title">
+                {% if discount_filter %}{% trans 'Discounted Books' %}{% else %}{% trans 'All Books' %}{% endif %}
+            </h1>
+            <p class="page-head__desc">
+                {% if discount_filter %}
+                    {% trans 'Exclusive publisher discounts, available for a limited time.' %}
+                {% else %}
+                    {% trans 'Browse our full catalog of architecture and design books.' %}
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <div>
+                {% if discount_filter %}
+                <a href="{% url 'product:product_list' %}" class="badge badge--muted" style="padding: 8px 16px;">
+                    <i class="fas fa-times"></i> {% trans 'Remove discount filter' %}
+                </a>
+                {% else %}
+                <a href="{% url 'product:product_list' %}?discount=true" class="btn btn--outline btn--sm">
+                    <i class="fas fa-tags"></i> {% trans 'Discounted' %}
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="flex-center">
+                <label class="text-faint" style="font-size: 13px; font-weight: 700;">{% trans 'Sort by' %}</label>
+                <select class="select" style="width: auto; padding: 8px 14px; border-radius: 999px;"
+                        onchange="window.location.href=this.value">
+                    <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>
+                        {% trans 'Newest' %}
+                    </option>
+                    <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'price' %}selected{% endif %}>
+                        {% trans 'Cheapest' %}
+                    </option>
+                    <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-price' %}selected{% endif %}>
+                        {% trans 'Most expensive' %}
+                    </option>
+                    <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'title' %}selected{% endif %}>
+                        {% trans 'Title' %}
+                    </option>
+                </select>
             </div>
         </div>
-        
-        <!-- گرید محصولات -->
-        <div class="row g-4">
+
+        <!-- Product grid -->
+        <div class="book-grid">
             {% for product in products %}
-            <div class="col-lg-3 col-md-4 col-6">
-                <a href="{{ product.get_absolute_url }}" style="text-decoration: none; color: inherit; display: block; height: 100%;">
-                    <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #eee; height: 100%; display: flex; flex-direction: column; position: relative; transition: all 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.03);"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.08)'; this.style.borderColor='#c9a84c'"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.03)'; this.style.borderColor='#eee'">
-                        
-                        <!-- Badge تخفیف -->
-                        {% if product.is_on_sale %}
-                        <span style="position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #dc3545, #c82333); color: #fff; padding: 4px 12px; border-radius: 15px; font-size: 11px; font-weight: 700; z-index: 10; box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);">
-                            %{{ product.get_discount_percent_display }}-
-                        </span>
-                        {% endif %}
-                        
-                        {% if product.is_new %}
-                        <span style="position: absolute; top: 12px; left: 12px; background: linear-gradient(135deg, #17a2b8, #138496); color: #fff; padding: 4px 12px; border-radius: 15px; font-size: 11px; font-weight: 700; z-index: 10;">
-                            جدید
-                        </span>
-                        {% endif %}
-                        
-                        <!-- تصویر -->
-                        <div style="height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #faf8f6; position: relative;">
-                            {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;"
-                                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            {% else %}
-                            <span style="font-size: 50px; opacity: 0.2;">&#128218;</span>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- اطلاعات -->
-                        <div style="padding: 15px 18px; flex: 1; display: flex; flex-direction: column;">
-                            <span style="font-size: 10px; color: #c9a84c; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px;">
-                                {{ product.get_category_display }}
-                            </span>
-                            
-                            <h5 style="font-weight: 700; font-size: 14px; margin-bottom: 5px; line-height: 1.5; min-height: 42px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1a1a2e;">
-                                {{ product.title }}
-                            </h5>
-                            
-                            {% if product.author %}
-                            <p style="font-size: 12px; color: #999; margin-bottom: 8px;">{{ product.author }}</p>
-                            {% endif %}
-                            
-                            <!-- امتیاز -->
-                            <div style="margin-bottom: 8px;">
-                                {% if product.avg_rating > 0 %}
-                                <span style="color: #f39c12; font-size: 11px;">
-                                    {% for i in "12345" %}
-                                        {% if forloop.counter <= product.avg_rating %}&#11088;{% else %}&#9734;{% endif %}
-                                    {% endfor %}
-                                </span>
-                                {% endif %}
-                            </div>
-                            
-                            <!-- قیمت -->
-                            <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid #f0ece8;">
-                                {% if product.is_on_sale %}
-                                <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 3px; flex-wrap: wrap;">
-                                    <span style="text-decoration: line-through; color: #bbb; font-size: 12px;">
-                                        {{ product.price|intcomma:False|translate_number }}
-                                    </span>
-                                </div>
-                                <div style="font-size: 16px; font-weight: 700; color: #dc3545;">
-                                    {{ product.get_discounted_price|intcomma:False|translate_number }}
-                                    <span style="font-size: 11px; color: #999; font-weight: 400;">تومان</span>
-                                </div>
-                                {% else %}
-                                <div style="font-size: 16px; font-weight: 700; color: #1a1a2e;">
-                                    {{ product.price|intcomma:False|translate_number }}
-                                    <span style="font-size: 11px; color: #999; font-weight: 400;">تومان</span>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                {% include "includes/book_card.html" with product=product %}
             {% empty %}
-            <div class="col-12">
-                <div style="background: #fff; border-radius: 12px; padding: 60px 20px; text-align: center; border: 2px dashed #e8e0d8;">
-                    <span style="font-size: 50px; display: block; margin-bottom: 15px; opacity: 0.3;">
-                        {% if discount_filter %}&#127991;&#65039;{% else %}&#128218;{% endif %}
-                    </span>
-                    <p style="font-size: 15px; color: #777; margin: 0;">
-                        {% if discount_filter %}
-                            کتاب تخفیف‌داری موجود نیست.
-                        {% else %}
-                            کتابی پیدا نشد.
-                        {% endif %}
-                    </p>
-                </div>
+            <div class="empty-state" style="grid-column: 1 / -1;">
+                <span class="empty-state__icon"><i class="fas fa-book-open"></i></span>
+                <h3 class="empty-state__title">{% trans 'No books found' %}</h3>
+                <p class="empty-state__text">
+                    {% if discount_filter %}
+                        {% trans 'There is no discounted book right now.' %}
+                    {% else %}
+                        {% trans 'There are no books to show at the moment.' %}
+                    {% endif %}
+                </p>
             </div>
             {% endfor %}
         </div>
-        
-        <!-- صفحه‌بندی -->
+
+        <!-- Pagination -->
         {% if is_paginated %}
-        <nav style="display: flex; justify-content: center; margin-top: 30px;">
-            <ul style="display: flex; gap: 5px; list-style: none; padding: 0; margin: 0;">
-                {% if page_obj.has_previous %}
-                <li>
-                    <a href="?page={{ page_obj.previous_page_number }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
-                       style="display: block; padding: 10px 18px; background: #fff; border: 1px solid #e8e0d8; border-radius: 8px; color: #555; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s;"
-                       onmouseover="this.style.background='#c9a84c'; this.style.color='#fff'; this.style.borderColor='#c9a84c'"
-                       onmouseout="this.style.background='#fff'; this.style.color='#555'; this.style.borderColor='#e8e0d8'">
-                        قبلی
-                    </a>
-                </li>
+        <nav class="pagination" aria-label="{% trans 'Pagination' %}">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="{% trans 'Previous' %}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="pagination__current">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ num }}</a>
                 {% endif %}
-                
-                {% for num in page_obj.paginator.page_range %}
-                <li>
-                    <a href="?page={{ num }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
-                       style="display: block; padding: 10px 16px; border-radius: 8px; font-size: 13px; text-decoration: none; transition: all 0.3s;
-                              {% if page_obj.number == num %}
-                              background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: 1px solid #c9a84c; font-weight: 700; box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
-                              {% else %}
-                              background: #fff; color: #555; border: 1px solid #e8e0d8;
-                              {% endif %}">
-                        {{ num }}
-                    </a>
-                </li>
-                {% endfor %}
-                
-                {% if page_obj.has_next %}
-                <li>
-                    <a href="?page={{ page_obj.next_page_number }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
-                       style="display: block; padding: 10px 18px; background: #fff; border: 1px solid #e8e0d8; border-radius: 8px; color: #555; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s;"
-                       onmouseover="this.style.background='#c9a84c'; this.style.color='#fff'; this.style.borderColor='#c9a84c'"
-                       onmouseout="this.style.background='#fff'; this.style.color='#555'; this.style.borderColor='#e8e0d8'">
-                        بعدی
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if discount_filter %}&discount=true{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="{% trans 'Next' %}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
         </nav>
         {% endif %}
     </div>

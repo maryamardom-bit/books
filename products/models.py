@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db.models import Q, Avg, Sum, Value, F
+from django.db.models import Q, Avg, Sum, Value, F, Count
 from django.db.models.functions import Coalesce
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
@@ -30,16 +30,21 @@ class ProductManager(models.Manager):
     def with_ratings(self):
         """Annotate products with average rating"""
         return self.annotate(
-            avg_rating_calc=Coalesce(
+            avg_rating=Coalesce(
                 Avg('comments__stars', filter=Q(comments__active=True)),
                 Value(0.0)
+            ),
+            comments_count=Count(
+                'comments',
+                filter=Q(comments__active=True),
+                distinct=True,
             )
         )
     
     def with_sales_count(self):
         """Annotate products with total sales"""
         return self.annotate(
-            total_sold_calc=Coalesce(
+            total_sold=Coalesce(
                 Sum('order_items__quantity', filter=Q(order_items__order__is_paid=True)),
                 Value(0)
             )

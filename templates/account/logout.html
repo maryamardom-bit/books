@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans 'Logout' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section class="auth-shell">
+    <div class="auth-card">
+        <h1>{% trans 'Sign out' %}</h1>
+        <p class="lead">{% trans 'Are you sure you want to sign out?' %}</p>
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+            {% endif %}
+            <button type="submit" class="btn btn--accent btn--lg">{% trans 'Logout' %}</button>
+        </form>
+        <p class="auth-alt"><a href="{% url 'page:home' %}">{% trans 'Cancel' %}</a></p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans 'Sign up' %} | {% trans 'Kasra Publishing' %}{% endblock %}
+
+{% block content %}
+<section class="auth-shell">
+    <div class="auth-card">
+        <span class="eyebrow" style="justify-content:center;">{% trans 'Kasra Publishing' %}</span>
+        <h1>{% trans 'Create account' %}</h1>
+        <p class="lead">{% trans 'Join to order directly from the publisher.' %}</p>
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+            {% endif %}
+            {% for field in form %}
+            <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<div class="form-note">{{ field.help_text|safe }}</div>{% endif %}
+                {% if field.errors %}<div class="form-error">{{ field.errors.0 }}</div>{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn--accent btn--lg">{% trans 'Sign up' %}</button>
+        </form>
+        <p class="auth-alt">
+            {% trans 'Already have an account?' %}
+            <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

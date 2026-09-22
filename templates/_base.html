@@ -1,269 +1,412 @@
 {% load static %}
 {% load i18n %}
-{% include "chat_widget.html" %}
 
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% trans 'Kasra Publishing — specialized publisher of architecture and design books' %}">
+    <meta name="color-scheme" content="light dark">
     <title>{% block page_title %}انتشارات کسری | کتاب‌فروشی تخصصی معماری{% endblock %}</title>
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/_base.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    
-    {% block extra_css %}{% endblock %}
-    
-    <style>
-        /* ===== Reset و تنظیمات پایه ===== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: "IRANSansX", "Vazirmatn", "Yekan Bakh", tahoma, sans-serif;
-            background: #f8f9fa;
-            color: #444;
-            line-height: 1.8;
-            font-size: 14px;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
-        /* ===== تنظیمات تایپوگرافی یکسان ===== */
-        h1 {
-            font-size: 24px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 15px;
-        }
-        
-        h2 {
-            font-size: 20px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 12px;
-        }
-        
-        h3 {
-            font-size: 17px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 10px;
-        }
-        
-        h4 {
-            font-size: 15px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-        
-        h5 {
-            font-size: 14px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 6px;
-        }
-        
-        h6 {
-            font-size: 13px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 5px;
-        }
-        
-        p {
-            font-size: 14px !important;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 10px;
-        }
-        
-        a {
-            font-size: 14px;
-            color: #1a1a2e;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        a:hover {
-            color: #c9a84c;
-        }
-        
-        /* ===== Container ===== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        main {
-            flex: 1;
-        }
-        
-        /* ===== Buttons ===== */
-        .btn {
-            font-size: 14px;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            background: #c9a84c;
-            color: #fff;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background: #b8963e;
-            transform: translateY(-2px);
-        }
-        
-        /* ===== Section ===== */
-        .section {
-            padding: 50px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-        
-        .section-title h2 {
-            font-size: 22px !important;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-        
-        .section-title p {
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* ===== Card ===== */
-        .card-custom {
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        
-        .card-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-        }
-        
-        /* ===== جدول ===== */
-        table {
-            font-size: 14px;
-        }
-        
-        table th {
-            font-size: 14px;
-            font-weight: 700;
-        }
-        
-        table td {
-            font-size: 14px;
-        }
-        
-        /* ===== فرم ===== */
-        input, select, textarea {
-            font-size: 14px !important;
-            font-family: inherit;
-        }
-        
-        label {
-            font-size: 14px !important;
-        }
-        
-        /* ===== Notification ===== */
-        .notification-toast {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            animation: fadeInOut 3s ease-in-out forwards;
-        }
-        
-        .toast-message {
-            background: #28a745;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            direction: rtl;
-            min-width: 200px;
-            justify-content: center;
-        }
-        
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-            15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-        }
-        
-        .toast-success { background: #28a745; }
-        .toast-error { background: #dc3545; }
-        .toast-warning { background: #ffc107; color: #333; }
-        .toast-info { background: #17a2b8; }
-        
-        /* ===== ریسپانسیو ===== */
-        @media (max-width: 768px) {
-            body {
-                font-size: 13px;
+    <link rel="icon" href="{% static 'img/kasrapublishing.jpg' %}">
+
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('kasra-theme');
+                var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.classList.toggle('dark', dark);
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['IRANSansX', 'IRANSans', 'Tahoma', 'sans-serif']
+                    },
+                    colors: {
+                        paper: 'rgb(var(--paper) / <alpha-value>)',
+                        surface: 'rgb(var(--surface) / <alpha-value>)',
+                        ink: 'rgb(var(--ink) / <alpha-value>)',
+                        'ink-2': 'rgb(var(--ink-2) / <alpha-value>)',
+                        muted: 'rgb(var(--muted) / <alpha-value>)',
+                        faint: 'rgb(var(--faint) / <alpha-value>)',
+                        line: 'rgb(var(--line) / <alpha-value>)',
+                        accent: 'rgb(var(--accent) / <alpha-value>)',
+                        'accent-strong': 'rgb(var(--accent-strong) / <alpha-value>)',
+                        'accent-soft': 'rgb(var(--accent-soft) / <alpha-value>)',
+                        danger: 'rgb(var(--danger) / <alpha-value>)',
+                        'danger-soft': 'rgb(var(--danger-soft) / <alpha-value>)',
+                        success: 'rgb(var(--success) / <alpha-value>)',
+                        'success-soft': 'rgb(var(--success-soft) / <alpha-value>)',
+                        warning: 'rgb(var(--warning) / <alpha-value>)',
+                        info: 'rgb(var(--info) / <alpha-value>)'
+                    },
+                    maxWidth: { page: '72rem' },
+                    borderRadius: { DEFAULT: '14px' }
+                }
             }
-            
-            h1 { font-size: 20px !important; }
-            h2 { font-size: 18px !important; }
-            h3 { font-size: 16px !important; }
-            h4 { font-size: 14px !important; }
-            h5 { font-size: 13px !important; }
-            p { font-size: 13px !important; }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            :root {
+                --paper: 255 255 255;
+                --surface: 247 244 239;
+                --ink: 32 28 22;
+                --ink-2: 69 63 54;
+                --muted: 122 115 104;
+                --faint: 176 169 156;
+                --line: 230 224 213;
+                --accent: 168 138 60;
+                --accent-strong: 139 111 43;
+                --accent-soft: 246 240 221;
+                --danger: 181 70 50;
+                --danger-soft: 251 236 233;
+                --success: 62 122 84;
+                --success-soft: 233 243 236;
+                --warning: 154 107 24;
+                --info: 45 107 126;
+            }
+            .dark {
+                --paper: 18 16 14;
+                --surface: 28 25 21;
+                --ink: 236 230 220;
+                --ink-2: 206 198 186;
+                --muted: 168 160 148;
+                --faint: 122 114 102;
+                --line: 58 52 44;
+                --accent: 201 168 88;
+                --accent-strong: 214 186 118;
+                --accent-soft: 48 40 24;
+                --danger: 232 140 122;
+                --danger-soft: 58 32 28;
+                --success: 132 186 150;
+                --success-soft: 28 42 32;
+                --warning: 214 176 96;
+                --info: 130 176 192;
+            }
+            html { @apply bg-paper text-ink-2; }
+            body {
+                @apply min-h-screen flex flex-col bg-paper font-sans text-[15px] leading-loose text-ink-2 antialiased;
+                font-feature-settings: "ss02";
+            }
+            main { @apply flex-1; }
+            a { @apply text-ink transition-colors hover:text-accent-strong; }
+            h1, h2, h3, h4, h5, h6 { @apply font-bold text-ink; font-feature-settings: "ss02"; }
+        }
+
+        @layer components {
+            .skip-link {
+                @apply absolute start-4 -top-12 z-[100] rounded-full bg-ink px-4 py-2 text-sm font-bold text-paper focus:top-3;
+            }
+            .nav-link {
+                @apply relative px-3 py-2 text-sm font-bold text-ink-2 hover:text-ink;
+            }
+            .nav-link.is-active { @apply text-ink; }
+            .nav-link.is-active::after,
+            .nav-link:hover::after {
+                content: "";
+                @apply absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-accent;
+            }
+            .btn {
+                @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line bg-transparent px-6 py-2.5 text-sm font-bold text-ink transition hover:-translate-y-px;
+            }
+            .btn--primary, .btn--dark { @apply border-ink bg-ink text-paper hover:bg-black dark:hover:bg-white dark:hover:text-black; }
+            .btn--accent { @apply border-accent bg-accent text-white hover:bg-accent-strong hover:border-accent-strong; }
+            .btn--light { @apply border-line bg-paper text-ink shadow-sm hover:border-accent hover:text-accent-strong; }
+            .btn--ghost { @apply border-surface bg-surface text-ink-2 hover:border-accent; }
+            .btn--outline { @apply border-ink bg-transparent hover:bg-ink hover:text-paper; }
+            .btn--danger { @apply border-danger bg-danger text-white; }
+            .btn--sm { @apply px-4 py-1.5 text-xs; }
+            .btn--lg { @apply px-8 py-3.5 text-[15px]; }
+            .btn--block { @apply w-full; }
+            .container { @apply mx-auto w-full max-w-page px-4 sm:px-6; }
+            .section { @apply py-12 md:py-16; }
+            .section--surface { @apply bg-surface; }
+            .section--flush { @apply pt-0; }
+            .section-head { @apply mb-8 max-w-xl; }
+            .section-head--center { @apply mx-auto text-center; }
+            .eyebrow {
+                @apply mb-3 inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-wide text-accent-strong;
+            }
+            .page-head { @apply pb-6; }
+            .page-head__title { @apply mb-2 text-3xl font-bold; }
+            .page-head__desc { @apply max-w-xl text-muted; }
+            .crumb { @apply mb-3 flex flex-wrap items-center gap-1 text-sm text-faint; }
+            .crumb a { @apply text-muted hover:text-accent-strong; }
+            .content-card { @apply mb-6 rounded-2xl border border-line bg-paper p-6 shadow-sm md:p-8; }
+            .content-card__prose { @apply text-[15px] leading-[2.3] text-ink-2; }
+            .callout { @apply my-6 rounded-xl border-s-4 border-accent bg-surface px-6 py-5; }
+            .feature-grid { @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3; }
+            .feature { @apply rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:shadow-md; }
+            .feature__icon { @apply mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-xl text-accent-strong; }
+            .feature__title { @apply mb-1 text-[15px] font-bold text-ink; }
+            .feature__desc { @apply m-0 text-[13px] text-muted; }
+            .feature__link { @apply mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-accent-strong; }
+            .book-grid { @apply grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4; }
+            .book-card { @apply group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition hover:-translate-y-1 hover:shadow-md; }
+            .book-card__cover { @apply relative flex aspect-[3/4] items-center justify-center overflow-hidden bg-surface; }
+            .book-card__cover img { @apply h-full w-full object-cover transition duration-500 group-hover:scale-105; }
+            .book-card__body { @apply flex flex-1 flex-col p-4; }
+            .book-card__cat { @apply mb-1 text-[10px] font-bold uppercase text-accent-strong; }
+            .book-card__title { @apply mb-1 line-clamp-2 text-[13.5px] font-bold text-ink; }
+            .book-card__author { @apply mb-2 text-xs text-faint; }
+            .book-card__footer { @apply mt-auto flex items-center justify-between gap-2 border-t border-line pt-3; }
+            .price { @apply text-base font-bold text-ink; }
+            .price--sale { @apply text-danger; }
+            .price--old { @apply text-xs text-faint line-through; }
+            .price .unit { @apply text-[11px] font-normal text-faint; }
+            .quick-add { @apply inline-flex h-8 w-8 items-center justify-center rounded-full border border-line bg-paper text-ink hover:bg-ink hover:text-paper; }
+            .badge { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold; }
+            .badge--sale { @apply bg-danger-soft text-danger; }
+            .badge--new { @apply bg-surface text-info; }
+            .badge--gold { @apply bg-accent-soft text-accent-strong; }
+            .badge--success { @apply bg-success-soft text-success; }
+            .badge--warning { @apply bg-accent-soft text-warning; }
+            .badge--muted { @apply bg-surface text-muted; }
+            .badge--ink { @apply bg-ink text-paper; }
+            .tag { @apply inline-flex rounded-full bg-surface px-3 py-1 text-xs font-bold text-muted; }
+            .input, .select, .textarea, .form-control, .form-select, textarea.form-control {
+                @apply w-full rounded-lg border border-line bg-paper px-3.5 py-2.5 text-sm text-ink outline-none focus:border-accent focus:ring-4 focus:ring-accent/15;
+            }
+            .field { @apply mb-4; }
+            .field label { @apply mb-1.5 block text-sm font-bold text-ink; }
+            .filter-bar { @apply mb-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-paper px-4 py-3; }
+            .empty-state { @apply rounded-2xl border border-dashed border-line bg-paper px-6 py-16 text-center; }
+            .empty-state__icon { @apply mb-3 inline-block text-4xl text-faint; }
+            .empty-state__title { @apply mb-1 text-lg font-bold text-ink; }
+            .empty-state__text { @apply mb-4 text-sm text-muted; }
+            .pagination { @apply mt-10 flex flex-wrap items-center justify-center gap-1.5; }
+            .pagination a, .pagination .pagination__current {
+                @apply inline-flex h-10 min-w-10 items-center justify-center rounded-lg border border-line bg-paper px-3 text-sm font-bold text-ink-2;
+            }
+            .pagination .pagination__current { @apply border-ink bg-ink text-paper; }
+            .stats-grid { @apply mt-8 grid grid-cols-2 gap-3 md:grid-cols-4; }
+            .stat { @apply rounded-2xl border border-line bg-paper p-6 text-center; }
+            .stat__number { @apply mb-1 block text-3xl font-bold text-accent-strong; }
+            .stat__label { @apply text-sm text-muted; }
+            .summary { @apply sticky top-24 rounded-2xl border border-line bg-paper p-6 shadow-sm; }
+            .summary__title { @apply mb-3 border-b border-line pb-3 text-[15px] font-bold text-ink; }
+            .summary__row { @apply flex items-center justify-between gap-2 py-1.5 text-sm text-ink-2; }
+            .summary__row--total { @apply mt-2 border-t border-line pt-3 font-bold text-ink; }
+            .cart-row { @apply mb-3 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-paper p-4; }
+            .cart-row__thumb { @apply flex h-24 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-surface; }
+            .order-card { @apply mb-4 overflow-hidden rounded-2xl border border-line bg-paper shadow-sm; }
+            .order-card__head, .order-card__foot { @apply flex flex-wrap items-center justify-between gap-3 bg-surface px-5 py-3; }
+            .dash-grid { @apply grid gap-6 lg:grid-cols-[18rem_1fr]; }
+            .dash-card { @apply mb-4 rounded-2xl border border-line bg-paper p-6 shadow-sm; }
+            .account-nav { @apply mb-6 flex flex-wrap gap-2; }
+            .account-nav a { @apply rounded-full border border-line bg-paper px-4 py-2 text-sm font-bold text-ink-2; }
+            .account-nav a.is-active { @apply border-ink bg-ink text-paper; }
+            .auth-shell { @apply flex min-h-[62vh] items-center justify-center px-4 py-12; }
+            .auth-card { @apply w-full max-w-md rounded-2xl border border-line bg-paper p-8 shadow-sm; }
+            .site-footer { @apply mt-16 bg-ink text-[#b8b2a6]; }
+            .info-row { @apply flex items-start gap-3 border-b border-line py-3 last:border-0; }
+            .info-row__icon { @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface text-accent-strong; }
+            .toast-message { @apply flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white shadow-lg; }
+            .toast-success { @apply bg-success; }
+            .toast-error, .toast-danger { @apply bg-danger; }
+            .pdp-media { @apply sticky top-28 overflow-hidden p-0; }
+            .pdp-media__img { @apply block aspect-[3/4] w-full bg-surface object-contain p-6; }
+            .trust-bar { @apply grid overflow-hidden rounded-2xl border border-line bg-paper md:grid-cols-3; }
+            .trust-bar__item { @apply flex items-center gap-3 border-line p-5 md:border-s; }
+            .no-cover { @apply text-4xl text-faint; }
+            .stars { @apply text-accent; }
+            .stars-empty { @apply text-line; }
+            .qty { @apply inline-flex h-11 overflow-hidden rounded-full border border-line bg-paper; }
+            .qty__btn { @apply w-10 text-muted hover:bg-surface; }
+            .qty__input { @apply w-12 border-0 bg-transparent text-center font-bold outline-none; }
+            .table-spec { @apply w-full text-sm; }
+            .table-spec th, .table-spec td { @apply border-b border-line px-4 py-3 text-start; }
+            .table-spec th { @apply w-[28%] bg-surface font-bold text-ink; }
+            .payment-option { @apply mb-2 flex cursor-pointer items-center gap-3 rounded-xl border-2 border-line bg-paper p-4; }
+            .payment-option.is-selected { @apply border-accent bg-accent-soft; }
+            .chip { @apply inline-flex items-center gap-1.5 text-sm font-bold; }
+            .chip .dot { @apply h-2 w-2 rounded-full bg-success; }
+            .chip--success { @apply text-success; }
+            .chip--danger { @apply text-danger; }
+            .chip--danger .dot { @apply bg-danger; }
+            .flex-center { @apply flex items-center gap-2; }
+            .chat-launcher { @apply fixed bottom-6 end-6 z-[80]; }
+            .chat-launcher__btn { @apply relative flex h-[3.75rem] w-[3.75rem] items-center justify-center rounded-full bg-ink text-xl text-paper shadow-lg hover:bg-accent; }
+            .chat-launcher__status { @apply absolute top-1 end-1 h-3 w-3 rounded-full border-2 border-paper bg-success; }
+            .chat-panel { @apply fixed bottom-24 end-6 z-[81] hidden w-[22.5rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-2xl border border-line bg-paper shadow-xl; }
+            .chat-panel.is-open { @apply flex; }
+            .chat-panel__head { @apply flex items-center justify-between bg-ink px-5 py-4 text-paper; }
+            .chat-panel__msgs { @apply h-72 overflow-y-auto bg-surface p-4; }
+            .chat-panel__inputbar { @apply flex gap-2 border-t border-line bg-paper p-3; }
+            .msg { @apply mb-2.5 flex gap-2; }
+            .msg--user { @apply justify-end; }
+            .msg__bubble { @apply max-w-[82%] rounded-xl px-3.5 py-2.5 text-[13px] leading-7; }
+            .msg--bot .msg__bubble { @apply bg-paper text-ink-2 shadow-sm; }
+            .msg--user .msg__bubble { @apply bg-ink text-paper; }
+            .quick-questions { @apply my-3 flex flex-wrap gap-2; }
         }
     </style>
+    {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body class="font-sans">
+    <a class="skip-link" href="#main-content">{% trans 'Skip to content' %}</a>
     {% include "topheader.html" %}
-    
+
     {% if messages %}
-    <div class="notification-toast">
+    <div class="fixed start-1/2 top-5 z-[90] flex -translate-x-1/2 flex-col gap-2" role="status">
         {% for message in messages %}
         <div class="toast-message toast-{{ message.tags }}">
+            <i class="fas fa-check-circle"></i>
             {{ message }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
-    
-    <main>
+
+    <main id="main-content">
         {% block content %}{% endblock %}
     </main>
-    
+
     {% include "footer.html" %}
-    
-      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    {% include "chat_widget.html" %}
+    <script id="faq-data" type="application/json">{{ faqs_json|safe }}</script>
+
+    <script>
+    (function () {
+        var root = document.documentElement;
+        var themeBtn = document.getElementById('themeToggle');
+        function setTheme(dark) {
+            root.classList.toggle('dark', dark);
+            try { localStorage.setItem('kasra-theme', dark ? 'dark' : 'light'); } catch (e) {}
+        }
+        if (themeBtn) {
+            themeBtn.addEventListener('click', function () {
+                setTheme(!root.classList.contains('dark'));
+            });
+        }
+
+        var drawer = document.getElementById('navDrawer');
+        var overlay = document.getElementById('navOverlay');
+        var toggle = document.getElementById('navToggle');
+        var closeBtn = document.getElementById('navClose');
+        function setNav(openNav) {
+            if (!drawer || !overlay || !toggle) return;
+            overlay.classList.toggle('hidden', !openNav);
+            overlay.hidden = !openNav;
+            drawer.setAttribute('aria-hidden', openNav ? 'false' : 'true');
+            toggle.setAttribute('aria-expanded', openNav ? 'true' : 'false');
+            document.body.classList.toggle('overflow-hidden', openNav);
+        }
+        if (toggle) toggle.addEventListener('click', function () { setNav(drawer.getAttribute('aria-hidden') !== 'false'); });
+        if (closeBtn) closeBtn.addEventListener('click', function () { setNav(false); });
+        if (overlay) overlay.addEventListener('click', function () { setNav(false); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setNav(false); });
+
+        var dropdown = document.getElementById('userDropdown');
+        var menu = document.getElementById('userDropdownMenu');
+        if (dropdown && menu) {
+            var timer;
+            function open() { clearTimeout(timer); menu.classList.remove('hidden'); }
+            function close() { timer = setTimeout(function () { menu.classList.add('hidden'); }, 180); }
+            dropdown.addEventListener('mouseenter', open);
+            dropdown.addEventListener('mouseleave', close);
+            menu.addEventListener('mouseenter', open);
+            menu.addEventListener('mouseleave', close);
+            document.addEventListener('click', function (e) { if (!dropdown.contains(e.target)) menu.classList.add('hidden'); });
+        }
+
+        var faqNode = document.getElementById('faq-data');
+        window.faqData = [];
+        try { window.faqData = JSON.parse(faqNode ? faqNode.textContent : '[]'); } catch (e) {}
+
+        var panel = document.getElementById('chatPanelBox');
+        var icon = document.getElementById('chatIconBtn');
+        function toggleChatPanel() {
+            if (!panel) return;
+            panel.classList.toggle('is-open');
+            if (icon) icon.className = panel.classList.contains('is-open') ? 'fas fa-times' : 'fas fa-comments';
+        }
+        var chatToggle = document.getElementById('chatToggleBtn');
+        var chatClose = document.getElementById('chatCloseBtn');
+        if (chatToggle) chatToggle.addEventListener('click', toggleChatPanel);
+        if (chatClose) chatClose.addEventListener('click', toggleChatPanel);
+
+        var answers = {
+            delivery: '{% trans "3-5 days in Tehran, 5-7 days other cities. Free shipping over 1,000,000 Toman." %}',
+            payment: '{% trans "Online (SEP), Installment (SnappPay), Wallet balance, Discount codes." %}',
+            order: '{% trans "Check Dashboard → Order History." %}',
+            return: '{% trans "Return within 3 days. After approval, refund to wallet." %}',
+            discount: '{% trans "Use discount codes at checkout. Check dashboard for tiered discounts." %}',
+            contact: '{% trans "Contact support: 051-37670019" %}'
+        };
+        var questions = {
+            delivery: '{% trans "What is the delivery time?" %}',
+            payment: '{% trans "What payment methods are available?" %}',
+            order: '{% trans "How can I track my order?" %}',
+            return: '{% trans "How can I return an item?" %}'
+        };
+        function addUserMsg(text) {
+            var area = document.getElementById('chatMsgArea');
+            if (!area) return;
+            var div = document.createElement('div');
+            div.className = 'msg msg--user';
+            div.innerHTML = '<div class="msg__bubble"></div>';
+            div.querySelector('.msg__bubble').textContent = text;
+            area.appendChild(div);
+            area.scrollTop = area.scrollHeight;
+        }
+        function addBotMsg(text) {
+            var area = document.getElementById('chatMsgArea');
+            if (!area) return;
+            var div = document.createElement('div');
+            div.className = 'msg msg--bot';
+            div.innerHTML = '<span class="text-lg"><i class="fas fa-robot"></i></span><div class="msg__bubble"></div>';
+            div.querySelector('.msg__bubble').textContent = text;
+            area.appendChild(div);
+            area.scrollTop = area.scrollHeight;
+        }
+        function reply(topic) {
+            addBotMsg(answers[topic] || answers.contact);
+        }
+        document.querySelectorAll('#initialQuestions [data-topic]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                var initial = document.getElementById('initialQuestions');
+                if (initial) initial.style.display = 'none';
+                var topic = el.getAttribute('data-topic');
+                addUserMsg(questions[topic] || topic);
+                setTimeout(function () { reply(topic); }, 400);
+            });
+        });
+        function sendChat() {
+            var input = document.getElementById('chatInputField');
+            if (!input || !input.value.trim()) return;
+            var message = input.value.trim();
+            input.value = '';
+            addUserMsg(message);
+            setTimeout(function () {
+                var msg = message.toLowerCase();
+                var topic = null;
+                if (msg.indexOf('ارسال') > -1 || msg.indexOf('delivery') > -1) topic = 'delivery';
+                else if (msg.indexOf('پرداخت') > -1 || msg.indexOf('pay') > -1) topic = 'payment';
+                else if (msg.indexOf('سفارش') > -1 || msg.indexOf('order') > -1) topic = 'order';
+                else if (msg.indexOf('برگشت') > -1 || msg.indexOf('return') > -1) topic = 'return';
+                else if (msg.indexOf('تخفیف') > -1) topic = 'discount';
+                reply(topic || 'contact');
+            }, 400);
+        }
+        var sendBtn = document.getElementById('chatSendBtn');
+        var chatInput = document.getElementById('chatInputField');
+        if (sendBtn) sendBtn.addEventListener('click', sendChat);
+        if (chatInput) chatInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') sendChat(); });
+    })();
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

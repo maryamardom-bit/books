@@ -29,7 +29,7 @@ class ReturnRequestForm(forms.ModelForm):
         fields = ['reason']
         widgets = {
             'reason': forms.Textarea(attrs={
-                'class': 'form-control',
+                'class': 'textarea',
                 'rows': 4,
                 'placeholder': 'Reason for return...',
             }),

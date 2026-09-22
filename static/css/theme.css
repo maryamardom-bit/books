@@ -1,0 +1,22 @@
+/* IranSans (IRANSansX) — local faces only. Theme tokens live in Tailwind config. */
+@font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/iransansx/woff2/IRANSansX-Regular.woff2') format('woff2'),
+         url('../fonts/iransansx/woff/IRANSansX-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: IRANSansX;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/iransansx/woff2/IRANSansX-Bold.woff2') format('woff2'),
+         url('../fonts/iransansx/woff/IRANSansX-Bold.woff') format('woff');
+}
+
+.ss02 {
+    font-feature-settings: "ss02";
+}

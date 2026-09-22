@@ -22,7 +22,7 @@ from .permissions import (
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for products"""
-    queryset = Product.objects.filter(active=True)
+    queryset = Product.objects.with_ratings().filter(active=True)
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
     
@@ -81,7 +81,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         return queryset
     
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user, active=True)
+        # نظرات API نیز مانند وب‌سایت نیاز به تایید مدیر دارند
+        serializer.save(author=self.request.user, active=False)
 
 
 class ProductBlogViewSet(viewsets.ReadOnlyModelViewSet):

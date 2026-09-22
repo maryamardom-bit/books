@@ -84,20 +84,17 @@ def order_create_view(request):
                 total_price += price * quantity
 
             order_obj.total_weight = total_weight
-            order_obj.total_price = total_price
+            # مبلغ واقعی پرداختی = مبلغ سبد پس از اعمال کد تخفیف
+            order_obj.total_price = cart.get_discounted_total() or total_price
             order_obj.save()
 
-            # Decrease stock
-            for item in cart:
-                if not item['is_package']:
-                    product = item.get('product_obj')
-                    if product:
-                        product.decrease_stock(item['quantity'])
-                else:
-                    package = item.get('package_obj')
-                    if package:
-                        package.stock -= item['quantity']
-                        package.save(update_fields=['stock'])
+            # ذخیره کد تخفیف استفاده‌شده در سشن تا هنگام تایید پرداخت، آمار استفاده‌اش ثبت شود
+            if cart.discount_code:
+                request.session['order_discount_code'] = cart.discount_code
+
+            # نکته: کاهش موجودی در این مرحله انجام نمی‌شود!
+            # اگر پرداخت موفق نشود، مشتری نباید موجودی را از دست بدهد.
+            # موجودی فقط هنگام تایید موفق پرداخت (payment_verify) کم می‌شود.
 
             cart.clear()
 

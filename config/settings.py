@@ -20,7 +20,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.herokuapp.com']
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 
 # Application definition
 INSTALLED_APPS = [
@@ -105,11 +105,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': env('DJANGO_DB_NAME', default='postgres'),
+        'USER': env('DJANGO_DB_USER', default='postgres'),
+        'PASSWORD': env('DJANGO_DB_PASSWORD', default='postgres'),
+        'HOST': env('DJANGO_DB_HOST', default='db'),
+        'PORT': env.int('DJANGO_DB_PORT', default=5432),
     }
 }
 
@@ -187,7 +187,9 @@ MESSAGE_TAGS = {
     messages_constant.ERROR: 'danger',
 }
 
-ZARINPAL_MERCHANT_ID = env("DJANGO_ZARINPAL_MERCHANT_ID")
+# SEP Payment Gateway Settings
+# SEP_TERMINAL_ID = 'test_terminal_id'  # برای تست فقط — باید از متغیر محیطی خوانده شود
+SEP_TERMINAL_ID = env('SEP_TERMINAL_ID', default='test_terminal_id')
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -208,10 +210,11 @@ CKEDITOR_CONFIGS = {
 KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY", default="test_api_key")
 KAVENEGAR_SENDER = env("KAVENEGAR_SENDER", default="1000596446")
 CART_SESSION_ID = 'cart'
+
 # SEP Payment Gateway Settings
-SEP_TERMINAL_ID = 'test_terminal_id'  # برای تست
-# SEP Payment Gateway
-# SEP_TERMINAL_ID = env("SEP_TERMINAL_ID")
+SEP_TERMINAL_ID = env('SEP_TERMINAL_ID', default='test_terminal_id')
+
+# NOTE: ZARINPAL_MERCHANT_ID removed — SEP gateway is used instead.
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

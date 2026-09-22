@@ -1,62 +1,69 @@
 {% extends '_base.html' %}
 {% load static %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block page_title %}{% trans 'Edit Profile' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section style="padding: 40px 0; background: #f8f9fa;">
+<section class="section">
     <div class="container">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <div style="background: #fff; border-radius: 12px; padding: 30px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
-                <h1 style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 25px; text-align: center;">
-                    {% trans 'Edit Profile' %}
-                </h1>
+        <nav class="crumb">
+            <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
+            <span class="sep">/</span>
+            <span>{% trans 'Edit Profile' %}</span>
+        </nav>
+        {% include "includes/account_nav.html" %}
 
-                <form method="post">
-                    {% csrf_token %}
+        <div class="content-card" style="max-width: 600px; margin: 0 auto;">
+            <h1 style="font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 26px;">
+                <i class="fas fa-user-edit text-accent"></i> {% trans 'Edit Profile' %}
+            </h1>
 
-                    {% for field in form %}
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 13px; display: block; margin-bottom: 5px; font-weight: 600; color: #555;">
-                            {{ field.label }}
-                        </label>
+            <form method="post">
+                {% csrf_token %}
 
-                        {% if field.name == 'birth_date' %}
-                        <div class="birth-date-wrapper" style="position: relative;">
-                            {{ field }}
-                            <span onclick="toggleCalendar(event)" 
-                                  style="position:absolute; left:12px; top:50%; transform:translateY(-50%); cursor:pointer; color:#c9a84c; font-size:18px; display:flex; align-items:center; justify-content:center; height:100%;">
-                                📅
-                            </span>
-                            <div id="jalali-calendar" style="display:none; position:absolute; top:50px; right:0; background:#fff; border:1px solid #ddd; border-radius:12px; box-shadow:0 5px 25px rgba(0,0,0,0.15); z-index:9999; padding:15px; width:300px;"></div>
-                        </div>
-                        {% else %}
+                {% for field in form %}
+                <div class="field">
+                    <label>{{ field.label }}</label>
+
+                    {% if field.name == 'birth_date' %}
+                    <div class="birth-date-wrapper" style="position: relative;">
                         {{ field }}
-                        {% endif %}
-
-                        {% if field.errors %}
-                        <small style="color: #dc3545; font-size: 12px;">{{ field.errors.0 }}</small>
-                        {% endif %}
+                        <span onclick="toggleCalendar(event)"
+                              style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-strong); font-size: 17px; display: flex; align-items: center; justify-content: center; height: 100%;"
+                              aria-label="{% trans 'Calendar' %}">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                        <div id="jalali-calendar"
+                             style="display: none; position: absolute; top: 54px; left: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); z-index: 9999; padding: 15px; width: 300px;"></div>
                     </div>
-                    {% endfor %}
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
 
-                    <button type="submit"
-                            style="width: 100%; background: linear-gradient(135deg, #c9a84c, #b8963e); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);">
-                        {% trans 'Save Changes' %}
-                    </button>
-                </form>
-
-                <div style="text-align: center; margin-top: 15px;">
-                    <a href="{% url 'accounts:dashboard' %}" style="font-size: 13px; color: #777; text-decoration: none;">
-                        {% trans 'Back to Dashboard' %}
-                    </a>
+                    {% if field.errors %}
+                    <small style="color: var(--danger); font-size: 12px; display: block; margin-top: 6px;">{{ field.errors.0 }}</small>
+                    {% endif %}
                 </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn--accent btn--lg btn--block" style="margin-top: 10px;">
+                    <i class="fas fa-check"></i> {% trans 'Save Changes' %}
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 16px;">
+                <a href="{% url 'accounts:dashboard' %}" class="text-muted" style="font-size: 13px;">
+                    <i class="fas fa-arrow-right"></i> {% trans 'Back to Dashboard' %}
+                </a>
             </div>
         </div>
     </div>
 </section>
+{% endblock %}
 
+{% block extra_js %}
 <script>
 // =============================================
 // تقویم شمسی اختصاصی با انتخاب سال و ماه
@@ -88,21 +95,21 @@ function renderCalendar() {
 
     let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <button type="button" onclick="changeMonth(-1)" style="border:none; background:#faf8f6; cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700;">→</button>
-            
+            <button type="button" onclick="changeMonth(-1)" style="border:none; background:var(--surface); cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700; color:var(--ink);">→</button>
+
             <div style="display:flex; gap:5px; align-items:center;">
-                <span onclick="toggleYearDropdown(event)" style="cursor:pointer; font-weight:700; color:#1a1a2e; padding:3px 8px; border-radius:5px;">${currentYear}</span>
-                <span style="color:#ccc;">/</span>
-                <span onclick="toggleMonthDropdown(event)" style="cursor:pointer; font-weight:700; color:#1a1a2e; padding:3px 8px; border-radius:5px;">${monthNames[currentMonth-1]}</span>
+                <span onclick="toggleYearDropdown(event)" style="cursor:pointer; font-weight:700; color:var(--ink); padding:3px 8px; border-radius:5px;">${currentYear}</span>
+                <span style="color:var(--faint);">/</span>
+                <span onclick="toggleMonthDropdown(event)" style="cursor:pointer; font-weight:700; color:var(--ink); padding:3px 8px; border-radius:5px;">${monthNames[currentMonth-1]}</span>
             </div>
-            
-            <button type="button" onclick="changeMonth(1)" style="border:none; background:#faf8f6; cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700;">←</button>
+
+            <button type="button" onclick="changeMonth(1)" style="border:none; background:var(--surface); cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700; color:var(--ink);">←</button>
         </div>
         <div id="year-dropdown" style="display:none;"></div>
         <div id="month-dropdown" style="display:none;"></div>
-        <table style="width:100%; text-align:center; margin-top:5px;">
+        <table style="width:100%; text-align:center; margin-top:5px; color:var(--ink);">
             <tr>
-                <th style="padding:5px;">ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th>
+                <th style="padding:5px; font-weight:700;">ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th>
             </tr>
             <tr>
     `;
@@ -116,7 +123,7 @@ function renderCalendar() {
             html += '</tr><tr>';
         }
         const isSelected = selectedDate && selectedDate.year === currentYear && selectedDate.month === currentMonth && selectedDate.day === day;
-        html += `<td onclick="selectDate(${day})" style="padding:8px; cursor:pointer; border-radius:6px; transition:all 0.2s; ${isSelected ? 'background:#c9a84c; color:#fff; font-weight:700;' : 'hover:background:#f5f0eb;'}">${day}</td>`;
+        html += `<td onclick="selectDate(${day})" style="padding:7px; cursor:pointer; border-radius:6px; transition:all 0.2s; ${isSelected ? 'background:var(--accent); color:#fff; font-weight:700;' : ''}">${day}</td>`;
     }
 
     html += '</tr></table>';
@@ -134,7 +141,7 @@ function toggleYearDropdown(event) {
     for (let y = currentYear - 60; y <= currentYear + 10; y++) {
         years += `<option value="${y}">${y}</option>`;
     }
-    dropdown.innerHTML = `<select onchange="selectYear(this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:6px; font-family:inherit;">${years}</select>`;
+    dropdown.innerHTML = `<select onchange="selectYear(this.value)" style="width:100%; padding:5px; border:1px solid var(--line); border-radius:6px; font-family:inherit;">${years}</select>`;
     dropdown.style.display = 'block';
 }
 
@@ -149,7 +156,7 @@ function toggleMonthDropdown(event) {
     monthNames.forEach((name, index) => {
         months += `<option value="${index+1}">${name}</option>`;
     });
-    dropdown.innerHTML = `<select onchange="selectMonth(this.value)" style="width:100%; padding:5px; border:1px solid #ddd; border-radius:6px; font-family:inherit;">${months}</select>`;
+    dropdown.innerHTML = `<select onchange="selectMonth(this.value)" style="width:100%; padding:5px; border:1px solid var(--line); border-radius:6px; font-family:inherit;">${months}</select>`;
     dropdown.style.display = 'block';
 }
 

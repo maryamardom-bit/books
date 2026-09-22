@@ -1,15 +1,16 @@
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.db.models import Q, Count, Avg, Value, IntegerField, Sum, F
-from django.db.models.functions import Coalesce
+from django.db.models import Q, Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
+from django.views.decorators.http import require_POST
 from django.views.decorators.cache import cache_page
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Product, Comment, Package, ProductBlog, InstallmentPlan
+from .models import Product, Comment, Package
 from .forms import CommentForm
 from cart.forms import AddToCartProductForm
 
@@ -17,7 +18,7 @@ from cart.forms import AddToCartProductForm
 class ProductListView(generic.ListView):
     """List products with filters and sorting"""
     model = Product
-    template_name = 'Products/product_list.html'
+    template_name = 'products/product_list.html'
     context_object_name = 'products'
     paginate_by = 12
 
@@ -56,11 +57,11 @@ class ProductListView(generic.ListView):
 class ProductDetailView(generic.DetailView):
     """Product detail with related products, blogs, and installments"""
     model = Product
-    template_name = 'Products/product_detail.html'
+    template_name = 'products/product_detail.html'
     context_object_name = 'product'
 
     def get_queryset(self):
-        return Product.objects.filter(active=True).prefetch_related(
+        return Product.objects.with_ratings().filter(active=True).prefetch_related(
             'comments__author',
             'blogs',
             'installment_plans',
@@ -109,8 +110,10 @@ class ProductDetailView(generic.DetailView):
         return context
 
 
-class CommentCreateView(generic.View):
-    """Submit new comment"""
+class CommentCreateView(LoginRequiredMixin, generic.View):
+    """Submit new comment. Login is required, otherwise anonymous users get a 500 error."""
+    def get(self, request, product_id):
+        return redirect('product:product_detail', pk=product_id)
     
     def post(self, request, product_id):
         product = get_object_or_404(Product, id=product_id, active=True)
@@ -135,7 +138,7 @@ class CommentCreateView(generic.View):
 class ProductSearchView(generic.ListView):
     """Search products"""
     model = Product
-    template_name = 'Products/product_search_result.html'
+    template_name = 'products/product_search_result.html'
     context_object_name = 'results'
     paginate_by = 20
 
@@ -156,14 +159,29 @@ class ProductSearchView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['query'] = self.request.GET.get('q', '')
+        query = self.request.GET.get('q', '').strip()
+        context['query'] = query
+
+        total_count = 0
+        if query:
+            total_count = Product.objects.filter(
+                active=True
+            ).filter(
+                Q(title__icontains=query) |
+                Q(description__icontains=query) |
+                Q(author__icontains=query) |
+                Q(publisher__icontains=query) |
+                Q(isbn__icontains=query)
+            ).count()
+
+        context['results_count'] = total_count
         return context
 
 
 class PackageListView(generic.ListView):
     """List packages"""
     model = Package
-    template_name = 'Products/package_list.html'
+    template_name = 'products/package_list.html'
     context_object_name = 'packages'
     paginate_by = 12
     
@@ -174,7 +192,7 @@ class PackageListView(generic.ListView):
 class PackageDetailView(generic.DetailView):
     """Package detail"""
     model = Package
-    template_name = 'Products/package_detail.html'
+    template_name = 'products/package_detail.html'
     context_object_name = 'package'
     slug_url_kwarg = 'slug'
     
@@ -227,7 +245,7 @@ def category_list(request):
             'count': category_counts.get(category_code, 0),
         })
     
-    return render(request, 'Products/category_list.html', {
+    return render(request, 'products/category_list.html', {
         'categories': categories,
     })
 
@@ -237,7 +255,7 @@ def product_list_by_category(request, category):
     valid_categories = dict(Product.Category.choices)
     
     if category not in valid_categories:
-        return render(request, 'Products/product_list_by_category.html', {
+        return render(request, 'products/product_list_by_category.html', {
             'products': Product.objects.none(),
             'category': None,
             'error': _('Invalid category'),
@@ -282,7 +300,7 @@ def product_list_by_category(request, category):
         'PACKAGES': '📚',
     }
     
-    return render(request, 'Products/product_list_by_category.html', {
+    return render(request, 'products/product_list_by_category.html', {
         'products': products,
         'category': {
             'name': category_display,
@@ -297,30 +315,29 @@ def product_list_by_category(request, category):
     })
 
 
+@login_required
+@require_POST
 def package_comment(request, slug):
     """Submit comment for package"""
-    if request.method == 'POST':
-        package = get_object_or_404(Package, slug=slug, active=True)
-        body = request.POST.get('body')
-        stars = request.POST.get('stars')
-        
-        if body and stars:
-            first_product = package.products.first()
-            if first_product:
-                Comment.objects.create(
-                    product=first_product,
-                    author=request.user,
-                    body=body,
-                    stars=int(stars),
-                    active=False,
-                )
-                messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
-            else:
-                messages.error(request, _('This package has no products.'))
+    package = get_object_or_404(Package, slug=slug, active=True)
+    body = request.POST.get('body')
+    stars = request.POST.get('stars')
+    
+    if body and stars:
+        first_product = package.products.first()
+        if first_product:
+            Comment.objects.create(
+                product=first_product,
+                author=request.user,
+                body=body,
+                stars=int(stars),
+                active=False,
+            )
+            messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
         else:
-            messages.error(request, _('Please fill all fields.'))
-        
-        return redirect('product:package_detail', slug=slug)
+            messages.error(request, _('This package has no products.'))
+    else:
+        messages.error(request, _('Please fill all fields.'))
     
     return redirect('product:package_detail', slug=slug)
 
@@ -350,13 +367,13 @@ def author_books_view(request, author_name):
         'page_obj': products,
     }
     
-    return render(request, 'Products/author_books.html', context)
+    return render(request, 'products/author_books.html', context)
 
 
 class BestSellersView(generic.ListView):
     """Best selling products"""
     model = Product
-    template_name = 'Products/best_sellers.html'
+    template_name = 'products/best_sellers.html'
     context_object_name = 'products'
     paginate_by = 12
     
@@ -364,4 +381,4 @@ class BestSellersView(generic.ListView):
         return Product.objects.with_sales_count().filter(
             active=True,
             order_items__order__is_paid=True
-        ).order_by('-total_sold_calc').distinct()[:20]
+        ).order_by('-total_sold').distinct()[:20]
