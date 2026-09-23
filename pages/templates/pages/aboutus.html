@@ -1,62 +1,33 @@
 {% extends "_base.html" %}
-{% load static %}
 {% load i18n %}
 
-{% block page_title %}
-{% trans "About Us" %} | {% trans "Kasra Architecture Bookstore" %}
-{% endblock %}
+{% block page_title %}{% trans "About Us" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'About Us' %}</span>
-            </nav>
-            <span class="eyebrow"><i class="fas fa-building"></i></span>
-            <h1 class="page-head__title">{% trans "About Us" %}</h1>
-            <p class="page-head__desc">{% trans "The story of Kasra Publishing, a specialized publisher of architecture and design." %}</p>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'About Us' %}</span>
+    </nav>
+    <h1 class="mb-2 text-3xl">{% trans "About Us" %}</h1>
+    <p class="mb-8 max-w-2xl text-muted">{% trans "The story of Kasra Publishing, a specialized publisher of architecture and design." %}</p>
+    {% if aboutus.is_active %}
+        <div class="card mb-6 prose-cms">{{ aboutus.text|safe }}</div>
+        {% if cooperation.is_active %}
+        <div class="mb-6 rounded-2xl border border-line bg-accent-soft p-6">
+            <p class="mb-2 font-bold"><i class="fas fa-handshake"></i> {% trans "Cooperation" %}</p>
+            <div class="prose-cms">{{ cooperation.invitation_text|safe }}</div>
         </div>
-
-        {% if aboutus.is_active %}
-            <div class="content-card">
-                <div class="content-card__prose">{{ aboutus.text|safe }}</div>
-            </div>
-
-            {% if cooperation.is_active %}
-            <div class="callout">
-                <span class="callout__title"><i class="fas fa-handshake"></i> {% trans "Cooperation" %}</span>
-                <p class="callout__text">{{ cooperation.invitation_text|safe }}</p>
-            </div>
-            {% endif %}
-
-            <div class="stats-grid">
-                <div class="stat">
-                    <span class="stat__number">۱۳۹۲</span>
-                    <span class="stat__label">{% trans "Year Established" %}</span>
-                </div>
-                <div class="stat">
-                    <span class="stat__number">۵۰۰+</span>
-                    <span class="stat__label">{% trans "Books Published" %}</span>
-                </div>
-                <div class="stat">
-                    <span class="stat__number">۱۵۰+</span>
-                    <span class="stat__label">{% trans "Authors" %}</span>
-                </div>
-                <div class="stat">
-                    <span class="stat__number">۱۰۰٪</span>
-                    <span class="stat__label">{% trans "Customer Satisfaction" %}</span>
-                </div>
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <span class="empty-state__icon"><i class="fas fa-book-open"></i></span>
-                <h3 class="empty-state__title">{% trans "No Information Available" %}</h3>
-                <p class="empty-state__text">{% trans "The about us page content is not available at the moment. Please try again later." %}</p>
-            </div>
         {% endif %}
-    </div>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">۱۳۹۲</p><p class="text-xs text-muted">{% trans "Year Established" %}</p></div>
+            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">۵۰۰+</p><p class="text-xs text-muted">{% trans "Books Published" %}</p></div>
+            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">۱۵۰+</p><p class="text-xs text-muted">{% trans "Authors" %}</p></div>
+            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">۱۰۰٪</p><p class="text-xs text-muted">{% trans "Customer Satisfaction" %}</p></div>
+        </div>
+    {% else %}
+        <p class="py-16 text-center text-muted">{% trans "No Information Available" %}</p>
+    {% endif %}
 </section>
-{% endblock content %}
+{% endblock %}

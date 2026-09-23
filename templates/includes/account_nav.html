@@ -1,7 +1,7 @@
 {% load i18n %}
-<nav class="account-nav" aria-label="{% trans 'Account' %}">
-    <a href="{% url 'accounts:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}is-active{% endif %}">{% trans 'Dashboard' %}</a>
-    <a href="{% url 'accounts:order_history' %}" class="{% if request.resolver_match.url_name == 'order_history' %}is-active{% endif %}">{% trans 'Order History' %}</a>
-    <a href="{% url 'order:my_returns' %}" class="{% if request.resolver_match.url_name == 'my_returns' %}is-active{% endif %}">{% trans 'Returns' %}</a>
-    <a href="{% url 'accounts:profile_edit' %}" class="{% if request.resolver_match.url_name == 'profile_edit' %}is-active{% endif %}">{% trans 'Edit Profile' %}</a>
+<nav class="mb-6 flex flex-wrap gap-2" aria-label="{% trans 'Account' %}">
+    <a href="{% url 'accounts:dashboard' %}" class="rounded-full border px-4 py-2 text-sm font-bold {% if request.resolver_match.url_name == 'dashboard' %}border-ink bg-ink text-paper{% else %}border-line bg-paper text-ink-2 hover:bg-surface{% endif %}">{% trans 'Dashboard' %}</a>
+    <a href="{% url 'accounts:order_history' %}" class="rounded-full border px-4 py-2 text-sm font-bold {% if request.resolver_match.url_name == 'order_history' %}border-ink bg-ink text-paper{% else %}border-line bg-paper text-ink-2 hover:bg-surface{% endif %}">{% trans 'Order History' %}</a>
+    <a href="{% url 'order:my_returns' %}" class="rounded-full border px-4 py-2 text-sm font-bold {% if request.resolver_match.url_name == 'my_returns' %}border-ink bg-ink text-paper{% else %}border-line bg-paper text-ink-2 hover:bg-surface{% endif %}">{% trans 'Returns' %}</a>
+    <a href="{% url 'accounts:profile_edit' %}" class="rounded-full border px-4 py-2 text-sm font-bold {% if request.resolver_match.url_name == 'profile_edit' %}border-ink bg-ink text-paper{% else %}border-line bg-paper text-ink-2 hover:bg-surface{% endif %}">{% trans 'Edit Profile' %}</a>
 </nav>

@@ -1,5 +1,6 @@
 import json
 from .models import FAQ
+from .search import get_searchable_field_choices
 
 
 def faq_context(request):
@@ -9,4 +10,11 @@ def faq_context(request):
     
     return {
         'faqs_json': json.dumps(faqs_list, ensure_ascii=False),
+    }
+
+
+def search_context(request):
+    """Expose live Product searchable fields to header Advanced Search."""
+    return {
+        'book_search_fields': get_searchable_field_choices(),
     }

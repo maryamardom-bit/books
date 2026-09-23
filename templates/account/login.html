@@ -4,33 +4,30 @@
 {% block page_title %}{% trans 'Login' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="auth-shell">
-    <div class="auth-card">
-        <span class="eyebrow" style="justify-content:center;">{% trans 'Kasra Publishing' %}</span>
-        <h1>{% trans 'Login' %}</h1>
-        <p class="lead">{% trans 'Sign in to manage orders, wallet and discounts.' %}</p>
-        <form method="post" action="{% url 'account_login' %}">
+<section class="page-wrap">
+    <div class="card mx-auto max-w-md text-center">
+        <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Kasra Publishing' %}</p>
+        <h1 class="mb-2 text-2xl">{% trans 'Login' %}</h1>
+        <p class="mb-6 text-sm text-muted">{% trans 'Sign in to manage orders, wallet and discounts.' %}</p>
+        <form method="post" action="{% url 'account_login' %}" class="space-y-4 text-start">
             {% csrf_token %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
             {% endif %}
             {% for field in form %}
-            <div class="field">
+            <div>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
-                {% if field.errors %}<div class="form-error">{{ field.errors.0 }}</div>{% endif %}
+                {% if field.errors %}<p class="mt-1 text-xs text-danger">{{ field.errors.0 }}</p>{% endif %}
             </div>
             {% endfor %}
-            {% if form.non_field_errors %}
-            <div class="form-error" style="margin-bottom:12px;">{{ form.non_field_errors.0 }}</div>
-            {% endif %}
-            <button type="submit" class="btn btn--accent btn--lg">{% trans 'Login' %}</button>
+            {% if form.non_field_errors %}<p class="text-sm text-danger">{{ form.non_field_errors.0 }}</p>{% endif %}
+            <button type="submit" class="btn btn-accent btn-lg btn-block">{% trans 'Login' %}</button>
         </form>
-        <p class="auth-alt">
-            <a href="{% url 'account_reset_password' %}">{% trans 'Forgot password?' %}</a>
-            <br>
+        <p class="mt-5 text-sm">
+            <a href="{% url 'account_reset_password' %}" class="text-accent-strong">{% trans 'Forgot password?' %}</a><br>
             {% trans "Don't have an account?" %}
-            <a href="{% url 'account_signup' %}">{% trans 'Sign up' %}</a>
+            <a href="{% url 'account_signup' %}" class="font-bold text-accent-strong">{% trans 'Sign up' %}</a>
         </p>
     </div>
 </section>

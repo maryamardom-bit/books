@@ -1,59 +1,38 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
-{% load persian_translation_tags %}
-{% load humanize %}
 
 {% block page_title %}{% trans 'My Returns' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'My Returns' %}</span>
-            </nav>
-            <h1 class="page-head__title">{% trans 'My Return Requests' %}</h1>
-        </div>
-        {% include "includes/account_nav.html" %}
-
-        {% if returns %}
-            {% for return_req in returns %}
-            <div class="content-card">
-                <div class="flex-center" style="justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                    <div class="flex-center">
-                        <strong style="color: var(--ink);">{% trans 'Return' %} #{{ return_req.id }}</strong>
-                        <span class="text-faint" style="font-size: 12px;">{{ return_req.datetime_created|date:"Y/m/d" }}</span>
-                    </div>
-                    <div>
-                        {% if return_req.status == 'PENDING' %}
-                        <span class="badge badge--warning">{% trans 'Pending' %}</span>
-                        {% elif return_req.status == 'APPROVED' %}
-                        <span class="badge badge--success">{% trans 'Approved' %}</span>
-                        {% elif return_req.status == 'REJECTED' %}
-                        <span class="badge badge--sale">{% trans 'Rejected' %}</span>
-                        {% elif return_req.status == 'RETURNED' %}
-                        <span class="badge badge--new">{% trans 'Returned' %}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                <p style="font-size: 14px; color: var(--ink-2); margin: 12px 0 0;">{{ return_req.reason }}</p>
-                {% if return_req.admin_note %}
-                <p style="font-size: 12px; color: var(--faint); margin: 6px 0 0;">
-                    {% trans 'Admin Note' %}: {{ return_req.admin_note }}
-                </p>
-                {% endif %}
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
+        <span>/</span>
+        <span>{% trans 'My Returns' %}</span>
+    </nav>
+    <h1 class="mb-6 text-3xl">{% trans 'My Return Requests' %}</h1>
+    {% include "includes/account_nav.html" %}
+    {% if returns %}
+    <div class="space-y-3">
+        {% for return_req in returns %}
+        <div class="card">
+            <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+                <p class="font-bold">{% trans 'Return' %} #{{ return_req.id }} <span class="ms-2 text-xs font-normal text-faint">{{ return_req.datetime_created|date:"Y/m/d" }}</span></p>
+                {% if return_req.status == 'PENDING' %}<span class="rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-bold text-accent-strong">{% trans 'Pending' %}</span>
+                {% elif return_req.status == 'APPROVED' %}<span class="rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-bold text-success">{% trans 'Approved' %}</span>
+                {% elif return_req.status == 'REJECTED' %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">{% trans 'Rejected' %}</span>
+                {% elif return_req.status == 'RETURNED' %}<span class="rounded-full bg-surface px-2 py-0.5 text-[11px] font-bold">{% trans 'Returned' %}</span>{% endif %}
             </div>
-            {% endfor %}
-        {% else %}
-        <div class="empty-state">
-            <span class="empty-state__icon"><i class="fas fa-rotate-left"></i></span>
-            <h3 class="empty-state__title">{% trans 'No return requests' %}</h3>
-            <p class="empty-state__text">{% trans 'You have not submitted any return requests yet.' %}</p>
+            <p class="text-sm">{{ return_req.reason }}</p>
+            {% if return_req.admin_note %}<p class="mt-2 text-xs text-faint">{% trans 'Admin Note' %}: {{ return_req.admin_note }}</p>{% endif %}
         </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% else %}
+    <div class="py-16 text-center text-muted">
+        <h2 class="mb-2">{% trans 'No return requests' %}</h2>
+        <p>{% trans 'You have not submitted any return requests yet.' %}</p>
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

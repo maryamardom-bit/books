@@ -2,72 +2,37 @@
 {% load persian_translation_tags %}
 {% load humanize %}
 
-<article class="book-card">
-    <a href="{{ product.get_absolute_url }}" class="book-card__cover" aria-label="{{ product.title }}">
+<article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition hover:-translate-y-1 hover:shadow-lg">
+    <a href="{{ product.get_absolute_url }}" class="relative flex aspect-[3/4] items-center justify-center overflow-hidden bg-surface" aria-label="{{ product.title }}">
         {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy">
         {% else %}
-        <span class="no-cover"><i class="fas fa-book-open"></i></span>
+        <i class="fas fa-book-open text-4xl text-faint"></i>
         {% endif %}
-        <span class="book-card__badges">
-            {% if rank %}
-            <span class="badge badge--ink">#{{ rank }}</span>
-            {% endif %}
-            {% if product.is_on_sale %}
-            <span class="badge badge--sale">%{{ product.get_discount_percent_display }}-</span>
-            {% endif %}
-            {% if product.is_new and not rank %}
-            <span class="badge badge--new">{% trans 'New' %}</span>
-            {% endif %}
+        <span class="absolute top-2 start-2 flex flex-col gap-1">
+            {% if rank %}<span class="rounded-full bg-ink px-2 py-0.5 text-[11px] font-bold text-paper">#{{ rank }}</span>{% endif %}
+            {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">%{{ product.get_discount_percent_display }}-</span>{% endif %}
+            {% if product.is_new and not rank %}<span class="rounded-full bg-paper px-2 py-0.5 text-[11px] font-bold text-ink">{% trans 'New' %}</span>{% endif %}
         </span>
     </a>
-
-    <div class="book-card__body">
-        <span class="book-card__cat">{{ product.get_category_display }}</span>
-        <h5 class="book-card__title">
-            <a class="title-link" href="{{ product.get_absolute_url }}">{{ product.title }}</a>
-        </h5>
-        {% if product.author %}
-        <span class="book-card__author">{{ product.author }}</span>
-        {% endif %}
-
-        {% if product.avg_rating > 0 %}
-        <div class="book-card__rating">
-            <span class="stars">
-                {% for i in "12345" %}
-                    {% if forloop.counter <= product.avg_rating %}★{% else %}<span class="stars-empty">★</span>{% endif %}
-                {% endfor %}
-            </span>
-            <span class="rating-count">({{ product.comments_count|default:0 }})</span>
-        </div>
-        {% endif %}
-
-        <div class="book-card__footer">
+    <div class="flex flex-1 flex-col p-4">
+        <p class="mb-1 text-[11px] font-bold uppercase text-accent-strong">{{ product.get_category_display }}</p>
+        <h3 class="mb-1 line-clamp-2 text-sm font-bold"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+        {% if product.author %}<p class="mb-2 text-xs text-faint">{{ product.author }}</p>{% endif %}
+        <div class="mt-auto flex items-end justify-between gap-2 border-t border-line pt-3">
             <div>
-                {% if show_sold %}
-                <span class="text-faint" style="font-size: 11.5px; font-weight: 700; display: block; margin-bottom: 2px;">
-                    {{ sold_count|default:0|translate_number }} {% trans 'sold' %}
-                </span>
-                {% endif %}
+                {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} {% trans 'sold' %}</p>{% endif %}
                 {% if product.is_on_sale %}
-                <span class="price--old">{{ product.price|intcomma:False|translate_number }}</span>
-                <div class="price price--sale">
-                    {{ product.get_discounted_price|intcomma:False|translate_number }}
-                    <span class="unit">{% trans 'Toman' %}</span>
-                </div>
+                <p class="text-xs text-faint line-through">{{ product.price|intcomma:False|translate_number }}</p>
+                <p class="font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
                 {% else %}
-                <div class="price">
-                    {{ product.price|intcomma:False|translate_number }}
-                    <span class="unit">{% trans 'Toman' %}</span>
-                </div>
+                <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
                 {% endif %}
             </div>
-            <form action="{% url 'cart:cart_add' product.id %}" method="post" style="margin: 0;">
+            <form action="{% url 'cart:cart_add' product.id %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="quick-add" title="{% trans 'Add to Cart' %}" aria-label="{% trans 'Add to Cart' %}">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-line hover:bg-ink hover:text-paper" aria-label="{% trans 'Add to Cart' %}"><i class="fas fa-plus text-xs"></i></button>
             </form>
         </div>
     </div>

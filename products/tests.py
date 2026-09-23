@@ -215,3 +215,111 @@ class TieredDiscountTest(TestCase):
         self.tiered.reset()
         
         self.assertEqual(self.tiered.current_tier, 0)
+
+
+class ProductSearchViewTest(TestCase):
+    """Simple and advanced product search"""
+
+    def setUp(self):
+        self.by_title = ProductFactory(
+            title='معماری معاصر ایران',
+            author='علی رضایی',
+            publisher='نشر کسری',
+            description='کتابی درباره فضا',
+            isbn='9786000000001',
+            number_of_pages=240,
+            active=True,
+        )
+        self.by_author = ProductFactory(
+            title='سازه و بتن',
+            author='معماری پژوه',
+            publisher='نشر دیگر',
+            description='سازه',
+            isbn='9786000000002',
+            active=True,
+        )
+        self.inactive = ProductFactory(
+            title='معماری پنهان',
+            author='ناشناس',
+            description='مخفی',
+            active=False,
+        )
+
+    def test_simple_search_title(self):
+        response = self.client.get('/products/search/', {'q': 'معماری معاصر'})
+        self.assertEqual(response.status_code, 200)
+        results = list(response.context['results'])
+        self.assertIn(self.by_title, results)
+        self.assertNotIn(self.by_author, results)
+        self.assertNotIn(self.inactive, results)
+
+    def test_simple_search_author(self):
+        response = self.client.get('/products/search/', {'q': 'علی رضایی'})
+        results = list(response.context['results'])
+        self.assertEqual(results, [self.by_title])
+
+    def test_simple_search_description_and_persian(self):
+        response = self.client.get('/products/search/', {'q': 'فضا'})
+        results = list(response.context['results'])
+        self.assertIn(self.by_title, results)
+
+    def test_simple_search_no_match(self):
+        response = self.client.get('/products/search/', {'q': 'وجودنداردxyz'})
+        self.assertEqual(list(response.context['results']), [])
+        self.assertEqual(response.context['results_count'], 0)
+
+    def test_advanced_title_only(self):
+        response = self.client.get('/products/search/', {
+            'q': 'معماری',
+            'mode': 'advanced',
+            'fields': ['title'],
+        })
+        results = list(response.context['results'])
+        self.assertIn(self.by_title, results)
+        self.assertNotIn(self.by_author, results)
+
+    def test_advanced_author_only(self):
+        response = self.client.get('/products/search/', {
+            'q': 'معماری',
+            'mode': 'advanced',
+            'fields': ['author'],
+        })
+        results = list(response.context['results'])
+        self.assertNotIn(self.by_title, results)
+        self.assertIn(self.by_author, results)
+
+    def test_advanced_multiple_fields(self):
+        response = self.client.get('/products/search/', {
+            'q': 'معماری',
+            'mode': 'advanced',
+            'fields': ['title', 'author'],
+        })
+        results = list(response.context['results'])
+        self.assertIn(self.by_title, results)
+        self.assertIn(self.by_author, results)
+
+    def test_advanced_no_fields_selected(self):
+        response = self.client.get('/products/search/', {
+            'q': 'معماری',
+            'mode': 'advanced',
+        })
+        self.assertEqual(list(response.context['results']), [])
+
+    def test_searchable_fields_come_from_model(self):
+        from .search import get_searchable_field_choices, EXCLUDED_FIELD_NAMES
+        names = {item['name'] for item in get_searchable_field_choices()}
+        self.assertIn('title', names)
+        self.assertIn('author', names)
+        self.assertIn('isbn', names)
+        self.assertIn('number_of_pages', names)
+        self.assertNotIn('stock', names)
+        self.assertTrue(EXCLUDED_FIELD_NAMES.isdisjoint(names))
+
+    def test_header_exposes_live_model_fields(self):
+        from .search import get_searchable_field_choices
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="fields"')
+        for item in get_searchable_field_choices():
+            self.assertContains(response, f'value="{item["name"]}"')
+        self.assertContains(response, 'searchOpen = true')

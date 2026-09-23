@@ -1,131 +1,82 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
-{% load crispy_forms_tags %}
 
 {% block page_title %}{% trans 'Edit Profile' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <nav class="crumb">
-            <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
-            <span class="sep">/</span>
-            <span>{% trans 'Edit Profile' %}</span>
-        </nav>
-        {% include "includes/account_nav.html" %}
-
-        <div class="content-card" style="max-width: 600px; margin: 0 auto;">
-            <h1 style="font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 26px;">
-                <i class="fas fa-user-edit text-accent"></i> {% trans 'Edit Profile' %}
-            </h1>
-
-            <form method="post">
-                {% csrf_token %}
-
-                {% for field in form %}
-                <div class="field">
-                    <label>{{ field.label }}</label>
-
-                    {% if field.name == 'birth_date' %}
-                    <div class="birth-date-wrapper" style="position: relative;">
-                        {{ field }}
-                        <span onclick="toggleCalendar(event)"
-                              style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--accent-strong); font-size: 17px; display: flex; align-items: center; justify-content: center; height: 100%;"
-                              aria-label="{% trans 'Calendar' %}">
-                            <i class="far fa-calendar-alt"></i>
-                        </span>
-                        <div id="jalali-calendar"
-                             style="display: none; position: absolute; top: 54px; left: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); z-index: 9999; padding: 15px; width: 300px;"></div>
-                    </div>
-                    {% else %}
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
+        <span>/</span>
+        <span>{% trans 'Edit Profile' %}</span>
+    </nav>
+    {% include "includes/account_nav.html" %}
+    <div class="card mx-auto max-w-xl">
+        <h1 class="mb-6 text-center text-xl">{% trans 'Edit Profile' %}</h1>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label>{{ field.label }}</label>
+                {% if field.name == 'birth_date' %}
+                <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                     {{ field }}
-                    {% endif %}
-
-                    {% if field.errors %}
-                    <small style="color: var(--danger); font-size: 12px; display: block; margin-top: 6px;">{{ field.errors.0 }}</small>
-                    {% endif %}
+                    <button type="button" class="absolute end-3 top-1/2 -translate-y-1/2 text-accent-strong" @click="open = !open; if (open) renderCalendar()" aria-label="{% trans 'Calendar' %}">
+                        <i class="far fa-calendar-alt"></i>
+                    </button>
+                    <div id="jalali-calendar" class="absolute end-0 top-14 z-[90] hidden w-72 rounded-xl border border-line bg-paper p-4 shadow-lg"></div>
                 </div>
-                {% endfor %}
-
-                <button type="submit" class="btn btn--accent btn--lg btn--block" style="margin-top: 10px;">
-                    <i class="fas fa-check"></i> {% trans 'Save Changes' %}
-                </button>
-            </form>
-
-            <div style="text-align: center; margin-top: 16px;">
-                <a href="{% url 'accounts:dashboard' %}" class="text-muted" style="font-size: 13px;">
-                    <i class="fas fa-arrow-right"></i> {% trans 'Back to Dashboard' %}
-                </a>
+                {% else %}
+                {{ field }}
+                {% endif %}
+                {% if field.errors %}<p class="mt-1 text-xs text-danger">{{ field.errors.0 }}</p>{% endif %}
             </div>
-        </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-accent btn-lg btn-block">{% trans 'Save Changes' %}</button>
+        </form>
+        <p class="mt-4 text-center"><a href="{% url 'accounts:dashboard' %}" class="text-sm text-muted">{% trans 'Back to Dashboard' %}</a></p>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// =============================================
-// تقویم شمسی اختصاصی با انتخاب سال و ماه
-// =============================================
 let currentYear = 1403;
 let currentMonth = 1;
 let selectedDate = null;
-let calendarOpen = false;
-
 const monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 
-function toggleCalendar(event) {
-    event.stopPropagation();
+function toggleCalClass(show) {
     const cal = document.getElementById('jalali-calendar');
-    calendarOpen = !calendarOpen;
-    cal.style.display = calendarOpen ? 'block' : 'none';
-    if (calendarOpen) renderCalendar();
-}
-
-function closeCalendar() {
-    calendarOpen = false;
-    document.getElementById('jalali-calendar').style.display = 'none';
+    cal.classList.toggle('hidden', !show);
 }
 
 function renderCalendar() {
     const cal = document.getElementById('jalali-calendar');
+    cal.classList.remove('hidden');
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
-
     let html = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <button type="button" onclick="changeMonth(-1)" style="border:none; background:var(--surface); cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700; color:var(--ink);">→</button>
-
-            <div style="display:flex; gap:5px; align-items:center;">
-                <span onclick="toggleYearDropdown(event)" style="cursor:pointer; font-weight:700; color:var(--ink); padding:3px 8px; border-radius:5px;">${currentYear}</span>
-                <span style="color:var(--faint);">/</span>
-                <span onclick="toggleMonthDropdown(event)" style="cursor:pointer; font-weight:700; color:var(--ink); padding:3px 8px; border-radius:5px;">${monthNames[currentMonth-1]}</span>
+        <div class="mb-3 flex items-center justify-between">
+            <button type="button" onclick="changeMonth(-1)" class="rounded-lg bg-surface px-2 py-1 font-bold">→</button>
+            <div class="flex items-center gap-1">
+                <button type="button" onclick="toggleYearDropdown(event)" class="rounded px-2 py-1 font-bold">${currentYear}</button>
+                <span class="text-faint">/</span>
+                <button type="button" onclick="toggleMonthDropdown(event)" class="rounded px-2 py-1 font-bold">${monthNames[currentMonth-1]}</button>
             </div>
-
-            <button type="button" onclick="changeMonth(1)" style="border:none; background:var(--surface); cursor:pointer; padding:6px 10px; border-radius:6px; font-weight:700; color:var(--ink);">←</button>
+            <button type="button" onclick="changeMonth(1)" class="rounded-lg bg-surface px-2 py-1 font-bold">←</button>
         </div>
-        <div id="year-dropdown" style="display:none;"></div>
-        <div id="month-dropdown" style="display:none;"></div>
-        <table style="width:100%; text-align:center; margin-top:5px; color:var(--ink);">
-            <tr>
-                <th style="padding:5px; font-weight:700;">ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th>
-            </tr>
-            <tr>
+        <div id="year-dropdown" class="mb-2 hidden"></div>
+        <div id="month-dropdown" class="mb-2 hidden"></div>
+        <table class="w-full text-center text-sm">
+            <tr class="text-muted"><th>ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th></tr><tr>
     `;
-
-    for (let i = 0; i < firstDay; i++) {
-        html += '<td></td>';
-    }
-
+    for (let i = 0; i < firstDay; i++) html += '<td></td>';
     for (let day = 1; day <= daysInMonth; day++) {
-        if ((firstDay + day - 1) % 7 === 0 && day > 1) {
-            html += '</tr><tr>';
-        }
+        if ((firstDay + day - 1) % 7 === 0 && day > 1) html += '</tr><tr>';
         const isSelected = selectedDate && selectedDate.year === currentYear && selectedDate.month === currentMonth && selectedDate.day === day;
-        html += `<td onclick="selectDate(${day})" style="padding:7px; cursor:pointer; border-radius:6px; transition:all 0.2s; ${isSelected ? 'background:var(--accent); color:#fff; font-weight:700;' : ''}">${day}</td>`;
+        html += `<td onclick="selectDate(${day})" class="cursor-pointer rounded-lg p-2 ${isSelected ? 'bg-accent font-bold text-white' : 'hover:bg-surface'}">${day}</td>`;
     }
-
     html += '</tr></table>';
     cal.innerHTML = html;
 }
@@ -133,104 +84,54 @@ function renderCalendar() {
 function toggleYearDropdown(event) {
     event.stopPropagation();
     const dropdown = document.getElementById('year-dropdown');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        return;
-    }
+    if (!dropdown.classList.contains('hidden')) { dropdown.classList.add('hidden'); return; }
     let years = '';
-    for (let y = currentYear - 60; y <= currentYear + 10; y++) {
-        years += `<option value="${y}">${y}</option>`;
-    }
-    dropdown.innerHTML = `<select onchange="selectYear(this.value)" style="width:100%; padding:5px; border:1px solid var(--line); border-radius:6px; font-family:inherit;">${years}</select>`;
-    dropdown.style.display = 'block';
+    for (let y = currentYear - 60; y <= currentYear + 10; y++) years += `<option value="${y}">${y}</option>`;
+    dropdown.innerHTML = `<select onchange="selectYear(this.value)">${years}</select>`;
+    dropdown.classList.remove('hidden');
 }
 
 function toggleMonthDropdown(event) {
     event.stopPropagation();
     const dropdown = document.getElementById('month-dropdown');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        return;
-    }
+    if (!dropdown.classList.contains('hidden')) { dropdown.classList.add('hidden'); return; }
     let months = '';
-    monthNames.forEach((name, index) => {
-        months += `<option value="${index+1}">${name}</option>`;
-    });
-    dropdown.innerHTML = `<select onchange="selectMonth(this.value)" style="width:100%; padding:5px; border:1px solid var(--line); border-radius:6px; font-family:inherit;">${months}</select>`;
-    dropdown.style.display = 'block';
+    monthNames.forEach((name, index) => { months += `<option value="${index+1}">${name}</option>`; });
+    dropdown.innerHTML = `<select onchange="selectMonth(this.value)">${months}</select>`;
+    dropdown.classList.remove('hidden');
 }
 
-function selectYear(year) {
-    currentYear = parseInt(year);
-    document.getElementById('year-dropdown').style.display = 'none';
-    renderCalendar();
-}
-
-function selectMonth(month) {
-    currentMonth = parseInt(month);
-    document.getElementById('month-dropdown').style.display = 'none';
-    renderCalendar();
-}
-
+function selectYear(year) { currentYear = parseInt(year); renderCalendar(); }
+function selectMonth(month) { currentMonth = parseInt(month); renderCalendar(); }
 function getDaysInMonth(year, month) {
     const monthDays = [31,31,31,31,31,31,30,30,30,30,30,29];
     if (month === 12 && isLeapYear(year)) return 30;
     return monthDays[month - 1];
 }
-
-function isLeapYear(year) {
-    return year % 33 % 4 === 1;
-}
-
+function isLeapYear(year) { return year % 33 % 4 === 1; }
 function getFirstDayOfMonth(year, month) {
-    const baseYear = 1403;
-    const baseDay = 6;
+    const baseYear = 1403, baseDay = 6;
     let totalDays = 0;
-    for (let y = baseYear; y < year; y++) {
-        totalDays += isLeapYear(y) ? 366 : 365;
-    }
-    for (let m = 1; m < month; m++) {
-        totalDays += getDaysInMonth(year, m);
-    }
+    for (let y = baseYear; y < year; y++) totalDays += isLeapYear(y) ? 366 : 365;
+    for (let m = 1; m < month; m++) totalDays += getDaysInMonth(year, m);
     return (totalDays + baseDay) % 7;
 }
-
 function changeMonth(delta) {
     currentMonth += delta;
-    if (currentMonth < 1) {
-        currentMonth = 12;
-        currentYear--;
-    } else if (currentMonth > 12) {
-        currentMonth = 1;
-        currentYear++;
-    }
+    if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+    else if (currentMonth > 12) { currentMonth = 1; currentYear++; }
     renderCalendar();
 }
-
 function selectDate(day) {
-    selectedDate = { year: currentYear, month: currentMonth, day: day };
-    const formatted = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-    document.getElementById('birth-date-input').value = formatted;
-    closeCalendar();
+    selectedDate = { year: currentYear, month: currentMonth, day };
+    document.getElementById('birth-date-input').value = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+    document.getElementById('jalali-calendar').classList.add('hidden');
 }
-
-// بستن تقویم با کلیک خارج از آن
-document.addEventListener('click', function(e) {
-    const wrapper = document.querySelector('.birth-date-wrapper');
-    if (wrapper && !wrapper.contains(e.target)) {
-        closeCalendar();
-    }
-});
-
-// راه‌اندازی اولیه
 document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('birth-date-input');
     if (input && input.value) {
         const parts = input.value.split('/');
-        if (parts.length === 3) {
-            currentYear = parseInt(parts[0]);
-            currentMonth = parseInt(parts[1]);
-        }
+        if (parts.length === 3) { currentYear = parseInt(parts[0]); currentMonth = parseInt(parts[1]); }
     }
 });
 </script>

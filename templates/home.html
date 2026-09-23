@@ -6,113 +6,118 @@
 
 {% block content %}
 <section class="bg-surface">
-    <div class="container grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-        <div>
-            <p class="eyebrow">{% trans 'Kasra Publishing' %}</p>
-            <h1 class="mb-5 text-4xl font-bold leading-snug text-ink md:text-5xl">
-                کتابخانه تخصصی <span class="text-accent">معماری</span>
-            </h1>
-            <p class="mb-8 max-w-lg text-muted">
-                از ناشر بخرید. معماری، داخلی، شهر و منظر — با اصالت نسخه، قیمت ناشر و ارسال سراسری.
-            </p>
+    <div class="mx-auto grid max-w-page items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
+        <div data-aos="fade-up">
+            <p class="mb-3 text-xs font-bold uppercase tracking-wide text-accent-strong">{% trans 'Kasra Publishing' %}</p>
+            <h1 class="mb-5 text-4xl font-bold leading-snug text-ink md:text-5xl">کتابخانه تخصصی <span class="text-accent">معماری</span></h1>
+            <p class="mb-8 max-w-lg text-muted">از ناشر بخرید. معماری، داخلی، شهر و منظر — با اصالت نسخه و ارسال سراسری.</p>
             <div class="flex flex-wrap gap-3">
-                <a href="{% url 'product:product_list' %}" class="btn btn--accent btn--lg">{% trans 'Browse catalog' %}</a>
-                <a href="{% url 'product:best_sellers' %}" class="btn btn--light btn--lg">{% trans 'Best Sellers' %}</a>
+                <a href="{% url 'product:product_list' %}" class="inline-flex items-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-white hover:bg-accent-strong">{% trans 'Browse catalog' %}</a>
+                <a href="{% url 'product:best_sellers' %}" class="inline-flex items-center rounded-full border border-line bg-paper px-7 py-3 text-sm font-bold hover:border-accent">{% trans 'Best Sellers' %}</a>
             </div>
         </div>
-        <div class="relative mx-auto w-full max-w-sm">
-            <div class="flex aspect-[3/4] items-center justify-center rounded-2xl border border-line bg-paper shadow-lg">
-                <div class="text-center text-faint">
-                    <i class="fas fa-book-open mb-3 text-6xl text-accent/50"></i>
-                    <p class="text-sm">{% trans 'Nationwide publishing house' %}</p>
-                </div>
+        <div class="relative mx-auto w-full max-w-sm" data-aos="fade-up" data-aos-delay="120">
+            <div class="overflow-hidden rounded-2xl border border-line bg-paper shadow-xl">
+                <img src="{% static 'img/hero-studio.jpg' %}" alt="{% trans 'Nationwide publishing house' %}" class="aspect-[3/4] w-full object-cover">
             </div>
-            <div class="absolute -top-3 start-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md">
-                <strong class="block text-ink">+۵۰۰ {% trans 'titles' %}</strong>
-            </div>
-            <div class="absolute -bottom-3 end-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md">
-                <strong class="block text-ink">+۱۵۰ {% trans 'authors' %}</strong>
-            </div>
+            <div class="absolute -top-3 start-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md"><strong>+۵۰۰</strong> {% trans 'titles' %}</div>
+            <div class="absolute -bottom-3 end-0 rounded-xl border border-line bg-paper px-4 py-3 text-sm shadow-md"><strong>+۱۵۰</strong> {% trans 'authors' %}</div>
         </div>
     </div>
 </section>
 
-<section class="section">
-    <div class="container">
-        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
-            <div>
-                <p class="eyebrow">{% trans 'Catalog' %}</p>
-                <h2 class="text-2xl">{% trans 'Explore the library' %}</h2>
-            </div>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="{% url 'product:product_list' %}" class="feature">
-                <span class="feature__icon"><i class="fas fa-book-open"></i></span>
-                <h3 class="feature__title">{% trans 'All books' %}</h3>
-                <p class="feature__desc">{% trans 'Full publisher catalog' %}</p>
-            </a>
-            <a href="{% url 'product:product_category' %}" class="feature">
-                <span class="feature__icon"><i class="fas fa-th-large"></i></span>
-                <h3 class="feature__title">{% trans 'Categories' %}</h3>
-                <p class="feature__desc">{% trans 'By architectural field' %}</p>
-            </a>
-            <a href="{% url 'product:package_list' %}" class="feature">
-                <span class="feature__icon"><i class="fas fa-box-open"></i></span>
-                <h3 class="feature__title">{% trans 'Packages' %}</h3>
-                <p class="feature__desc">{% trans 'Curated bundles' %}</p>
-            </a>
-            <a href="{% url 'product:product_list' %}?discount=true" class="feature">
-                <span class="feature__icon"><i class="fas fa-tags"></i></span>
-                <h3 class="feature__title">{% trans 'Sale' %}</h3>
-                <p class="feature__desc">{% trans 'Publisher discounts' %}</p>
-            </a>
-        </div>
+<section class="mx-auto max-w-page px-4 py-14 sm:px-6">
+    <div class="mb-8" data-aos="fade-up">
+        <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Catalog' %}</p>
+        <h2 class="text-2xl font-bold">{% trans 'Explore the library' %}</h2>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <a href="{% url 'product:product_list' %}" class="rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:shadow-md" data-aos="fade-up">
+            <span class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent-strong"><i class="fas fa-book-open"></i></span>
+            <h3 class="mb-1 font-bold">{% trans 'All books' %}</h3>
+            <p class="text-sm text-muted">{% trans 'Full publisher catalog' %}</p>
+        </a>
+        <a href="{% url 'product:product_category' %}" class="rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="60">
+            <span class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent-strong"><i class="fas fa-th-large"></i></span>
+            <h3 class="mb-1 font-bold">{% trans 'Categories' %}</h3>
+            <p class="text-sm text-muted">{% trans 'By architectural field' %}</p>
+        </a>
+        <a href="{% url 'product:package_list' %}" class="rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="120">
+            <span class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent-strong"><i class="fas fa-box-open"></i></span>
+            <h3 class="mb-1 font-bold">{% trans 'Packages' %}</h3>
+            <p class="text-sm text-muted">{% trans 'Curated bundles' %}</p>
+        </a>
+        <a href="{% url 'product:product_list' %}?discount=true" class="rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:shadow-md" data-aos="fade-up" data-aos-delay="180">
+            <span class="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-danger-soft text-danger"><i class="fas fa-tags"></i></span>
+            <h3 class="mb-1 font-bold">{% trans 'Sale' %}</h3>
+            <p class="text-sm text-muted">{% trans 'Publisher discounts' %}</p>
+        </a>
     </div>
 </section>
 
 {% if latest_books %}
-<section class="section pt-0">
-    <div class="container">
-        <div class="mb-8 flex items-end justify-between gap-4">
-            <div>
-                <p class="eyebrow">{% trans 'New Releases' %}</p>
-                <h2 class="text-2xl">{% trans 'Latest from the publisher' %}</h2>
-            </div>
+<section class="mx-auto max-w-page px-4 pb-16 sm:px-6">
+    <div class="mb-6 flex items-end justify-between gap-4">
+        <div>
+            <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'New Releases' %}</p>
+            <h2 class="text-2xl font-bold">{% trans 'Latest from the publisher' %}</h2>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" class="js-swiper-prev inline-flex h-10 w-10 items-center justify-center rounded-full border border-line hover:bg-surface" aria-label="{% trans 'Previous' %}"><i class="fas fa-chevron-right"></i></button>
+            <button type="button" class="js-swiper-next inline-flex h-10 w-10 items-center justify-center rounded-full border border-line hover:bg-surface" aria-label="{% trans 'Next' %}"><i class="fas fa-chevron-left"></i></button>
             <a href="{% url 'product:product_list' %}" class="text-sm font-bold text-accent-strong">{% trans 'View all' %}</a>
         </div>
-        <div class="book-grid">
+    </div>
+    <div class="swiper js-book-swiper">
+        <div class="swiper-wrapper">
             {% for product in latest_books %}
-                {% include "includes/book_card.html" with product=product %}
+            <div class="swiper-slide h-auto">{% include "includes/book_card.html" with product=product %}</div>
             {% endfor %}
         </div>
     </div>
 </section>
 {% endif %}
 
-<section class="section section--surface">
-    <div class="container">
-        <div class="trust-bar">
-            <div class="trust-bar__item">
-                <i class="fas fa-truck-fast text-accent"></i>
-                <div>
-                    <strong class="block text-ink">{% trans 'Fast Delivery' %}</strong>
-                    <span class="text-xs text-muted">{% trans 'Nationwide priority post' %}</span>
-                </div>
+{% if featured_packages %}
+<section class="bg-surface py-16">
+    <div class="mx-auto max-w-page px-4 sm:px-6">
+        <div class="mb-8 flex items-end justify-between">
+            <div>
+                <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Bundles' %}</p>
+                <h2 class="text-2xl font-bold">{% trans 'Special packages' %}</h2>
             </div>
-            <div class="trust-bar__item">
-                <i class="fas fa-lock text-accent"></i>
-                <div>
-                    <strong class="block text-ink">{% trans 'Secure Payment' %}</strong>
-                    <span class="text-xs text-muted">{% trans 'Trusted gateways' %}</span>
+            <a href="{% url 'product:package_list' %}" class="text-sm font-bold text-accent-strong">{% trans 'View all' %}</a>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+            {% for package in featured_packages %}
+            <a href="{{ package.get_absolute_url }}" class="overflow-hidden rounded-2xl border border-line bg-paper hover:shadow-md">
+                <div class="aspect-[16/10] bg-surface">
+                    {% if package.image %}<img src="{{ package.image.url }}" alt="{{ package.title }}" class="h-full w-full object-cover">{% endif %}
                 </div>
-            </div>
-            <div class="trust-bar__item">
-                <i class="fas fa-rotate-left text-accent"></i>
-                <div>
-                    <strong class="block text-ink">{% trans 'Easy Returns' %}</strong>
-                    <span class="text-xs text-muted">{% trans '3-day return policy' %}</span>
+                <div class="p-5">
+                    <h3 class="mb-1 font-bold">{{ package.title }}</h3>
+                    <p class="text-sm text-accent-strong">{{ package.price }} {% trans 'Toman' %}</p>
                 </div>
-            </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="mx-auto max-w-page px-4 py-16 sm:px-6">
+    <div class="grid overflow-hidden rounded-2xl border border-line bg-paper md:grid-cols-3">
+        <div class="flex items-center gap-3 border-line p-5 md:border-s">
+            <i class="fas fa-truck-fast text-accent"></i>
+            <div><p class="font-bold">{% trans 'Fast Delivery' %}</p><p class="text-xs text-muted">{% trans 'Nationwide priority post' %}</p></div>
+        </div>
+        <div class="flex items-center gap-3 border-t border-line p-5 md:border-s md:border-t-0">
+            <i class="fas fa-lock text-accent"></i>
+            <div><p class="font-bold">{% trans 'Secure Payment' %}</p><p class="text-xs text-muted">{% trans 'Trusted gateways' %}</p></div>
+        </div>
+        <div class="flex items-center gap-3 border-t border-line p-5 md:border-s md:border-t-0">
+            <i class="fas fa-rotate-left text-accent"></i>
+            <div><p class="font-bold">{% trans 'Easy Returns' %}</p><p class="text-xs text-muted">{% trans '3-day return policy' %}</p></div>
         </div>
     </div>
 </section>

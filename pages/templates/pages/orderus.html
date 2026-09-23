@@ -1,54 +1,26 @@
 {% extends "_base.html" %}
-{% load static %}
 {% load i18n %}
 
-{% block page_title %}
-{% trans "Order Conditions" %} | {% trans "Kasra Architecture Bookstore" %}
-{% endblock %}
+{% block page_title %}{% trans "Order Conditions" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'Order Conditions' %}</span>
-            </nav>
-            <span class="eyebrow"><i class="fas fa-file-alt"></i></span>
-            <h1 class="page-head__title">{% trans "Order Conditions" %}</h1>
-            <p class="page-head__desc">{% trans "Everything you need to know about ordering, shipping and payment." %}</p>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'Order Conditions' %}</span>
+    </nav>
+    <h1 class="mb-2 text-3xl">{% trans "Order Conditions" %}</h1>
+    <p class="mb-8 max-w-2xl text-muted">{% trans "Everything you need to know about ordering, shipping and payment." %}</p>
+    {% if orderus.is_active %}
+        <div class="card mb-8 prose-cms">{{ orderus.text|safe }}</div>
+        <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-2xl border border-line p-6"><i class="fas fa-truck-fast mb-3 text-accent"></i><h3 class="mb-1">{% trans "Fast Delivery" %}</h3><p class="text-sm text-muted">{% trans "Priority mail delivery for all orders" %}</p></div>
+            <div class="rounded-2xl border border-line p-6"><i class="fas fa-lock mb-3 text-accent"></i><h3 class="mb-1">{% trans "Secure Payment" %}</h3><p class="text-sm text-muted">{% trans "Safe and secure online payment" %}</p></div>
+            <div class="rounded-2xl border border-line p-6"><i class="fas fa-rotate-left mb-3 text-accent"></i><h3 class="mb-1">{% trans "Easy Returns" %}</h3><p class="text-sm text-muted">{% trans "Hassle-free return policy within 3 days" %}</p></div>
         </div>
-
-        {% if orderus.is_active %}
-            <div class="content-card">
-                <div class="content-card__prose">{{ orderus.text|safe }}</div>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature">
-                    <span class="feature__icon"><i class="fas fa-truck-fast"></i></span>
-                    <h3 class="feature__title">{% trans "Fast Delivery" %}</h3>
-                    <p class="feature__desc">{% trans "Priority mail delivery for all orders" %}</p>
-                </div>
-                <div class="feature">
-                    <span class="feature__icon"><i class="fas fa-lock"></i></span>
-                    <h3 class="feature__title">{% trans "Secure Payment" %}</h3>
-                    <p class="feature__desc">{% trans "Safe and secure online payment" %}</p>
-                </div>
-                <div class="feature">
-                    <span class="feature__icon"><i class="fas fa-rotate-left"></i></span>
-                    <h3 class="feature__title">{% trans "Easy Returns" %}</h3>
-                    <p class="feature__desc">{% trans "Hassle-free return policy within 3 days" %}</p>
-                </div>
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <span class="empty-state__icon"><i class="fas fa-file-alt"></i></span>
-                <h3 class="empty-state__title">{% trans "No Information Available" %}</h3>
-                <p class="empty-state__text">{% trans "The order conditions page content is not available at the moment. Please try again later." %}</p>
-            </div>
-        {% endif %}
-    </div>
+    {% else %}
+        <p class="py-16 text-center text-muted">{% trans "No Information Available" %}</p>
+    {% endif %}
 </section>
-{% endblock content %}
+{% endblock %}

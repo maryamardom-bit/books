@@ -1,5 +1,4 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 {% load persian_translation_tags %}
 {% load humanize %}
@@ -7,30 +6,24 @@
 {% block page_title %}پرفروش‌ترین‌ها | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'Best Sellers' %}</span>
-            </nav>
-            <span class="eyebrow"><i class="fas fa-fire"></i></span>
-            <h1 class="page-head__title">{% trans 'Best Sellers' %}</h1>
-            <p class="page-head__desc">{% trans 'The most popular books, chosen by our readers.' %}</p>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'Best Sellers' %}</span>
+    </nav>
+    <p class="mb-2 text-xs font-bold uppercase text-accent-strong"><i class="fas fa-fire"></i> {% trans 'Best Sellers' %}</p>
+    <h1 class="mb-2 text-3xl">{% trans 'Best Sellers' %}</h1>
+    <p class="mb-8 text-muted">{% trans 'The most popular books, chosen by our readers.' %}</p>
+    <div class="book-grid">
+        {% for product in products %}
+            {% include "includes/book_card.html" with product=product rank=forloop.counter show_sold=True sold_count=product.total_sold %}
+        {% empty %}
+        <div class="col-span-full py-16 text-center">
+            <h3 class="mb-4">{% trans 'No sales yet' %}</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans 'Browse books' %}</a>
         </div>
-
-        <div class="book-grid">
-            {% for product in products %}
-                {% include "includes/book_card.html" with product=product rank=forloop.counter show_sold=True sold_count=product.total_sold %}
-            {% empty %}
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <span class="empty-state__icon"><i class="fas fa-book-open"></i></span>
-                <h3 class="empty-state__title">{% trans 'No sales yet' %}</h3>
-                <a href="{% url 'product:product_list' %}" class="btn btn--accent btn--sm">{% trans 'Browse books' %}</a>
-            </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

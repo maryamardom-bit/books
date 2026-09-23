@@ -1,67 +1,36 @@
 {% extends '_base.html' %}
 {% load i18n %}
-{% load persian_translation_tags %}
-{% load humanize %}
 
 {% block page_title %}{{ category.name }} | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        {% if category %}
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <a href="{% url 'product:product_category' %}">{% trans 'Categories' %}</a>
-                <span class="sep">/</span>
-                <span>{{ category.name }}</span>
-            </nav>
-            <span class="eyebrow">{{ category.icon }}</span>
-            <h1 class="page-head__title">{{ category.name }}</h1>
-            <p class="page-head__desc">{{ category.count }} {% trans 'books' %}</p>
+<section class="page-wrap">
+    {% if category %}
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <a href="{% url 'product:product_category' %}">{% trans 'Categories' %}</a>
+        <span>/</span>
+        <span>{{ category.name }}</span>
+    </nav>
+    <p class="mb-2 text-xs font-bold text-accent-strong">{{ category.icon }}</p>
+    <h1 class="mb-2 text-3xl">{{ category.name }}</h1>
+    <p class="mb-8 text-muted">{{ category.count }} {% trans 'books' %}</p>
+    <div class="book-grid">
+        {% for product in products %}
+            {% include "includes/book_card.html" with product=product %}
+        {% empty %}
+        <div class="col-span-full py-16 text-center">
+            <h3 class="mb-4">{% trans 'No books in this category' %}</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans 'View all books' %}</a>
         </div>
-
-        <div class="book-grid">
-            {% for product in products %}
-                {% include "includes/book_card.html" with product=product %}
-            {% empty %}
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <span class="empty-state__icon"><i class="fas fa-book-open"></i></span>
-                <h3 class="empty-state__title">{% trans 'No books in this category' %}</h3>
-                <a href="{% url 'product:product_list' %}" class="btn btn--accent btn--sm">{% trans 'View all books' %}</a>
-            </div>
-            {% endfor %}
-        </div>
-
-        {% if is_paginated %}
-        <nav class="pagination" aria-label="{% trans 'Pagination' %}">
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Previous' %}">
-                <i class="fas fa-chevron-right"></i>
-            </a>
-            {% endif %}
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <span class="pagination__current">{{ num }}</span>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a href="?page={{ num }}">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Next' %}">
-                <i class="fas fa-chevron-left"></i>
-            </a>
-            {% endif %}
-        </nav>
-        {% endif %}
-
-        {% else %}
-        <div class="empty-state">
-            <span class="empty-state__icon"><i class="fas fa-exclamation-triangle"></i></span>
-            <h3 class="empty-state__title">{{ error }}</h3>
-        </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% include "includes/pagination.html" with base="?page=" %}
+    {% else %}
+    <div class="py-16 text-center">
+        <h3>{{ error }}</h3>
+    </div>
+    {% endif %}
 </section>
 {% endblock %}

@@ -4,30 +4,27 @@
 {% block page_title %}{% trans 'Sign up' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="auth-shell">
-    <div class="auth-card">
-        <span class="eyebrow" style="justify-content:center;">{% trans 'Kasra Publishing' %}</span>
-        <h1>{% trans 'Create account' %}</h1>
-        <p class="lead">{% trans 'Join to order directly from the publisher.' %}</p>
-        <form method="post" action="{% url 'account_signup' %}">
+<section class="page-wrap">
+    <div class="card mx-auto max-w-md text-center">
+        <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Kasra Publishing' %}</p>
+        <h1 class="mb-2 text-2xl">{% trans 'Create account' %}</h1>
+        <p class="mb-6 text-sm text-muted">{% trans 'Join to order directly from the publisher.' %}</p>
+        <form method="post" action="{% url 'account_signup' %}" class="space-y-4 text-start">
             {% csrf_token %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
             {% endif %}
             {% for field in form %}
-            <div class="field">
+            <div>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
-                {% if field.help_text %}<div class="form-note">{{ field.help_text|safe }}</div>{% endif %}
-                {% if field.errors %}<div class="form-error">{{ field.errors.0 }}</div>{% endif %}
+                {% if field.help_text %}<p class="mt-1 text-xs text-faint">{{ field.help_text|safe }}</p>{% endif %}
+                {% if field.errors %}<p class="mt-1 text-xs text-danger">{{ field.errors.0 }}</p>{% endif %}
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn--accent btn--lg">{% trans 'Sign up' %}</button>
+            <button type="submit" class="btn btn-accent btn-lg btn-block">{% trans 'Sign up' %}</button>
         </form>
-        <p class="auth-alt">
-            {% trans 'Already have an account?' %}
-            <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
-        </p>
+        <p class="mt-5 text-sm">{% trans 'Already have an account?' %} <a href="{% url 'account_login' %}" class="font-bold text-accent-strong">{% trans 'Login' %}</a></p>
     </div>
 </section>
 {% endblock %}

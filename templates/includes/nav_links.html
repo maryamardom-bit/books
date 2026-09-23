@@ -1,5 +1,6 @@
 {% load i18n %}
 {% with name=request.resolver_match.url_name %}
+<a href="{% url 'page:home' %}" class="{{ item_class }} {% if name == 'home' %}{{ active_class }}{% endif %}">{% trans 'Home' %}</a>
 <a href="{% url 'product:product_list' %}" class="{{ item_class }} {% if name == 'product_list' %}{{ active_class }}{% endif %}">{% trans 'Shop' %}</a>
 <a href="{% url 'product:product_category' %}" class="{{ item_class }} {% if name == 'product_category' or name == 'product_list_by_category' %}{{ active_class }}{% endif %}">{% trans 'Categories' %}</a>
 <a href="{% url 'product:package_list' %}" class="{{ item_class }} {% if 'package' in name %}{{ active_class }}{% endif %}">{% trans 'Packages' %}</a>

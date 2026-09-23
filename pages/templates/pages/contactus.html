@@ -1,111 +1,51 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 
-{% block page_title %}
-  {% trans 'Contact Us' %}|{% trans 'Kasra Architecture Bookstore' %}
-{% endblock %}
+{% block page_title %}{% trans 'Contact Us' %} | {% trans 'Kasra Architecture Bookstore' %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'Contact Us' %}</span>
-            </nav>
-            <span class="eyebrow"><i class="fas fa-phone"></i></span>
-            <h1 class="page-head__title">{% trans 'Contact Us' %}</h1>
-            <p class="page-head__desc">{% trans 'We would love to hear from you. Reach out through any of the channels below.' %}</p>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'Contact Us' %}</span>
+    </nav>
+    <h1 class="mb-2 text-3xl">{% trans 'Contact Us' %}</h1>
+    <p class="mb-8 max-w-2xl text-muted">{% trans 'We would love to hear from you. Reach out through any of the channels below.' %}</p>
+    <div class="grid gap-6 lg:grid-cols-12">
+        <div class="space-y-4 lg:col-span-8">
+            {% if contact %}
+            <div class="card space-y-4">
+                <h2 class="text-lg">{% trans 'Address & Contact Information' %}</h2>
+                <p><strong>{% trans 'Address:' %}</strong> {{ contact.address }}</p>
+                <p><strong>{% trans 'Postal Code:' %}</strong> {{ contact.postal_code }}</p>
+                <p><strong>{% trans 'Phone Number:' %}</strong> {{ contact.phone }}</p>
+            </div>
+            <div class="rounded-2xl border border-line bg-accent-soft p-6 space-y-3">
+                <h3 class="font-bold">{% trans 'Communication with Sales & Orders Department' %}</h3>
+                <p><strong>{% trans 'WhatsApp:' %}</strong> <a href="https://wa.me/{{ contact.whatsapp }}" target="_blank" rel="noopener" class="text-accent-strong">{{ contact.whatsapp }}</a></p>
+                <p><strong>{% trans 'Email:' %}</strong> <a href="mailto:{{ contact.email }}" class="text-accent-strong">{{ contact.email }}</a></p>
+            </div>
+            {% else %}
+            <p class="py-12 text-center text-muted">{% trans 'No Contact Information' %}</p>
+            {% endif %}
         </div>
-
-        <div class="grid gap-6 lg:grid-cols-12">
-            <div class="lg:col-span-8">
-                {% if contact %}
-                <div class="content-card">
-                    <h4 style="margin-bottom: 14px;">{% trans 'Address & Contact Information' %}</h4>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <div>
-                            <strong>{% trans 'Address:' %}</strong>
-                            <span class="info-row__value">{{ contact.address }}</span>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-envelope"></i></span>
-                        <div>
-                            <strong>{% trans 'Postal Code:' %}</strong>
-                            <span class="info-row__value">{{ contact.postal_code }}</span>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-phone"></i></span>
-                        <div>
-                            <strong>{% trans 'Phone Number:' %}</strong>
-                            <span class="info-row__value">{{ contact.phone }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="callout">
-                    <h5 class="callout__title"><i class="fas fa-headset"></i> {% trans 'Communication with Sales & Orders Department' %}</h5>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fab fa-whatsapp"></i></span>
-                        <div class="info-row--link">
-                            <strong>{% trans 'WhatsApp:' %}</strong>
-                            <a href="https://wa.me/{{ contact.whatsapp }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-envelope"></i></span>
-                        <div class="info-row--link">
-                            <strong>{% trans 'Email:' %}</strong>
-                            <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
-                        </div>
-                    </div>
-                </div>
-                {% else %}
-                <div class="empty-state">
-                    <span class="empty-state__icon"><i class="fas fa-phone"></i></span>
-                    <h3 class="empty-state__title">{% trans 'No Contact Information' %}</h3>
-                    <p class="empty-state__text">{% trans 'Contact information is not available at the moment. Please try again later.' %}</p>
-                </div>
-                {% endif %}
+        <div class="space-y-4 lg:col-span-4">
+            <div class="card">
+                <h2 class="mb-4 text-lg">{% trans 'Working Hours' %}</h2>
+                <p class="mb-2 text-sm"><strong>{% trans 'Saturday - Thursday:' %}</strong> 09:00 - 14:00</p>
+                <p class="text-sm"><strong>{% trans 'Friday:' %}</strong> {% trans 'Closed' %}</p>
             </div>
-
-            <div class="lg:col-span-4">
-                <div class="content-card">
-                    <h4 style="margin-bottom: 14px;">{% trans 'Working Hours' %}</h4>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-calendar"></i></span>
-                        <div>
-                            <strong>{% trans 'Saturday - Thursday:' %}</strong>
-                            <span class="info-row__value">09:00 - 14:00</span>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-row__icon"><i class="fas fa-calendar-times"></i></span>
-                        <div>
-                            <strong>{% trans 'Friday:' %}</strong>
-                            <span class="info-row__value">{% trans 'Closed' %}</span>
-                        </div>
-                    </div>
+            {% if contact %}
+            <div class="overflow-hidden rounded-2xl border border-line">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3215.301741115744!2d59.564749!3d36.304989!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDE4JzE4LjAiTiA1OcKwMzMnNTMuMSJF!5e0!3m2!1sen!2s!4v1786173473063!5m2!1sen!2s" class="block h-52 w-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="{% trans 'Map' %}"></iframe>
+                <div class="flex items-center gap-2 p-4 text-sm">
+                    <i class="fas fa-map-marker-alt text-accent-strong"></i>
+                    <span class="flex-1 text-ink-2">{{ contact.address }}</span>
+                    <a href="https://maps.app.goo.gl/MxVs4ZZyvcQS7i7Y8" target="_blank" rel="noopener" class="shrink-0 text-xs font-bold text-accent-strong">{% trans 'Open in Maps' %}</a>
                 </div>
-
-                {% if contact %}
-                <div class="content-card" style="padding: 0; overflow: hidden;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3215.301741115744!2d59.564749!3d36.304989!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDE4JzE4LjAiTiA1OcKwMzMnNTMuMSJF!5e0!3m2!1sen!2s!4v1786173473063!5m2!1sen!2s" width="100%" height="220" style="border:0; display: block;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-                    <div class="flex-center" style="padding: 14px 18px; border-top: 1px solid var(--line-2); gap: 10px;">
-                        <i class="fas fa-map-marker-alt" style="color: var(--accent-strong);"></i>
-                        <span style="font-size: 13px; color: var(--ink-2); flex: 1;">{{ contact.address }}</span>
-                        <a href="https://maps.app.goo.gl/MxVs4ZZyvcQS7i7Y8" target="_blank" rel="noopener" style="color: var(--accent-strong); font-size: 12px; font-weight: 700; white-space: nowrap;">
-                            <i class="fas fa-external-link-alt"></i> {% trans 'Open in Maps' %}
-                        </a>
-                    </div>
-                </div>
-                {% endif %}
             </div>
+            {% endif %}
         </div>
     </div>
 </section>

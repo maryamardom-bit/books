@@ -1,51 +1,29 @@
 {% extends "_base.html" %}
-{% load static %}
 {% load i18n %}
 
-{% block page_title %}
-{% trans "Collaborate with Us" %} | {% trans "Kasra Architecture Bookstore" %}
-{% endblock %}
+{% block page_title %}{% trans "Collaborate with Us" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'Work With Us' %}</span>
-            </nav>
-            <span class="eyebrow"><i class="fas fa-handshake"></i></span>
-            <h1 class="page-head__title">{% trans "Collaborate with Us" %}</h1>
-            <p class="page-head__desc">{% trans "Authors, translators and partners — let's build the future of architecture publishing together." %}</p>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'Work With Us' %}</span>
+    </nav>
+    <h1 class="mb-2 text-3xl">{% trans "Collaborate with Us" %}</h1>
+    <p class="mb-8 max-w-2xl text-muted">{% trans "Authors, translators and partners — let's build the future of architecture publishing together." %}</p>
+    {% if cooperation and cooperation.is_active %}
+        <div class="card mb-6 prose-cms">{{ cooperation.intro_text|safe }}</div>
+        <div class="mb-6 rounded-2xl border border-line bg-accent-soft p-6">
+            <h2 class="mb-2 text-lg">{% trans "Join Us" %}</h2>
+            <div class="prose-cms">{{ cooperation.invitation_text|safe }}</div>
         </div>
-
-        {% if cooperation and cooperation.is_active %}
-            <div class="content-card">
-                <div class="content-card__prose">{{ cooperation.intro_text|safe }}</div>
-            </div>
-
-            <div class="callout">
-                <h5 class="callout__title"><i class="fas fa-bullhorn"></i> {% trans "Join Us" %}</h5>
-                <p class="callout__text">{{ cooperation.invitation_text|safe }}</p>
-            </div>
-
-            <div class="content-card" style="display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 0;">
-                <span class="text-muted" style="font-size: 13px;">
-                    <i class="fas fa-clock"></i>
-                    {% trans "Last updated:" %} {{ cooperation.updated_at|date:"Y/m/d H:i" }}
-                </span>
-                <a href="{% url 'page:contactus' %}" class="btn btn--primary">
-                    <i class="fas fa-envelope"></i> {% trans "Contact Us" %}
-                </a>
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <span class="empty-state__icon"><i class="fas fa-handshake"></i></span>
-                <h3 class="empty-state__title">{% trans "No Cooperation Information" %}</h3>
-                <p class="empty-state__text">{% trans "The cooperation page content is not available at the moment. Please try again later." %}</p>
-            </div>
-        {% endif %}
-    </div>
+        <div class="card flex flex-wrap items-center justify-between gap-4">
+            <p class="text-sm text-muted">{% trans "Last updated:" %} {{ cooperation.updated_at|date:"Y/m/d H:i" }}</p>
+            <a href="{% url 'page:contactus' %}" class="btn btn-accent">{% trans "Contact Us" %}</a>
+        </div>
+    {% else %}
+        <p class="py-16 text-center text-muted">{% trans "No Cooperation Information" %}</p>
+    {% endif %}
 </section>
-{% endblock content %}
+{% endblock %}

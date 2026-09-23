@@ -1,65 +1,34 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
-{% load persian_translation_tags %}
-{% load humanize %}
 
 {% block page_title %}{{ author }} | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <a href="{% url 'product:product_list' %}">{% trans 'Books' %}</a>
-                <span class="sep">/</span>
-                <span>{{ author }}</span>
-            </nav>
-
-            <div class="content-card" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px;">
-                <span class="avatar" style="width: 64px; height: 64px; font-size: 24px;">{{ author|first|upper }}</span>
-                <div>
-                    <h1 class="page-head__title" style="margin: 0 0 4px;">{{ author }}</h1>
-                    <p class="page-head__desc" style="margin: 0;">{{ total_books }} {% trans 'books' %}</p>
-                </div>
-            </div>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <a href="{% url 'product:product_list' %}">{% trans 'Books' %}</a>
+        <span>/</span>
+        <span>{{ author }}</span>
+    </nav>
+    <div class="mb-8 flex items-center gap-4 rounded-2xl border border-line p-5">
+        <span class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-ink text-2xl font-bold text-paper">{{ author|first|upper }}</span>
+        <div>
+            <h1 class="text-2xl">{{ author }}</h1>
+            <p class="text-muted">{{ total_books }} {% trans 'books' %}</p>
         </div>
-
-        <div class="book-grid">
-            {% for product in products %}
-                {% include "includes/book_card.html" with product=product %}
-            {% empty %}
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <span class="empty-state__icon"><i class="fas fa-book-open"></i></span>
-                <h3 class="empty-state__title">{% trans 'No books by this author' %}</h3>
-                <a href="{% url 'product:product_list' %}" class="btn btn--accent btn--sm">{% trans 'View all books' %}</a>
-            </div>
-            {% endfor %}
-        </div>
-
-        {% if is_paginated %}
-        <nav class="pagination" aria-label="{% trans 'Pagination' %}">
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Previous' %}">
-                <i class="fas fa-chevron-right"></i>
-            </a>
-            {% endif %}
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <span class="pagination__current">{{ num }}</span>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <a href="?page={{ num }}">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Next' %}">
-                <i class="fas fa-chevron-left"></i>
-            </a>
-            {% endif %}
-        </nav>
-        {% endif %}
     </div>
+    <div class="book-grid">
+        {% for product in products %}
+            {% include "includes/book_card.html" with product=product %}
+        {% empty %}
+        <div class="col-span-full py-16 text-center">
+            <h3 class="mb-4">{% trans 'No books by this author' %}</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans 'View all books' %}</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% include "includes/pagination.html" with base="?page=" %}
 </section>
 {% endblock %}

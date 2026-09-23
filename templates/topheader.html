@@ -1,84 +1,68 @@
 {% load static %}
 {% load i18n %}
 
-<header class="sticky top-0 z-50 border-b border-line/80 bg-paper/90 backdrop-blur-md dark:bg-paper/85">
-    <div class="mx-auto flex max-w-6xl flex-nowrap items-center gap-3 px-4 py-3 sm:px-6 lg:gap-5">
-        <button type="button" id="navToggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink lg:hidden" aria-controls="navDrawer" aria-expanded="false" aria-label="{% trans 'Menu' %}">
+<header class="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md">
+    <div class="mx-auto flex h-14 max-w-page items-center gap-3 px-4 sm:h-16 sm:px-6">
+        <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink lg:hidden" @click="navOpen = true" :aria-expanded="navOpen.toString()" aria-label="{% trans 'Menu' %}">
             <i class="fas fa-bars"></i>
         </button>
 
         <a href="{% url 'page:home' %}" class="shrink-0" aria-label="{% trans 'Kasra Publishing' %}">
-            <img src="{% static 'img/kasrapublishing.jpg' %}" alt="{% trans 'Kasra Publishing' %}" class="h-10 w-auto dark:brightness-110">
+            <img src="{% static 'img/logo/kasra-logo-black.png' %}" alt="{% trans 'Kasra Publishing' %}" class="h-9 w-auto dark:hidden">
+            <img src="{% static 'img/logo/kasra-logo-white.png' %}" alt="{% trans 'Kasra Publishing' %}" class="hidden h-9 w-auto dark:inline">
         </a>
 
-        <nav class="hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto lg:flex" aria-label="{% trans 'Main navigation' %}">
-            {% include "includes/nav_links.html" with item_class="nav-link" active_class="is-active" %}
+        <nav class="hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="{% trans 'Main navigation' %}">
+            {% include "includes/nav_links.html" with item_class="rounded-full px-3 py-2 text-sm font-bold text-ink-2 hover:bg-surface hover:text-ink" active_class="bg-surface text-ink" %}
         </nav>
 
-        <form action="{% url 'product:product_search' %}" method="get" class="hidden min-w-0 flex-1 md:flex lg:max-w-xs lg:flex-none" role="search">
-            <label class="flex w-full items-center rounded-full border border-line bg-surface px-3 transition focus-within:border-accent focus-within:bg-paper focus-within:ring-4 focus-within:ring-accent/15">
-                <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="{% trans 'Search books, authors…' %}" class="w-full bg-transparent px-2 py-2.5 text-sm text-ink outline-none placeholder:text-faint">
-                <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink text-paper" aria-label="{% trans 'Search' %}">
-                    <i class="fas fa-search text-xs"></i>
-                </button>
-            </label>
-        </form>
-
-        <div class="ms-auto flex items-center gap-1 sm:gap-2">
-            <button type="button" id="themeToggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-surface" aria-label="{% trans 'Toggle theme' %}">
+        <div class="ms-auto flex items-center gap-1">
+            <button type="button" id="themeToggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-surface" aria-label="{% trans 'Toggle light and dark' %}">
                 <i class="fas fa-moon dark:hidden"></i>
                 <i class="fas fa-sun hidden dark:inline"></i>
             </button>
-
             <a href="{% url 'cart:cart_detail' %}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-surface" aria-label="{% trans 'Cart' %}">
                 <i class="fas fa-bag-shopping"></i>
-                {% if cart %}
-                <span class="absolute top-1 end-1 min-w-[1.1rem] rounded-full bg-accent px-1 text-center text-[10px] font-bold leading-4 text-white">{{ cart|length|default:0 }}</span>
-                {% endif %}
+                {% if cart %}<span class="absolute top-1 end-1 min-w-[1.05rem] rounded-full bg-accent px-1 text-center text-[10px] font-bold text-white">{{ cart|length }}</span>{% endif %}
             </a>
-
             {% if user.is_authenticated %}
-            <div class="relative" id="userDropdown">
-                <a href="{% url 'accounts:dashboard' %}" class="inline-flex items-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-bold text-ink hover:border-accent">
-                    <i class="fas fa-user"></i>
-                    <span class="hidden sm:inline">{{ user.username|truncatechars:10 }}</span>
+            <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                <a href="{% url 'accounts:dashboard' %}" class="inline-flex items-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-bold">
+                    <i class="fas fa-user"></i><span class="hidden sm:inline">{{ user.username|truncatechars:10 }}</span>
                 </a>
-                <div id="userDropdownMenu" class="absolute top-full z-50 mt-2 hidden min-w-[12rem] rounded-xl border border-line bg-paper p-1.5 shadow-lg end-0">
-                    <a href="{% url 'accounts:dashboard' %}" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-surface">{% trans 'Dashboard' %}</a>
-                    <a href="{% url 'accounts:order_history' %}" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-surface">{% trans 'Orders' %}</a>
-                    <a href="{% url 'order:my_returns' %}" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-surface">{% trans 'Returns' %}</a>
-                    <a href="{% url 'accounts:profile_edit' %}" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-2 hover:bg-surface">{% trans 'Profile' %}</a>
-                    <a href="{% url 'account_logout' %}" class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-danger hover:bg-danger-soft">{% trans 'Logout' %}</a>
+                <div x-show="open" x-cloak class="absolute end-0 top-full z-50 mt-2 w-44 rounded-xl border border-line bg-paper p-1.5 shadow-lg">
+                    <a href="{% url 'accounts:dashboard' %}" class="block rounded-lg px-3 py-2 text-sm hover:bg-surface">{% trans 'Dashboard' %}</a>
+                    <a href="{% url 'accounts:order_history' %}" class="block rounded-lg px-3 py-2 text-sm hover:bg-surface">{% trans 'Orders' %}</a>
+                    <a href="{% url 'order:my_returns' %}" class="block rounded-lg px-3 py-2 text-sm hover:bg-surface">{% trans 'Returns' %}</a>
+                    <a href="{% url 'accounts:profile_edit' %}" class="block rounded-lg px-3 py-2 text-sm hover:bg-surface">{% trans 'Profile' %}</a>
+                    <a href="{% url 'account_logout' %}" class="block rounded-lg px-3 py-2 text-sm text-danger hover:bg-danger-soft">{% trans 'Logout' %}</a>
                 </div>
             </div>
             {% else %}
-            <a href="{% url 'account_login' %}" class="inline-flex items-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-bold text-ink hover:border-accent">
-                <i class="fas fa-user"></i>
-                <span class="hidden sm:inline">{% trans 'Login' %}</span>
-            </a>
+            <a href="{% url 'account_login' %}" class="inline-flex items-center gap-2 rounded-full border border-line px-3 py-2 text-xs font-bold hover:border-accent">{% trans 'Login' %}</a>
             {% endif %}
         </div>
     </div>
-
-    <form action="{% url 'product:product_search' %}" method="get" class="border-t border-line px-4 py-2 lg:hidden" role="search">
-        <label class="flex items-center rounded-full border border-line bg-surface px-3">
-            <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="{% trans 'Search…' %}" class="w-full bg-transparent px-2 py-2 text-sm outline-none">
-            <button type="submit" aria-label="{% trans 'Search' %}" class="text-ink"><i class="fas fa-search"></i></button>
-        </label>
-    </form>
+    <div class="border-t border-line">
+        <div class="mx-auto max-w-page px-4 py-2.5 sm:px-6">
+            {% include "includes/site_search.html" %}
+        </div>
+    </div>
 </header>
 
-<div id="navOverlay" class="fixed inset-0 z-[60] hidden bg-ink/40" hidden></div>
-<aside id="navDrawer" class="fixed inset-y-0 right-0 z-[70] flex w-[min(20rem,88vw)] translate-x-full flex-col bg-paper shadow-xl transition-transform duration-300 [&[aria-hidden='false']]:translate-x-0" aria-hidden="true">
+<div x-show="navOpen" x-transition.opacity class="fixed inset-0 z-[60] bg-ink/40 lg:hidden" @click="navOpen = false" x-cloak></div>
+<aside x-show="navOpen" x-cloak x-transition.opacity.duration.200ms
+       class="fixed inset-y-0 right-0 z-[70] flex w-80 max-w-[88vw] flex-col bg-paper shadow-xl lg:hidden"
+       :aria-hidden="(!navOpen).toString()">
     <div class="flex items-center justify-between border-b border-line px-5 py-4">
-        <strong class="font-sans text-ink">{% trans 'Kasra Publishing' %}</strong>
-        <button type="button" id="navClose" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line" aria-label="{% trans 'Close' %}">
-            <i class="fas fa-times"></i>
-        </button>
+        <strong>{% trans 'Kasra Publishing' %}</strong>
+        <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line" @click="navOpen = false" aria-label="{% trans 'Close' %}"><i class="fas fa-times"></i></button>
     </div>
-    <nav class="flex flex-col gap-1 overflow-y-auto p-3" aria-label="{% trans 'Mobile navigation' %}">
+    <nav class="flex flex-col gap-1 p-3" aria-label="{% trans 'Mobile navigation' %}">
         {% include "includes/nav_links.html" with item_class="rounded-lg px-3 py-3 text-sm font-bold text-ink-2 hover:bg-surface" active_class="bg-surface text-ink" %}
+        <a href="{% url 'page:contactus' %}" class="rounded-lg px-3 py-3 text-sm font-bold text-ink-2 hover:bg-surface">{% trans 'Contact' %}</a>
         <a href="{% url 'page:orderus' %}" class="rounded-lg px-3 py-3 text-sm font-bold text-ink-2 hover:bg-surface">{% trans 'Order Conditions' %}</a>
         <a href="{% url 'page:workingus' %}" class="rounded-lg px-3 py-3 text-sm font-bold text-ink-2 hover:bg-surface">{% trans 'Work With Us' %}</a>
     </nav>
 </aside>
+{% include "includes/advanced_search_modal.html" %}

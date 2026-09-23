@@ -4,18 +4,18 @@
 {% block page_title %}{% trans 'Logout' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="auth-shell">
-    <div class="auth-card">
-        <h1>{% trans 'Sign out' %}</h1>
-        <p class="lead">{% trans 'Are you sure you want to sign out?' %}</p>
+<section class="page-wrap">
+    <div class="card mx-auto max-w-md text-center">
+        <h1 class="mb-2 text-2xl">{% trans 'Sign out' %}</h1>
+        <p class="mb-6 text-sm text-muted">{% trans 'Are you sure you want to sign out?' %}</p>
         <form method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
             {% endif %}
-            <button type="submit" class="btn btn--accent btn--lg">{% trans 'Logout' %}</button>
+            <button type="submit" class="btn btn-accent btn-lg">{% trans 'Logout' %}</button>
         </form>
-        <p class="auth-alt"><a href="{% url 'page:home' %}">{% trans 'Cancel' %}</a></p>
+        <p class="mt-4"><a href="{% url 'page:home' %}" class="text-sm text-muted">{% trans 'Cancel' %}</a></p>
     </div>
 </section>
 {% endblock %}

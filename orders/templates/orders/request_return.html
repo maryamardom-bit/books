@@ -1,5 +1,4 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 {% load persian_translation_tags %}
 {% load humanize %}
@@ -7,43 +6,23 @@
 {% block page_title %}{% trans 'Return Request' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container" style="max-width: 640px;">
-        <div class="content-card">
-            <h1 style="text-align: center; font-size: 20px; margin-bottom: 20px;">{% trans 'Return Request' %}</h1>
-
-            <div class="content-card" style="background: var(--surface); border-color: var(--line-2); margin-bottom: 22px;">
-                <div class="dash-row">
-                    <span class="key">{% trans 'Order' %}</span>
-                    <span class="val">#{{ order.id }}</span>
-                </div>
-                <div class="dash-row">
-                    <span class="key">{% trans 'Total Amount' %}</span>
-                    <span class="val" style="color: var(--accent-strong);">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                </div>
-            </div>
-
-            <form method="post">
-                {% csrf_token %}
-                <div class="field">
-                    <label>{% trans 'Reason for Return' %}</label>
-                    {{ form.reason }}
-                    {% if form.reason.errors %}
-                    <div class="form-error">{{ form.reason.errors.0 }}</div>
-                    {% endif %}
-                </div>
-
-                <button type="submit" class="btn btn--danger btn--lg btn--block">
-                    <i class="fas fa-rotate-left"></i> {% trans 'Submit Return Request' %}
-                </button>
-            </form>
-
-            <div style="text-align: center; margin-top: 16px;">
-                <a href="{% url 'accounts:order_history' %}" class="text-muted" style="font-size: 13px;">
-                    <i class="fas fa-arrow-right"></i> {% trans 'Back to Order History' %}
-                </a>
-            </div>
+<section class="page-wrap">
+    <div class="card mx-auto max-w-xl">
+        <h1 class="mb-6 text-center text-xl">{% trans 'Return Request' %}</h1>
+        <div class="mb-6 space-y-2 rounded-xl bg-surface p-4 text-sm">
+            <div class="flex justify-between"><span class="text-muted">{% trans 'Order' %}</span><span class="font-bold">#{{ order.id }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">{% trans 'Total Amount' %}</span><span class="font-bold text-accent-strong">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>
         </div>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label>{% trans 'Reason for Return' %}</label>
+                {{ form.reason }}
+                {% if form.reason.errors %}<p class="mt-1 text-xs text-danger">{{ form.reason.errors.0 }}</p>{% endif %}
+            </div>
+            <button type="submit" class="btn btn-danger btn-lg btn-block">{% trans 'Submit Return Request' %}</button>
+        </form>
+        <p class="mt-4 text-center"><a href="{% url 'accounts:order_history' %}" class="text-sm text-muted">{% trans 'Back to Order History' %}</a></p>
     </div>
 </section>
 {% endblock %}

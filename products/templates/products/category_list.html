@@ -1,34 +1,23 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 
 {% block page_title %}{% trans "Categories" %} | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head section-head--center" style="padding-top: 0; text-align: center;">
-            <span class="eyebrow">{% trans 'Archive' %}</span>
-            <h1 class="page-head__title">{% trans 'Book Categories' %}</h1>
-            <p class="page-head__desc" style="margin-inline: auto;">{% trans 'Discover our curated collection of architectural books, organized by field of study.' %}</p>
-        </div>
-
-        <div class="feature-grid" style="grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));">
-            {% for category in categories %}
-            <a href="{% url 'product:product_list_by_category' category=category.code %}" class="feature" style="text-align: center; padding: 30px 20px;">
-                <span class="feature__icon" style="margin-inline: auto;">{{ category.icon }}</span>
-                <h3 class="feature__title">{{ category.name }}</h3>
-                <p class="feature__desc" style="margin: 0;">
-                    <strong style="color: var(--accent-strong);">{{ category.count }}</strong> {% trans 'books' %}
-                </p>
-            </a>
-            {% empty %}
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <span class="empty-state__icon"><i class="fas fa-th-large"></i></span>
-                <h3 class="empty-state__title">{% trans 'No categories found' %}</h3>
-            </div>
-            {% endfor %}
-        </div>
+<section class="page-wrap text-center">
+    <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Archive' %}</p>
+    <h1 class="mb-2 text-3xl">{% trans 'Book Categories' %}</h1>
+    <p class="mx-auto mb-10 max-w-xl text-muted">{% trans 'Discover our curated collection of architectural books, organized by field of study.' %}</p>
+    <div class="grid grid-cols-2 gap-4 text-start sm:grid-cols-3 lg:grid-cols-4">
+        {% for category in categories %}
+        <a href="{% url 'product:product_list_by_category' category=category.code %}" class="rounded-2xl border border-line bg-paper p-6 text-center transition hover:-translate-y-1 hover:shadow-md">
+            <span class="mb-3 inline-block text-3xl">{{ category.icon }}</span>
+            <h2 class="mb-1 text-base">{{ category.name }}</h2>
+            <p class="text-sm text-muted"><strong class="text-accent-strong">{{ category.count }}</strong> {% trans 'books' %}</p>
+        </a>
+        {% empty %}
+        <p class="col-span-full py-16 text-muted">{% trans 'No categories found' %}</p>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

@@ -1,39 +1,24 @@
 {% load i18n %}
 
-<div class="chat-launcher">
-    <button type="button" class="chat-launcher__btn" id="chatToggleBtn" aria-label="{% trans 'Support chat' %}">
-        <i id="chatIconBtn" class="fas fa-comments"></i>
-        <span class="chat-launcher__status"></span>
+<div class="fixed bottom-6 end-6 z-[80]">
+    <button type="button" class="relative flex h-14 w-14 items-center justify-center rounded-full bg-ink text-xl text-paper shadow-lg hover:bg-accent" @click="chatOpen = !chatOpen" aria-label="{% trans 'Support chat' %}">
+        <i class="fas" :class="chatOpen ? 'fa-times' : 'fa-comments'"></i>
+        <span class="absolute top-1 end-1 h-3 w-3 rounded-full border-2 border-paper bg-success"></span>
     </button>
 </div>
 
-<div id="chatPanelBox" class="chat-panel">
-    <div class="chat-panel__head">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-robot text-accent"></i>
-            <div>
-                <div class="text-sm font-bold">{% trans 'Support' %}</div>
-                <div class="text-[11px] text-success"><i class="fas fa-circle text-[8px]"></i> {% trans 'Online' %}</div>
-            </div>
+<div x-show="chatOpen" x-cloak x-transition
+     class="fixed bottom-24 end-6 z-[81] flex w-80 max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-line bg-paper shadow-xl">
+    <div class="flex items-center justify-between bg-ink px-5 py-4 text-paper">
+        <div>
+            <p class="text-sm font-bold">{% trans 'Support' %}</p>
+            <p class="text-[11px] text-success">{% trans 'Online' %}</p>
         </div>
-        <button type="button" class="text-paper" id="chatCloseBtn" aria-label="{% trans 'Close' %}">✕</button>
+        <button type="button" @click="chatOpen = false" aria-label="{% trans 'Close' %}">✕</button>
     </div>
-    <div id="chatMsgArea" class="chat-panel__msgs">
-        <div class="msg msg--bot">
-            <span class="text-lg"><i class="fas fa-robot"></i></span>
-            <div class="msg__bubble">{% trans 'Hello! How can I help?' %}</div>
-        </div>
-        <div id="initialQuestions" class="quick-questions">
-            <span class="tag cursor-pointer" data-topic="delivery">🚚 {% trans 'Delivery' %}</span>
-            <span class="tag cursor-pointer" data-topic="payment">💳 {% trans 'Payment' %}</span>
-            <span class="tag cursor-pointer" data-topic="order">📦 {% trans 'Order' %}</span>
-            <span class="tag cursor-pointer" data-topic="return">🔄 {% trans 'Return' %}</span>
-        </div>
-    </div>
-    <div class="chat-panel__inputbar">
-        <input type="text" id="chatInputField" placeholder="{% trans 'Type here...' %}" class="input py-2">
-        <button type="button" id="chatSendBtn" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-white" aria-label="{% trans 'Send' %}">
-            <i class="fas fa-paper-plane"></i>
-        </button>
+    <div class="space-y-2 bg-surface p-4 text-sm">
+        <p class="rounded-xl bg-paper p-3 shadow-sm">{% trans 'Hello! How can I help?' %}</p>
+        <p class="text-xs text-muted">{% trans 'Contact support: 051-37670019' %}</p>
+        <a href="{% url 'page:contactus' %}" class="inline-flex rounded-full bg-accent px-4 py-2 text-xs font-bold text-white">{% trans 'Contact Us' %}</a>
     </div>
 </div>

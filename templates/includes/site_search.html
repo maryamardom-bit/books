@@ -1,0 +1,25 @@
+{% load i18n %}
+<form action="{% url 'product:product_search' %}" method="get" class="w-full" role="search">
+    <input type="hidden" name="mode" value="simple">
+    <div class="flex items-center gap-2 rounded-full border border-line bg-surface py-1 pe-1 ps-4 focus-within:border-accent focus-within:bg-paper focus-within:ring-4 focus-within:ring-accent/15">
+        <i class="fas fa-search shrink-0 text-sm text-faint" aria-hidden="true"></i>
+        <input type="search"
+               name="q"
+               x-model="searchQuery"
+               value="{{ request.GET.q|default:'' }}"
+               placeholder="{% trans 'جستجوی عنوان، نویسنده، ناشر…' %}"
+               class="min-w-0 flex-1 !border-0 !bg-transparent !px-2 !py-2 !shadow-none !ring-0 placeholder:text-faint focus:!border-0 focus:!ring-0"
+               aria-label="{% trans 'Search books' %}">
+        <div class="flex shrink-0 items-center rounded-full border border-line bg-paper p-0.5 text-[11px] font-bold">
+            <button type="submit"
+                    class="rounded-full px-3 py-1.5 {% if search_mode != 'advanced' %}bg-ink text-paper{% else %}text-ink-2 hover:bg-surface{% endif %}">
+                {% trans 'ساده' %}
+            </button>
+            <button type="button"
+                    class="rounded-full px-3 py-1.5 {% if search_mode == 'advanced' %}bg-ink text-paper{% else %}text-ink-2 hover:bg-surface{% endif %}"
+                    @click="searchOpen = true">
+                {% trans 'پیشرفته' %}
+            </button>
+        </div>
+    </div>
+</form>

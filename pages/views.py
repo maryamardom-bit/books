@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.views.generic import TemplateView
-from products.models import Product
+from products.models import Product, Package
 from .models import ContactInfo, CooperationInfo, AboutUs, OrderCondition
 
 
@@ -17,6 +17,7 @@ class HomePageView(TemplateView):
         context['sale_books'] = active.filter(
             Q(special_price__gt=0) | Q(discount_percent__gt=0)
         )[:4]
+        context['featured_packages'] = Package.objects.filter(active=True)[:3]
         return context
 
 

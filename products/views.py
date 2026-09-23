@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Product, Comment, Package
 from .forms import CommentForm
+from .search import build_search_q
 from cart.forms import AddToCartProductForm
 
 
@@ -136,45 +137,46 @@ class CommentCreateView(LoginRequiredMixin, generic.View):
 
 
 class ProductSearchView(generic.ListView):
-    """Search products"""
+    """Search products (simple across all book fields, or advanced by selected fields)."""
     model = Product
     template_name = 'products/product_search_result.html'
     context_object_name = 'results'
     paginate_by = 20
 
+    def _search_query(self):
+        return self.request.GET.get('q', '').strip()
+
+    def _search_mode(self):
+        mode = self.request.GET.get('mode', 'simple')
+        return mode if mode in ('simple', 'advanced') else 'simple'
+
+    def _selected_fields(self):
+        if self._search_mode() != 'advanced':
+            return None
+        return self.request.GET.getlist('fields')
+
     def get_queryset(self):
-        query = self.request.GET.get('q', '').strip()
-        
-        if query:
-            return Product.objects.with_ratings().filter(
-                Q(title__icontains=query) |
-                Q(description__icontains=query) |
-                Q(author__icontains=query) |
-                Q(publisher__icontains=query) |
-                Q(isbn__icontains=query),
-                active=True
-            ).order_by('-datetime_created').distinct()
-        
-        return Product.objects.none()
+        query = self._search_query()
+        q_obj = build_search_q(query, self._selected_fields())
+        if q_obj is None:
+            return Product.objects.none()
+        return Product.objects.with_ratings().filter(
+            q_obj,
+            active=True,
+        ).order_by('-datetime_created').distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        query = self.request.GET.get('q', '').strip()
+        query = self._search_query()
+        mode = self._search_mode()
+        selected = self.request.GET.getlist('fields')
         context['query'] = query
-
-        total_count = 0
-        if query:
-            total_count = Product.objects.filter(
-                active=True
-            ).filter(
-                Q(title__icontains=query) |
-                Q(description__icontains=query) |
-                Q(author__icontains=query) |
-                Q(publisher__icontains=query) |
-                Q(isbn__icontains=query)
-            ).count()
-
-        context['results_count'] = total_count
+        context['search_mode'] = mode
+        context['selected_fields'] = selected
+        params = self.request.GET.copy()
+        params.pop('page', None)
+        context['pagination_extra'] = '&{0}'.format(params.urlencode()) if params else ''
+        context['results_count'] = context['paginator'].count if context.get('paginator') else 0
         return context
 
 

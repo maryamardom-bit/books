@@ -1,194 +1,106 @@
 {% extends "_base.html" %}
-{% load static %}
 {% load i18n %}
-{% load crispy_forms_tags %}
 {% load persian_translation_tags %}
 {% load humanize %}
 
-{% block page_title %}
-{% trans "Checkout" %} | {% trans "Kasra Architecture Bookstore" %}
-{% endblock %}
+{% block page_title %}{% trans "Checkout" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
-                <span class="sep">/</span>
-                <a href="{% url 'cart:cart_detail' %}">{% trans "Cart" %}</a>
-                <span class="sep">/</span>
-                <span>{% trans "Checkout" %}</span>
-            </nav>
-            <h1 class="page-head__title">{% trans "Checkout" %}</h1>
-        </div>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
+        <span>/</span>
+        <a href="{% url 'cart:cart_detail' %}">{% trans "Cart" %}</a>
+        <span>/</span>
+        <span>{% trans "Checkout" %}</span>
+    </nav>
+    <h1 class="mb-8 text-3xl">{% trans "Checkout" %}</h1>
 
-        {% if cart %}
-        <div class="grid gap-6 lg:grid-cols-12">
-            <div class="lg:col-span-7">
-                <div class="content-card">
-                    <h2 class="h-section">{% trans "Order Details" %}</h2>
-
-                    <form action="" method="post">
-                        {% csrf_token %}
-
-                        <div class="mb-3 grid gap-3 md:grid-cols-2">
-                            <div>
-                                <div class="field">
-                                    <label>{% trans "First Name" %} *</label>
-                                    <input type="text" name="{{ form.first_name.name }}" class="input" value="{{ form.first_name.value|default:'' }}" required>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="field">
-                                    <label>{% trans "Last Name" %} *</label>
-                                    <input type="text" name="{{ form.last_name.name }}" class="input" value="{{ form.last_name.value|default:'' }}" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <label>{% trans "Phone Number" %} *</label>
-                            <input type="text" name="{{ form.phone_number.name }}" class="input" value="{{ form.phone_number.value|default:'' }}" required>
-                        </div>
-
-                        <div class="field">
-                            <label>{% trans "Address" %}</label>
-                            <textarea name="{{ form.address.name }}" class="textarea" rows="3">{{ form.address.value|default:'' }}</textarea>
-                        </div>
-
-                        <div class="field">
-                            <label>{% trans "Order Notes" %}</label>
-                            <textarea name="{{ form.order_notes.name }}" class="textarea" rows="2" placeholder="{% trans 'Optional' %}">{{ form.order_notes.value|default:'' }}</textarea>
-                        </div>
-
-                        <h2 class="h-section" style="font-size: 19px;"><i class="fas fa-credit-card" style="color: var(--accent);"></i> {% trans "Payment Method" %}</h2>
-
-                        <div class="payment-option is-selected" id="payment-online-option">
-                            <input type="radio" value="online" name="payment-method" id="online" checked>
-                            <div class="payment-option__content">
-                                <div class="payment-option__title">{% trans "Online Payment" %}</div>
-                                <div class="payment-option__desc">{% trans "Pay securely via SEP gateway" %}</div>
-                            </div>
-                            <span class="payment-option__icon"><i class="fas fa-building-columns"></i></span>
-                        </div>
-
-                        <div class="payment-option" id="payment-installment-option">
-                            <input type="radio" value="installment" name="payment-method" id="installment">
-                            <div class="payment-option__content">
-                                <div class="payment-option__title">{% trans "Installment (3 Months)" %}</div>
-                                <div class="payment-option__desc">{% trans "30% prepayment + 3 monthly installments" %}</div>
-                            </div>
-                            <span class="payment-option__icon"><i class="fas fa-calendar-alt"></i></span>
-                        </div>
-
-                        <div id="installment-details" style="display: none;">
-                            <div class="installment-box">
-                                <div class="installment-row">
-                                    <span class="label">{% trans "Total Amount" %}</span>
-                                    <span class="value">{{ installment_info.total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
-                                </div>
-                                <div class="installment-row">
-                                    <span class="label">{% trans "Prepayment" %} (30%)</span>
-                                    <span class="value" style="color: var(--warning);">{{ installment_info.prepayment_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
-                                </div>
-                                <div class="installment-row">
-                                    <span class="label">{% trans "Remaining" %}</span>
-                                    <span class="value">{{ installment_info.remaining_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span>
-                                </div>
-                                <div class="installment-row installment-row--total">
-                                    <span class="label">{% trans "Monthly Payment" %} (3 {% trans "months" %})</span>
-                                    <span class="value">{{ installment_info.monthly_payment|intcomma:False|translate_number }} {% trans "Toman" %}</span>
-                                </div>
-                                <input type="hidden" name="installment_plan_id" value="3_months_30_percent">
-                            </div>
-                        </div>
-
-                        <button class="btn btn--accent btn--lg btn--block" style="margin-top: 22px;" type="submit">
-                            <i class="fas fa-check"></i> {% trans "Submit Order" %}
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Order summary -->
-            <div class="lg:col-span-5">
-                <div class="summary">
-                    <h5 class="summary__title"><i class="fas fa-shopping-bag"></i> {% trans "Your Order" %}</h5>
-
-                    {% for item in cart %}
-                    <div class="order-item">
-                        <div>
-                            <div class="order-item__title">{{ item.title }}</div>
-                            <div class="order-item__qty">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }} {% trans 'Toman' %}</div>
-                        </div>
-                        <div class="order-item__price">
-                            {% widthratio item.quantity 1 item.price as item_total %}
-                            {{ item_total|intcomma:False|translate_number }}
-                        </div>
+    {% if cart %}
+    <div class="grid gap-6 lg:grid-cols-12" x-data="{ method: 'online' }">
+        <div class="card lg:col-span-7">
+            <h2 class="mb-5 text-xl">{% trans "Order Details" %}</h2>
+            <form action="" method="post" class="space-y-4">
+                {% csrf_token %}
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label>{% trans "First Name" %} *</label>
+                        <input type="text" name="{{ form.first_name.name }}" value="{{ form.first_name.value|default:'' }}" required>
                     </div>
-                    {% endfor %}
-
-                    <div class="summary__row summary__row--total">
-                        <span>{% trans "Total" %}</span>
-                        <span class="summary__value">{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+                    <div>
+                        <label>{% trans "Last Name" %} *</label>
+                        <input type="text" name="{{ form.last_name.name }}" value="{{ form.last_name.value|default:'' }}" required>
                     </div>
-
-                    {% if total_weight > 0 %}
-                    <p class="text-faint" style="font-size: 12px; text-align: start; margin: 8px 0 0;">
-                        <i class="fas fa-weight-hanging"></i> {% trans "Total Weight" %}: {{ total_weight|translate_number }} {% trans "g" %}
-                    </p>
-                    {% endif %}
                 </div>
+                <div>
+                    <label>{% trans "Phone Number" %} *</label>
+                    <input type="text" name="{{ form.phone_number.name }}" value="{{ form.phone_number.value|default:'' }}" required>
+                </div>
+                <div>
+                    <label>{% trans "Address" %}</label>
+                    <textarea name="{{ form.address.name }}" rows="3">{{ form.address.value|default:'' }}</textarea>
+                </div>
+                <div>
+                    <label>{% trans "Order Notes" %}</label>
+                    <textarea name="{{ form.order_notes.name }}" rows="2" placeholder="{% trans 'Optional' %}">{{ form.order_notes.value|default:'' }}</textarea>
+                </div>
+
+                <h2 class="pt-2 text-lg">{% trans "Payment Method" %}</h2>
+                <label class="flex cursor-pointer items-center gap-3 rounded-xl border p-4" :class="method === 'online' ? 'border-accent bg-accent-soft' : 'border-line'">
+                    <input type="radio" value="online" name="payment-method" id="online" x-model="method" class="accent-accent">
+                    <span class="flex-1">
+                        <span class="block font-bold">{% trans "Online Payment" %}</span>
+                        <span class="text-xs text-muted">{% trans "Pay securely via SEP gateway" %}</span>
+                    </span>
+                    <i class="fas fa-building-columns text-accent"></i>
+                </label>
+                <label class="flex cursor-pointer items-center gap-3 rounded-xl border p-4" :class="method === 'installment' ? 'border-accent bg-accent-soft' : 'border-line'">
+                    <input type="radio" value="installment" name="payment-method" id="installment" x-model="method" class="accent-accent">
+                    <span class="flex-1">
+                        <span class="block font-bold">{% trans "Installment (3 Months)" %}</span>
+                        <span class="text-xs text-muted">{% trans "30% prepayment + 3 monthly installments" %}</span>
+                    </span>
+                    <i class="fas fa-calendar-alt text-accent"></i>
+                </label>
+                <div x-show="method === 'installment'" x-cloak class="space-y-2 rounded-xl bg-surface p-4 text-sm">
+                    <div class="flex justify-between"><span>{% trans "Total Amount" %}</span><span class="font-bold">{{ installment_info.total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span></div>
+                    <div class="flex justify-between"><span>{% trans "Prepayment" %} (30%)</span><span class="font-bold">{{ installment_info.prepayment_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span></div>
+                    <div class="flex justify-between"><span>{% trans "Remaining" %}</span><span>{{ installment_info.remaining_amount|intcomma:False|translate_number }} {% trans "Toman" %}</span></div>
+                    <div class="flex justify-between border-t border-line pt-2 font-bold"><span>{% trans "Monthly Payment" %}</span><span>{{ installment_info.monthly_payment|intcomma:False|translate_number }} {% trans "Toman" %}</span></div>
+                    <input type="hidden" name="installment_plan_id" value="3_months_30_percent">
+                </div>
+                <button class="btn btn-accent btn-lg btn-block" type="submit"><i class="fas fa-check"></i> {% trans "Submit Order" %}</button>
+            </form>
+        </div>
+        <aside class="card h-fit lg:col-span-5">
+            <h2 class="mb-4 text-lg">{% trans "Your Order" %}</h2>
+            {% for item in cart %}
+            <div class="mb-3 flex justify-between gap-3 border-b border-line pb-3 text-sm">
+                <div>
+                    <p class="font-bold">{{ item.title }}</p>
+                    <p class="text-muted">{{ item.quantity|translate_number }} × {{ item.price|intcomma:False|translate_number }} {% trans 'Toman' %}</p>
+                </div>
+                <p class="font-bold">
+                    {% widthratio item.quantity 1 item.price as item_total %}
+                    {{ item_total|intcomma:False|translate_number }}
+                </p>
             </div>
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <span class="empty-state__icon"><i class="fas fa-shopping-bag"></i></span>
-            <h3 class="empty-state__title">{% trans "Your Cart is Empty" %}</h3>
-            <p class="empty-state__text">{% trans "Please add some books to your cart before checking out." %}</p>
-            <a href="{% url 'product:product_list' %}" class="btn btn--accent">
-                <i class="fas fa-book-open"></i> {% trans "Go Shopping" %}
-            </a>
-        </div>
-        {% endif %}
+            {% endfor %}
+            <div class="flex justify-between text-base font-bold">
+                <span>{% trans "Total" %}</span>
+                <span>{{ cart.get_total_price|intcomma:False|translate_number }} {% trans "Toman" %}</span>
+            </div>
+            {% if total_weight > 0 %}
+            <p class="mt-2 text-xs text-faint"><i class="fas fa-weight-hanging"></i> {% trans "Total Weight" %}: {{ total_weight|translate_number }} {% trans "g" %}</p>
+            {% endif %}
+        </aside>
     </div>
+    {% else %}
+    <div class="py-16 text-center">
+        <h2 class="mb-2">{% trans "Your Cart is Empty" %}</h2>
+        <p class="mb-6 text-muted">{% trans "Please add some books to your cart before checking out." %}</p>
+        <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans "Go Shopping" %}</a>
+    </div>
+    {% endif %}
 </section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const onlineRadio = document.getElementById('online');
-    const installmentRadio = document.getElementById('installment');
-    const installmentDetails = document.getElementById('installment-details');
-    const onlineOption = document.getElementById('payment-online-option');
-    const installmentOption = document.getElementById('payment-installment-option');
-
-    function updatePaymentUI() {
-        if (installmentRadio.checked) {
-            installmentDetails.style.display = 'block';
-            onlineOption.classList.remove('is-selected');
-            installmentOption.classList.add('is-selected');
-        } else {
-            installmentDetails.style.display = 'none';
-            onlineOption.classList.add('is-selected');
-            installmentOption.classList.remove('is-selected');
-        }
-    }
-
-    onlineRadio.addEventListener('change', updatePaymentUI);
-    installmentRadio.addEventListener('change', updatePaymentUI);
-
-    onlineOption.addEventListener('click', function() {
-        onlineRadio.checked = true;
-        updatePaymentUI();
-    });
-
-    installmentOption.addEventListener('click', function() {
-        installmentRadio.checked = true;
-        updatePaymentUI();
-    });
-});
-</script>
 {% endblock %}

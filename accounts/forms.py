@@ -40,12 +40,11 @@ class ProfileEditForm(forms.ModelForm):
         label=_('birth date'),
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'input',
             'id': 'birth-date-input',
             'placeholder': 'انتخاب تاریخ',
             'autocomplete': 'off',
             'readonly': 'readonly',
-            'style': 'cursor:pointer; background:#fff;',
+            'class': 'cursor-pointer',
         }),
     )
 
@@ -53,12 +52,12 @@ class ProfileEditForm(forms.ModelForm):
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'birth_date', 'address', 'postal_code']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'input'}),
-            'last_name': forms.TextInput(attrs={'class': 'input'}),
-            'email': forms.EmailInput(attrs={'class': 'input'}),
-            'phone_number': forms.TextInput(attrs={'class': 'input', 'dir': 'ltr'}),
-            'address': forms.Textarea(attrs={'class': 'textarea', 'rows': 3}),
-            'postal_code': forms.TextInput(attrs={'class': 'input', 'dir': 'ltr'}),
+            'first_name': forms.TextInput(),
+            'last_name': forms.TextInput(),
+            'email': forms.EmailInput(),
+            'phone_number': forms.TextInput(attrs={'dir': 'ltr'}),
+            'address': forms.Textarea(attrs={'rows': 3}),
+            'postal_code': forms.TextInput(attrs={'dir': 'ltr'}),
         }
         labels = {
             'first_name': _('first name'),

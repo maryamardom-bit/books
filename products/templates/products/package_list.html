@@ -1,5 +1,4 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 {% load persian_translation_tags %}
 {% load humanize %}
@@ -7,63 +6,34 @@
 {% block page_title %}پکیج‌ها | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head section-head--center" style="padding-top: 0; text-align: center;">
-            <span class="eyebrow">{% trans 'Bundles' %}</span>
-            <h1 class="page-head__title">{% trans 'Special Packages' %}</h1>
-            <p class="page-head__desc" style="margin-inline: auto;">{% trans 'Curated collections of selected books at special bundle prices.' %}</p>
-        </div>
-
-        <div class="book-grid">
-            {% for package in packages %}
-            <article class="book-card">
-                <a href="{{ package.get_absolute_url }}" class="book-card__cover" aria-label="{{ package.title }}">
-                    {% if package.image %}
-                    <img src="{{ package.image.url }}" alt="{{ package.title }}" loading="lazy">
+<section class="page-wrap text-center">
+    <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Bundles' %}</p>
+    <h1 class="mb-2 text-3xl">{% trans 'Special Packages' %}</h1>
+    <p class="mx-auto mb-10 max-w-xl text-muted">{% trans 'Curated collections of selected books at special bundle prices.' %}</p>
+    <div class="book-grid text-start">
+        {% for package in packages %}
+        <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition hover:-translate-y-1 hover:shadow-lg">
+            <a href="{{ package.get_absolute_url }}" class="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-surface">
+                {% if package.image %}<img src="{{ package.image.url }}" alt="{{ package.title }}" class="h-full w-full object-cover" loading="lazy">{% else %}<i class="fas fa-box-open text-4xl text-faint"></i>{% endif %}
+                {% if package.discount_percent > 0 %}<span class="absolute top-2 start-2 rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">%{{ package.get_discount_percent_display }}-</span>{% endif %}
+            </a>
+            <div class="flex flex-1 flex-col p-4">
+                <p class="mb-1 text-[11px] font-bold uppercase text-accent-strong">{% trans 'Package' %}</p>
+                <h2 class="mb-1 text-sm font-bold"><a href="{{ package.get_absolute_url }}">{{ package.title }}</a></h2>
+                <p class="mb-3 text-xs text-faint">{{ package.get_products_count }} {% trans 'books' %}</p>
+                <div class="mt-auto">
+                    {% if package.discount_percent > 0 %}
+                    <p class="text-xs text-faint line-through">{{ package.original_price|floatformat:0|intcomma:False|translate_number }}</p>
+                    <p class="font-bold text-danger">{{ package.price|floatformat:0|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
                     {% else %}
-                    <span class="no-cover"><i class="fas fa-box-open"></i></span>
+                    <p class="font-bold">{{ package.price|floatformat:0|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
                     {% endif %}
-                    <span class="book-card__badges">
-                        {% if package.discount_percent > 0 %}
-                        <span class="badge badge--sale">%{{ package.get_discount_percent_display }}-</span>
-                        {% endif %}
-                    </span>
-                </a>
-                <div class="book-card__body">
-                    <span class="book-card__cat">{% trans 'Package' %}</span>
-                    <h5 class="book-card__title">
-                        <a class="title-link" href="{{ package.get_absolute_url }}">{{ package.title }}</a>
-                    </h5>
-                    <span class="book-card__author">{{ package.get_products_count }} {% trans 'books' %}</span>
-                    <div class="book-card__footer">
-                        <div>
-                            {% if package.discount_percent > 0 %}
-                            <span class="price--old">{{ package.original_price|floatformat:0|intcomma:False|translate_number }}</span>
-                            <div class="price price--sale">
-                                {{ package.price|floatformat:0|intcomma:False|translate_number }}
-                                <span class="unit">{% trans 'Toman' %}</span>
-                            </div>
-                            {% else %}
-                            <div class="price">
-                                {{ package.price|floatformat:0|intcomma:False|translate_number }}
-                                <span class="unit">{% trans 'Toman' %}</span>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <a href="{{ package.get_absolute_url }}" class="quick-add" title="{% trans 'View Details' %}" aria-label="{% trans 'View Details' %}">
-                            <i class="fas fa-arrow-left"></i>
-                        </a>
-                    </div>
                 </div>
-            </article>
-            {% empty %}
-            <div class="empty-state" style="grid-column: 1 / -1;">
-                <span class="empty-state__icon"><i class="fas fa-box-open"></i></span>
-                <h3 class="empty-state__title">{% trans 'No packages available' %}</h3>
             </div>
-            {% endfor %}
-        </div>
+        </article>
+        {% empty %}
+        <p class="col-span-full py-16 text-center text-muted">{% trans 'No packages available' %}</p>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}

@@ -1,5 +1,4 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load i18n %}
 {% load persian_translation_tags %}
 {% load humanize %}
@@ -7,169 +6,90 @@
 {% block page_title %}{% trans 'Cart' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="section">
-    <div class="container">
-        <div class="page-head" style="padding-top: 0;">
-            <nav class="crumb">
-                <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
-                <span class="sep">/</span>
-                <span>{% trans 'Cart' %}</span>
-            </nav>
-            <h1 class="page-head__title">{% trans 'Shopping Cart' %}</h1>
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans 'Cart' %}</span>
+    </nav>
+    <h1 class="mb-8 text-3xl">{% trans 'Shopping Cart' %}</h1>
+
+    {% if cart %}
+    <div class="grid gap-6 lg:grid-cols-12">
+        <div class="space-y-3 lg:col-span-8">
+            {% for item in cart %}
+            <div class="flex flex-wrap items-center gap-4 rounded-2xl border border-line p-4">
+                <div class="flex h-20 w-16 items-center justify-center overflow-hidden rounded-lg bg-surface">
+                    {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" class="h-full w-full object-cover">{% else %}<i class="fas fa-book-open text-faint"></i>{% endif %}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="font-bold">{{ item.title }}</p>
+                    {% if item.is_package %}<span class="text-xs font-bold text-accent-strong">{% trans 'Package' %}</span>{% endif %}
+                    {% if item.price < item.original_price %}
+                    <p class="text-xs text-faint line-through">{{ item.original_price|intcomma:False|translate_number }}</p>
+                    {% endif %}
+                    <p class="text-sm font-bold">{{ item.price|intcomma:False|translate_number }} <span class="font-normal text-faint">{% trans 'Toman' %}</span></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="inplace" value="true">
+                        <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                        <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" {% if item.quantity <= 1 %}disabled{% endif %} aria-label="{% trans 'Decrease' %}">−</button>
+                    </form>
+                    <span class="min-w-8 text-center font-bold">{{ item.quantity|translate_number }}</span>
+                    <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="inplace" value="true">
+                        <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                        <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" aria-label="{% trans 'Increase' %}">+</button>
+                    </form>
+                </div>
+                <p class="font-bold">{{ item.total_price|intcomma:False|translate_number }} <span class="text-xs font-normal text-faint">{% trans 'Toman' %}</span></p>
+                <a href="{% if item.is_package %}{% url 'cart:cart_remove_package' item.package_obj.id %}{% else %}{% url 'cart:cart_remove' item.product_obj.id %}{% endif %}" class="text-danger hover:text-danger" onclick="return confirmDelete('{{ item.title }}')" aria-label="{% trans 'Remove' %}"><i class="fas fa-trash-alt"></i></a>
+            </div>
+            {% endfor %}
+            <form method="post" action="{% url 'cart:cart_clear' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-ghost text-xs"><i class="fas fa-trash-alt"></i> {% trans 'Clear Cart' %}</button>
+            </form>
         </div>
 
-        {% if cart %}
-        <div class="grid gap-6 lg:grid-cols-12">
-            <div class="lg:col-span-8">
-                {% for item in cart %}
-                <div class="cart-row">
-                    <div class="cart-row__thumb">
-                        {% if item.image %}
-                        <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                        {% else %}
-                        <i class="fas fa-book-open"></i>
-                        {% endif %}
-                    </div>
-
-                    <div class="cart-row__info">
-                        <div class="cart-row__title">{{ item.title }}</div>
-                        {% if item.is_package %}
-                        <span class="badge badge--gold">{% trans 'Package' %}</span>
-                        {% endif %}
-                        <div class="cart-row__sub" style="margin-top: 6px;">
-                            {% if item.price < item.original_price %}
-                            <span class="price--old">{{ item.original_price|intcomma:False|translate_number }}</span>
-                                {% if item.is_package and item.package_obj %}
-                                <span class="badge badge--sale">%{{ item.package_obj.get_discount_percent_display }}-</span>
-                                {% elif item.product_obj %}
-                                <span class="badge badge--sale">%{{ item.product_obj.get_discount_percent_display }}-</span>
-                                {% endif %}
-                            {% endif %}
-                            <div class="price" style="margin-top: 4px;">
-                                {{ item.price|intcomma:False|translate_number }}
-                                <span class="unit">{% trans 'Toman' %}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex-center">
-                        <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}" style="margin: 0;">
-                            {% csrf_token %}
-                            <input type="hidden" name="inplace" value="true">
-                            <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
-                            <button type="submit" class="qty__btn" style="width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer;"
-                                    {% if item.quantity <= 1 %}disabled{% endif %} aria-label="{% trans 'Decrease' %}">−</button>
-                        </form>
-
-                        <span style="font-size: 15px; font-weight: 700; min-width: 34px; text-align: center; color: var(--ink);">
-                            {{ item.quantity|translate_number }}
-                        </span>
-
-                        <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}" style="margin: 0;">
-                            {% csrf_token %}
-                            <input type="hidden" name="inplace" value="true">
-                            <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
-                            <button type="submit" style="width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer;" aria-label="{% trans 'Increase' %}">+</button>
-                        </form>
-                    </div>
-
-                    <div class="cart-row__total">
-                        {{ item.total_price|intcomma:False|translate_number }}
-                        <span class="unit">{% trans 'Toman' %}</span>
-                    </div>
-
-                    <a href="{% if item.is_package %}{% url 'cart:cart_remove_package' item.package_obj.id %}{% else %}{% url 'cart:cart_remove' item.product_obj.id %}{% endif %}"
-                       class="cart-row__remove"
-                       onclick="return confirmDelete('{{ item.title }}')"
-                       title="{% trans 'Remove' %}" aria-label="{% trans 'Remove' %}">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
+        <aside class="card lg:col-span-4 h-fit">
+            <h2 class="mb-4 text-lg">{% trans 'Order Summary' %}</h2>
+            <div class="mb-4 border-b border-line pb-4">
+                {% if cart.discount_code %}
+                <div class="flex items-center justify-between rounded-xl bg-success-soft px-3 py-2 text-sm">
+                    <span>{{ cart.discount_code }}</span>
+                    <a href="{% url 'cart:remove_discount' %}" class="text-danger">{% trans 'Remove' %}</a>
                 </div>
-                {% endfor %}
-
-                <form method="post" action="{% url 'cart:cart_clear' %}" style="margin-top: 8px;">
+                {% else %}
+                <form method="post" action="{% url 'cart:apply_discount' %}" class="flex gap-2">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn--ghost btn--sm">
-                        <i class="fas fa-trash-alt"></i> {% trans 'Clear Cart' %}
-                    </button>
+                    <input type="text" name="code" placeholder="{% trans 'Discount code...' %}">
+                    <button type="submit" class="btn btn-ghost shrink-0">{% trans 'Apply' %}</button>
                 </form>
+                {% endif %}
             </div>
-
-            <!-- Summary -->
-            <div class="lg:col-span-4">
-                <div class="summary">
-                    <h5 class="summary__title">{% trans 'Order Summary' %}</h5>
-
-                    <div style="margin-bottom: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line-2);">
-                        {% if cart.discount_code %}
-                        <div class="discount-box">
-                            <span>
-                                <i class="fas fa-tag"></i>
-                                {{ cart.discount_code }}
-                                {% if cart.discount_percent > 0 %} (%{{ cart.discount_percent }}){% endif %}
-                                {% if cart.discount_amount > 0 %} ({{ cart.discount_amount|intcomma:False|translate_number }}){% endif %}
-                            </span>
-                            <a href="{% url 'cart:remove_discount' %}">{% trans 'Remove' %}</a>
-                        </div>
-                        {% else %}
-                        <form method="post" action="{% url 'cart:apply_discount' %}" class="discount-form">
-                            {% csrf_token %}
-                            <input type="text" name="code" placeholder="{% trans 'Discount code...' %}" class="input">
-                            <button type="submit" class="btn btn--ghost btn--sm">{% trans 'Apply' %}</button>
-                        </form>
-                        {% endif %}
-                    </div>
-
-                    <div class="summary__row">
-                        <span>{% trans 'Total Items' %}</span>
-                        <span class="fw-700">{{ cart|length|translate_number }}</span>
-                    </div>
-
-                    <div class="summary__row">
-                        <span>{% trans 'Total Price' %}</span>
-                        <span class="fw-700">{{ total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                    </div>
-
-                    {% if total_savings > 0 %}
-                    <div class="summary__row summary__row--savings">
-                        <span><i class="fas fa-piggy-bank"></i> {% trans 'Savings' %}</span>
-                        <span>{{ total_savings|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                    </div>
-                    {% endif %}
-
-                    {% if total_weight > 0 %}
-                    <div class="summary__row">
-                        <span>{% trans 'Total Weight' %}</span>
-                        <span>{{ total_weight|translate_number }} {% trans 'g' %}</span>
-                    </div>
-                    {% endif %}
-
-                    {% if discounted_total != total_price %}
-                    <div class="summary__row summary__row--total">
-                        <span>{% trans 'Final Price' %}</span>
-                        <span class="summary__value">{{ discounted_total|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                    </div>
-                    {% endif %}
-
-                    <a href="{% url 'order:order_create' %}" class="btn btn--accent btn--lg btn--block" style="margin-top: 18px;">
-                        <i class="fas fa-arrow-left"></i> {% trans 'Proceed to Checkout' %}
-                    </a>
-                </div>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between"><span>{% trans 'Total Items' %}</span><span class="font-bold">{{ cart|length|translate_number }}</span></div>
+                <div class="flex justify-between"><span>{% trans 'Total Price' %}</span><span class="font-bold">{{ total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>
+                {% if total_savings > 0 %}<div class="flex justify-between text-success"><span>{% trans 'Savings' %}</span><span>{{ total_savings|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>{% endif %}
+                {% if total_weight > 0 %}<div class="flex justify-between"><span>{% trans 'Total Weight' %}</span><span>{{ total_weight|translate_number }} {% trans 'g' %}</span></div>{% endif %}
+                {% if discounted_total != total_price %}<div class="flex justify-between border-t border-line pt-3 text-base font-bold"><span>{% trans 'Final Price' %}</span><span>{{ discounted_total|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>{% endif %}
             </div>
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <span class="empty-state__icon"><i class="fas fa-shopping-bag"></i></span>
-            <h3 class="empty-state__title">{% trans 'Your cart is empty' %}</h3>
-            <p class="empty-state__text">{% trans 'Add your favorite books and start your architecture library.' %}</p>
-            <a href="{% url 'product:product_list' %}" class="btn btn--accent">
-                <i class="fas fa-book-open"></i> {% trans 'Browse Books' %}
-            </a>
-        </div>
-        {% endif %}
+            <a href="{% url 'order:order_create' %}" class="btn btn-accent btn-lg btn-block mt-6"><i class="fas fa-arrow-left"></i> {% trans 'Proceed to Checkout' %}</a>
+        </aside>
     </div>
+    {% else %}
+    <div class="py-16 text-center">
+        <i class="fas fa-shopping-bag mb-4 text-5xl text-faint"></i>
+        <h2 class="mb-2">{% trans 'Your cart is empty' %}</h2>
+        <p class="mb-6 text-muted">{% trans 'Add your favorite books and start your architecture library.' %}</p>
+        <a href="{% url 'product:product_list' %}" class="btn btn-accent"><i class="fas fa-book-open"></i> {% trans 'Browse Books' %}</a>
+    </div>
+    {% endif %}
 </section>
-
 <script>
     function confirmDelete(title) {
         return confirm('{% trans "Delete" %} "' + title + '" {% trans "from cart?" %}');
