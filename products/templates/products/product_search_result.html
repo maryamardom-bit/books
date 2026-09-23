@@ -10,9 +10,9 @@
         <span>/</span>
         <span>{% trans 'Search' %}</span>
     </nav>
-    <h1 class="mb-2 text-3xl">{% trans 'Search Results' %}</h1>
+    <h1 class="mb-2 text-3xl">نتایج جستجو</h1>
     {% if query %}
-    <p class="mb-8 text-muted">{% trans 'Search for' %}: <strong class="text-accent-strong">"{{ query }}"</strong> • <strong>{{ results_count|default:0 }}</strong> {% if results_count == 1 %}{% trans 'book found' %}{% else %}{% trans 'books found' %}{% endif %}{% if search_mode == 'advanced' %} • {% trans 'Advanced search' %}{% endif %}</p>
+    <p class="mb-8 text-muted">جستجو برای <strong class="text-accent-strong">«{{ query }}»</strong> — <strong>{{ results_count|default:0 }}</strong> عنوان{% if search_mode == 'advanced' %} · جستجوی پیشرفته{% endif %}</p>
     {% endif %}
 
     {% if results %}
@@ -25,16 +25,33 @@
     {% else %}
     <div class="mx-auto max-w-lg py-12 text-center">
         <i class="fas fa-search mb-4 text-4xl text-faint"></i>
-        <h2 class="mb-2">{% trans 'Nothing found' %}</h2>
-        <p class="mb-6 text-muted">{% if query %}{% trans 'We could not find any book matching your search.' %}{% else %}{% trans 'Please enter a search term.' %}{% endif %}</p>
+        <h2 class="mb-2">نتیجه‌ای پیدا نشد</h2>
+        <p class="mb-6 text-muted">{% if query %}عنوانی مطابق این جستجو در کاتالوگ نیست.{% else %}عبارتی برای جستجو وارد کنید.{% endif %}</p>
         <div class="card text-start text-sm">
-            <p class="mb-2 font-bold">{% trans 'Suggestions' %}:</p>
+            <p class="mb-2 font-bold">پیشنهاد:</p>
             <ul class="list-disc space-y-1 ps-5 text-ink-2">
-                <li>{% trans 'Check the spelling of the title or author name.' %}</li>
-                <li>{% trans 'Try a shorter or more general keyword.' %}</li>
-                <li>{% trans 'Browse books by category from the main menu.' %}</li>
+                <li>املای عنوان یا نام نویسنده را بررسی کنید.</li>
+                <li>کلمهٔ کوتاه‌تر یا عمومی‌تر بزنید.</li>
+                <li>از موضوعات معماری در منو وارد شوید.</li>
             </ul>
         </div>
+        {% if subjects %}
+        <div class="mt-8 flex flex-wrap justify-center gap-2">
+            {% for subject in subjects %}
+            <a href="{% url 'product:product_list_by_category' category=subject.code %}" class="rounded-full border border-line px-3 py-1.5 text-xs font-bold">{{ subject.name }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if suggested_books %}
+        <div class="mx-auto mt-12 max-w-page text-start">
+            <h3 class="mb-6 text-center text-lg">از کاتالوگ ناشر</h3>
+            <div class="book-grid">
+                {% for product in suggested_books %}
+                    {% include "includes/book_card.html" with product=product %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 </section>

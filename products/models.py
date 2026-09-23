@@ -54,19 +54,19 @@ class ProductManager(models.Manager):
 class Product(models.Model):
 
     class Category(models.TextChoices):
-        BUSINESS = 'BUSINESS', _('BUSINESS')
-        ARCH_DESIGN = 'ARCH_DESIGN', _('ARCH_DESIGN')
-        INTERIOR = 'INTERIOR', _('INTERIOR')
-        URBAN = 'URBAN', _('URBAN')
-        LANDSCAPE = 'LANDSCAPE', _('LANDSCAPE')
-        DESIGN_GUIDE = 'DESIGN_GUIDE', _('DESIGN_GUIDE')
-        HISTORY = 'HISTORY', _('HISTORY')
-        DESIGN_BASICS = 'DESIGN_BASICS', _('DESIGN_BASICS')
-        DIGITAL = 'DIGITAL', _('DIGITAL')
-        SUSTAIN = 'SUSTAIN', _('SUSTAIN')
-        SAMPLES = 'SAMPLES', _('SAMPLES')
-        OTHER = 'OTHER', _('OTHER')
-        PACKAGES = 'PACKAGES', _('PACKAGES')
+        BUSINESS = 'BUSINESS', _('کسب‌وکار معماری')
+        ARCH_DESIGN = 'ARCH_DESIGN', _('معماری و طراحی')
+        INTERIOR = 'INTERIOR', _('معماری داخلی')
+        URBAN = 'URBAN', _('شهرسازی')
+        LANDSCAPE = 'LANDSCAPE', _('منظر')
+        DESIGN_GUIDE = 'DESIGN_GUIDE', _('راهنمای طراحی')
+        HISTORY = 'HISTORY', _('تاریخ معماری')
+        DESIGN_BASICS = 'DESIGN_BASICS', _('مبانی طراحی')
+        DIGITAL = 'DIGITAL', _('دیجیتال و نرم‌افزار')
+        SUSTAIN = 'SUSTAIN', _('پایداری')
+        SAMPLES = 'SAMPLES', _('نمونه‌ها و پروژه‌ها')
+        OTHER = 'OTHER', _('سایر')
+        PACKAGES = 'PACKAGES', _('بسته‌ها')
 
     class BookSize(models.TextChoices):
         RAGHIEI = 'raghiei', _('Raghei')

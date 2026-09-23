@@ -4,61 +4,73 @@
 {% load humanize %}
 {% load jalali_tags %}
 
-{% block page_title %}{{ product.title }} | {% trans 'Kasra Publishing' %}{% endblock %}
+{% block page_title %}{{ product.title }} | انتشارات کسری{% endblock %}
+{% block meta_description %}{{ product.title }}{% if product.author %} — {{ product.author }}{% endif %} | انتشارات کسری{% endblock %}
+{% block extra_head %}
+{% if json_ld %}<script type="application/ld+json">{{ json_ld|safe }}</script>{% endif %}
+<meta property="og:type" content="book">
+<meta property="og:title" content="{{ product.title }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if product.image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ product.image.url }}">{% endif %}
+{% endblock %}
 
 {% block content %}
 <section class="page-wrap">
     <nav class="crumb">
-        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <a href="{% url 'page:home' %}">خانه</a>
         <span>/</span>
-        <a href="{% url 'product:product_list' %}">{% trans 'Books' %}</a>
+        <a href="{% url 'product:product_list' %}">کاتالوگ</a>
         <span>/</span>
         <a href="{% url 'product:product_list_by_category' category=product.category %}">{{ product.get_category_display }}</a>
         <span>/</span>
         <span>{{ product.title }}</span>
     </nav>
 
-    <div class="grid gap-8 lg:grid-cols-12">
+    <div class="grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
-            <div class="relative overflow-hidden rounded-2xl border border-line bg-surface">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="aspect-[3/4] w-full object-cover">
-                {% else %}
-                <div class="flex aspect-[3/4] items-center justify-center text-6xl text-faint"><i class="fas fa-book-open"></i></div>
-                {% endif %}
+            <div class="relative overflow-hidden rounded-sm border border-line bg-surface">
+                <div class="cover-well">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                    {% else %}
+                    <i class="fas fa-book-open text-6xl text-faint"></i>
+                    {% endif %}
+                </div>
                 <div class="absolute top-3 start-3 flex flex-col gap-1">
-                    {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">%{{ product.get_discount_percent_display }}- {% trans 'Off' %}</span>{% endif %}
-                    {% if product.is_new %}<span class="rounded-full bg-paper px-2 py-0.5 text-[11px] font-bold">{% trans 'New' %}</span>{% endif %}
+                    {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">٪{{ product.get_discount_percent_display|translate_number }}</span>{% endif %}
+                    {% if product.is_new %}<span class="rounded-full bg-paper px-2 py-0.5 text-[11px] font-bold">جدید</span>{% endif %}
                 </div>
             </div>
         </div>
 
-        <div class="card lg:col-span-7">
-            <div class="mb-3 flex flex-wrap items-center gap-3">
-                <a href="{% url 'product:product_list_by_category' category=product.category %}" class="rounded-full bg-surface px-3 py-1 text-xs font-bold">{{ product.get_category_display }}</a>
-                {% if product.author %}
-                <a href="{% url 'product:author_books' author_name=product.author %}" class="text-sm font-bold text-muted"><i class="fas fa-pen-nib text-accent"></i> {{ product.author }}</a>
-                {% endif %}
-            </div>
-            <h1 class="mb-3 text-3xl">{{ product.title }}</h1>
-            <p class="mb-5 text-sm text-muted">
-                <span class="text-accent">{% if product.avg_rating > 0 %}{% for i in "12345" %}{% if forloop.counter <= product.avg_rating %}★{% else %}☆{% endif %}{% endfor %}{% else %}☆☆☆☆☆{% endif %}</span>
-                ({{ product.comments.count|default:0 }} {% trans 'Reviews' %})
+        <div class="lg:col-span-7">
+            <a href="{% url 'product:product_list_by_category' category=product.category %}" class="mb-3 inline-block text-xs font-bold text-accent-strong">{{ product.get_category_display }}</a>
+            <h1 class="mb-3 text-3xl leading-snug md:text-4xl">{{ product.title }}</h1>
+            {% if product.author %}
+            <p class="mb-5 text-sm">
+                <a href="{% url 'product:author_books' author_name=product.author %}" class="font-bold hover:text-accent-strong">{{ product.author }}</a>
             </p>
-            <p class="mb-6 text-sm leading-8">{{ product.description|truncatewords:30|safe }}</p>
+            {% endif %}
+            {% if product.avg_rating %}
+            <p class="mb-5 text-sm text-muted">
+                <span class="text-accent">{% for i in "12345" %}{% if forloop.counter <= product.avg_rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+                ({{ product.comments_count|default:0 }} نظر)
+            </p>
+            {% endif %}
+            <p class="mb-8 max-w-xl text-sm leading-8 text-muted">{{ product.description|striptags|truncatewords:40 }}</p>
 
-            <div class="mb-6 rounded-xl bg-surface p-5">
+            <div class="mb-6 border-y border-line py-5">
                 {% if product.is_on_sale %}
-                <p class="mb-1 text-sm text-faint line-through">{{ product.price|intcomma:False|translate_number }}</p>
-                <p class="text-2xl font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">{% trans 'Toman' %}</span></p>
-                <p class="mt-1 text-sm font-bold text-success"><i class="fas fa-piggy-bank"></i> {% trans 'Savings' %}: {{ product.get_savings|intcomma:False|translate_number }} {% trans 'Toman' %}</p>
+                <p class="mb-1 text-sm text-faint line-through">{{ product.price|intcomma:False|translate_number }} تومان</p>
+                <p class="text-2xl font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">تومان</span></p>
+                <p class="mt-1 text-sm text-success">صرفه‌جویی {{ product.get_savings|intcomma:False|translate_number }} تومان</p>
                 {% else %}
-                <p class="text-2xl font-bold">{{ product.price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">{% trans 'Toman' %}</span></p>
+                <p class="text-2xl font-bold">{{ product.price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">تومان</span></p>
                 {% endif %}
             </div>
 
             {% if product.available_stock > 0 %}
-            <p class="mb-4 text-sm font-bold text-success">{% trans 'In Stock' %} ({{ product.available_stock }} {% trans 'items' %})</p>
+            <p class="mb-4 text-sm font-bold text-success">موجود</p>
             <form action="{% url 'cart:cart_add' product.id %}" method="post" class="flex flex-wrap items-center gap-3" x-data="{ qty: 1, max: {{ product.available_stock }} }">
                 {% csrf_token %}
                 <input type="hidden" name="inplace" value="false">
@@ -67,95 +79,128 @@
                     <input type="number" name="quantity" :value="qty" min="1" :max="max" class="w-16 rounded-full py-2 text-center">
                     <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" @click="qty = Math.min(max, qty + 1)">+</button>
                 </div>
-                <button type="submit" class="btn btn-accent btn-lg"><i class="fas fa-plus"></i> {% trans 'Add to Cart' %}</button>
+                <button type="submit" class="btn btn-accent btn-lg">افزودن به سبد</button>
             </form>
             {% else %}
-            <div class="rounded-xl bg-danger-soft p-4 font-bold text-danger">{% trans 'Out of Stock' %}</div>
+            <div class="rounded-xl bg-danger-soft p-4 font-bold text-danger">ناموجود</div>
             {% endif %}
         </div>
     </div>
 
-    <div class="mt-12 space-y-8">
-        <div class="card">
-            <h2 class="mb-4 text-xl">{% trans 'Description' %}</h2>
+    <div class="mt-14 grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+            <h2 class="mb-4 text-xl">درباره کتاب</h2>
             <div class="prose-cms">{{ product.description|safe }}</div>
         </div>
-        <div class="card">
-            <h2 class="mb-4 text-xl">{% trans 'Specifications' %}</h2>
+        <div class="lg:col-span-5">
+            <h2 class="mb-4 text-xl">مشخصات نشر</h2>
             <dl class="divide-y divide-line text-sm">
-                <div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans 'Author' %}</dt><dd>{{ product.author|default:'-' }}</dd></div>
-                {% if product.publisher %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans 'Publisher' %}</dt><dd>{{ product.publisher }}</dd></div>{% endif %}
-                {% if product.number_of_pages %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans 'Pages' %}</dt><dd>{{ product.number_of_pages }}</dd></div>{% endif %}
-                {% if product.weight %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans 'Weight' %}</dt><dd>{{ product.weight }} {% trans 'g' %}</dd></div>{% endif %}
+                {% if product.author %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">نویسنده</dt><dd><a href="{% url 'product:author_books' author_name=product.author %}">{{ product.author }}</a></dd></div>{% endif %}
+                {% if product.publisher %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">ناشر</dt><dd>{{ product.publisher }}</dd></div>{% endif %}
+                {% if product.isbn %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">شابک</dt><dd dir="ltr">{{ product.isbn }}</dd></div>{% endif %}
+                {% if product.year_of_publication %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">سال نشر</dt><dd>{{ product.year_of_publication }}</dd></div>{% endif %}
+                {% if product.edition %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">مترجم / ویرایش</dt><dd>{{ product.edition }}</dd></div>{% endif %}
+                {% if product.number_of_pages %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">صفحات</dt><dd>{{ product.number_of_pages|translate_number }}</dd></div>{% endif %}
+                {% if product.book_size %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">قطع</dt><dd>{{ product.get_book_size_display }}</dd></div>{% endif %}
+                {% if product.cover_type %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">جلد</dt><dd>{{ product.get_cover_type_display }}</dd></div>{% endif %}
+                {% if product.printing_series %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">نوبت چاپ</dt><dd>{{ product.printing_series }}</dd></div>{% endif %}
+                {% if product.weight %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">وزن</dt><dd>{{ product.weight|translate_number }} گرم</dd></div>{% endif %}
             </dl>
         </div>
-        <div class="card">
-            <h2 class="mb-4 text-xl">{% trans 'Reviews' %} ({{ product.comments.count }})</h2>
-            {% for comment in product.comments.all %}
-                {% if comment.active %}
-                <div class="mb-3 rounded-xl bg-surface p-4">
-                    <div class="mb-2 flex flex-wrap items-center gap-2">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-ink text-sm font-bold text-paper">{{ comment.author.username|first|upper }}</span>
-                        <span class="text-sm font-bold">{{ comment.author.username }}</span>
-                        <span class="text-xs text-accent">{% for i in "12345" %}{% if forloop.counter <= comment.stars %}★{% else %}☆{% endif %}{% endfor %}</span>
-                        <span class="ms-auto text-[11px] text-faint">{{ comment.datetime_created|jalali_date }}</span>
-                    </div>
-                    <p class="text-sm">{{ comment.body }}</p>
-                </div>
-                {% endif %}
-            {% empty %}
-                <p class="py-4 text-center text-muted">{% trans 'No reviews yet.' %}</p>
+    </div>
+
+    {% if product_packages %}
+    <div class="mt-12">
+        <p class="mb-2 text-xs font-bold text-accent-strong">مجموعه‌ها</p>
+        <h2 class="mb-4 text-xl">این کتاب در این مجموعه‌هاست</h2>
+        <ul class="space-y-2">
+            {% for package in product_packages %}
+            <li><a href="{{ package.get_absolute_url }}" class="font-bold hover:text-accent-strong">{{ package.title }}</a></li>
             {% endfor %}
-            {% if user.is_authenticated %}
-            <form method="post" action="{% url 'product:comment_create' product.id %}" class="mt-6 space-y-4 border-t border-line pt-6">
-                {% csrf_token %}
-                <div>
-                    <label>{% trans 'Rating' %}</label>
-                    <select name="stars" class="max-w-xs">
-                        <option value="5">★★★★★</option>
-                        <option value="4">★★★★</option>
-                        <option value="3">★★★</option>
-                        <option value="2">★★</option>
-                        <option value="1">★</option>
-                    </select>
-                </div>
-                <div>
-                    <label>{% trans 'Your Review' %}</label>
-                    <textarea name="body" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-accent">{% trans 'Submit' %}</button>
-            </form>
-            {% else %}
-            <p class="mt-5 rounded-xl bg-surface p-5 text-center">
-                <a href="{% url 'account_login' %}?next={{ request.path }}" class="font-bold text-accent-strong">{% trans 'Login' %}</a>
-                {% trans 'to write a review' %}
-            </p>
-            {% endif %}
-        </div>
-        {% if blogs %}
-        <div class="card">
-            <h2 class="mb-4 text-xl">{% trans 'Journal' %}</h2>
-            {% for blog in blogs %}
-            <div class="mb-4">
-                <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-                    <h3>{{ blog.title }}</h3>
-                    <span class="rounded-full bg-surface px-3 py-1 text-xs">{{ blog.get_blog_type_display }}</span>
-                </div>
-                <div class="prose-cms">{{ blog.content|safe|truncatewords:50 }}</div>
-                {% if blog.video %}<video controls class="mt-3 w-full rounded-xl"><source src="{{ blog.video.url }}" type="video/mp4"></video>{% endif %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if blogs %}
+    <div class="mt-12">
+        <p class="mb-2 text-xs font-bold text-accent-strong">یادداشت ناشر</p>
+        <h2 class="mb-6 text-2xl">متن و روایت مرتبط با این عنوان</h2>
+        {% for blog in blogs %}
+        <article class="mb-8 border-t border-line pt-6">
+            <div class="mb-2 flex flex-wrap items-center gap-2">
+                <h3 class="text-lg">{{ blog.title }}</h3>
+                <span class="text-xs text-faint">{{ blog.get_blog_type_display }}</span>
             </div>
-            {% endfor %}
+            <div class="prose-cms">{{ blog.content|safe }}</div>
+            {% if blog.video %}<video controls class="mt-3 w-full rounded-xl"><source src="{{ blog.video.url }}" type="video/mp4"></video>{% endif %}
+        </article>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="mt-12">
+        <h2 class="mb-4 text-xl">نظر خوانندگان ({{ product.comments_count|default:product.comments.count }})</h2>
+        {% for comment in active_comments %}
+        <div class="mb-3 border-b border-line py-4">
+            <div class="mb-2 flex flex-wrap items-center gap-2">
+                <span class="text-sm font-bold">{{ comment.author.username }}</span>
+                <span class="text-xs text-accent">{% for i in "12345" %}{% if forloop.counter <= comment.stars %}★{% else %}☆{% endif %}{% endfor %}</span>
+                <span class="ms-auto text-[11px] text-faint">{{ comment.datetime_created|jalali_date }}</span>
+            </div>
+            <p class="text-sm">{{ comment.body }}</p>
         </div>
+        {% empty %}
+        <p class="py-4 text-muted">هنوز نظری ثبت نشده. اگر این کتاب را خوانده‌اید، دیدگاه‌تان برای معماران دیگر مفید است.</p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'product:comment_create' product.id %}" class="mt-6 space-y-4 border-t border-line pt-6">
+            {% csrf_token %}
+            <div>
+                <label>امتیاز</label>
+                <select name="stars" class="max-w-xs">
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
+            </div>
+            <div>
+                <label>یادداشت شما</label>
+                <textarea name="body" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-accent">ارسال</button>
+        </form>
+        {% else %}
+        <p class="mt-5 text-sm">
+            <a href="{% url 'account_login' %}?next={{ request.path }}" class="font-bold text-accent-strong">وارد شوید</a>
+            تا نظر بنویسید.
+        </p>
         {% endif %}
     </div>
 
-    {% if related_products %}
-    <div class="mt-12">
-        <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Related' %}</p>
-        <h2 class="mb-6 text-2xl">{% trans 'You may also like' %}</h2>
+    {% if author_books %}
+    <div class="mt-16">
+        <p class="mb-2 text-xs font-bold text-accent-strong">همان نویسنده</p>
+        <h2 class="mb-6 text-2xl">{% if product.author %}دیگر آثار {{ product.author }}{% else %}آثار مرتبط{% endif %}</h2>
         <div class="book-grid">
-            {% for product in related_products %}
-                {% include "includes/book_card.html" with product=product %}
+            {% for other in author_books %}
+                {% include "includes/book_card.html" with product=other %}
+            {% endfor %}
+        </div>
+        {% if product.author %}
+        <p class="mt-6"><a href="{% url 'product:author_books' author_name=product.author %}" class="text-sm font-bold text-accent-strong">همهٔ کتاب‌های این نویسنده</a></p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if related_products %}
+    <div class="mt-16">
+        <p class="mb-2 text-xs font-bold text-accent-strong">ادامهٔ کشف</p>
+        <h2 class="mb-6 text-2xl">از همین میدان معماری</h2>
+        <div class="book-grid">
+            {% for other in related_products %}
+                {% include "includes/book_card.html" with product=other %}
             {% endfor %}
         </div>
     </div>

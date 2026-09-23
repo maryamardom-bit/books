@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load i18n %}
+
+{% block page_title %}تازه‌های نشر | انتشارات کسری{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">خانه</a>
+        <span>/</span>
+        <span>تازه‌ها</span>
+    </nav>
+    <p class="mb-2 text-xs font-bold text-accent-strong">انتشار</p>
+    <h1 class="mb-2 text-3xl">تازه‌های نشر</h1>
+    <p class="mb-10 max-w-2xl text-muted">جدیدترین عناوین اضافه‌شده به کاتالوگ انتشارات کسری.</p>
+    <div class="book-grid">
+        {% for product in products %}
+            {% include "includes/book_card.html" with product=product %}
+        {% empty %}
+        <div class="col-span-full py-16 text-center">
+            <h3 class="mb-4">هنوز عنوان تازه‌ای ثبت نشده است.</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">کاتالوگ کامل</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% include "includes/pagination.html" %}
+</section>
+{% endblock %}

@@ -1,10 +1,9 @@
 {% load i18n %}
 {% with name=request.resolver_match.url_name %}
-<a href="{% url 'page:home' %}" class="{{ item_class }} {% if name == 'home' %}{{ active_class }}{% endif %}">{% trans 'Home' %}</a>
-<a href="{% url 'product:product_list' %}" class="{{ item_class }} {% if name == 'product_list' %}{{ active_class }}{% endif %}">{% trans 'Shop' %}</a>
-<a href="{% url 'product:product_category' %}" class="{{ item_class }} {% if name == 'product_category' or name == 'product_list_by_category' %}{{ active_class }}{% endif %}">{% trans 'Categories' %}</a>
-<a href="{% url 'product:package_list' %}" class="{{ item_class }} {% if 'package' in name %}{{ active_class }}{% endif %}">{% trans 'Packages' %}</a>
-<a href="{% url 'product:best_sellers' %}" class="{{ item_class }} {% if name == 'best_sellers' %}{{ active_class }}{% endif %}">{% trans 'Best Sellers' %}</a>
-<a href="{% url 'product:product_list' %}?discount=true" class="{{ item_class }}">{% trans 'Sale' %}</a>
-<a href="{% url 'page:aboutus' %}" class="{{ item_class }} {% if name == 'aboutus' %}{{ active_class }}{% endif %}">{% trans 'About' %}</a>
+<a href="{% url 'page:home' %}" class="{{ item_class }} lg:hidden {% if name == 'home' %}{{ active_class }}{% endif %}">خانه</a>
+<a href="{% url 'product:product_list' %}" class="{{ item_class }} {% if name == 'product_list' %}{{ active_class }}{% endif %}">کاتالوگ</a>
+<a href="{% url 'product:product_category' %}" class="{{ item_class }} {% if name == 'product_category' or name == 'product_list_by_category' %}{{ active_class }}{% endif %}">موضوعات</a>
+<a href="{% url 'product:package_list' %}" class="{{ item_class }} {% if 'package' in name %}{{ active_class }}{% endif %}">مجموعه‌ها</a>
+<a href="{% url 'product:best_sellers' %}" class="{{ item_class }} {% if name == 'best_sellers' %}{{ active_class }}{% endif %}">پرفروش</a>
+<a href="{% url 'page:aboutus' %}" class="{{ item_class }} {% if name == 'aboutus' %}{{ active_class }}{% endif %}">ناشر</a>
 {% endwith %}

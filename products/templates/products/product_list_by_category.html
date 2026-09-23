@@ -7,29 +7,30 @@
 <section class="page-wrap">
     {% if category %}
     <nav class="crumb">
-        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <a href="{% url 'page:home' %}">خانه</a>
         <span>/</span>
-        <a href="{% url 'product:product_category' %}">{% trans 'Categories' %}</a>
+        <a href="{% url 'product:product_category' %}">موضوعات</a>
         <span>/</span>
         <span>{{ category.name }}</span>
     </nav>
-    <p class="mb-2 text-xs font-bold text-accent-strong">{{ category.icon }}</p>
     <h1 class="mb-2 text-3xl">{{ category.name }}</h1>
-    <p class="mb-8 text-muted">{{ category.count }} {% trans 'books' %}</p>
+    {% if category.blurb %}<p class="mb-2 max-w-2xl text-muted">{{ category.blurb }}</p>{% endif %}
+    <p class="mb-10 text-sm text-faint">{{ category.count }} عنوان</p>
     <div class="book-grid">
         {% for product in products %}
             {% include "includes/book_card.html" with product=product %}
         {% empty %}
         <div class="col-span-full py-16 text-center">
-            <h3 class="mb-4">{% trans 'No books in this category' %}</h3>
-            <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans 'View all books' %}</a>
+            <h3 class="mb-4">در این موضوع هنوز کتابی نیست</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">کاتالوگ کامل</a>
         </div>
         {% endfor %}
     </div>
-    {% include "includes/pagination.html" with base="?page=" %}
+    {% include "includes/pagination.html" %}
     {% else %}
     <div class="py-16 text-center">
         <h3>{{ error }}</h3>
+        <a href="{% url 'product:product_category' %}" class="btn btn-accent mt-4">موضوعات</a>
     </div>
     {% endif %}
 </section>

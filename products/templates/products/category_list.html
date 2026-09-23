@@ -1,22 +1,24 @@
 {% extends '_base.html' %}
 {% load i18n %}
 
-{% block page_title %}{% trans "Categories" %} | انتشارات کسری{% endblock %}
+{% block page_title %}موضوعات معماری | انتشارات کسری{% endblock %}
 
 {% block content %}
-<section class="page-wrap text-center">
-    <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Archive' %}</p>
-    <h1 class="mb-2 text-3xl">{% trans 'Book Categories' %}</h1>
-    <p class="mx-auto mb-10 max-w-xl text-muted">{% trans 'Discover our curated collection of architectural books, organized by field of study.' %}</p>
-    <div class="grid grid-cols-2 gap-4 text-start sm:grid-cols-3 lg:grid-cols-4">
+<section class="page-wrap">
+    <p class="mb-2 text-xs font-bold text-accent-strong">کاتالوگ موضوعی</p>
+    <h1 class="mb-2 text-3xl">موضوعات</h1>
+    <p class="mb-10 max-w-2xl text-muted">کتاب‌ها بر اساس میدان حرفه‌ای معماری، شهر، منظر و طراحی مرتب شده‌اند — نه دسته‌بندی فروشگاهی.</p>
+    <div class="divide-y divide-line border-y border-line">
         {% for category in categories %}
-        <a href="{% url 'product:product_list_by_category' category=category.code %}" class="rounded-2xl border border-line bg-paper p-6 text-center transition hover:-translate-y-1 hover:shadow-md">
-            <span class="mb-3 inline-block text-3xl">{{ category.icon }}</span>
-            <h2 class="mb-1 text-base">{{ category.name }}</h2>
-            <p class="text-sm text-muted"><strong class="text-accent-strong">{{ category.count }}</strong> {% trans 'books' %}</p>
+        <a href="{% url 'product:product_list_by_category' category=category.code %}" class="flex items-baseline justify-between gap-6 py-5 hover:bg-surface">
+            <div>
+                <h2 class="mb-1 text-lg">{{ category.name }}</h2>
+                <p class="text-sm text-muted">{{ category.blurb }}</p>
+            </div>
+            <p class="shrink-0 text-sm font-bold text-accent-strong">{{ category.count }} عنوان</p>
         </a>
         {% empty %}
-        <p class="col-span-full py-16 text-muted">{% trans 'No categories found' %}</p>
+        <p class="py-16 text-center text-muted">موضوعی ثبت نشده است.</p>
         {% endfor %}
     </div>
 </section>

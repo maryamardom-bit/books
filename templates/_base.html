@@ -7,9 +7,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="{% trans 'Kasra Publishing — specialized publisher of architecture and design books' %}">
+    <meta name="description" content="{% block meta_description %}{% trans 'Kasra Publishing — specialized publisher of architecture and design books' %}{% endblock %}">
     <title>{% block page_title %}انتشارات کسری | کتاب‌فروشی تخصصی معماری{% endblock %}</title>
     <link rel="icon" href="{% static 'img/kasrapublishing.jpg' %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+    {% block extra_head %}{% endblock %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {"@type": "Organization", "@id": "{{ request.scheme }}://{{ request.get_host }}/#org", "name": "انتشارات کسری", "url": "{{ request.scheme }}://{{ request.get_host }}/"},
+        {"@type": "WebSite", "name": "انتشارات کسری", "url": "{{ request.scheme }}://{{ request.get_host }}/", "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#org"}, "potentialAction": {"@type": "SearchAction", "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'product:product_search' %}?q={search_term_string}", "query-input": "required name=search_term_string"}}
+      ]
+    }
+    </script>
 
     <script>
         (function () {
@@ -103,7 +114,9 @@
             .page-wrap { @apply mx-auto max-w-page px-4 py-10 sm:px-6; }
             .crumb { @apply mb-3 flex flex-wrap items-center gap-2 text-xs text-muted; }
             .crumb a { @apply text-muted hover:text-accent-strong; }
-            .book-grid { @apply grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4; }
+            .book-grid { @apply grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4; }
+            .cover-well { @apply flex aspect-[3/4] items-center justify-center overflow-hidden bg-surface p-4; }
+            .cover-well img { @apply max-h-full max-w-full object-contain; }
             .card { @apply rounded-2xl border border-line bg-paper p-6; }
             .btn { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition; }
             .btn-accent { @apply bg-accent text-white hover:bg-accent-strong; }

@@ -1,4 +1,7 @@
+import json
+
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import strip_tags
 from django.views import generic
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
@@ -6,13 +9,13 @@ from django.db.models import Q, Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.http import require_POST
-from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Product, Comment, Package
 from .forms import CommentForm
 from .search import build_search_q
+from .taxonomy import catalog_subjects, EXCLUDED_CATEGORIES
 from cart.forms import AddToCartProductForm
 
 
@@ -25,15 +28,17 @@ class ProductListView(generic.ListView):
 
     def get_queryset(self):
         queryset = Product.objects.with_ratings().filter(active=True)
-        
+
         discount_filter = self.request.GET.get('discount', '')
         if discount_filter == 'true':
-            queryset = Product.objects.with_ratings().filter(
-                active=True
-            ).filter(
+            queryset = queryset.filter(
                 Q(special_price__gt=0) | Q(discount_percent__gt=0)
             )
-        
+
+        category = self.request.GET.get('category', '')
+        if category in dict(Product.Category.choices) and category not in EXCLUDED_CATEGORIES:
+            queryset = queryset.filter(category=category)
+
         sort = self.request.GET.get('sort', '-datetime_created')
         sort_options = {
             'price': 'price',
@@ -45,13 +50,18 @@ class ProductListView(generic.ListView):
             'rating': '-avg_rating',
         }
         sort_field = sort_options.get(sort, '-datetime_created')
-        
+
         return queryset.order_by(sort_field)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['discount_filter'] = self.request.GET.get('discount', '') == 'true'
         context['sort'] = self.request.GET.get('sort', '-datetime_created')
+        context['active_category'] = self.request.GET.get('category', '')
+        context['subjects'] = catalog_subjects()
+        params = self.request.GET.copy()
+        params.pop('page', None)
+        context['pagination_extra'] = '&{0}'.format(params.urlencode()) if params else ''
         return context
 
 
@@ -107,8 +117,46 @@ class ProductDetailView(generic.DetailView):
         
         context['blogs'] = product.blogs.filter(is_active=True)
         context['active_comments'] = product.comments.filter(active=True).select_related('author')
-        
+        context['product_packages'] = product.packages.filter(active=True)
+        context['json_ld'] = json.dumps(_book_json_ld(product, self.request), ensure_ascii=False)
         return context
+
+
+def _book_json_ld(product, request):
+    image = None
+    if product.image:
+        image = request.build_absolute_uri(product.image.url)
+    data = {
+        '@context': 'https://schema.org',
+        '@type': 'Book',
+        'name': product.title,
+        'description': strip_tags(product.description or '')[:400],
+        'url': request.build_absolute_uri(product.get_absolute_url()),
+        'inLanguage': 'fa',
+        'publisher': {
+            '@type': 'Organization',
+            'name': product.publisher or 'انتشارات کسری',
+        },
+        'offers': {
+            '@type': 'Offer',
+            'price': product.get_discounted_price(),
+            'priceCurrency': 'IRR',
+            'availability': (
+                'https://schema.org/InStock'
+                if product.available_stock > 0
+                else 'https://schema.org/OutOfStock'
+            ),
+        },
+    }
+    if product.author:
+        data['author'] = {'@type': 'Person', 'name': product.author}
+    if product.isbn:
+        data['isbn'] = product.isbn
+    if product.number_of_pages:
+        data['numberOfPages'] = product.number_of_pages
+    if image:
+        data['image'] = image
+    return data
 
 
 class CommentCreateView(LoginRequiredMixin, generic.View):
@@ -177,6 +225,9 @@ class ProductSearchView(generic.ListView):
         params.pop('page', None)
         context['pagination_extra'] = '&{0}'.format(params.urlencode()) if params else ''
         context['results_count'] = context['paginator'].count if context.get('paginator') else 0
+        if not context['results_count']:
+            context['suggested_books'] = Product.objects.with_ratings().filter(active=True).order_by('-datetime_created')[:4]
+            context['subjects'] = [s for s in catalog_subjects() if s['count']]
         return context
 
 
@@ -209,46 +260,10 @@ class PackageDetailView(generic.DetailView):
         return context
 
 
-@cache_page(60 * 5)
 def category_list(request):
-    """Display all categories with counts"""
-    categories = []
-    EXCLUDED_CATEGORIES = ['PACKAGES']
-    
-    icons = {
-        'BUSINESS': '💼',
-        'ARCH_DESIGN': '🏗️',
-        'INTERIOR': '🛋️',
-        'URBAN': '🏙️',
-        'LANDSCAPE': '🌳',
-        'DESIGN_GUIDE': '📖',
-        'HISTORY': '🏛️',
-        'DESIGN_BASICS': '✏️',
-        'DIGITAL': '💻',
-        'SUSTAIN': '🌿',
-        'SAMPLES': '📐',
-        'OTHER': '📦',
-    }
-    
-    category_counts = dict(
-        Product.objects.filter(active=True).values_list('category').annotate(
-            count=Count('id')
-        )
-    )
-    
-    for category_code, category_name in Product.Category.choices:
-        if category_code in EXCLUDED_CATEGORIES:
-            continue
-        
-        categories.append({
-            'code': category_code,
-            'name': category_name,
-            'icon': icons.get(category_code, '📚'),
-            'count': category_counts.get(category_code, 0),
-        })
-    
+    """Display architecture subjects with counts."""
     return render(request, 'products/category_list.html', {
-        'categories': categories,
+        'categories': catalog_subjects(),
     })
 
 
@@ -285,29 +300,13 @@ def product_list_by_category(request, category):
         products = paginator.page(paginator.num_pages)
     
     category_display = valid_categories.get(category, category)
-    
-    category_icons = {
-        'BUSINESS': '💼',
-        'ARCH_DESIGN': '🏗️',
-        'INTERIOR': '🛋️',
-        'URBAN': '🏙️',
-        'LANDSCAPE': '🌳',
-        'DESIGN_GUIDE': '📖',
-        'HISTORY': '🏛️',
-        'DESIGN_BASICS': '✏️',
-        'DIGITAL': '💻',
-        'SUSTAIN': '🌿',
-        'SAMPLES': '📐',
-        'OTHER': '📦',
-        'PACKAGES': '📚',
-    }
-    
+
     return render(request, 'products/product_list_by_category.html', {
         'products': products,
         'category': {
             'name': category_display,
             'slug': category,
-            'icon': category_icons.get(category, '📚'),
+            'blurb': next((s['blurb'] for s in catalog_subjects() if s['code'] == category), ''),
             'count': products_list.count(),
         },
         'paginator': paginator,
@@ -370,6 +369,32 @@ def author_books_view(request, author_name):
     }
     
     return render(request, 'products/author_books.html', context)
+
+
+def author_list_view(request):
+    """Author index derived from catalog — no extra author model."""
+    authors = (
+        Product.objects.filter(active=True)
+        .exclude(author='')
+        .values('author')
+        .annotate(book_count=Count('id'))
+        .order_by('author')
+    )
+    return render(request, 'products/author_list.html', {
+        'authors': authors,
+        'total_authors': authors.count(),
+    })
+
+
+class NewReleasesView(generic.ListView):
+    """Newest titles from the publisher."""
+    model = Product
+    template_name = 'products/new_releases.html'
+    context_object_name = 'products'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Product.objects.with_ratings().filter(active=True).order_by('-datetime_created')
 
 
 class BestSellersView(generic.ListView):

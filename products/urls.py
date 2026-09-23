@@ -13,6 +13,8 @@ urlpatterns = [
     path('packages/', views.PackageListView.as_view(), name='package_list'),
     path('packages/<slug:slug>/', views.PackageDetailView.as_view(), name='package_detail'),
     path('packages/<slug:slug>/comment/', views.package_comment, name='package_comment'),
+    path('author/', views.author_list_view, name='author_list'),
     path('author/<str:author_name>/', views.author_books_view, name='author_books'),
     path('best-sellers/', views.BestSellersView.as_view(), name='best_sellers'),
+    path('new-releases/', views.NewReleasesView.as_view(), name='new_releases'),
 ]

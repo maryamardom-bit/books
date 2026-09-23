@@ -2,31 +2,31 @@
 {% load persian_translation_tags %}
 {% load humanize %}
 
-<article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition hover:-translate-y-1 hover:shadow-lg">
-    <a href="{{ product.get_absolute_url }}" class="relative flex aspect-[3/4] items-center justify-center overflow-hidden bg-surface" aria-label="{{ product.title }}">
+<article class="group flex h-full flex-col">
+    <a href="{{ product.get_absolute_url }}" class="relative mb-3 cover-well rounded-sm border border-line" aria-label="{{ product.title }}">
         {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy">
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
         {% else %}
         <i class="fas fa-book-open text-4xl text-faint"></i>
         {% endif %}
         <span class="absolute top-2 start-2 flex flex-col gap-1">
-            {% if rank %}<span class="rounded-full bg-ink px-2 py-0.5 text-[11px] font-bold text-paper">#{{ rank }}</span>{% endif %}
-            {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">%{{ product.get_discount_percent_display }}-</span>{% endif %}
-            {% if product.is_new and not rank %}<span class="rounded-full bg-paper px-2 py-0.5 text-[11px] font-bold text-ink">{% trans 'New' %}</span>{% endif %}
+            {% if rank %}<span class="rounded-full bg-ink px-2 py-0.5 text-[11px] font-bold text-paper">{{ rank|translate_number }}</span>{% endif %}
+            {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">٪{{ product.get_discount_percent_display|translate_number }}</span>{% endif %}
+            {% if product.is_new and not rank %}<span class="rounded-full bg-paper/90 px-2 py-0.5 text-[11px] font-bold text-ink">جدید</span>{% endif %}
         </span>
     </a>
-    <div class="flex flex-1 flex-col p-4">
-        <p class="mb-1 text-[11px] font-bold uppercase text-accent-strong">{{ product.get_category_display }}</p>
-        <h3 class="mb-1 line-clamp-2 text-sm font-bold"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-        {% if product.author %}<p class="mb-2 text-xs text-faint">{{ product.author }}</p>{% endif %}
-        <div class="mt-auto flex items-end justify-between gap-2 border-t border-line pt-3">
+    <div class="flex flex-1 flex-col">
+        <p class="mb-1 text-[11px] font-bold text-accent-strong">{{ product.get_category_display }}</p>
+        <h3 class="mb-1 line-clamp-2 text-sm font-bold leading-6"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+        {% if product.author %}<p class="mb-2 text-xs text-faint"><a href="{% url 'product:author_books' author_name=product.author %}" class="text-faint hover:text-accent-strong">{{ product.author }}</a></p>{% endif %}
+        <div class="mt-auto flex items-end justify-between gap-2 pt-2">
             <div>
-                {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} {% trans 'sold' %}</p>{% endif %}
+                {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} فروش</p>{% endif %}
                 {% if product.is_on_sale %}
                 <p class="text-xs text-faint line-through">{{ product.price|intcomma:False|translate_number }}</p>
-                <p class="font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
+                <p class="font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">تومان</span></p>
                 {% else %}
-                <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>
+                <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">تومان</span></p>
                 {% endif %}
             </div>
             <form action="{% url 'cart:cart_add' product.id %}" method="post">

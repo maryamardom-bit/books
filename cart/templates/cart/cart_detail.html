@@ -84,9 +84,19 @@
     {% else %}
     <div class="py-16 text-center">
         <i class="fas fa-shopping-bag mb-4 text-5xl text-faint"></i>
-        <h2 class="mb-2">{% trans 'Your cart is empty' %}</h2>
-        <p class="mb-6 text-muted">{% trans 'Add your favorite books and start your architecture library.' %}</p>
-        <a href="{% url 'product:product_list' %}" class="btn btn-accent"><i class="fas fa-book-open"></i> {% trans 'Browse Books' %}</a>
+        <h2 class="mb-2">سبد خرید خالی است</h2>
+        <p class="mb-6 text-muted">کتاب‌های معماری را به کتابخانهٔ شخصی‌تان اضافه کنید.</p>
+        <a href="{% url 'product:product_list' %}" class="btn btn-accent">مرور کاتالوگ</a>
+        {% if suggested_books %}
+        <div class="mx-auto mt-14 max-w-page text-start">
+            <h3 class="mb-6 text-center text-lg">برای شروع کتابخانه</h3>
+            <div class="book-grid">
+                {% for product in suggested_books %}
+                    {% include "includes/book_card.html" with product=product %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 </section>

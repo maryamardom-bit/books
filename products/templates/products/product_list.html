@@ -4,34 +4,43 @@
 {% load humanize %}
 
 {% block page_title %}
-{% if discount_filter %}تخفیف‌دارها{% else %}همه کتاب‌ها{% endif %} | انتشارات کسری
+{% if discount_filter %}تخفیف ناشر{% elif active_category %}کاتالوگ{% else %}کاتالوگ{% endif %} | انتشارات کسری
 {% endblock %}
 
 {% block content %}
 <section class="page-wrap">
     <nav class="crumb">
-        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <a href="{% url 'page:home' %}">خانه</a>
         <span>/</span>
-        <span>{% if discount_filter %}{% trans 'Discounted' %}{% else %}{% trans 'All Books' %}{% endif %}</span>
+        <span>{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</span>
     </nav>
-    <h1 class="mb-2 text-3xl">{% if discount_filter %}{% trans 'Discounted Books' %}{% else %}{% trans 'All Books' %}{% endif %}</h1>
+    <h1 class="mb-2 text-3xl">{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</h1>
     <p class="mb-8 max-w-2xl text-muted">
-        {% if discount_filter %}{% trans 'Exclusive publisher discounts, available for a limited time.' %}{% else %}{% trans 'Browse our full catalog of architecture and design books.' %}{% endif %}
+        {% if discount_filter %}عناوین با قیمت ویژهٔ ناشر.{% else %}فهرست کامل کتاب‌های معماری، داخلی، شهر و منظر.{% endif %}
     </p>
+
+    {% if subjects %}
+    <div class="mb-8 flex flex-wrap gap-2">
+        <a href="{% url 'product:product_list' %}{% if discount_filter %}?discount=true{% endif %}" class="rounded-full border px-3 py-1.5 text-xs font-bold {% if not active_category %}border-ink bg-ink text-paper{% else %}border-line hover:border-accent{% endif %}">همه</a>
+        {% for subject in subjects %}
+        <a href="{% url 'product:product_list' %}?category={{ subject.code }}{% if discount_filter %}&discount=true{% endif %}" class="rounded-full border px-3 py-1.5 text-xs font-bold {% if active_category == subject.code %}border-ink bg-ink text-paper{% else %}border-line hover:border-accent{% endif %}">{{ subject.name }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
         {% if discount_filter %}
-        <a href="{% url 'product:product_list' %}" class="btn btn-ghost text-xs"><i class="fas fa-times"></i> {% trans 'Remove discount filter' %}</a>
+        <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="btn btn-ghost text-xs">حذف فیلتر تخفیف</a>
         {% else %}
-        <a href="{% url 'product:product_list' %}?discount=true" class="btn btn-ghost text-xs"><i class="fas fa-tags"></i> {% trans 'Discounted' %}</a>
+        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="btn btn-ghost text-xs">فقط تخفیف‌دار</a>
         {% endif %}
         <label class="flex items-center gap-2 text-xs font-bold text-faint">
-            {% trans 'Sort by' %}
+            ترتیب
             <select class="w-auto rounded-full py-2" onchange="window.location.href=this.value">
-                <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>{% trans 'Newest' %}</option>
-                <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'price' %}selected{% endif %}>{% trans 'Cheapest' %}</option>
-                <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}" {% if sort == '-price' %}selected{% endif %}>{% trans 'Most expensive' %}</option>
-                <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}" {% if sort == 'title' %}selected{% endif %}>{% trans 'Title' %}</option>
+                <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>تازه‌ترین</option>
+                <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'price' %}selected{% endif %}>ارزان‌تر</option>
+                <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-price' %}selected{% endif %}>گران‌تر</option>
+                <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'title' %}selected{% endif %}>عنوان</option>
             </select>
         </label>
     </div>
@@ -41,16 +50,12 @@
             {% include "includes/book_card.html" with product=product %}
         {% empty %}
         <div class="col-span-full py-16 text-center text-muted">
-            <i class="fas fa-book-open mb-3 text-4xl text-faint"></i>
-            <h3 class="mb-2">{% trans 'No books found' %}</h3>
-            <p>{% if discount_filter %}{% trans 'There is no discounted book right now.' %}{% else %}{% trans 'There are no books to show at the moment.' %}{% endif %}</p>
+            <h3 class="mb-2">کتابی با این فیلتر نیست</h3>
+            <p class="mb-6">{% if discount_filter %}در حال حاضر عنوان تخفیف‌داری در این موضوع نیست.{% else %}این بخش از کاتالوگ خالی است.{% endif %}</p>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">مشاهده همه کتاب‌ها</a>
         </div>
         {% endfor %}
     </div>
-    {% if discount_filter %}
-        {% include "includes/pagination.html" with extra="&discount=true" %}
-    {% else %}
-        {% include "includes/pagination.html" %}
-    {% endif %}
+    {% include "includes/pagination.html" with extra=pagination_extra %}
 </section>
 {% endblock %}

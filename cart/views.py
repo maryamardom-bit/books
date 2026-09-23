@@ -23,6 +23,7 @@ def cart_detail_view(request):
         'total_savings': cart.get_total_savings(),
         'total_weight': cart.get_total_weight(),
         'discounted_total': cart.get_discounted_total(),
+        'suggested_books': Product.objects.with_ratings().filter(active=True).order_by('-datetime_created')[:4] if not len(cart) else None,
     }
 
     return render(request, 'cart/cart_detail.html', context)

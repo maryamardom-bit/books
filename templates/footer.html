@@ -15,12 +15,15 @@
             </div>
         </div>
         <div>
-            <h2 class="mb-4 text-sm font-bold text-white">{% trans 'Catalog' %}</h2>
+            <h2 class="mb-4 text-sm font-bold text-white">کاتالوگ</h2>
             <ul class="space-y-2 text-sm text-stone-400">
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}">{% trans 'All Books' %}</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}?discount=true">{% trans 'Sale' %}</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:best_sellers' %}">{% trans 'Best Sellers' %}</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:package_list' %}">{% trans 'Packages' %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}">کاتالوگ</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_category' %}">موضوعات</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:new_releases' %}">تازه‌ها</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:best_sellers' %}">پرفروش</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:author_list' %}">نویسندگان</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:package_list' %}">مجموعه‌ها</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}?discount=true">تخفیف ناشر</a></li>
             </ul>
         </div>
         <div>

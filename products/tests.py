@@ -323,3 +323,55 @@ class ProductSearchViewTest(TestCase):
         for item in get_searchable_field_choices():
             self.assertContains(response, f'value="{item["name"]}"')
         self.assertContains(response, 'searchOpen = true')
+
+
+class CatalogDiscoveryTest(TestCase):
+    def setUp(self):
+        self.urban = ProductFactory(
+            title='شهر معاصر',
+            category=Product.Category.URBAN,
+            author='نویسنده شهری',
+            active=True,
+        )
+        self.interior = ProductFactory(
+            title='فضای داخلی',
+            category=Product.Category.INTERIOR,
+            author='نویسنده داخلی',
+            active=True,
+        )
+
+    def test_home_exposes_editorial_context(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('featured_book', response.context)
+        self.assertIn('subjects', response.context)
+        self.assertContains(response, 'موضوعات')
+        self.assertContains(response, 'نویسندگان')
+
+    def test_author_list(self):
+        response = self.client.get('/products/author/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'نویسنده شهری')
+        self.assertContains(response, 'نویسنده داخلی')
+
+    def test_new_releases(self):
+        response = self.client.get('/products/new-releases/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(self.urban, response.context['products'])
+
+    def test_catalog_category_filter(self):
+        response = self.client.get('/products/', {'category': 'URBAN'})
+        products = list(response.context['products'])
+        self.assertIn(self.urban, products)
+        self.assertNotIn(self.interior, products)
+
+    def test_search_empty_suggests_books(self):
+        response = self.client.get('/products/search/', {'q': 'وجودنداردxyz'})
+        self.assertEqual(response.context['results_count'], 0)
+        self.assertTrue(len(response.context['suggested_books']) > 0)
+
+    def test_product_json_ld(self):
+        response = self.client.get(self.urban.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('application/ld+json', response.content.decode())
+        self.assertContains(response, self.urban.title)
