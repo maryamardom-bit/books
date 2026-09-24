@@ -7,6 +7,7 @@ from .models import Product
 EXCLUDED_FIELD_NAMES = {
     'id',
     'pk',
+    'wordpress_id',
     'active',
     'image',
     'price',

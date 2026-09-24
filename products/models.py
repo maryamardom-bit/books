@@ -96,6 +96,13 @@ class Product(models.Model):
     author = models.CharField(max_length=200, blank=True, verbose_name=_('author'), db_index=True)
     publisher = models.CharField(max_length=200, blank=True, verbose_name=_('publisher'), db_index=True)
     isbn = models.CharField(max_length=30, blank=True, verbose_name=_('isbn'), db_index=True)
+    wordpress_id = models.PositiveIntegerField(
+        _('wordpress id'),
+        null=True,
+        blank=True,
+        unique=True,
+        db_index=True,
+    )
     year_of_publication = models.IntegerField(null=True, blank=True, verbose_name=_('year of publication'))
     edition = models.CharField(max_length=100, blank=True, verbose_name=_('edition'))
     number_of_pages = models.IntegerField(null=True, blank=True, verbose_name=_('number of pages'))
@@ -296,6 +303,13 @@ class Comment(models.Model):
 class Package(models.Model):
     title = models.CharField(_('title'), max_length=200, db_index=True)
     slug = models.SlugField(_('slug'), max_length=200, unique=True, allow_unicode=True)
+    wordpress_id = models.PositiveIntegerField(
+        _('wordpress id'),
+        null=True,
+        blank=True,
+        unique=True,
+        db_index=True,
+    )
     description = models.TextField(_('description'), blank=True)
     image = models.ImageField(_('image'), upload_to='packages/', blank=True, null=True)
     
