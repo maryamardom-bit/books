@@ -5,6 +5,13 @@ from django.conf import settings
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('user'))
+    wordpress_id = models.PositiveIntegerField(
+        _('wordpress id'),
+        null=True,
+        blank=True,
+        unique=True,
+        db_index=True,
+    )
     is_paid = models.BooleanField(_('is_paid?'), default=False)
 
     first_name = models.CharField(_('first name'), max_length=100)
@@ -14,7 +21,7 @@ class Order(models.Model):
     order_notes = models.CharField(_('note'), max_length=700, blank=True)
 
     total_weight = models.PositiveIntegerField(_('total weight'), default=0)
-    total_price = models.PositiveIntegerField(_('total price'), default=0)
+    total_price = models.BigIntegerField(_('total price'), default=0)
 
     payment_method = models.CharField(
         _('payment method'),

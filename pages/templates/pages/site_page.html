@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+{% load i18n %}
+
+{% block page_title %}{{ page.title }} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <a href="{% url 'page:site_pages' %}">{% trans "Pages" %}</a>
+        <span>/</span>
+        <span>{{ page.title }}</span>
+    </nav>
+    <h1 class="mb-8 text-3xl">{{ page.title }}</h1>
+    <div class="card prose-cms">{{ page.content|safe }}</div>
+</section>
+{% endblock %}

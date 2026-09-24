@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+{% load i18n %}
+
+{% block page_title %}{% trans "Pages" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <nav class="crumb">
+        <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
+        <span>/</span>
+        <span>{% trans "Pages" %}</span>
+    </nav>
+    <h1 class="mb-8 text-3xl">{% trans "Pages" %}</h1>
+    <ul class="space-y-3">
+        {% for item in pages %}
+        <li class="card p-4">
+            <a class="font-bold" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+        </li>
+        {% empty %}
+        <li class="text-muted">{% trans "No Information Available" %}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

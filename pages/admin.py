@@ -1,7 +1,7 @@
 from django.contrib import admin,messages
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
-from .models import ContactInfo, CooperationInfo,AboutUs,OrderCondition
+from .models import ContactInfo, CooperationInfo,AboutUs,OrderCondition, SitePage
 
 @admin.register(ContactInfo)
 class ContactInfoAdmin(admin.ModelAdmin):
@@ -94,3 +94,10 @@ class OrderConditionAdmin(admin.ModelAdmin):
         if OrderCondition.objects.exists():
             messages.warning(request, "There is some record now.if you want to change please deleted old record.then try again")
         return super().add_view(request, form_url, extra_context)
+
+
+@admin.register(SitePage)
+class SitePageAdmin(admin.ModelAdmin):
+    list_display = ['title', 'source', 'status', 'is_active', 'wordpress_id']
+    list_filter = ['source', 'status', 'is_active']
+    search_fields = ['title', 'slug', 'content']

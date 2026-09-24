@@ -1,8 +1,8 @@
 from django.db.models import Q, Count
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 from products.models import Product, Package
 from products.taxonomy import catalog_subjects
-from .models import ContactInfo, CooperationInfo, AboutUs, OrderCondition
+from .models import ContactInfo, CooperationInfo, AboutUs, OrderCondition, SitePage
 
 
 class HomePageView(TemplateView):
@@ -76,5 +76,26 @@ class OrderConditionsPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['orderus'] = OrderCondition.objects.first()
         return context
-    
+
+
+class SitePageListView(ListView):
+    model = SitePage
+    template_name = 'pages/site_page_list.html'
+    context_object_name = 'pages'
+    paginate_by = 30
+
+    def get_queryset(self):
+        return SitePage.objects.filter(is_active=True)
+
+
+class SitePageDetailView(DetailView):
+    model = SitePage
+    template_name = 'pages/site_page.html'
+    context_object_name = 'page'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+    def get_queryset(self):
+        return SitePage.objects.filter(is_active=True)
+ 
     

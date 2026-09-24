@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
 
@@ -81,4 +82,31 @@ class OrderCondition(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
-    
+
+
+class SitePage(models.Model):
+    class Source(models.TextChoices):
+        PAGE = 'page', _('WordPress page')
+        POST = 'post', _('WordPress post')
+
+    wordpress_id = models.PositiveIntegerField(unique=True, db_index=True)
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique=True, allow_unicode=True)
+    content = RichTextField(blank=True)
+    excerpt = models.TextField(blank=True)
+    source = models.CharField(max_length=20, choices=Source.choices, default=Source.PAGE)
+    status = models.CharField(max_length=20, default='publish')
+    is_active = models.BooleanField(default=True)
+    datetime_created = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('archived page')
+        verbose_name_plural = _('archived pages')
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('page:site_page', args=[self.slug])
+ 

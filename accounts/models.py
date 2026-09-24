@@ -5,6 +5,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUser(AbstractUser):
+    wordpress_id = models.PositiveIntegerField(
+        _('wordpress id'),
+        null=True,
+        blank=True,
+        unique=True,
+        db_index=True,
+    )
     phone_number = PhoneNumberField(
         _('phone number'),
         blank=True,

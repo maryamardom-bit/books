@@ -276,6 +276,13 @@ class Comment(models.Model):
         db_index=True,
     )
     body = models.TextField(verbose_name=_('comment text'))
+    wordpress_id = models.PositiveIntegerField(
+        _('wordpress id'),
+        null=True,
+        blank=True,
+        unique=True,
+        db_index=True,
+    )
     stars = models.IntegerField(choices=PRODUCT_STARS, verbose_name=_('rating'), db_index=True)
     datetime_created = models.DateTimeField(auto_now_add=True, db_index=True)
     datetime_modified = models.DateTimeField(auto_now=True)
