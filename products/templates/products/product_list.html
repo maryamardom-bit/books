@@ -4,39 +4,51 @@
 {% load humanize %}
 
 {% block page_title %}
-{% if discount_filter %}تخفیف ناشر{% elif active_category %}کاتالوگ{% else %}کاتالوگ{% endif %} | انتشارات کسری
+{% if discount_filter %}تخفیف ناشر{% elif active_subject %}{{ active_subject.name }}{% else %}کاتالوگ{% endif %} | انتشارات کسری
 {% endblock %}
 
 {% block content %}
-<section class="page-wrap">
-    <nav class="crumb">
-        <a href="{% url 'page:home' %}">خانه</a>
-        <span>/</span>
-        <span>{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</span>
-    </nav>
-    <h1 class="mb-2 text-3xl">{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</h1>
-    <p class="mb-8 max-w-2xl text-muted">
-        {% if discount_filter %}عناوین با قیمت ویژهٔ ناشر.{% else %}فهرست کامل کتاب‌های معماری، داخلی، شهر و منظر.{% endif %}
-    </p>
+<section class="page-wrap lg:py-14">
+    <header class="mb-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div class="max-w-xl">
+            <p class="mb-3 text-[11px] tracking-[0.2em] text-faint">{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</p>
+            <h1 class="mb-3 text-3xl font-normal tracking-tight sm:text-4xl">
+                {% if discount_filter %}
+                    تخفیف ناشر
+                {% elif active_subject %}
+                    {{ active_subject.name }}
+                {% else %}
+                    کاتالوگ
+                {% endif %}
+            </h1>
+            <p class="text-[15px] leading-7 text-muted">
+                {% if discount_filter %}
+                    عناوین با قیمت ویژهٔ ناشر.
+                {% elif active_subject %}
+                    {{ active_subject.blurb }}
+                {% else %}
+                    کتاب‌های معماری، داخلی، شهر و منظر — سفارش مستقیم از ناشر.
+                {% endif %}
+            </p>
+        </div>
+        {% if paginator %}
+        <p class="text-[13px] tabular-nums text-faint">{{ paginator.count|translate_number }} عنوان</p>
+        {% endif %}
+    </header>
 
     {% if subjects %}
-    <div class="mb-8 flex flex-wrap gap-2">
-        <a href="{% url 'product:product_list' %}{% if discount_filter %}?discount=true{% endif %}" class="rounded-full border px-3 py-1.5 text-xs font-bold {% if not active_category %}border-ink bg-ink text-paper{% else %}border-line hover:border-accent{% endif %}">همه</a>
-        {% for subject in subjects %}
-        <a href="{% url 'product:product_list' %}?category={{ subject.code }}{% if discount_filter %}&discount=true{% endif %}" class="rounded-full border px-3 py-1.5 text-xs font-bold {% if active_category == subject.code %}border-ink bg-ink text-paper{% else %}border-line hover:border-accent{% endif %}">{{ subject.name }}</a>
-        {% endfor %}
-    </div>
+        {% include "includes/catalog_filters.html" %}
     {% endif %}
 
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="mb-10 flex flex-wrap items-center justify-between gap-3">
         {% if discount_filter %}
-        <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="btn btn-ghost text-xs">حذف فیلتر تخفیف</a>
+        <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">نمایش همه قیمت‌ها</a>
         {% else %}
-        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="btn btn-ghost text-xs">فقط تخفیف‌دار</a>
+        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">فقط تخفیف‌دار</a>
         {% endif %}
-        <label class="flex items-center gap-2 text-xs font-bold text-faint">
+        <label class="mb-0 flex items-center gap-3 text-[13px] font-normal text-faint">
             ترتیب
-            <select class="w-auto rounded-full py-2" onchange="window.location.href=this.value">
+            <select class="catalog-sort" onchange="window.location.href=this.value">
                 <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>تازه‌ترین</option>
                 <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'price' %}selected{% endif %}>ارزان‌تر</option>
                 <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-price' %}selected{% endif %}>گران‌تر</option>
@@ -45,17 +57,34 @@
         </label>
     </div>
 
-    <div class="book-grid">
+    <div class="catalog-grid">
         {% for product in products %}
-            {% include "includes/book_card.html" with product=product %}
+            {% include "includes/catalog_book.html" with product=product %}
         {% empty %}
-        <div class="col-span-full py-16 text-center text-muted">
-            <h3 class="mb-2">کتابی با این فیلتر نیست</h3>
-            <p class="mb-6">{% if discount_filter %}در حال حاضر عنوان تخفیف‌داری در این موضوع نیست.{% else %}این بخش از کاتالوگ خالی است.{% endif %}</p>
-            <a href="{% url 'product:product_list' %}" class="btn btn-accent">مشاهده همه کتاب‌ها</a>
+        <div class="col-span-full py-24 text-center">
+            <p class="mb-2 text-lg font-normal text-ink">کتابی با این فیلتر نیست</p>
+            <p class="mb-8 text-muted">{% if discount_filter %}در این موضوع عنوان تخفیف‌داری نیست.{% else %}این بخش از کاتالوگ خالی است.{% endif %}</p>
+            <a href="{% url 'product:product_list' %}" class="text-[13px] tracking-wide text-ink">مشاهده همه کتاب‌ها</a>
         </div>
         {% endfor %}
     </div>
-    {% include "includes/pagination.html" with extra=pagination_extra %}
+
+    {% if is_paginated %}
+    <nav class="catalog-pager" aria-label="{% trans 'Pagination' %}">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Previous' %}">قبلی</a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <span class="is-on px-0.5">{{ num|translate_number }}</span>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}{{ pagination_extra }}">{{ num|translate_number }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Next' %}">بعدی</a>
+        {% endif %}
+    </nav>
+    {% endif %}
 </section>
 {% endblock %}

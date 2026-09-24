@@ -59,6 +59,8 @@ class ProductListView(generic.ListView):
         context['sort'] = self.request.GET.get('sort', '-datetime_created')
         context['active_category'] = self.request.GET.get('category', '')
         context['subjects'] = catalog_subjects()
+        active = context['active_category']
+        context['active_subject'] = next((s for s in context['subjects'] if s['code'] == active), None)
         params = self.request.GET.copy()
         params.pop('page', None)
         context['pagination_extra'] = '&{0}'.format(params.urlencode()) if params else ''
@@ -305,10 +307,12 @@ def product_list_by_category(request, category):
         'products': products,
         'category': {
             'name': category_display,
+            'code': category,
             'slug': category,
             'blurb': next((s['blurb'] for s in catalog_subjects() if s['code'] == category), ''),
             'count': products_list.count(),
         },
+        'subjects': catalog_subjects(),
         'paginator': paginator,
         'is_paginated': products.has_other_pages(),
         'page_obj': products,

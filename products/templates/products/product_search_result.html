@@ -36,9 +36,9 @@
             </ul>
         </div>
         {% if subjects %}
-        <div class="mt-8 flex flex-wrap justify-center gap-2">
+        <div class="mt-8 flex flex-wrap justify-center gap-x-1">
             {% for subject in subjects %}
-            <a href="{% url 'product:product_list_by_category' category=subject.code %}" class="rounded-full border border-line px-3 py-1.5 text-xs font-bold">{{ subject.name }}</a>
+            <a href="{% url 'product:product_list_by_category' category=subject.code %}" class="catalog-chip">{{ subject.name }}</a>
             {% endfor %}
         </div>
         {% endif %}

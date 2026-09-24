@@ -125,6 +125,49 @@
             .btn-lg { @apply px-7 py-3; }
             .btn-block { @apply w-full; }
             .prose-cms { @apply leading-8 text-ink-2 [&_a]:text-accent-strong [&_h2]:mb-3 [&_h2]:mt-6 [&_h3]:mb-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:ps-5; }
+            .catalog-rail {
+                @apply relative -mx-4 mb-10 overflow-x-auto overscroll-x-contain px-4 sm:mx-0 sm:overflow-visible sm:px-0;
+                scrollbar-width: none;
+            }
+            .catalog-rail::-webkit-scrollbar { display: none; }
+            .catalog-rail-inner { @apply flex w-max gap-0 border-b border-line sm:w-full sm:flex-wrap; }
+            .catalog-chip {
+                @apply relative inline-flex shrink-0 items-baseline gap-1.5 px-3 py-2.5 text-[13px] font-normal tracking-wide no-underline;
+                color: rgb(var(--muted));
+            }
+            .catalog-chip:hover { color: rgb(var(--ink)); }
+            .catalog-chip.is-on { color: rgb(var(--ink)); }
+            .catalog-chip.is-on::after {
+                content: '';
+                @apply pointer-events-none absolute inset-x-3 bottom-0 h-px bg-ink;
+            }
+            .catalog-chip .n { @apply text-[11px] font-normal tabular-nums; color: rgb(var(--faint)); }
+            .subject-grid { @apply grid gap-px overflow-hidden rounded-none border border-line bg-line sm:grid-cols-2; }
+            .subject-cell {
+                @apply flex min-h-[9.5rem] flex-col justify-between bg-paper p-6 transition sm:p-8;
+            }
+            .subject-cell:hover { @apply bg-surface; }
+            .catalog-grid { @apply grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8 lg:grid-cols-4 lg:gap-y-14; }
+            .catalog-card { @apply flex h-full flex-col; }
+            .catalog-cover {
+                @apply relative mb-4 flex aspect-[3/4] items-center justify-center overflow-hidden bg-surface p-5 sm:p-6;
+            }
+            .catalog-cover img {
+                @apply max-h-full max-w-full object-contain transition duration-500 ease-out;
+            }
+            .catalog-card:hover .catalog-cover img { @apply scale-[1.03]; }
+            .catalog-mark {
+                @apply absolute top-3 start-3 text-[10px] font-normal tracking-[0.14em] text-ink;
+            }
+            .catalog-sort {
+                appearance: none;
+                @apply cursor-pointer rounded-none border-0 border-b border-line bg-transparent px-0 py-1 pe-5 text-[13px] text-ink shadow-none;
+            }
+            .catalog-sort:focus { @apply border-ink outline-none ring-0; }
+            .catalog-pager { @apply mt-16 flex items-center justify-center gap-6 text-[13px]; }
+            .catalog-pager a { color: rgb(var(--muted)); }
+            .catalog-pager a:hover { color: rgb(var(--ink)); }
+            .catalog-pager .is-on { @apply text-ink; box-shadow: inset 0 -1px 0 rgb(var(--ink)); }
         }
     </style>
     {% block extra_css %}{% endblock %}

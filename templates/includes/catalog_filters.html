@@ -1,0 +1,8 @@
+<nav class="catalog-rail scroll-mt-36" aria-label="موضوعات کاتالوگ">
+    <div class="catalog-rail-inner">
+        <a href="{% url 'product:product_list' %}{% if discount_filter %}?discount=true{% endif %}" class="catalog-chip {% if not active_category %}is-on{% endif %}">همه</a>
+        {% for subject in subjects %}
+        <a href="{% url 'product:product_list' %}?category={{ subject.code }}{% if discount_filter %}&discount=true{% endif %}" class="catalog-chip {% if active_category == subject.code %}is-on{% endif %}">{{ subject.name }}</a>
+        {% endfor %}
+    </div>
+</nav>

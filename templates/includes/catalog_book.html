@@ -1,0 +1,50 @@
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+<article class="catalog-card group">
+    <a href="{{ product.get_absolute_url }}" class="catalog-cover" aria-label="{{ product.title }}">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
+        {% else %}
+        <span class="text-[11px] tracking-wide text-faint">بدون جلد</span>
+        {% endif %}
+        {% if product.is_on_sale %}
+        <span class="catalog-mark">تخفیف</span>
+        {% elif product.is_new %}
+        <span class="catalog-mark">جدید</span>
+        {% endif %}
+    </a>
+    <p class="mb-1 text-[11px] tracking-wide text-faint">{{ product.get_category_display }}</p>
+    <h3 class="mb-1 line-clamp-3 text-[15px] font-normal leading-7 text-ink">
+        <a href="{{ product.get_absolute_url }}" class="hover:text-ink">{{ product.title }}</a>
+    </h3>
+    {% if product.author %}
+    <p class="mb-3 text-[13px] leading-6 text-muted">
+        <a href="{% url 'product:author_books' author_name=product.author %}" class="text-muted hover:text-ink">{{ product.author }}</a>
+    </p>
+    {% endif %}
+    <div class="mt-auto flex items-baseline justify-between gap-3 pt-1">
+        {% if product.price %}
+            {% if product.is_on_sale %}
+            <p class="text-[13px] text-ink">
+                <span class="ms-2 text-faint line-through">{{ product.price|intcomma:False|translate_number }}</span>
+                {{ product.get_discounted_price|intcomma:False|translate_number }}
+                <span class="text-[11px] text-faint">تومان</span>
+            </p>
+            {% else %}
+            <p class="text-[13px] text-ink">
+                {{ product.price|intcomma:False|translate_number }}
+                <span class="text-[11px] text-faint">تومان</span>
+            </p>
+            {% endif %}
+        {% else %}
+        <p class="text-[13px] text-faint">قیمت به‌زودی</p>
+        {% endif %}
+        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="opacity-0 transition group-hover:opacity-100 max-md:opacity-100">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="text-[11px] tracking-wide text-muted hover:text-ink" aria-label="{% trans 'Add to Cart' %}">سبد</button>
+        </form>
+    </div>
+</article>

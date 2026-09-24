@@ -13,9 +13,12 @@
         <span>/</span>
         <span>{{ category.name }}</span>
     </nav>
-    <h1 class="mb-2 text-3xl">{{ category.name }}</h1>
-    {% if category.blurb %}<p class="mb-2 max-w-2xl text-muted">{{ category.blurb }}</p>{% endif %}
-    <p class="mb-10 text-sm text-faint">{{ category.count }} عنوان</p>
+    <h1 class="mb-2 text-3xl font-normal tracking-tight">{{ category.name }}</h1>
+    {% if category.blurb %}<p class="mb-2 max-w-xl text-muted">{{ category.blurb }}</p>{% endif %}
+    <p class="mb-8 text-[13px] text-faint">{{ category.count }} عنوان</p>
+    {% if subjects %}
+        {% include "includes/catalog_filters.html" with active_category=category.code discount_filter=False %}
+    {% endif %}
     <div class="book-grid">
         {% for product in products %}
             {% include "includes/book_card.html" with product=product %}
