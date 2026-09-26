@@ -1,6 +1,7 @@
 from django.contrib import admin,messages
 from django.shortcuts import redirect
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 from .models import ContactInfo, CooperationInfo,AboutUs,OrderCondition, SitePage
 
 @admin.register(ContactInfo)
@@ -31,7 +32,7 @@ class CooperationInfoAdmin(admin.ModelAdmin):
             obj.full_clean()  # اعتبارسنجی قبل از ذخیره
             super().save_model(request, obj, form, change)
         except ValidationError as e:
-            messages.error(request, f"خطا: {', '.join(e.messages)}")
+            messages.error(request, _("Error: %(details)s") % {'details': ', '.join(e.messages)})
             # بازگشت به صفحه ویرایش با نمایش خطاها
             return
 

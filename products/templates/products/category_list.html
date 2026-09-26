@@ -1,26 +1,349 @@
 {% extends '_base.html' %}
 {% load i18n %}
 
-{% block page_title %}موضوعات معماری | انتشارات کسری{% endblock %}
+{% block page_title %}{% trans "Architecture library" %} | {% trans "Kasra Publishing" %}{% endblock %}
+{% block meta_description %}{% trans "From theory and design to urbanism, landscape, architectural history, and professional tools." %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cat-index {
+        padding-top: clamp(2.75rem, 6vw, 4.75rem);
+        padding-bottom: clamp(3.5rem, 8vw, 6rem);
+    }
+    .cat-hero {
+        position: relative;
+        margin-bottom: 2.25rem;
+    }
+    .cat-hero > * { position: relative; z-index: 1; }
+    .cat-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0 0 1rem;
+    }
+    .cat-eyebrow::before {
+        content: "";
+        width: 1.75rem;
+        height: 1px;
+        background: rgb(var(--accent));
+        flex: none;
+    }
+    .cat-eyebrow span {
+        direction: ltr;
+        unicode-bidi: isolate;
+        font-size: 0.72rem;
+        font-weight: 400;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgb(var(--accent-strong));
+    }
+    .cat-index h1 {
+        margin: 0 0 0.85rem;
+        font-size: clamp(2rem, 4.8vw, 3.35rem);
+        font-weight: 400;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+        color: rgb(var(--ink));
+    }
+    .cat-lead {
+        max-width: 38rem;
+        margin: 0;
+        color: rgb(var(--muted));
+        font-size: 1.02rem;
+        line-height: 1.95;
+    }
+    .cat-tools {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem 2rem;
+        margin-bottom: 1.35rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgb(var(--line));
+    }
+    .cat-search {
+        flex: 1 1 16rem;
+        max-width: 26rem;
+    }
+    .cat-search label {
+        display: block;
+        margin: 0 0 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: rgb(var(--muted));
+    }
+    #category-query {
+        width: 100%;
+        margin: 0;
+        padding: 0.4rem 0 0.45rem;
+        border: 0;
+        border-bottom: 1px solid rgb(var(--line));
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        appearance: none;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        color: rgb(var(--ink));
+    }
+    #category-query::placeholder { color: rgb(var(--faint)); }
+    #category-query:focus,
+    #category-query:focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 4px;
+        border-bottom-color: rgb(var(--ink));
+        box-shadow: none;
+        --tw-ring-shadow: 0 0 #0000;
+    }
+    .cat-tools-meta {
+        margin: 0;
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        color: rgb(var(--muted));
+    }
+    .cat-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.9rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .cat-item { min-width: 0; display: flex; }
+    .cat-item[hidden] { display: none !important; }
+    .cat-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100%;
+        border: 1px solid rgb(var(--line));
+        background: rgb(var(--paper));
+        color: rgb(var(--ink-2));
+        text-decoration: none;
+        transition: border-color 0.35s ease;
+    }
+    .cat-card:hover {
+        border-color: rgb(var(--ink) / 0.32);
+        color: rgb(var(--ink-2));
+    }
+    .cat-card:focus { outline: none; }
+    .cat-card:focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 3px;
+    }
+    .cat-plate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 16 / 9;
+        padding: 1rem 1.15rem 0.75rem;
+        border-bottom: 1px solid rgb(var(--line));
+        background: rgb(var(--surface));
+        color: rgb(var(--ink) / 0.78);
+        overflow: hidden;
+    }
+    .cat-plate svg {
+        width: min(100%, 15.5rem);
+        height: auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transform: scale(1);
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cat-plate .is-accent { stroke: rgb(var(--accent)); }
+    .cat-plate .is-fill { fill: currentColor; stroke: none; }
+    .cat-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 1.15rem 1.2rem 1.15rem;
+    }
+    .cat-title {
+        margin: 0.15rem 0 0;
+        text-align: right;
+        min-height: 3.1em;
+        font-size: 1.35rem;
+        font-weight: 400;
+        line-height: 1.55;
+        letter-spacing: -0.015em;
+        color: rgb(var(--ink));
+    }
+    .cat-blurb {
+        margin: 0;
+        min-height: 3.8em;
+        font-size: 0.92rem;
+        font-weight: 400;
+        line-height: 1.9;
+        color: rgb(var(--muted));
+    }
+    .cat-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: auto;
+        padding-top: 1.05rem;
+    }
+    .cat-count {
+        margin: 0;
+        font-size: 0.8rem;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+        color: rgb(var(--muted));
+        white-space: nowrap;
+    }
+    .cat-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: rgb(var(--accent-strong));
+        white-space: nowrap;
+    }
+    .cat-arrow {
+        display: block;
+        transition: transform 0.35s ease;
+    }
+    .cat-none,
+    .cat-empty {
+        margin: 2rem 0 0;
+        color: rgb(var(--muted));
+        text-align: center;
+    }
+    .cat-none[hidden] { display: none !important; }
+    @media (hover: hover) and (pointer: fine) {
+        .cat-cta { opacity: 0.72; transition: opacity 0.35s ease; }
+        .cat-card:hover .cat-cta,
+        .cat-card:focus-visible .cat-cta { opacity: 1; }
+        .cat-card:hover .cat-plate svg,
+        .cat-card:focus-visible .cat-plate svg { transform: scale(1.015); }
+        .cat-card:hover .cat-arrow,
+        .cat-card:focus-visible .cat-arrow { transform: translateX(-4px); }
+    }
+    @media (min-width: 768px) {
+        .cat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.05rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .cat-hero::before {
+            content: "";
+            position: absolute;
+            z-index: 0;
+            top: 0.25rem;
+            inset-inline-end: 0;
+            width: 240px;
+            height: 148px;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to bottom, rgb(var(--line)) 1px, transparent 1px),
+                linear-gradient(to left, rgb(var(--line)) 1px, transparent 1px);
+            background-size: 22px 22px;
+            opacity: 0.85;
+            -webkit-mask-image: linear-gradient(to left, transparent, #000 24%, #000 58%, transparent);
+            mask-image: linear-gradient(to left, transparent, #000 24%, #000 58%, transparent);
+        }
+        .cat-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.2rem;
+        }
+    }
+    @media (max-width: 767px) {
+        .cat-search { flex-basis: 100%; max-width: none; }
+        .cat-title { font-size: 1.28rem; min-height: 3.1em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .cat-card,
+        .cat-plate svg,
+        .cat-arrow,
+        .cat-cta { transition: none; }
+        .cat-card:hover .cat-plate svg,
+        .cat-card:focus-visible .cat-plate svg,
+        .cat-card:hover .cat-arrow,
+        .cat-card:focus-visible .cat-arrow { transform: none; }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<section class="page-wrap">
-    <p class="mb-2 text-xs font-bold text-accent-strong">کاتالوگ موضوعی</p>
-    <h1 class="mb-2 text-3xl font-normal tracking-tight">موضوعات</h1>
-    <p class="mb-10 max-w-xl text-[15px] leading-7 text-muted">کتاب‌ها بر اساس میدان حرفه‌ای معماری مرتب شده‌اند.</p>
-    <div class="subject-grid">
-        {% for category in categories %}
-        <a href="{% url 'product:product_list_by_category' category=category.code %}" class="subject-cell">
-            <div>
-                <p class="mb-5 text-[11px] tabular-nums tracking-[0.18em] text-faint">{{ forloop.counter|stringformat:"02d" }}</p>
-                <h2 class="mb-2 text-[1.35rem] font-normal tracking-tight">{{ category.name }}</h2>
-                <p class="max-w-sm text-sm font-normal leading-6 text-muted">{{ category.blurb }}</p>
-            </div>
-            <p class="mt-8 text-[11px] tabular-nums tracking-wide text-faint">{{ category.count }} عنوان</p>
-        </a>
-        {% empty %}
-        <p class="col-span-full bg-paper py-16 text-center text-muted">موضوعی ثبت نشده است.</p>
-        {% endfor %}
+<section class="page-wrap cat-index" x-data="kasraCategoryIndex()">
+    <header class="cat-hero">
+        <p class="cat-eyebrow"><span dir="auto">{% trans "Categories" %}</span></p>
+        <h1>{% trans "Architecture library" %}</h1>
+        <p class="cat-lead">{% trans "From theory and design to urbanism, landscape, architectural history, and professional tools." %}</p>
+    </header>
+
+    <div class="cat-tools">
+        <form class="cat-search" role="search" @submit.prevent="apply($event.target.elements.q.value)">
+            <label for="category-query">{% trans "Search categories" %}</label>
+            <input id="category-query" name="q" type="search" inputmode="search" autocomplete="off" placeholder="{% trans 'Name in English or Persian' %}" x-model="q" @input="apply($event.target.value)" @search="apply($event.target.value)">
+        </form>
+        <p class="cat-tools-meta"><span class="tabular-nums">{{ categories|length }}</span> {% trans "subjects" %}</p>
     </div>
+
+    <ul class="cat-grid" x-ref="grid">
+        {% for category in categories %}
+        <li class="cat-item" data-search="{{ category.name }} {{ category.blurb }} {{ category.english }}">
+            <a class="cat-card" href="{% url 'product:product_list_by_category' category=category.code %}">
+                <div class="cat-plate" aria-hidden="true">
+                    {% include "products/includes/category_plate.html" with code=category.code %}
+                </div>
+                <div class="cat-body">
+                    <h2 class="cat-title" dir="auto">{{ category.english }}</h2>
+                    <p class="cat-blurb">{{ category.blurb }}</p>
+                    <div class="cat-foot">
+                        <p class="cat-count">{{ category.count }} {% trans "titles" %}</p>
+                        <span class="cat-cta">{% trans "View books" %}
+                            <svg class="cat-arrow" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                                <path d="M10.5 3.5 L5.5 8 L10.5 12.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {% empty %}
+        <li class="cat-empty">{% trans "No subjects have been added." %}</li>
+        {% endfor %}
+    </ul>
+    <p class="cat-none" hidden role="status" aria-live="polite">{% trans "No category matches that phrase." %}</p>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function kasraCategoryIndex() {
+    return {
+        q: '',
+        norm: function (value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/\u064a/g, '\u06cc')
+                .replace(/\u0643/g, '\u06a9')
+                .replace(/\u0629/g, '\u0647')
+                .replace(/\u200c/g, '')
+                .replace(/\s+/g, '');
+        },
+        apply: function (raw) {
+            var query = this.norm(raw == null ? this.q : raw);
+            var cards = this.$refs.grid ? this.$refs.grid.querySelectorAll('[data-search]') : [];
+            var visible = 0;
+            for (var i = 0; i < cards.length; i++) {
+                var hit = !query || this.norm(cards[i].getAttribute('data-search')).indexOf(query) !== -1;
+                cards[i].hidden = !hit;
+                if (hit) visible += 1;
+            }
+            var note = this.$root.querySelector('.cat-none');
+            if (note) note.hidden = !(query.length > 0 && visible === 0);
+        }
+    };
+}
+</script>
 {% endblock %}

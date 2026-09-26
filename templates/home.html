@@ -4,8 +4,8 @@
 {% load persian_translation_tags %}
 {% load humanize %}
 
-{% block page_title %}انتشارات کسری | ناشر تخصصی معماری و طراحی{% endblock %}
-{% block meta_description %}کاتالوگ انتشارات کسری: کتاب‌های معماری، داخلی، شهر و منظر — سفارش مستقیم از ناشر.{% endblock %}
+{% block page_title %}{% trans "Kasra Publishing" %} | {% trans "Architecture and design publisher" %}{% endblock %}
+{% block meta_description %}{% trans "Kasra Publishing catalog: architecture, interior, city, and landscape books — order directly from the publisher." %}{% endblock %}
 
 {% block content %}
 {% if featured_book %}
@@ -21,7 +21,7 @@
             </a>
         </div>
         <div class="lg:col-span-7" data-aos="fade-up" data-aos-delay="80">
-            <p class="mb-3 text-xs font-bold tracking-wide text-accent-strong">تازه از ناشر</p>
+            <p class="mb-3 text-xs font-bold tracking-wide text-accent-strong">{% trans "Just from the publisher" %}</p>
             <p class="mb-2 text-xs font-bold uppercase text-muted">{{ featured_book.get_category_display }}</p>
             <h1 class="mb-4 text-3xl font-bold leading-snug text-ink md:text-5xl">{{ featured_book.title }}</h1>
             {% if featured_book.author %}
@@ -33,16 +33,16 @@
             <div class="mb-8 flex flex-wrap items-end gap-6">
                 <div>
                     {% if featured_book.is_on_sale %}
-                    <p class="text-xs text-faint line-through">{{ featured_book.price|intcomma:False|translate_number }} تومان</p>
-                    <p class="text-2xl font-bold text-danger">{{ featured_book.get_discounted_price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">تومان</span></p>
+                    <p class="text-xs text-faint line-through">{{ featured_book.price|intcomma:False|translate_number }} {% trans "Toman" %}</p>
+                    <p class="text-2xl font-bold text-danger">{{ featured_book.get_discounted_price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">{% trans "Toman" %}</span></p>
                     {% else %}
-                    <p class="text-2xl font-bold text-ink">{{ featured_book.price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">تومان</span></p>
+                    <p class="text-2xl font-bold text-ink">{{ featured_book.price|intcomma:False|translate_number }} <span class="text-sm font-normal text-faint">{% trans "Toman" %}</span></p>
                     {% endif %}
                 </div>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ featured_book.get_absolute_url }}" class="inline-flex items-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-white hover:bg-accent-strong">مشاهده کتاب</a>
-                <a href="{% url 'product:product_list' %}" class="inline-flex items-center rounded-full border border-line bg-paper px-7 py-3 text-sm font-bold hover:border-accent">کاتالوگ کامل</a>
+                <a href="{{ featured_book.get_absolute_url }}" class="inline-flex items-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-white hover:bg-accent-strong">{% trans "View book" %}</a>
+                <a href="{% url 'product:product_list' %}" class="inline-flex items-center rounded-full border border-line bg-paper px-7 py-3 text-sm font-bold hover:border-accent">{% trans "Full catalog" %}</a>
             </div>
         </div>
     </div>
@@ -51,13 +51,13 @@
 <section class="bg-surface">
     <div class="mx-auto grid max-w-page items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
         <div>
-            <p class="mb-3 text-xs font-bold text-accent-strong">انتشارات کسری</p>
-            <h1 class="mb-5 text-4xl font-bold leading-snug md:text-5xl">کتابخانه تخصصی <span class="text-accent">معماری</span></h1>
-            <p class="mb-8 max-w-lg text-muted">از ناشر بخرید. معماری، داخلی، شهر و منظر — با اصالت نسخه و ارسال سراسری.</p>
-            <a href="{% url 'product:product_list' %}" class="inline-flex items-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-white hover:bg-accent-strong">کاتالوگ</a>
+            <p class="mb-3 text-xs font-bold text-accent-strong">{% trans "Kasra Publishing" %}</p>
+            <h1 class="mb-5 text-4xl font-bold leading-snug md:text-5xl">{% trans "A specialized library of" %} <span class="text-accent">{% trans "architecture" %}</span></h1>
+            <p class="mb-8 max-w-lg text-muted">{% trans "Buy from the publisher. Architecture, interiors, the city, and landscape — authentic copies, shipped nationwide." %}</p>
+            <a href="{% url 'product:product_list' %}" class="inline-flex items-center rounded-full bg-accent px-7 py-3 text-sm font-bold text-white hover:bg-accent-strong">{% trans "Catalog" %}</a>
         </div>
         <div class="overflow-hidden rounded-sm border border-line bg-paper">
-            <img src="{% static 'img/hero-studio.jpg' %}" alt="انتشارات کسری" class="aspect-[3/4] w-full object-cover">
+            <img src="{% static 'img/hero-studio.jpg' %}" alt="{% trans 'Kasra Publishing' %}" class="aspect-[3/4] w-full object-cover">
         </div>
     </div>
 </section>
@@ -67,10 +67,10 @@
 <section class="mx-auto max-w-page px-4 py-16 sm:px-6">
     <div class="mb-8 flex items-end justify-between gap-4">
         <div>
-            <p class="mb-2 text-xs font-bold text-accent-strong">موضوعات</p>
-            <h2 class="text-2xl font-bold">کتابخانه را از میدان آغاز کنید</h2>
+            <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Subjects" %}</p>
+            <h2 class="text-2xl font-bold">{% trans "Start the library from the field" %}</h2>
         </div>
-        <a href="{% url 'product:product_category' %}" class="text-sm font-bold text-accent-strong">همه موضوع‌ها</a>
+        <a href="{% url 'product:product_category' %}" class="text-sm font-bold text-accent-strong">{% trans "All subjects" %}</a>
     </div>
     <div class="subject-grid lg:grid-cols-3">
         {% for subject in subjects %}
@@ -79,7 +79,7 @@
                 <h3 class="mb-2 text-lg font-normal tracking-tight text-ink">{{ subject.name }}</h3>
                 <p class="text-sm font-normal leading-6 text-muted">{{ subject.blurb }}</p>
             </div>
-            <p class="mt-8 text-[11px] tabular-nums tracking-wide text-faint">{{ subject.count|translate_number }} عنوان</p>
+            <p class="mt-8 text-[11px] tabular-nums tracking-wide text-faint">{{ subject.count|translate_number }} {% trans "titles" %}</p>
         </a>
         {% endfor %}
     </div>
@@ -90,13 +90,13 @@
 <section class="mx-auto max-w-page px-4 pb-16 sm:px-6">
     <div class="mb-6 flex items-end justify-between gap-4">
         <div>
-            <p class="mb-2 text-xs font-bold text-accent-strong">تازه‌ها</p>
-            <h2 class="text-2xl font-bold">انتشارهای اخیر</h2>
+            <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "New releases" %}</p>
+            <h2 class="text-2xl font-bold">{% trans "Recent publications" %}</h2>
         </div>
         <div class="flex items-center gap-2">
             <button type="button" class="js-swiper-prev inline-flex h-10 w-10 items-center justify-center rounded-full border border-line hover:bg-surface" aria-label="{% trans 'Previous' %}"><i class="fas fa-chevron-right"></i></button>
             <button type="button" class="js-swiper-next inline-flex h-10 w-10 items-center justify-center rounded-full border border-line hover:bg-surface" aria-label="{% trans 'Next' %}"><i class="fas fa-chevron-left"></i></button>
-            <a href="{% url 'product:new_releases' %}" class="text-sm font-bold text-accent-strong">همه تازه‌ها</a>
+            <a href="{% url 'product:new_releases' %}" class="text-sm font-bold text-accent-strong">{% trans "All new releases" %}</a>
         </div>
     </div>
     <div class="swiper js-book-swiper">
@@ -114,10 +114,10 @@
     <div class="mx-auto max-w-page px-4 sm:px-6">
         <div class="mb-8 flex items-end justify-between">
             <div>
-                <p class="mb-2 text-xs font-bold text-accent-strong">پرفروش</p>
-                <h2 class="text-2xl font-bold">کتاب‌هایی که بیشتر خوانده می‌شوند</h2>
+                <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Best Sellers" %}</p>
+                <h2 class="text-2xl font-bold">{% trans "Books that are read the most" %}</h2>
             </div>
-            <a href="{% url 'product:best_sellers' %}" class="text-sm font-bold text-accent-strong">فهرست کامل</a>
+            <a href="{% url 'product:best_sellers' %}" class="text-sm font-bold text-accent-strong">{% trans "Full list" %}</a>
         </div>
         <div class="book-grid">
             {% for product in bestsellers %}
@@ -132,10 +132,10 @@
 <section class="mx-auto max-w-page px-4 py-16 sm:px-6">
     <div class="mb-8 flex items-end justify-between">
         <div>
-            <p class="mb-2 text-xs font-bold text-accent-strong">تخفیف ناشر</p>
-            <h2 class="text-2xl font-bold">عناوین منتخب با قیمت ویژه</h2>
+            <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Publisher discount" %}</p>
+            <h2 class="text-2xl font-bold">{% trans "Selected titles at a special price" %}</h2>
         </div>
-        <a href="{% url 'product:product_list' %}?discount=true" class="text-sm font-bold text-accent-strong">همه تخفیف‌ها</a>
+        <a href="{% url 'product:product_list' %}?discount=true" class="text-sm font-bold text-accent-strong">{% trans "All discounts" %}</a>
     </div>
     <div class="book-grid">
         {% for product in sale_books %}
@@ -150,10 +150,10 @@
     <div class="mx-auto max-w-page px-4 sm:px-6">
         <div class="mb-8 flex items-end justify-between">
             <div>
-                <p class="mb-2 text-xs font-bold text-accent-strong">مجموعه‌های منتخب</p>
-                <h2 class="text-2xl font-bold">کتاب‌ها در کنار هم، با نیت ویراستار</h2>
+                <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Selected collections" %}</p>
+                <h2 class="text-2xl font-bold">{% trans "Books placed together, with an editor’s intent" %}</h2>
             </div>
-            <a href="{% url 'product:package_list' %}" class="text-sm font-bold text-accent-strong">همه مجموعه‌ها</a>
+            <a href="{% url 'product:package_list' %}" class="text-sm font-bold text-accent-strong">{% trans "All collections" %}</a>
         </div>
         <div class="grid gap-4 md:grid-cols-3">
             {% for package in featured_packages %}
@@ -162,9 +162,9 @@
                     {% if package.image %}<img src="{{ package.image.url }}" alt="{{ package.title }}" class="h-full w-full object-contain p-4">{% endif %}
                 </div>
                 <div class="p-5">
-                    <p class="mb-1 text-[11px] font-bold text-accent-strong">{{ package.get_products_count }} عنوان</p>
+                    <p class="mb-1 text-[11px] font-bold text-accent-strong">{{ package.get_products_count }} {% trans "titles" %}</p>
                     <h3 class="mb-1 font-bold">{{ package.title }}</h3>
-                    <p class="text-sm text-accent-strong">{{ package.price|intcomma:False|translate_number }} تومان</p>
+                    <p class="text-sm text-accent-strong">{{ package.price|intcomma:False|translate_number }} {% trans "Toman" %}</p>
                 </div>
             </a>
             {% endfor %}
@@ -177,10 +177,10 @@
 <section class="mx-auto max-w-page px-4 py-16 sm:px-6">
     <div class="mb-8 flex items-end justify-between">
         <div>
-            <p class="mb-2 text-xs font-bold text-accent-strong">نویسندگان</p>
-            <h2 class="text-2xl font-bold">صداهای کاتالوگ</h2>
+            <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Authors" %}</p>
+            <h2 class="text-2xl font-bold">{% trans "Voices in the catalog" %}</h2>
         </div>
-        <a href="{% url 'product:author_list' %}" class="text-sm font-bold text-accent-strong">فهرست نویسندگان</a>
+        <a href="{% url 'product:author_list' %}" class="text-sm font-bold text-accent-strong">{% trans "Author index" %}</a>
     </div>
     <div class="flex flex-wrap gap-2">
         {% for item in featured_authors %}
@@ -195,16 +195,16 @@
 <section class="mx-auto max-w-page px-4 pb-16 sm:px-6">
     <div class="grid overflow-hidden rounded-2xl border border-line bg-paper md:grid-cols-3">
         <div class="p-6 md:border-s md:border-line">
-            <p class="mb-1 font-bold">ارسال سراسری</p>
-            <p class="text-sm text-muted">پست پیشتاز به سراسر ایران</p>
+            <p class="mb-1 font-bold">{% trans "Nationwide shipping" %}</p>
+            <p class="text-sm text-muted">{% trans "Express post across Iran" %}</p>
         </div>
         <div class="border-t border-line p-6 md:border-s md:border-t-0">
-            <p class="mb-1 font-bold">خرید از ناشر</p>
-            <p class="text-sm text-muted">نسخه اصیل، بدون واسطه</p>
+            <p class="mb-1 font-bold">{% trans "Buy from the publisher" %}</p>
+            <p class="text-sm text-muted">{% trans "An authentic copy, with no middleman" %}</p>
         </div>
         <div class="border-t border-line p-6 md:border-s md:border-t-0">
-            <p class="mb-1 font-bold">بازگشت سه روزه</p>
-            <p class="text-sm text-muted">مطابق شرایط سفارش</p>
+            <p class="mb-1 font-bold">{% trans "Three-day returns" %}</p>
+            <p class="text-sm text-muted">{% trans "According to the order conditions" %}</p>
         </div>
     </div>
 </section>

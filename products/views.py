@@ -137,7 +137,7 @@ def _book_json_ld(product, request):
         'inLanguage': 'fa',
         'publisher': {
             '@type': 'Organization',
-            'name': product.publisher or 'انتشارات کسری',
+            'name': product.publisher or str(_('Kasra Publishing')),
         },
         'offers': {
             '@type': 'Offer',

@@ -1,5 +1,6 @@
 # cart/cart.py
 from django.conf import settings
+from django.utils.translation import gettext as _
 from products.models import Product, Package, DiscountCode
 
 
@@ -195,10 +196,10 @@ class Cart:
         try:
             discount_code = DiscountCode.objects.get(code=code, active=True)
         except DiscountCode.DoesNotExist:
-            return False, "کد تخفیف نامعتبر است"
+            return False, _("Invalid discount code")
         
         if not discount_code.is_valid():
-            return False, "کد تخفیف منقضی شده یا استفاده شده است"
+            return False, _("This discount code has expired or already been used")
         
         self.discount_code = code
         self.discount_percent = discount_code.percent
@@ -209,7 +210,7 @@ class Cart:
         self.cart['discount_amount'] = discount_code.amount
         
         self.save()
-        return True, "کد تخفیف اعمال شد"
+        return True, _("Discount code applied")
     
     def remove_discount_code(self):
         self.discount_code = None

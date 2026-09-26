@@ -44,7 +44,7 @@
 let currentYear = 1403;
 let currentMonth = 1;
 let selectedDate = null;
-const monthNames = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const monthNames = ['{% trans "Farvardin" %}','{% trans "Ordibehesht" %}','{% trans "Khordad" %}','{% trans "Tir" %}','{% trans "Mordad" %}','{% trans "Shahrivar" %}','{% trans "Mehr" %}','{% trans "Aban" %}','{% trans "Azar" %}','{% trans "Dey" %}','{% trans "Bahman" %}','{% trans "Esfand" %}'];
 
 function toggleCalClass(show) {
     const cal = document.getElementById('jalali-calendar');
@@ -69,7 +69,7 @@ function renderCalendar() {
         <div id="year-dropdown" class="mb-2 hidden"></div>
         <div id="month-dropdown" class="mb-2 hidden"></div>
         <table class="w-full text-center text-sm">
-            <tr class="text-muted"><th>ش</th><th>ی</th><th>د</th><th>س</th><th>چ</th><th>پ</th><th>ج</th></tr><tr>
+            <tr class="text-muted"><th>{% trans "Sa" %}</th><th>{% trans "Su" %}</th><th>{% trans "Mo" %}</th><th>{% trans "Tu" %}</th><th>{% trans "We" %}</th><th>{% trans "Th" %}</th><th>{% trans "Fr" %}</th></tr><tr>
     `;
     for (let i = 0; i < firstDay; i++) html += '<td></td>';
     for (let day = 1; day <= daysInMonth; day++) {

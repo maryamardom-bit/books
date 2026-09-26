@@ -345,8 +345,8 @@ class CatalogDiscoveryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('featured_book', response.context)
         self.assertIn('subjects', response.context)
-        self.assertContains(response, 'موضوعات')
-        self.assertContains(response, 'نویسندگان')
+        self.assertContains(response, 'Subjects')
+        self.assertContains(response, 'Authors')
 
     def test_author_list(self):
         response = self.client.get('/products/author/')
@@ -375,3 +375,24 @@ class CatalogDiscoveryTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('application/ld+json', response.content.decode())
         self.assertContains(response, self.urban.title)
+
+    def test_category_library_page(self):
+        from products.taxonomy import catalog_subjects
+
+        response = self.client.get('/products/categories/')
+        self.assertEqual(response.status_code, 200)
+        subjects = list(response.context['categories'])
+        self.assertEqual(subjects, catalog_subjects())
+        self.assertEqual(len(subjects), 12)
+        self.assertEqual(subjects[1]['code'], 'ARCH_DESIGN')
+        self.assertContains(response, 'Architecture library')
+        self.assertContains(response, 'Search categories')
+        self.assertNotContains(response, 'cat-item--lead')
+        self.assertNotContains(response, 'cat-num')
+        self.assertNotContains(response, '/products/categories/PACKAGES/')
+        for subject in subjects:
+            self.assertContains(response, str(subject['name']).replace('&', '&amp;'))
+            self.assertContains(response, str(subject['blurb']))
+            self.assertContains(response, str(subject['english']).replace('&', '&amp;'))
+            self.assertContains(response, f'/products/categories/{subject["code"]}/')
+            self.assertEqual(subject['count'], 1 if subject['code'] in ('URBAN', 'INTERIOR') else 0)

@@ -1,8 +1,19 @@
 from django import template
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 import jdatetime
 from django.utils import timezone
 
 register = template.Library()
+
+
+def jalali_month_names():
+    return [
+        _('Farvardin'), _('Ordibehesht'), _('Khordad'),
+        _('Tir'), _('Mordad'), _('Shahrivar'),
+        _('Mehr'), _('Aban'), _('Azar'),
+        _('Dey'), _('Bahman'), _('Esfand'),
+    ]
 
 
 @register.filter(name='jalali_date')
@@ -54,14 +65,14 @@ def jalali_date_humanize(value):
         diff = j_now - j_value
         
         if diff.days == 0:
-            return 'امروز'
+            return _('Today')
         elif diff.days == 1:
-            return 'دیروز'
+            return _('Yesterday')
         elif diff.days < 7:
-            return f'{diff.days} روز پیش'
+            return ngettext('%(count)s day ago', '%(count)s days ago', diff.days) % {'count': diff.days}
         elif diff.days < 30:
             weeks = diff.days // 7
-            return f'{weeks} هفته پیش'
+            return ngettext('%(count)s week ago', '%(count)s weeks ago', weeks) % {'count': weeks}
         else:
             return j_value.strftime('%Y/%m/%d')
     
@@ -80,14 +91,7 @@ def jalali_text(value):
         
         j_date = jdatetime.datetime.fromgregorian(datetime=value)
         
-        months = [
-            'فروردین', 'اردیبهشت', 'خرداد',
-            'تیر', 'مرداد', 'شهریور',
-            'مهر', 'آبان', 'آذر',
-            'دی', 'بهمن', 'اسفند'
-        ]
-        
-        month_name = months[j_date.month - 1]
+        month_name = jalali_month_names()[j_date.month - 1]
         return f'{j_date.day} {month_name} {j_date.year}'
     
     return value
@@ -105,14 +109,7 @@ def jalali_text_datetime(value):
         
         j_date = jdatetime.datetime.fromgregorian(datetime=value)
         
-        months = [
-            'فروردین', 'اردیبهشت', 'خرداد',
-            'تیر', 'مرداد', 'شهریور',
-            'مهر', 'آبان', 'آذر',
-            'دی', 'بهمن', 'اسفند'
-        ]
-        
-        month_name = months[j_date.month - 1]
+        month_name = jalali_month_names()[j_date.month - 1]
         return f'{j_date.day} {month_name} {j_date.year} - {j_date.hour:02d}:{j_date.minute:02d}'
     
     return value
@@ -173,14 +170,7 @@ def to_jalali_text(value):
         
         j_date = jdatetime.datetime.fromgregorian(datetime=value)
         
-        months = [
-            'فروردین', 'اردیبهشت', 'خرداد',
-            'تیر', 'مرداد', 'شهریور',
-            'مهر', 'آبان', 'آذر',
-            'دی', 'بهمن', 'اسفند'
-        ]
-        
-        month_name = months[j_date.month - 1]
+        month_name = jalali_month_names()[j_date.month - 1]
         return f'{j_date.day} {month_name} {j_date.year}'
     
     return value

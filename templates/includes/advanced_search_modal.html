@@ -5,7 +5,7 @@
          @click.stop
          x-transition.opacity>
         <div class="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
-            <h2 id="advanced-search-title" class="text-lg">{% trans 'جستجوی پیشرفته' %}</h2>
+            <h2 id="advanced-search-title" class="text-lg">{% trans 'Advanced search' %}</h2>
             <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" @click="searchOpen = false" aria-label="{% trans 'Close' %}">
                 <i class="fas fa-times"></i>
             </button>
@@ -14,11 +14,11 @@
             <input type="hidden" name="mode" value="advanced">
             <div class="space-y-4 overflow-y-auto px-5 py-4">
                 <div>
-                    <label for="advanced-q">{% trans 'عبارت جستجو' %}</label>
-                    <input id="advanced-q" type="search" name="q" x-model="searchQuery" placeholder="{% trans 'مثلاً معماری' %}">
+                    <label for="advanced-q">{% trans 'Search terms' %}</label>
+                    <input id="advanced-q" type="search" name="q" x-model="searchQuery" placeholder="{% trans 'For example, architecture' %}">
                 </div>
                 <fieldset>
-                    <legend class="mb-3 text-xs font-bold text-ink">{% trans 'جستجو در' %}</legend>
+                    <legend class="mb-3 text-xs font-bold text-ink">{% trans 'Search in' %}</legend>
                     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                         {% for field in book_search_fields %}
                         <label class="flex cursor-pointer items-center gap-2 rounded-xl border border-line px-3 py-2.5 text-sm font-normal hover:border-accent hover:bg-surface">
@@ -33,7 +33,7 @@
                 </fieldset>
             </div>
             <div class="border-t border-line p-4">
-                <button type="submit" class="btn btn-accent btn-block">{% trans 'جستجو' %}</button>
+                <button type="submit" class="btn btn-accent btn-block">{% trans 'Search' %}</button>
             </div>
         </form>
     </div>

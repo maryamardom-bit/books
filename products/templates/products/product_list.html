@@ -4,35 +4,35 @@
 {% load humanize %}
 
 {% block page_title %}
-{% if discount_filter %}تخفیف ناشر{% elif active_subject %}{{ active_subject.name }}{% else %}کاتالوگ{% endif %} | انتشارات کسری
+{% if discount_filter %}{% trans "Publisher discount" %}{% elif active_subject %}{{ active_subject.name }}{% else %}{% trans "Catalog" %}{% endif %} | {% trans "Kasra Publishing" %}
 {% endblock %}
 
 {% block content %}
 <section class="page-wrap lg:py-14">
     <header class="mb-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <div class="max-w-xl">
-            <p class="mb-3 text-[11px] tracking-[0.2em] text-faint">{% if discount_filter %}تخفیف ناشر{% else %}کاتالوگ{% endif %}</p>
+            <p class="mb-3 text-[11px] tracking-[0.2em] text-faint">{% if discount_filter %}{% trans "Publisher discount" %}{% else %}{% trans "Catalog" %}{% endif %}</p>
             <h1 class="mb-3 text-3xl font-normal tracking-tight sm:text-4xl">
                 {% if discount_filter %}
-                    تخفیف ناشر
+                    {% trans "Publisher discount" %}
                 {% elif active_subject %}
                     {{ active_subject.name }}
                 {% else %}
-                    کاتالوگ
+                    {% trans "Catalog" %}
                 {% endif %}
             </h1>
             <p class="text-[15px] leading-7 text-muted">
                 {% if discount_filter %}
-                    عناوین با قیمت ویژهٔ ناشر.
+                    {% trans "Titles at the publisher’s special price." %}
                 {% elif active_subject %}
                     {{ active_subject.blurb }}
                 {% else %}
-                    کتاب‌های معماری، داخلی، شهر و منظر — سفارش مستقیم از ناشر.
+                    {% trans "Architecture, interior, city, and landscape books — order directly from the publisher." %}
                 {% endif %}
             </p>
         </div>
         {% if paginator %}
-        <p class="text-[13px] tabular-nums text-faint">{{ paginator.count|translate_number }} عنوان</p>
+        <p class="text-[13px] tabular-nums text-faint">{{ paginator.count|translate_number }} {% trans "titles" %}</p>
         {% endif %}
     </header>
 
@@ -42,17 +42,17 @@
 
     <div class="mb-10 flex flex-wrap items-center justify-between gap-3">
         {% if discount_filter %}
-        <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">نمایش همه قیمت‌ها</a>
+        <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">{% trans "Show every price" %}</a>
         {% else %}
-        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">فقط تخفیف‌دار</a>
+        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">{% trans "Discounted only" %}</a>
         {% endif %}
         <label class="mb-0 flex items-center gap-3 text-[13px] font-normal text-faint">
-            ترتیب
+            {% trans "Sort" %}
             <select class="catalog-sort" onchange="window.location.href=this.value">
-                <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>تازه‌ترین</option>
-                <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'price' %}selected{% endif %}>ارزان‌تر</option>
-                <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-price' %}selected{% endif %}>گران‌تر</option>
-                <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'title' %}selected{% endif %}>عنوان</option>
+                <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>{% trans "Newest" %}</option>
+                <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'price' %}selected{% endif %}>{% trans "Lowest price" %}</option>
+                <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-price' %}selected{% endif %}>{% trans "Highest price" %}</option>
+                <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
             </select>
         </label>
     </div>
@@ -62,9 +62,9 @@
             {% include "includes/catalog_book.html" with product=product %}
         {% empty %}
         <div class="col-span-full py-24 text-center">
-            <p class="mb-2 text-lg font-normal text-ink">کتابی با این فیلتر نیست</p>
-            <p class="mb-8 text-muted">{% if discount_filter %}در این موضوع عنوان تخفیف‌داری نیست.{% else %}این بخش از کاتالوگ خالی است.{% endif %}</p>
-            <a href="{% url 'product:product_list' %}" class="text-[13px] tracking-wide text-ink">مشاهده همه کتاب‌ها</a>
+            <p class="mb-2 text-lg font-normal text-ink">{% trans "No book matches this filter" %}</p>
+            <p class="mb-8 text-muted">{% if discount_filter %}{% trans "This subject has no discounted titles." %}{% else %}{% trans "This part of the catalog is empty." %}{% endif %}</p>
+            <a href="{% url 'product:product_list' %}" class="text-[13px] tracking-wide text-ink">{% trans "View all books" %}</a>
         </div>
         {% endfor %}
     </div>
@@ -72,7 +72,7 @@
     {% if is_paginated %}
     <nav class="catalog-pager" aria-label="{% trans 'Pagination' %}">
         {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Previous' %}">قبلی</a>
+        <a href="?page={{ page_obj.previous_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Previous' %}">{% trans "Previous" %}</a>
         {% endif %}
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
@@ -82,7 +82,7 @@
             {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Next' %}">بعدی</a>
+        <a href="?page={{ page_obj.next_page_number }}{{ pagination_extra }}" aria-label="{% trans 'Next' %}">{% trans "Next" %}</a>
         {% endif %}
     </nav>
     {% endif %}

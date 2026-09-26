@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <meta name="description" content="{% block meta_description %}{% trans 'Kasra Publishing — specialized publisher of architecture and design books' %}{% endblock %}">
-    <title>{% block page_title %}انتشارات کسری | کتاب‌فروشی تخصصی معماری{% endblock %}</title>
+    <title>{% block page_title %}{% trans "Kasra Publishing" %} | {% trans "Architecture bookstore" %}{% endblock %}</title>
     <link rel="icon" href="{% static 'img/kasrapublishing.jpg' %}">
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
     {% block extra_head %}{% endblock %}
@@ -16,8 +16,8 @@
     {
       "@context": "https://schema.org",
       "@graph": [
-        {"@type": "Organization", "@id": "{{ request.scheme }}://{{ request.get_host }}/#org", "name": "انتشارات کسری", "url": "{{ request.scheme }}://{{ request.get_host }}/"},
-        {"@type": "WebSite", "name": "انتشارات کسری", "url": "{{ request.scheme }}://{{ request.get_host }}/", "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#org"}, "potentialAction": {"@type": "SearchAction", "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'product:product_search' %}?q={search_term_string}", "query-input": "required name=search_term_string"}}
+        {"@type": "Organization", "@id": "{{ request.scheme }}://{{ request.get_host }}/#org", "name": "{% trans "Kasra Publishing" %}", "url": "{{ request.scheme }}://{{ request.get_host }}/"},
+        {"@type": "WebSite", "name": "{% trans "Kasra Publishing" %}", "url": "{{ request.scheme }}://{{ request.get_host }}/", "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#org"}, "potentialAction": {"@type": "SearchAction", "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'product:product_search' %}?q={search_term_string}", "query-input": "required name=search_term_string"}}
       ]
     }
     </script>

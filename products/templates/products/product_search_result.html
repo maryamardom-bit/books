@@ -10,9 +10,9 @@
         <span>/</span>
         <span>{% trans 'Search' %}</span>
     </nav>
-    <h1 class="mb-2 text-3xl">نتایج جستجو</h1>
+    <h1 class="mb-2 text-3xl">{% trans "Search results" %}</h1>
     {% if query %}
-    <p class="mb-8 text-muted">جستجو برای <strong class="text-accent-strong">«{{ query }}»</strong> — <strong>{{ results_count|default:0 }}</strong> عنوان{% if search_mode == 'advanced' %} · جستجوی پیشرفته{% endif %}</p>
+    <p class="mb-8 text-muted">{% trans "Search for" %} <strong class="text-accent-strong">“{{ query }}”</strong> — <strong>{{ results_count|default:0 }}</strong> {% trans "titles" %}{% if search_mode == 'advanced' %} · {% trans "Advanced search" %}{% endif %}</p>
     {% endif %}
 
     {% if results %}
@@ -25,14 +25,14 @@
     {% else %}
     <div class="mx-auto max-w-lg py-12 text-center">
         <i class="fas fa-search mb-4 text-4xl text-faint"></i>
-        <h2 class="mb-2">نتیجه‌ای پیدا نشد</h2>
-        <p class="mb-6 text-muted">{% if query %}عنوانی مطابق این جستجو در کاتالوگ نیست.{% else %}عبارتی برای جستجو وارد کنید.{% endif %}</p>
+        <h2 class="mb-2">{% trans "Nothing matched" %}</h2>
+        <p class="mb-6 text-muted">{% if query %}{% trans "No title in the catalog matches this search." %}{% else %}{% trans "Enter something to search for." %}{% endif %}</p>
         <div class="card text-start text-sm">
-            <p class="mb-2 font-bold">پیشنهاد:</p>
+            <p class="mb-2 font-bold">{% trans "Try this:" %}</p>
             <ul class="list-disc space-y-1 ps-5 text-ink-2">
-                <li>املای عنوان یا نام نویسنده را بررسی کنید.</li>
-                <li>کلمهٔ کوتاه‌تر یا عمومی‌تر بزنید.</li>
-                <li>از موضوعات معماری در منو وارد شوید.</li>
+                <li>{% trans "Check the spelling of the title or the author’s name." %}</li>
+                <li>{% trans "Use a shorter or more general word." %}</li>
+                <li>{% trans "Open an architecture subject from the menu." %}</li>
             </ul>
         </div>
         {% if subjects %}
@@ -44,7 +44,7 @@
         {% endif %}
         {% if suggested_books %}
         <div class="mx-auto mt-12 max-w-page text-start">
-            <h3 class="mb-6 text-center text-lg">از کاتالوگ ناشر</h3>
+            <h3 class="mb-6 text-center text-lg">{% trans "From the publisher’s catalog" %}</h3>
             <div class="book-grid">
                 {% for product in suggested_books %}
                     {% include "includes/book_card.html" with product=product %}

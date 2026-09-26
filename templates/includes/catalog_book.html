@@ -7,12 +7,12 @@
         {% if product.image %}
         <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">
         {% else %}
-        <span class="text-[11px] tracking-wide text-faint">بدون جلد</span>
+        <span class="text-[11px] tracking-wide text-faint">{% trans "No cover" %}</span>
         {% endif %}
         {% if product.is_on_sale %}
-        <span class="catalog-mark">تخفیف</span>
+        <span class="catalog-mark">{% trans "Sale" %}</span>
         {% elif product.is_new %}
-        <span class="catalog-mark">جدید</span>
+        <span class="catalog-mark">{% trans "New" %}</span>
         {% endif %}
     </a>
     <p class="mb-1 text-[11px] tracking-wide text-faint">{{ product.get_category_display }}</p>
@@ -30,21 +30,21 @@
             <p class="text-[13px] text-ink">
                 <span class="ms-2 text-faint line-through">{{ product.price|intcomma:False|translate_number }}</span>
                 {{ product.get_discounted_price|intcomma:False|translate_number }}
-                <span class="text-[11px] text-faint">تومان</span>
+                <span class="text-[11px] text-faint">{% trans "Toman" %}</span>
             </p>
             {% else %}
             <p class="text-[13px] text-ink">
                 {{ product.price|intcomma:False|translate_number }}
-                <span class="text-[11px] text-faint">تومان</span>
+                <span class="text-[11px] text-faint">{% trans "Toman" %}</span>
             </p>
             {% endif %}
         {% else %}
-        <p class="text-[13px] text-faint">قیمت به‌زودی</p>
+        <p class="text-[13px] text-faint">{% trans "Price soon" %}</p>
         {% endif %}
         <form action="{% url 'cart:cart_add' product.id %}" method="post" class="opacity-0 transition group-hover:opacity-100 max-md:opacity-100">
             {% csrf_token %}
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="text-[11px] tracking-wide text-muted hover:text-ink" aria-label="{% trans 'Add to Cart' %}">سبد</button>
+            <button type="submit" class="text-[11px] tracking-wide text-muted hover:text-ink" aria-label="{% trans 'Add to Cart' %}">{% trans "Bag" %}</button>
         </form>
     </div>
 </article>

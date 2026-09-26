@@ -1,21 +1,21 @@
 {% extends '_base.html' %}
 {% load i18n %}
 
-{% block page_title %}{{ category.name }} | انتشارات کسری{% endblock %}
+{% block page_title %}{{ category.name }} | {% trans "Kasra Publishing" %}{% endblock %}
 
 {% block content %}
 <section class="page-wrap">
     {% if category %}
     <nav class="crumb">
-        <a href="{% url 'page:home' %}">خانه</a>
+        <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
         <span>/</span>
-        <a href="{% url 'product:product_category' %}">موضوعات</a>
+        <a href="{% url 'product:product_category' %}">{% trans "Subjects" %}</a>
         <span>/</span>
         <span>{{ category.name }}</span>
     </nav>
     <h1 class="mb-2 text-3xl font-normal tracking-tight">{{ category.name }}</h1>
     {% if category.blurb %}<p class="mb-2 max-w-xl text-muted">{{ category.blurb }}</p>{% endif %}
-    <p class="mb-8 text-[13px] text-faint">{{ category.count }} عنوان</p>
+    <p class="mb-8 text-[13px] text-faint">{{ category.count }} {% trans "titles" %}</p>
     {% if subjects %}
         {% include "includes/catalog_filters.html" with active_category=category.code discount_filter=False %}
     {% endif %}
@@ -24,8 +24,8 @@
             {% include "includes/book_card.html" with product=product %}
         {% empty %}
         <div class="col-span-full py-16 text-center">
-            <h3 class="mb-4">در این موضوع هنوز کتابی نیست</h3>
-            <a href="{% url 'product:product_list' %}" class="btn btn-accent">کاتالوگ کامل</a>
+            <h3 class="mb-4">{% trans "There are no books in this subject yet." %}</h3>
+            <a href="{% url 'product:product_list' %}" class="btn btn-accent">{% trans "Full catalog" %}</a>
         </div>
         {% endfor %}
     </div>
@@ -33,7 +33,7 @@
     {% else %}
     <div class="py-16 text-center">
         <h3>{{ error }}</h3>
-        <a href="{% url 'product:product_category' %}" class="btn btn-accent mt-4">موضوعات</a>
+        <a href="{% url 'product:product_category' %}" class="btn btn-accent mt-4">{% trans "Subjects" %}</a>
     </div>
     {% endif %}
 </section>

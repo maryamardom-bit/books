@@ -1,14 +1,14 @@
 {% extends '_base.html' %}
 {% load i18n %}
 
-{% block page_title %}{{ author }} | انتشارات کسری{% endblock %}
+{% block page_title %}{{ author }} | {% trans "Kasra Publishing" %}{% endblock %}
 
 {% block content %}
 <section class="page-wrap">
     <nav class="crumb">
         <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
         <span>/</span>
-        <a href="{% url 'product:author_list' %}">نویسندگان</a>
+        <a href="{% url 'product:author_list' %}">{% trans "Authors" %}</a>
         <span>/</span>
         <span>{{ author }}</span>
     </nav>

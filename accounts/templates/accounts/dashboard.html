@@ -26,9 +26,9 @@
             <div class="card">
                 <h3 class="mb-4 text-sm">{% trans 'Your Tiered Discount' %}</h3>
                 <div class="mb-3 grid grid-cols-3 gap-2 text-center text-xs">
-                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 1 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">٪۱۰</p><p class="text-faint">{% trans 'First Purchase' %}</p></div>
-                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 2 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">٪۲۰</p><p class="text-faint">{% trans 'Second Purchase' %}</p></div>
-                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 3 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">٪۵۰</p><p class="text-faint">{% trans 'Third Purchase' %}</p></div>
+                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 1 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">10%</p><p class="text-faint">{% trans 'First Purchase' %}</p></div>
+                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 2 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">20%</p><p class="text-faint">{% trans 'Second Purchase' %}</p></div>
+                    <div class="rounded-xl border p-3 {% if tiered.current_tier >= 3 %}border-accent bg-accent-soft{% else %}border-line{% endif %}"><p class="font-bold">50%</p><p class="text-faint">{% trans 'Third Purchase' %}</p></div>
                 </div>
                 <p class="text-center text-xs text-muted">
                     {% if tier_percent > 0 %}{% trans 'Current discount' %}: <strong class="text-accent-strong">%{{ tier_percent }}</strong>

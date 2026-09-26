@@ -1,24 +1,42 @@
 """Editorial subject copy for architecture catalog — no extra models."""
 
 from django.db.models import Count
+from django.utils.translation import gettext_lazy as _
 
 from .models import Product
 
 EXCLUDED_CATEGORIES = ('PACKAGES',)
 
 CATEGORY_BLURBS = {
-    Product.Category.BUSINESS: 'دفتر، مدیریت پروژه و اقتصاد ساخت',
-    Product.Category.ARCH_DESIGN: 'نظریه، طراحی و فرهنگ معماری',
-    Product.Category.INTERIOR: 'فضای داخلی، مبلمان و جزئیات',
-    Product.Category.URBAN: 'شهر، سیاست فضا و طراحی شهری',
-    Product.Category.LANDSCAPE: 'منظر، باغ و فضای باز',
-    Product.Category.DESIGN_GUIDE: 'راهنماهای اجرایی و استاندارد طراحی',
-    Product.Category.HISTORY: 'تاریخ، نقد و میراث معماری',
-    Product.Category.DESIGN_BASICS: 'مبانی فرم، اسکیس و بیان معماری',
-    Product.Category.DIGITAL: 'نرم‌افزار، بازنمایی و طراحی دیجیتال',
-    Product.Category.SUSTAIN: 'پایداری، اقلیم و ساخت مسئولانه',
-    Product.Category.SAMPLES: 'پروژه‌ها، نمونه‌ها و مطالعات موردی',
-    Product.Category.OTHER: 'عناوین منتخب خارج از رده‌بندی اصلی',
+    Product.Category.BUSINESS: _('Practice, project management, and the economics of building'),
+    Product.Category.ARCH_DESIGN: _('Theory, design, and architectural culture'),
+    Product.Category.INTERIOR: _('Interiors, furniture, and detail'),
+    Product.Category.URBAN: _('The city, spatial policy, and urban design'),
+    Product.Category.LANDSCAPE: _('Landscape, gardens, and open space'),
+    Product.Category.DESIGN_GUIDE: _('Practice guides and design standards'),
+    Product.Category.HISTORY: _('History, criticism, and architectural heritage'),
+    Product.Category.DESIGN_BASICS: _('Form, sketching, and architectural representation'),
+    Product.Category.DIGITAL: _('Software, representation, and digital design'),
+    Product.Category.SUSTAIN: _('Sustainability, climate, and responsible construction'),
+    Product.Category.SAMPLES: _('Projects, precedents, and case studies'),
+    Product.Category.OTHER: _('Selected titles outside the main classification'),
+}
+
+# Source strings for Rosetta. Empty Persian msgstr keeps the English title
+# until it is translated.
+CATEGORY_ENGLISH = {
+    Product.Category.BUSINESS: _('Architecture Business'),
+    Product.Category.ARCH_DESIGN: _('Architecture & Design'),
+    Product.Category.INTERIOR: _('Interior Architecture'),
+    Product.Category.URBAN: _('Urban Design'),
+    Product.Category.LANDSCAPE: _('Landscape'),
+    Product.Category.DESIGN_GUIDE: _('Design Guides'),
+    Product.Category.HISTORY: _('Architectural History'),
+    Product.Category.DESIGN_BASICS: _('Design Fundamentals'),
+    Product.Category.DIGITAL: _('Digital Design'),
+    Product.Category.SUSTAIN: _('Sustainability'),
+    Product.Category.SAMPLES: _('Case Studies'),
+    Product.Category.OTHER: _('Other'),
 }
 
 
@@ -36,6 +54,7 @@ def catalog_subjects():
         subjects.append({
             'code': code,
             'name': str(name),
+            'english': CATEGORY_ENGLISH.get(code, ''),
             'blurb': CATEGORY_BLURBS.get(code, ''),
             'count': counts.get(code, 0),
         })

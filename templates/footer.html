@@ -7,7 +7,7 @@
             <a href="{% url 'page:home' %}" class="mb-4 inline-block">
                 <img src="{% static 'img/logo/logo-white.png' %}" alt="{% trans 'Kasra Publishing' %}" class="h-10 w-auto">
             </a>
-            <p class="mb-5 max-w-xs text-sm leading-8 text-stone-400">کتاب‌فروشی تخصصی معماری و طراحی. سفارش مستقیم از ناشر.</p>
+            <p class="mb-5 max-w-xs text-sm leading-8 text-stone-400">{% trans "A bookstore for architecture and design. Order directly from the publisher." %}</p>
             <div class="flex gap-2">
                 <a class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-stone-200 hover:bg-accent hover:text-white" href="https://www.instagram.com/kasrapublishing?igsi=MTNxcWdqYzR1bWo0Ng==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-stone-200 hover:bg-accent hover:text-white" href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
@@ -15,15 +15,15 @@
             </div>
         </div>
         <div>
-            <h2 class="mb-4 text-sm font-bold text-white">کاتالوگ</h2>
+            <h2 class="mb-4 text-sm font-bold text-white">{% trans "Catalog" %}</h2>
             <ul class="space-y-2 text-sm text-stone-400">
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}">کاتالوگ</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_category' %}">موضوعات</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:new_releases' %}">تازه‌ها</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:best_sellers' %}">پرفروش</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:author_list' %}">نویسندگان</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:package_list' %}">مجموعه‌ها</a></li>
-                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}?discount=true">تخفیف ناشر</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}">{% trans "Catalog" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_category' %}">{% trans "Subjects" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:new_releases' %}">{% trans "New releases" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:best_sellers' %}">{% trans "Best Sellers" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:author_list' %}">{% trans "Authors" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:package_list' %}">{% trans "Collections" %}</a></li>
+                <li><a class="text-stone-400 hover:text-white" href="{% url 'product:product_list' %}?discount=true">{% trans "Publisher discount" %}</a></li>
             </ul>
         </div>
         <div>
@@ -38,10 +38,10 @@
         <div>
             <h2 class="mb-4 text-sm font-bold text-white">{% trans 'Contact Info' %}</h2>
             <ul class="space-y-3 text-sm text-stone-400">
-                <li>مشهد - فلسطین ۱۴ - پلاک ۱۰</li>
-                <li dir="ltr">۰۵۱-۳۷۶۷۰۰۱۹</li>
+                <li>{% trans "Mashhad, Palestine 14, No. 10" %}</li>
+                <li dir="ltr">{% trans "051-37670019" %}</li>
                 <li>kasrapublishing@gmail.com</li>
-                <li>شنبه تا پنجشنبه ۹–۱۴</li>
+                <li>{% trans "Saturday to Thursday, 9–14" %}</li>
             </ul>
         </div>
     </div>

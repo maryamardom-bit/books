@@ -3,13 +3,13 @@
 {% load persian_translation_tags %}
 {% load humanize %}
 
-{% block page_title %}پکیج‌ها | انتشارات کسری{% endblock %}
+{% block page_title %}{% trans "Packages" %} | {% trans "Kasra Publishing" %}{% endblock %}
 
 {% block content %}
 <section class="page-wrap text-center">
     <p class="mb-2 text-xs font-bold uppercase text-accent-strong">{% trans 'Bundles' %}</p>
     <h1 class="mb-2 text-3xl">{% trans 'Special Packages' %}</h1>
-            <p class="mx-auto mb-10 max-w-xl text-muted">مجموعه‌های ویراستاری‌شده: چند عنوان کنار هم، با قیمت بسته.</p>
+            <p class="mx-auto mb-10 max-w-xl text-muted">{% trans "Edited collections: several titles together, at a package price." %}</p>
     <div class="book-grid text-start">
         {% for package in packages %}
         <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper transition hover:-translate-y-1 hover:shadow-lg">

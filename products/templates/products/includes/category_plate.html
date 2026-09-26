@@ -1,0 +1,116 @@
+{% if code == 'BUSINESS' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <rect x="22" y="20" width="156" height="80"/>
+    <path d="M22 52 H178"/>
+    <path d="M96 52 V100"/>
+    <rect x="36" y="64" width="40" height="18"/>
+    <rect x="112" y="64" width="46" height="22"/>
+    <path class="is-accent" d="M78 100 V78 H96"/>
+</svg>
+{% elif code == 'ARCH_DESIGN' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <rect x="24" y="30" width="72" height="62"/>
+    <rect x="70" y="16" width="86" height="48"/>
+    <rect x="98" y="46" width="74" height="56"/>
+    <circle cx="108" cy="42" r="9"/>
+    <path d="M24 78 H70"/>
+    <path class="is-accent" d="M24 108 H174"/>
+</svg>
+{% elif code == 'INTERIOR' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <rect x="24" y="18" width="152" height="84"/>
+    <rect x="38" y="32" width="48" height="20"/>
+    <path d="M38 62 H86"/>
+    <circle cx="124" cy="58" r="13"/>
+    <rect x="108" y="78" width="46" height="12"/>
+    <path class="is-accent" d="M148 18 V102"/>
+</svg>
+{% elif code == 'URBAN' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <rect x="26" y="20" width="40" height="30"/>
+    <rect x="80" y="20" width="40" height="30"/>
+    <rect x="134" y="20" width="40" height="30"/>
+    <rect x="26" y="66" width="40" height="32"/>
+    <rect x="80" y="66" width="40" height="32"/>
+    <rect class="is-accent" x="134" y="66" width="40" height="32"/>
+</svg>
+{% elif code == 'LANDSCAPE' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <path d="M16 88 C52 72, 74 100, 112 82 S168 64, 186 76"/>
+    <path d="M16 70 C56 50, 82 86, 122 62 S166 46, 186 58"/>
+    <path d="M16 52 C60 32, 90 66, 128 42 S168 30, 186 40"/>
+    <circle cx="62" cy="38" r="7"/>
+    <path d="M62 45 V58"/>
+    <path class="is-accent" d="M36 102 H164"/>
+</svg>
+{% elif code == 'DESIGN_GUIDE' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <path d="M34 24 V92"/>
+    <path d="M50 24 V92"/>
+    <path d="M50 24 H146"/>
+    <path d="M50 42 H146"/>
+    <path d="M146 24 L168 42"/>
+    <path d="M146 42 L168 60"/>
+    <path d="M62 54 H132"/>
+    <path d="M62 66 H132"/>
+    <path d="M62 78 H110"/>
+    <path class="is-accent" d="M34 104 H168"/>
+    <path d="M34 100 V108"/>
+    <path d="M168 100 V108"/>
+</svg>
+{% elif code == 'HISTORY' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <path d="M40 90 V54 H160 V90"/>
+    <path d="M58 54 V90"/>
+    <path d="M142 54 V90"/>
+    <path d="M58 54 A42 42 0 0 0 142 54"/>
+    <path d="M100 4 V12"/>
+    <path class="is-accent" d="M26 90 H174"/>
+</svg>
+{% elif code == 'DESIGN_BASICS' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <rect x="32" y="30" width="58" height="58"/>
+    <circle cx="112" cy="60" r="30"/>
+    <path d="M86 96 L124 28 L164 96 Z"/>
+    <path class="is-accent" d="M28 102 H172" stroke-dasharray="3 4"/>
+</svg>
+{% elif code == 'DIGITAL' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <polygon points="100,16 154,44 100,72 46,44"/>
+    <polyline points="46,44 46,80 100,108 100,72"/>
+    <polyline points="154,44 154,80 100,108"/>
+    <path class="is-accent" d="M100 72 V108"/>
+    <path d="M100 44 V72"/>
+    <circle class="is-fill" cx="100" cy="44" r="2.4"/>
+</svg>
+{% elif code == 'SUSTAIN' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <circle cx="154" cy="34" r="12"/>
+    <path d="M154 14 V20 M174 34 H168 M140 20 L145 26 M168 18 L163 24"/>
+    <path d="M28 92 H176"/>
+    <path d="M48 92 V58 H100 V92"/>
+    <path d="M100 72 H136 V92"/>
+    <path class="is-accent" d="M48 58 L74 38 H100"/>
+</svg>
+{% elif code == 'SAMPLES' %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <polygon points="30,68 78,46 78,84 30,106"/>
+    <polygon points="78,46 126,30 126,68 78,84"/>
+    <polygon points="30,68 78,46 126,30"/>
+    <polygon points="102,74 142,56 142,90 102,108"/>
+    <polygon points="142,56 170,44 170,78 142,90"/>
+    <path class="is-accent" d="M30 106 H102"/>
+</svg>
+{% else %}
+<svg viewBox="0 0 200 120" aria-hidden="true">
+    <path d="M32 34 H168"/>
+    <path d="M32 58 H168"/>
+    <path d="M32 82 H168"/>
+    <path d="M50 34 V82"/>
+    <path d="M96 34 V82"/>
+    <path d="M140 34 V82"/>
+    <rect x="58" y="38" width="24" height="14"/>
+    <rect x="106" y="62" width="22" height="14"/>
+    <path class="is-accent" d="M32 98 H168"/>
+</svg>
+{% endif %}

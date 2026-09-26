@@ -42,7 +42,7 @@ class CustomUserAdmin(ModelAdminJalaliMixin, UserAdmin):
             jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.last_login)
             return jalali_date.strftime('%Y/%m/%d %H:%M')
         return '-'
-    last_login_jalali.short_description = 'آخرین ورود'
+    last_login_jalali.short_description = _('Last login')
     
     def date_joined_jalali(self, obj):
         """نمایش شمسی تاریخ پیوستن"""
@@ -50,4 +50,4 @@ class CustomUserAdmin(ModelAdminJalaliMixin, UserAdmin):
             jalali_date = jdatetime.datetime.fromgregorian(datetime=obj.date_joined)
             return jalali_date.strftime('%Y/%m/%d %H:%M')
         return '-'
-    date_joined_jalali.short_description = 'تاریخ پیوستن'
+    date_joined_jalali.short_description = _('Date joined')

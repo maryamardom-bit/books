@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 05:28+0000\n"
+"POT-Creation-Date: 2026-09-26 12:21+0330\n"
 "PO-Revision-Date: 2026-08-19 09:10+0330\n"
-"Last-Translator:   <maryam.ardom@gmail.com>\n"
+"Last-Translator: <maryam.ardom@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -19,810 +18,1048 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: products/admin.py:45 products/admin.py:127
 msgid "Basic Information"
-msgstr "اطلاعات اولیه"
+msgstr "Basic Information"
 
-#: products/admin.py:48
 msgid "Book Details"
-msgstr "جزییات "
+msgstr "Book Details"
 
-#: products/admin.py:56
-#| msgid "Discount"
+msgid "Stock Management"
+msgstr "Stock Management"
+
 msgid "Discount Settings"
-msgstr "تنظیمات تخفیف"
+msgstr "Discount Settings"
 
-#: products/admin.py:65
-msgid ""
-"🛈 <b>راهنمای تخفیف:</b><br>• برای تخفیف درصدی: فقط \"درصد تخفیف\" را وارد "
-"کنید<br>• برای قیمت ویژه: \"قیمت ویژه\" را وارد کنید (اولویت با قیمت ویژه "
-"است)<br>• برای تخفیف زمان‌دار: تاریخ شروع و پایان را مشخص کنید<br>• اگر "
-"تاریخ مشخص نشود، تخفیف همیشه فعال است"
-msgstr ""
-
-#: products/admin.py:72
 msgid "Status & Dates"
-msgstr "وضعیت و تاریخ‌ها"
+msgstr "Status & Dates"
 
-#: products/admin.py:90
-msgid "Price (Toman)"
-msgstr "تومان"
+msgid "Price"
+msgstr "Price"
 
-#: products/admin.py:102 products/admin.py:198
 msgid "Discount"
-msgstr "تخفیف"
+msgstr "Discount"
 
-#: products/admin.py:130
-msgid "Products in this Package"
-msgstr "محصولات موجود در این بسته"
-
-#: products/admin.py:132
-msgid "Select the products that belong to this package"
-msgstr "محصولاتی را که متعلق به این بسته هستند انتخاب کنید"
-
-#: products/admin.py:134
-#| msgid "Pricing & Stock"
-msgid "Pricing"
-msgstr "قیمت گذاری"
-
-#: products/admin.py:142
-msgid ""
-"⚠️ <b>راهنمای قیمت‌گذاری:</b><br>1️⃣ قیمت اصلی به‌صورت خودکار از مجموع "
-"کتاب‌ها محاسبه می‌شود<br>2️⃣ برای تخفیف درصدی: فقط درصد تخفیف را وارد "
-"کنید<br>3️⃣ برای قیمت دستی: قیمت مورد نظر را در فیلد \"قیمت دستی\" وارد "
-"کنید<br>4️⃣ فیلد \"قیمت نهایی\" به‌صورت خودکار تنظیم می‌شود"
-msgstr ""
-
-#: products/admin.py:149
-#| msgid "Status & Dates"
-msgid "Stock & Dates"
-msgstr "وضعیت و تاریخ‌ها"
-
-#: products/admin.py:160
-msgid "Books"
-msgstr "کتاب ها"
-
-#: products/admin.py:169
-msgid "Original Price"
-msgstr "قیمت اصلی"
-
-#: products/admin.py:189
-msgid "Final Price"
-msgstr "قیمت نهایی"
-
-#: products/admin.py:208
-msgid "Savings"
-msgstr "صرفه جویی"
-
-#: products/admin.py:220
-#| msgid "Status"
-msgid "Stock Status"
-msgstr "وضعیت"
-
-#: products/admin.py:250
-msgid "Activate selected packages"
-msgstr "فعال کردن بسته‌های انتخاب شده"
-
-#: products/admin.py:255
-msgid "Deactivate selected packages"
-msgstr "غیرفعال کردن بسته‌های انتخاب شده"
-
-#: products/models.py:45
-msgid "BUSINESS"
-msgstr "کسب‌وکار و مدیریت"
-
-#: products/models.py:46
-msgid "ARCH_DESIGN"
-msgstr "طراحی معماری"
-
-#: products/models.py:47
-msgid "INTERIOR"
-msgstr "طراحی و معماری داخلی"
-
-#: products/models.py:48
-msgid "URBAN"
-msgstr "مطالعات و طراحی شهری"
-
-#: products/models.py:49
-msgid "LANDSCAPE"
-msgstr "منظر (لنداسکیپ)"
-
-#: products/models.py:50
-msgid "DESIGN_GUIDE"
-msgstr "راهنمای طراحی"
-
-#: products/models.py:51
-msgid "HISTORY"
-msgstr "تاریخ، نقد و نظریه"
-
-#: products/models.py:52
-msgid "DESIGN_BASICS"
-msgstr "بیان، مقدمات و مفاهیم طراحی"
-
-#: products/models.py:53
-msgid "DIGITAL"
-msgstr "طراحی دیجیتال و پارامتریک"
-
-#: products/models.py:54
-msgid "SUSTAIN"
-msgstr "پایداری و طبیعت‌گرایی"
-
-#: products/models.py:55
-msgid "SAMPLES"
-msgstr "نمونه پروژه"
-
-#: products/models.py:56
-msgid "OTHER"
-msgstr "سایر کتاب‌ها"
-
-#: products/models.py:57
-msgid "PACKAGES"
-msgstr "بسته‌ها و مجموعه‌ها"
-
-#: products/models.py:60
-msgid "رقعی"
-msgstr "رقعی"
-
-#: products/models.py:61
-msgid "وزیری"
-msgstr "وزیری"
-
-#: products/models.py:62
-msgid "جیبی"
-msgstr "جیبی"
-
-#: products/models.py:63
-msgid "رحلی"
-msgstr "رحلی"
-
-#: products/models.py:64 products/models.py:69
-msgid "سایر"
-msgstr "سایر"
-
-#: products/models.py:67
-msgid "شومیز"
-msgstr "شومیز"
-
-#: products/models.py:68
-msgid "گالینگور"
-msgstr "گالینگور"
-
-#: products/models.py:74
-msgid "product_title"
-msgstr "نام محصول"
-
-#: products/models.py:79
-msgid "product_category"
-msgstr "دسته بندی محصول"
-
-#: products/models.py:81 products/models.py:254
-msgid "description"
-msgstr "توضیحات محصول"
-
-#: products/models.py:82 products/models.py:273
-msgid "price"
-msgstr "قیمت "
-
-#: products/models.py:83 products/models.py:296
-msgid "active"
-msgstr "فعال"
-
-#: products/models.py:84 products/models.py:255
-msgid "image"
-msgstr "تصویر:"
-
-#: products/models.py:89
-msgid "author"
-msgstr "نویسنده"
-
-#: products/models.py:90
-msgid "publisher"
-msgstr "ناشر:"
-
-#: products/models.py:91
-msgid "isbn"
-msgstr "شابک:"
-
-#: products/models.py:92
-msgid "year_of_publication"
-msgstr "سال چاپ:"
-
-#: products/models.py:93 products/templates/products/product_detail.html:172
-msgid "edition"
-msgstr "مترجم:"
-
-#: products/models.py:94
-msgid "number_of_pages"
-msgstr "تعداد صفحات"
-
-#: products/models.py:95
-msgid "book_size"
-msgstr "قطع:"
-
-#: products/models.py:96
-msgid "cover_type"
-msgstr "نوع صحافی/جلد:"
-
-#: products/models.py:97
-msgid "publication_date"
-msgstr "تاریخ نشر:"
-
-#: products/models.py:98
-msgid "printing_series"
-msgstr "نوبت چاپ:"
-
-#: products/models.py:99
-msgid "weight"
-msgstr "وزن(گرم):"
-
-#: products/models.py:105 products/models.py:278
-msgid "discount percent"
-msgstr "درصد تخفیف"
-
-#: products/models.py:107
-msgid "درصد تخفیف (0 تا 100)"
-msgstr ""
-
-#: products/models.py:112
-#| msgid "discount percent"
-msgid "discount start date"
-msgstr "تاریخ شروع تخفیف"
-
-#: products/models.py:115
-msgid "زمان شروع تخفیف"
-msgstr ""
-
-#: products/models.py:119
-#| msgid "discount percent"
-msgid "discount end date"
-msgstr "تاریخ پایان تخفیف"
-
-#: products/models.py:122
-msgid "زمان پایان تخفیف"
-msgstr ""
-
-#: products/models.py:126
-#| msgid "original price"
-msgid "special price"
-msgstr "قیمت ویژه"
-
-#: products/models.py:128
-msgid "قیمت ویژه (اگر وارد شود، تخفیف به صورت مبلغ ثابت اعمال می‌شود)"
-msgstr ""
-
-#: products/models.py:135
-msgid "datetime_created"
-msgstr "زمان_ایجاد:"
-
-#: products/models.py:136
-msgid "datetime_modified"
-msgstr "زمان آخرین تغییرات در محصول:"
-
-#: products/models.py:221
-msgid "Very_Bad"
-msgstr "خیلی بد"
-
-#: products/models.py:222
-msgid "Bad"
-msgstr "بد"
-
-#: products/models.py:223
-msgid "Normal"
-msgstr "معمولی"
-
-#: products/models.py:224
-msgid "Good"
-msgstr "خوب"
-
-#: products/models.py:225
-msgid "Perfect"
-msgstr "عالی"
-
-#: products/models.py:228
-msgid "Comment_Product"
-msgstr "نظر برای این محصول"
-
-#: products/models.py:236
-msgid "Comment_Text"
-msgstr "متن دیدگاه"
-
-#: products/models.py:237
-msgid "What_is_your_score?"
-msgstr "امتیاز شما به این محصول کدام است؟"
-
-#: products/models.py:242
-msgid "Comment_Active"
-msgstr "نظر فعال"
-
-#: products/models.py:252
-msgid "title"
-msgstr "عنوان"
-
-#: products/models.py:253
-msgid "slug"
-msgstr "اسلاگ"
-
-#: products/models.py:260
-msgid "products"
-msgstr "محصولات"
-
-#: products/models.py:267
-msgid "original price"
-msgstr "قیمت اصلی"
-
-#: products/models.py:280
-#| msgid "Discount percentage for this package"
-msgid "Discount percentage (if set, price will be auto-calculated)"
-msgstr "درصد تخفیف (در صورت تنظیم، قیمت به صورت خودکار محاسبه می شود)"
-
-#: products/models.py:285
-#| msgid "Final Price"
-msgid "manual price"
-msgstr "قیمت "
-
-#: products/models.py:290
-msgid "stock"
-msgstr "موجودی"
-
-#: products/models.py:292
-msgid "Available stock for this package"
-msgstr "موجودی برای این بسته"
-
-#: products/models.py:297
-msgid "created"
-msgstr "زمان_ایجاد:"
-
-#: products/models.py:298
-msgid "modified"
-msgstr "زمان آخرین تغییرات در محصول:"
-
-#: products/models.py:301
-msgid "package"
-msgstr "بسته"
-
-#: products/models.py:302
-msgid "packages"
-msgstr "بسته ها"
-
-#: products/templates/products/category_list.html:6
-msgid "Categories"
-msgstr " دسته بندی"
-
-#: products/templates/products/category_list.html:244
-msgid "Book Categories"
-msgstr "دسته بندی کتاب ها"
-
-#: products/templates/products/category_list.html:245
-msgid "Discover our curated collection of architectural books"
-msgstr "مجموعه منتخب ما از کتاب‌های معماری را کشف کنید"
-
-#: products/templates/products/category_list.html:254
-#: products/templates/products/package_list.html:430
-msgid "books"
-msgstr "کتاب ها"
-
-#: products/templates/products/category_list.html:258
-msgid "No categories found"
-msgstr "هیچ دسته بندی ای یافت نشد"
-
-#: products/templates/products/package_detail.html:395
-#: products/templates/products/package_list.html:335
-msgid "Home"
-msgstr "خانه"
-
-#: products/templates/products/package_detail.html:398
-#: products/templates/products/package_list.html:338
-msgid "Packages"
-msgstr "بسته"
-
-#: products/templates/products/package_detail.html:416
-#: products/templates/products/package_list.html:6
-#: products/templates/products/package_list.html:350
-#: products/templates/products/package_list.html:384
-msgid "Package"
-msgstr "بسته"
-
-#: products/templates/products/package_detail.html:455
-msgid "Add to Cart"
-msgstr "اضافه کردن به سبد خرید"
-
-#: products/templates/products/package_detail.html:455
-msgid "Out of Stock"
-msgstr "موجود نیست"
-
-#: products/templates/products/package_list.html:359
-msgid "books included"
-msgstr "کتاب ها شامل ..."
-
-#: products/templates/products/package_list.html:367
-msgid "discount"
-msgstr "تخفیف"
-
-#: products/templates/products/package_list.html:374
-msgid "Created"
-msgstr "زمان_ایجاد:"
-
-#: products/templates/products/package_list.html:405
-#: products/templates/products/product_list.html:118
-#: products/templates/products/product_list_by_category.html:64
-msgid "Save"
-msgstr "موجود نیست"
-
-#: products/templates/products/package_list.html:417
-msgid "Add Package to Cart"
-msgstr "اضافه کردن به سبد خرید"
-
-#: products/templates/products/package_list.html:426
-msgid "Books in this Package"
-msgstr "کتاب های موجود در این بسته"
-
-#: products/templates/products/package_list.html:428
-msgid "This package includes"
-msgstr "این بسته شامل موارد زیر است:"
-
-#: products/templates/products/package_list.html:454
-msgid "No products in this package yet."
-msgstr "هنوز هیچ محصولی در این بسته وجود ندارد."
-
-#: products/templates/products/package_list.html:463
-msgid "Back to Packages"
-msgstr "برو به محصولات"
-
-#: products/templates/products/product_detail.html:44
-#: products/templates/products/product_detail.html:165
-#: products/templates/products/product_detail.html:276
-msgid "Author"
-msgstr "نویسنده"
-
-#: products/templates/products/product_detail.html:49
-msgid "Translator"
-msgstr "مترجم"
-
-#: products/templates/products/product_detail.html:71
-msgid "reviews"
-msgstr "نقد و بررسی"
-
-#: products/templates/products/product_detail.html:81
-#: products/templates/products/product_list.html:114
-#: products/templates/products/product_list.html:122
-#: products/templates/products/product_search_result.html:539
-msgid "$"
-msgstr "تومان"
-
-#: products/templates/products/product_detail.html:99
-msgid "Add_to_cart"
-msgstr "اضافه کردن به سبد خرید"
-
-#: products/templates/products/product_detail.html:109
-#: products/templates/products/product_detail.html:233
-msgid "Publisher"
-msgstr "ناشر"
-
-#: products/templates/products/product_detail.html:113
-msgid "Year"
-msgstr "سال"
-
-#: products/templates/products/product_detail.html:117
-msgid "Pages"
-msgstr "تعداد صفحات"
-
-#: products/templates/products/product_detail.html:134
-msgid "Description"
-msgstr "توضیحات محصول"
-
-#: products/templates/products/product_detail.html:138
-msgid "Specifications"
-msgstr "مشخصات "
-
-#: products/templates/products/product_detail.html:142
-msgid "Reviews"
-msgstr "نقد و بررسی"
-
-#: products/templates/products/product_detail.html:151
-msgid "Book Introduction"
-msgstr "مقدمه کتاب"
-
-#: products/templates/products/product_detail.html:159
-msgid "Complete Specifications"
-msgstr "مشخصات کتاب"
-
-#: products/templates/products/product_detail.html:179
-msgid "Book Size"
-msgstr "اندازه کتاب"
-
-#: products/templates/products/product_detail.html:185
-msgid "Number of Pages"
-msgstr "تعداد صفحات"
-
-#: products/templates/products/product_detail.html:191
-msgid "Cover Type"
-msgstr "نوع صحافی/جلد:"
-
-#: products/templates/products/product_detail.html:197
-msgid "Weight"
-msgstr "وزن(گرم):"
-
-#: products/templates/products/product_detail.html:203
-#: products/templates/products/product_detail.html:215
-msgid "Not entered"
-msgstr "-"
-
-#: products/templates/products/product_detail.html:209
-msgid "Publication Date"
-msgstr "سال انتشار:"
-
-#: products/templates/products/product_detail.html:221
-msgid "Printing Series"
-msgstr "نوبت چاپ:"
-
-#: products/templates/products/product_detail.html:227
-msgid "Publication Year"
-msgstr "سال انتشار"
-
-#: products/templates/products/product_detail.html:239
-msgid "ISBN"
-msgstr "شابک"
-
-#: products/templates/products/product_detail.html:254
-msgid "Readers' Reviews"
-msgstr "نظرات خوانندگان"
-
-#: products/templates/products/product_detail.html:310
-msgid "No reviews yet for this book."
-msgstr "هنوز نظری برای این کتاب ثبت نشده است."
-
-#: products/templates/products/product_detail.html:313
-msgid "Be the first to share your opinion!"
-msgstr "شما می‌توانید اولین نفری باشید که نظر خود را به اشتراک می‌گذارد!"
-
-#: products/templates/products/product_detail.html:325
-msgid "Write Your Review"
-msgstr "نظر خود را بنویسید"
-
-#: products/templates/products/product_detail.html:331
-msgid "Submit Review"
-msgstr "ارسال نظر"
-
-#: products/templates/products/product_detail.html:334
-msgid "Your review will be published after moderation"
-msgstr "نظر شما پس از بررسی منتشر خواهد شد."
-
-#: products/templates/products/product_detail.html:342
-msgid "Please"
-msgstr "لطفاً"
-
-#: products/templates/products/product_detail.html:343
-msgid "Log in to your account"
-msgstr "وارد حساب کاربری خود شوید"
-
-#: products/templates/products/product_detail.html:344
-msgid "to write a review"
-msgstr "برای نوشتن نظر"
-
-#: products/templates/products/product_list.html:24
-#| msgid "discount percent"
-msgid "Discounted Products"
-msgstr "محصولات با تخفیف"
-
-#: products/templates/products/product_list.html:27
-#| msgid "Products"
-msgid "All Products"
-msgstr "همه محصولات"
-
-#: products/templates/products/product_list.html:36
-msgid "Remove Filter"
-msgstr "حذف فیلتر"
-
-#: products/templates/products/product_list.html:42
-#| msgid "Discount"
-msgid "Show Discounted"
-msgstr "نمایش کالاهای تخفیف‌دار"
-
-#: products/templates/products/product_list.html:63
-#: products/templates/products/product_list_by_category.html:23
-msgid "SALE"
-msgstr "تخفیف"
-
-#: products/templates/products/product_list.html:131
-#: products/templates/products/product_list_by_category.html:75
-#: products/templates/products/product_search_result.html:562
-msgid "View Details"
-msgstr "جزییات "
-
-#: products/templates/products/product_list.html:144
-msgid "No discounted products available."
-msgstr "هیچ محصول تخفیف‌داری موجود نیست."
-
-#: products/templates/products/product_list.html:146
-#| msgid "No Products Found"
-msgid "No products found."
-msgstr "هیچ محصولی یافت نشد."
-
-#: products/templates/products/product_list.html:166
-#: products/templates/products/product_list_by_category.html:96
-#| msgid "reviews"
-msgid "Previous"
-msgstr "قبلی"
-
-#: products/templates/products/product_list.html:186
-#: products/templates/products/product_list_by_category.html:110
-msgid "Next"
-msgstr "بعدی"
-
-#: products/templates/products/product_list_by_category.html:11
 msgid "Products"
-msgstr "محصولات"
+msgstr "Products"
 
-#: products/templates/products/product_list_by_category.html:61
-#: products/templates/products/product_list_by_category.html:68
+msgid "Pricing"
+msgstr "Pricing"
+
+msgid "Stock & Dates"
+msgstr "Stock & Dates"
+
+msgid "Books"
+msgstr "Books"
+
+msgid "Original Price"
+msgstr "Original Price"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Related Questions"
+msgstr "Related Questions"
+
+msgid "Display"
+msgstr "Display"
+
+msgid "Dates"
+msgstr "Dates"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Architecture Business"
+msgstr "Architecture Business"
+
+msgid "Architecture & Design"
+msgstr "Architecture & Design"
+
+msgid "Interior Architecture"
+msgstr "Interior Architecture"
+
+msgid "Urban Design"
+msgstr "Urban Design"
+
+msgid "Landscape"
+msgstr "Landscape"
+
+msgid "Design Guides"
+msgstr "Design Guides"
+
+msgid "Architectural History"
+msgstr "Architectural History"
+
+msgid "Design Fundamentals"
+msgstr "Design Fundamentals"
+
+msgid "Digital Design"
+msgstr "Digital Design"
+
+msgid "Sustainability"
+msgstr "Sustainability"
+
+msgid "Case Studies"
+msgstr "Case Studies"
+
+msgid "Other"
+msgstr "Other"
+
+msgid "Packages"
+msgstr "Packages"
+
+msgid "Raghei"
+msgstr "Raghei"
+
+msgid "Vazehi"
+msgstr "Vazehi"
+
+msgid "Jeybi"
+msgstr "Jeybi"
+
+msgid "Rahlei"
+msgstr "Rahlei"
+
+msgid "Shomiz"
+msgstr "Shomiz"
+
+msgid "Gard"
+msgstr "Gard"
+
+msgid "title"
+msgstr "title"
+
+msgid "category"
+msgstr "category"
+
+msgid "description"
+msgstr "description"
+
+msgid "price"
+msgstr "price"
+
+msgid "active"
+msgstr "active"
+
+msgid "image"
+msgstr "image"
+
+msgid "author"
+msgstr "author"
+
+msgid "publisher"
+msgstr "publisher"
+
+msgid "isbn"
+msgstr "isbn"
+
+msgid "wordpress id"
+msgstr "wordpress id"
+
+msgid "year of publication"
+msgstr "year of publication"
+
+msgid "edition"
+msgstr "edition"
+
+msgid "number of pages"
+msgstr "number of pages"
+
+msgid "book size"
+msgstr "book size"
+
+msgid "cover type"
+msgstr "cover type"
+
+msgid "publication date"
+msgstr "publication date"
+
+msgid "printing series"
+msgstr "printing series"
+
+msgid "weight"
+msgstr "weight"
+
+msgid "stock"
+msgstr "stock"
+
+msgid "reserved stock"
+msgstr "reserved stock"
+
+msgid "discount percent"
+msgstr "discount percent"
+
+msgid "discount start date"
+msgstr "discount start date"
+
+msgid "discount end date"
+msgstr "discount end date"
+
+msgid "special price"
+msgstr "special price"
+
+msgid "created"
+msgstr "created"
+
+msgid "modified"
+msgstr "modified"
+
+msgid "product"
+msgstr "product"
+
+msgid "products"
+msgstr "products"
+
+msgid "Very Bad"
+msgstr "Very Bad"
+
+msgid "Bad"
+msgstr "Bad"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Good"
+msgstr "Good"
+
+msgid "Perfect"
+msgstr "Perfect"
+
+msgid "comment text"
+msgstr "comment text"
+
+msgid "rating"
+msgstr "rating"
+
+msgid "comment"
+msgstr "comment"
+
+msgid "comments"
+msgstr "comments"
+
+msgid "slug"
+msgstr "slug"
+
+msgid "original price"
+msgstr "original price"
+
+msgid "manual price"
+msgstr "manual price"
+
+msgid "package"
+msgstr "package"
+
+msgid "packages"
+msgstr "packages"
+
+msgid "code"
+msgstr "code"
+
+msgid "percent"
+msgstr "percent"
+
+msgid "amount"
+msgstr "amount"
+
+msgid "max uses"
+msgstr "max uses"
+
+msgid "used count"
+msgstr "used count"
+
+msgid "valid from"
+msgstr "valid from"
+
+msgid "valid until"
+msgstr "valid until"
+
+msgid "discount code"
+msgstr "discount code"
+
+msgid "discount codes"
+msgstr "discount codes"
+
+msgid "current tier"
+msgstr "current tier"
+
+msgid "tiered discount"
+msgstr "tiered discount"
+
+msgid "tiered discounts"
+msgstr "tiered discounts"
+
+msgid "Article"
+msgstr "Article"
+
+msgid "News"
+msgstr "News"
+
+msgid "Story"
+msgstr "Story"
+
+msgid "content"
+msgstr "content"
+
+msgid "type"
+msgstr "type"
+
+msgid "video"
+msgstr "video"
+
+msgid "author name"
+msgstr "author name"
+
+msgid "updated"
+msgstr "updated"
+
+msgid "Product Blog"
+msgstr "Product Blog"
+
+msgid "Product Blogs"
+msgstr "Product Blogs"
+
+msgid "month count"
+msgstr "month count"
+
+msgid "prepayment percent"
+msgstr "prepayment percent"
+
+msgid "Installment Plan"
+msgstr "Installment Plan"
+
+msgid "Installment Plans"
+msgstr "Installment Plans"
+
+msgid "months"
+msgstr "months"
+
+msgid "question"
+msgstr "question"
+
+msgid "answer"
+msgstr "answer"
+
+msgid "related questions"
+msgstr "related questions"
+
+msgid "Questions to suggest after this answer"
+msgstr "Questions to suggest after this answer"
+
+msgid "display order"
+msgstr "display order"
+
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "FAQs"
+msgstr "FAQs"
+
+msgid "Practice, project management, and the economics of building"
+msgstr "Practice, project management, and the economics of building"
+
+msgid "Theory, design, and architectural culture"
+msgstr "Theory, design, and architectural culture"
+
+msgid "Interiors, furniture, and detail"
+msgstr "Interiors, furniture, and detail"
+
+msgid "The city, spatial policy, and urban design"
+msgstr "The city, spatial policy, and urban design"
+
+msgid "Landscape, gardens, and open space"
+msgstr "Landscape, gardens, and open space"
+
+msgid "Practice guides and design standards"
+msgstr "Practice guides and design standards"
+
+msgid "History, criticism, and architectural heritage"
+msgstr "History, criticism, and architectural heritage"
+
+msgid "Form, sketching, and architectural representation"
+msgstr "Form, sketching, and architectural representation"
+
+msgid "Software, representation, and digital design"
+msgstr "Software, representation, and digital design"
+
+msgid "Sustainability, climate, and responsible construction"
+msgstr "Sustainability, climate, and responsible construction"
+
+msgid "Projects, precedents, and case studies"
+msgstr "Projects, precedents, and case studies"
+
+msgid "Selected titles outside the main classification"
+msgstr "Selected titles outside the main classification"
+
+msgid "Kasra Publishing"
+msgstr "Kasra Publishing"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Authors"
+msgstr "Authors"
+
+msgid "books"
+msgstr "books"
+
+msgid "No books by this author"
+msgstr "No books by this author"
+
+msgid "View all books"
+msgstr "View all books"
+
+msgid "Catalog"
+msgstr "Catalog"
+
+#, python-format
+msgid ""
+"%(counter)s author in the publisher’s current list. Each name opens every "
+"title by that author."
+msgid_plural ""
+"%(counter)s authors in the publisher’s current list. Each name opens every "
+"title by that author."
+msgstr[0] ""
+"%(counter)s author in the publisher’s current list. Each name opens every "
+"title by that author."
+msgstr[1] ""
+"%(counter)s authors in the publisher’s current list. Each name opens every "
+"title by that author."
+
+msgid "There are no authors in the catalog."
+msgstr "There are no authors in the catalog."
+
+msgid "Best Sellers"
+msgstr "Best Sellers"
+
+msgid "The most popular books, chosen by our readers."
+msgstr "The most popular books, chosen by our readers."
+
+msgid "No sales yet"
+msgstr "No sales yet"
+
+msgid "Browse books"
+msgstr "Browse books"
+
+msgid "Architecture library"
+msgstr "Architecture library"
+
+msgid ""
+"From theory and design to urbanism, landscape, architectural history, and "
+"professional tools."
+msgstr ""
+"From theory and design to urbanism, landscape, architectural history, and "
+"professional tools."
+
+msgid "Categories"
+msgstr "Categories"
+
+msgid "Search categories"
+msgstr "Search categories"
+
+msgid "Name in English or Persian"
+msgstr "Name in English or Persian"
+
+msgid "subjects"
+msgstr "subjects"
+
+msgid "titles"
+msgstr "titles"
+
+msgid "View books"
+msgstr "View books"
+
+msgid "No subjects have been added."
+msgstr "No subjects have been added."
+
+msgid "No category matches that phrase."
+msgstr "No category matches that phrase."
+
+msgid "New publications"
+msgstr "New publications"
+
+msgid "New releases"
+msgstr "New releases"
+
+msgid "Publication"
+msgstr "Publication"
+
+msgid "The newest titles added to the Kasra Publishing catalog."
+msgstr "The newest titles added to the Kasra Publishing catalog."
+
+msgid "No new titles have been added yet."
+msgstr "No new titles have been added yet."
+
+msgid "Full catalog"
+msgstr "Full catalog"
+
+msgid "g"
+msgstr "g"
+
 msgid "Toman"
-msgstr "تومان"
+msgstr "Toman"
 
-#: products/templates/products/product_list_by_category.html:83
-#| msgid "No products found in this category."
-msgid "No products in this category."
-msgstr "هیچ محصولی در این دسته بندی وجود ندارد."
+msgid "You save"
+msgstr "You save"
 
-#: products/templates/products/product_search_result.html:8
-#: products/templates/products/product_search_result.html:483
-msgid "Search Results"
-msgstr "نتایج جستجو"
+msgid "In stock"
+msgstr "In stock"
 
-#: products/templates/products/product_search_result.html:8
-msgid "Kasra Architecture Bookstore"
-msgstr "کتابفروشی کسری"
+msgid "Add to Cart"
+msgstr "Add to Cart"
 
-#: products/templates/products/product_search_result.html:487
-msgid "Search for"
-msgstr "جستجو برای :"
+msgid "Out of stock"
+msgstr "Out of stock"
 
-#: products/templates/products/product_search_result.html:493
-msgid "book found"
-msgstr "کتاب پیدا شد"
+msgid "Description"
+msgstr "Description"
 
-#: products/templates/products/product_search_result.html:495
-msgid "books found"
-msgstr "کتاب پیدا شد"
+msgid "Contents"
+msgstr "Contents"
 
-#: products/templates/products/product_search_result.html:520
+msgid "Books in this package"
+msgstr "Books in this package"
+
+msgid "No books in this package."
+msgstr "No books in this package."
+
+msgid "Bundles"
+msgstr "Bundles"
+
+msgid "Special Packages"
+msgstr "Special Packages"
+
+msgid "Edited collections: several titles together, at a package price."
+msgstr "Edited collections: several titles together, at a package price."
+
+msgid "Package"
+msgstr "Package"
+
+msgid "No packages available"
+msgstr "No packages available"
+
 msgid "New"
-msgstr "جدید"
+msgstr "New"
 
-#: products/templates/products/product_search_result.html:538
-msgid "Unknown"
-msgstr "نامشخص"
+msgid "reviews"
+msgstr "reviews"
 
-#: products/templates/products/product_search_result.html:617
-msgid "No Results Found"
-msgstr "هیچ محصولی یافت نشد"
+msgid "About the book"
+msgstr "About the book"
 
-#: products/templates/products/product_search_result.html:618
-msgid "We couldn't find any books matching"
-msgstr "ما هیچ کتابی که مطابقت داشته باشد پیدا نکردیم"
+msgid "Publication details"
+msgstr "Publication details"
 
-#: products/templates/products/product_search_result.html:621
-msgid "Suggestions:"
-msgstr "پیشنهادات"
+msgid "Author"
+msgstr "Author"
 
-#: products/templates/products/product_search_result.html:623
-msgid "Check the spelling of your search terms"
-msgstr "املا یا نوشتار کلمات جستجوی خود را بررسی کنید"
+msgid "Publisher"
+msgstr "Publisher"
 
-#: products/templates/products/product_search_result.html:624
-msgid "Use more general keywords"
-msgstr "جستجوی نام کتاب یا کلمات کلیدی"
+msgid "ISBN"
+msgstr "ISBN"
 
-#: products/templates/products/product_search_result.html:625
-msgid "Search by book title, author or publisher"
-msgstr "جستجو بر اساس عنوان کتاب، نویسنده یا ناشر"
+msgid "Year of publication"
+msgstr "Year of publication"
 
-#: products/templates/products/product_search_result.html:626
-msgid "Try different keywords"
-msgstr "از کلمات کلیدی متفاوت استفاده کنید"
+msgid "Translator / edition"
+msgstr "Translator / edition"
 
-#: products/templates/products/product_search_result.html:632
-msgid "Browse All Books"
-msgstr "مرور همه کتاب‌ها"
+msgid "Pages"
+msgstr "Pages"
 
-#: products/views.py:77
-msgid "your comment has been successfully registered"
-msgstr "نظر شما با موفقیت ثبت شد"
+msgid "Format"
+msgstr "Format"
+
+msgid "Binding"
+msgstr "Binding"
+
+msgid "Printing"
+msgstr "Printing"
+
+msgid "Weight"
+msgstr "Weight"
+
+msgid "Collections"
+msgstr "Collections"
+
+msgid "This book is in these collections"
+msgstr "This book is in these collections"
+
+msgid "Publisher’s note"
+msgstr "Publisher’s note"
+
+msgid "Writing related to this title"
+msgstr "Writing related to this title"
+
+msgid "Reader notes"
+msgstr "Reader notes"
+
+msgid ""
+"No notes yet. If you have read this book, your view is useful to other "
+"architects."
+msgstr ""
+"No notes yet. If you have read this book, your view is useful to other "
+"architects."
+
+msgid "Rating"
+msgstr "Rating"
+
+msgid "Your note"
+msgstr "Your note"
+
+msgid "Submit"
+msgstr "Submit"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "to leave a note."
+msgstr "to leave a note."
+
+msgid "Same author"
+msgstr "Same author"
+
+#, python-format
+msgid "More by %(author)s"
+msgstr "More by %(author)s"
+
+msgid "Related works"
+msgstr "Related works"
+
+msgid "All books by this author"
+msgstr "All books by this author"
+
+msgid "Keep exploring"
+msgstr "Keep exploring"
+
+msgid "From the same field of architecture"
+msgstr "From the same field of architecture"
+
+msgid "Publisher discount"
+msgstr "Publisher discount"
+
+msgid "Titles at the publisher’s special price."
+msgstr "Titles at the publisher’s special price."
+
+msgid ""
+"Architecture, interior, city, and landscape books — order directly from the "
+"publisher."
+msgstr ""
+"Architecture, interior, city, and landscape books — order directly from the "
+"publisher."
+
+msgid "Show every price"
+msgstr "Show every price"
+
+msgid "Discounted only"
+msgstr "Discounted only"
+
+msgid "Sort"
+msgstr "Sort"
+
+msgid "Newest"
+msgstr "Newest"
+
+msgid "Lowest price"
+msgstr "Lowest price"
+
+msgid "Highest price"
+msgstr "Highest price"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "No book matches this filter"
+msgstr "No book matches this filter"
+
+msgid "This subject has no discounted titles."
+msgstr "This subject has no discounted titles."
+
+msgid "This part of the catalog is empty."
+msgstr "This part of the catalog is empty."
+
+msgid "Pagination"
+msgstr "Pagination"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Subjects"
+msgstr "Subjects"
+
+msgid "There are no books in this subject yet."
+msgstr "There are no books in this subject yet."
+
+msgid "Search Results"
+msgstr "Search Results"
+
+msgid "Kasra Architecture Bookstore"
+msgstr "Kasra Architecture Bookstore"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search results"
+msgstr "Search results"
+
+msgid "Search for"
+msgstr "Search for"
+
+msgid "Advanced search"
+msgstr "Advanced search"
+
+msgid "Nothing matched"
+msgstr "Nothing matched"
+
+msgid "No title in the catalog matches this search."
+msgstr "No title in the catalog matches this search."
+
+msgid "Enter something to search for."
+msgstr "Enter something to search for."
+
+msgid "Try this:"
+msgstr "Try this:"
+
+msgid "Check the spelling of the title or the author’s name."
+msgstr "Check the spelling of the title or the author’s name."
+
+msgid "Use a shorter or more general word."
+msgstr "Use a shorter or more general word."
+
+msgid "Open an architecture subject from the menu."
+msgstr "Open an architecture subject from the menu."
+
+msgid "From the publisher’s catalog"
+msgstr "From the publisher’s catalog"
+
+msgid "Your comment has been submitted and will be shown after approval."
+msgstr "Your comment has been submitted and will be shown after approval."
+
+msgid "Please fill all fields."
+msgstr "Please fill all fields."
+
+msgid "Invalid category"
+msgstr "Invalid category"
+
+msgid "This package has no products."
+msgstr "This package has no products."
+
+#~ msgid "Price (Toman)"
+#~ msgstr "Price (Toman)"
+
+#~ msgid "Products in this Package"
+#~ msgstr "Products in this Package"
+
+#~ msgid "Select the products that belong to this package"
+#~ msgstr "Select the products that belong to this package"
+
+#~ msgid "Final Price"
+#~ msgstr "Final Price"
+
+#~ msgid "Savings"
+#~ msgstr "Savings"
+
+#~ msgid "Stock Status"
+#~ msgstr "Stock Status"
+
+#~ msgid "Activate selected packages"
+#~ msgstr "Activate selected packages"
+
+#~ msgid "Deactivate selected packages"
+#~ msgstr "Deactivate selected packages"
+
+#~ msgid "BUSINESS"
+#~ msgstr "BUSINESS"
+
+#~ msgid "ARCH_DESIGN"
+#~ msgstr "ARCH_DESIGN"
+
+#~ msgid "INTERIOR"
+#~ msgstr "INTERIOR"
+
+#~ msgid "URBAN"
+#~ msgstr "URBAN"
+
+#~ msgid "LANDSCAPE"
+#~ msgstr "LANDSCAPE"
+
+#~ msgid "DESIGN_GUIDE"
+#~ msgstr "DESIGN_GUIDE"
+
+#~ msgid "HISTORY"
+#~ msgstr "HISTORY"
+
+#~ msgid "DESIGN_BASICS"
+#~ msgstr "DESIGN_BASICS"
+
+#~ msgid "DIGITAL"
+#~ msgstr "DIGITAL"
+
+#~ msgid "SUSTAIN"
+#~ msgstr "SUSTAIN"
+
+#~ msgid "SAMPLES"
+#~ msgstr "SAMPLES"
+
+#~ msgid "OTHER"
+#~ msgstr "OTHER"
+
+#~ msgid "PACKAGES"
+#~ msgstr "PACKAGES"
+
+#~ msgid "رقعی"
+#~ msgstr "رقعی"
+
+#~ msgid "وزیری"
+#~ msgstr "وزیری"
+
+#~ msgid "جیبی"
+#~ msgstr "جیبی"
+
+#~ msgid "رحلی"
+#~ msgstr "رحلی"
+
+#~ msgid "سایر"
+#~ msgstr "سایر"
+
+#~ msgid "شومیز"
+#~ msgstr "شومیز"
+
+#~ msgid "گالینگور"
+#~ msgstr "گالینگور"
+
+#~ msgid "product_title"
+#~ msgstr "product_title"
+
+#~ msgid "product_category"
+#~ msgstr "product_category"
+
+#~ msgid "number_of_pages"
+#~ msgstr "number_of_pages"
+
+#~ msgid "datetime_created"
+#~ msgstr "datetime_created"
+
+#~ msgid "datetime_modified"
+#~ msgstr "datetime_modified"
+
+#~ msgid "Comment_Product"
+#~ msgstr "Comment_Product"
+
+#~ msgid "What_is_your_score?"
+#~ msgstr "What_is_your_score?"
+
+#~ msgid "Comment_Active"
+#~ msgstr "Comment_Active"
+
+#~ msgid "Discount percentage (if set, price will be auto-calculated)"
+#~ msgstr "Discount percentage (if set, price will be auto-calculated)"
+
+#~ msgid "Available stock for this package"
+#~ msgstr "Available stock for this package"
+
+#~ msgid "Book Categories"
+#~ msgstr "Book Categories"
+
+#~ msgid "Discover our curated collection of architectural books"
+#~ msgstr "Discover our curated collection of architectural books"
+
+#~ msgid "No categories found"
+#~ msgstr "No categories found"
+
+#~ msgid "books included"
+#~ msgstr "books included"
+
+#~ msgid "Save"
+#~ msgstr "Save"
+
+#~ msgid "Add Package to Cart"
+#~ msgstr "Add Package to Cart"
+
+#~ msgid "No products in this package yet."
+#~ msgstr "No products in this package yet."
+
+#~ msgid "Back to Packages"
+#~ msgstr "Back to Packages"
+
+#~ msgid "$"
+#~ msgstr "$"
+
+#~ msgid "Add_to_cart"
+#~ msgstr "Add_to_cart"
+
+#~ msgid "Year"
+#~ msgstr "Year"
+
+#~ msgid "Specifications"
+#~ msgstr "Specifications"
+
+#~ msgid "Reviews"
+#~ msgstr "Reviews"
+
+#~ msgid "Book Introduction"
+#~ msgstr "Book Introduction"
+
+#~ msgid "Complete Specifications"
+#~ msgstr "Complete Specifications"
+
+#~ msgid "Book Size"
+#~ msgstr "Book Size"
+
+#~ msgid "Cover Type"
+#~ msgstr "Cover Type"
+
+#~ msgid "Not entered"
+#~ msgstr "Not entered"
+
+#~ msgid "Printing Series"
+#~ msgstr "Printing Series"
+
+#~ msgid "No reviews yet for this book."
+#~ msgstr "No reviews yet for this book."
+
+#~ msgid "Be the first to share your opinion!"
+#~ msgstr "Be the first to share your opinion!"
+
+#~ msgid "Write Your Review"
+#~ msgstr "Write Your Review"
+
+#~ msgid "Submit Review"
+#~ msgstr "Submit Review"
+
+#~ msgid "Your review will be published after moderation"
+#~ msgstr "Your review will be published after moderation"
+
+#~ msgid "Please"
+#~ msgstr "Please"
+
+#~ msgid "Log in to your account"
+#~ msgstr "Log in to your account"
+
+#~ msgid "to write a review"
+#~ msgstr "to write a review"
+
+#~ msgid "All Products"
+#~ msgstr "All Products"
+
+#~ msgid "Remove Filter"
+#~ msgstr "Remove Filter"
+
+#~ msgid "Show Discounted"
+#~ msgstr "Show Discounted"
+
+#~ msgid "SALE"
+#~ msgstr "SALE"
+
+#~ msgid "No discounted products available."
+#~ msgstr "No discounted products available."
+
+#~ msgid "No products found."
+#~ msgstr "No products found."
+
+#~ msgid "book found"
+#~ msgstr "book found"
+
+#~ msgid "books found"
+#~ msgstr "books found"
+
+#~ msgid "Unknown"
+#~ msgstr "Unknown"
+
+#~ msgid "No Results Found"
+#~ msgstr "No Results Found"
+
+#~ msgid "We couldn't find any books matching"
+#~ msgstr "We couldn't find any books matching"
+
+#~ msgid "Search by book title, author or publisher"
+#~ msgstr "Search by book title, author or publisher"
+
+#~ msgid "Try different keywords"
+#~ msgstr "Try different keywords"
+
+#~ msgid "your comment has been successfully registered"
+#~ msgstr "your comment has been successfully registered"
 
 #~ msgid "Original price is auto-calculated. Set discount percentage and stock."
-#~ msgstr ""
-#~ "قیمت اصلی به صورت خودکار محاسبه می‌شود. درصد تخفیف و موجودی را تنظیم کنید."
-
-#~ msgid "Dates"
-#~ msgstr "تاریخ‌ها"
+#~ msgstr "Original price is auto-calculated. Set discount percentage and stock."
 
 #~ msgid "Stock"
-#~ msgstr "موجودی"
+#~ msgstr "Stock"
 
 #, python-format
 #~ msgid "Apply 10%%discount"
-#~ msgstr "اعمال 10 درصد تخفیف"
+#~ msgstr "Apply 10%%discount"
 
 #, python-format
 #~ msgid "Apply 20%% discount"
-#~ msgstr "اعمال 20 درصد تخفیف"
+#~ msgstr "Apply 20%% discount"
 
 #~ msgid "Sum of all product prices (auto-calculated)"
-#~ msgstr "جمع قیمت تمام محصولات (محاسبه خودکار)"
+#~ msgstr "Sum of all product prices (auto-calculated)"
 
 #~ msgid "Final price after discount"
-#~ msgstr "قیمت نهایی بعد از تخفیف"
+#~ msgstr "Final price after discount"
 
 #~ msgid "Total price for this package"
-#~ msgstr "قیمت کل این بسته"
-
-#~ msgid "Architecture Books"
-#~ msgstr "کتاب های معماری"
-
-#~ msgid "There are no products available at the moment."
-#~ msgstr "در حال حاضر محصولی موجود نیست."
-
-#~ msgid "Category"
-#~ msgstr "دسته بندی"
+#~ msgstr "Total price for this package"
 
 #~ msgid "add to card"
-#~ msgstr "اضافه کردن به خرید"
+#~ msgstr "add to card"
 
 #~ msgid "Back to products"
-#~ msgstr "برو به محصولات"
+#~ msgstr "Back to products"
 
 #~ msgid "Package Price"
-#~ msgstr "قیمت بسته"
+#~ msgstr "Package Price"
 
 #~ msgid "Set the package price. Original price is auto-calculated."
-#~ msgstr "قیمت بسته را تنظیم کنید. قیمت اصلی به صورت خودکار محاسبه می‌شود."
+#~ msgstr "Set the package price. Original price is auto-calculated."
 
 #~ msgid "Products Count"
-#~ msgstr "تعداد محصولات"
+#~ msgstr "Products Count"
 
 #~ msgid "Edition"
-#~ msgstr "مترجم"
-
-#~ msgid "Printing Time"
-#~ msgstr "تاریخ نشر:"
+#~ msgstr "Edition"
 
 #~ msgid "Product Description"
-#~ msgstr "توضیحات محصول"
+#~ msgstr "Product Description"
 
 #~ msgid "Product Active"
-#~ msgstr "آیا محصول موجود است؟"
-
-#~ msgid "Product Image"
-#~ msgstr "تصویر محصول"
+#~ msgstr "Product Active"
 
 #~ msgid "Date Time of Creation"
-#~ msgstr "زمان ایجاد محصول"
+#~ msgstr "Date Time of Creation"
 
 #~ msgid "find it"
-#~ msgstr "پیدا شد"
+#~ msgstr "find it"
 
 #~ msgid "without picture"
-#~ msgstr "بدون تصویر"
+#~ msgstr "without picture"
 
 #~ msgid "details"
-#~ msgstr "جزییات"
+#~ msgstr "details"
 
 #~ msgid "before"
-#~ msgstr "قبل"
+#~ msgstr "before"
 
 #~ msgid "next"
-#~ msgstr "بعد"
+#~ msgstr "next"
 
 #~ msgid "can not find this book !"
-#~ msgstr "کتاب موجود نیست!"
+#~ msgstr "can not find this book !"
 
 #~ msgid "check spells"
-#~ msgstr "املای کلمات را چک کنید."
+#~ msgstr "check spells"
 
 #~ msgid "use keywords"
-#~ msgstr "از کلمات کلیدی استفاده کنید."
+#~ msgstr "use keywords"
 
 #~ msgid "search for..."
-#~ msgstr "جستجو برای ..."
+#~ msgstr "search for..."
 
 #~ msgid "کسب‌وکار و مدیریت"
 #~ msgstr "کسب‌وکار و مدیریت"
@@ -864,109 +1101,85 @@ msgstr "نظر شما با موفقیت ثبت شد"
 #~ msgstr "بسته‌ها و مجموعه‌ها"
 
 #~ msgid "HISTBusiness_and_Managemen"
-#~ msgstr "کسب‌وکار و مدیریت"
-
-#~ msgid "Interior_design_and_architecture"
-#~ msgstr "طراحی و معماری داخلی"
+#~ msgstr "HISTBusiness_and_Managemen"
 
 #~ msgid "Urban_studies_and_design"
-#~ msgstr "مطالعات و طراحی شهری"
+#~ msgstr "Urban_studies_and_design"
 
 #~ msgid "View"
-#~ msgstr "منظر "
+#~ msgstr "View"
 
 #~ msgid "Design_Guide"
-#~ msgstr "راهنمای طراحی"
+#~ msgstr "Design_Guide"
 
 #~ msgid "History_Criticism_and_Theory"
-#~ msgstr "تاریخ، نقد و نظریه"
+#~ msgstr "History_Criticism_and_Theory"
 
 #~ msgid "VExpression_Basics_and_Design_Conceptsiew"
-#~ msgstr "بیان، مقدمات و مفاهیم طراحی"
+#~ msgstr "VExpression_Basics_and_Design_Conceptsiew"
 
 #~ msgid "Digital_and_parametric_design"
-#~ msgstr "طراحی دیجیتال و پارامتریک"
+#~ msgstr "Digital_and_parametric_design"
 
 #~ msgid "Sustainability_and_naturalismView"
-#~ msgstr "پایداری و طبیعت‌گرایی"
+#~ msgstr "Sustainability_and_naturalismView"
 
 #~ msgid "Project_sample"
-#~ msgstr "نمونه پروژه"
+#~ msgstr "Project_sample"
 
 #~ msgid "Other_books"
-#~ msgstr "سایر کتاب‌ها"
+#~ msgstr "Other_books"
 
 #~ msgid "Packages_and_Sets"
-#~ msgstr "بسته‌ها و مجموعه‌ها"
+#~ msgstr "Packages_and_Sets"
 
 #~ msgid "raghiei"
-#~ msgstr "رقعی"
-
-#~ msgid "vazehi"
-#~ msgstr "وزیری"
-
-#~ msgid "jeybi"
-#~ msgstr "جیبی"
-
-#~ msgid "rahlei"
-#~ msgstr "رحلی"
+#~ msgstr "raghiei"
 
 #~ msgid "other"
-#~ msgstr "غیره"
-
-#~ msgid "shomiz"
-#~ msgstr "شومیز"
+#~ msgstr "other"
 
 #~ msgid "gard"
-#~ msgstr "سخت"
+#~ msgstr "gard"
 
 #~ msgid "Category not found"
-#~ msgstr "دسته‌بندی یافت نشد"
-
-#~ msgid "history"
-#~ msgstr "تاریخ معماری"
+#~ msgstr "Category not found"
 
 #~ msgid "design_theory"
-#~ msgstr "طراحی و نظریه"
+#~ msgstr "design_theory"
 
 #~ msgid "sustainable"
-#~ msgstr "طراحی پایدار"
+#~ msgstr "sustainable"
 
 #~ msgid "urban_planning"
-#~ msgstr "برنامه ریزی شهری"
+#~ msgstr "urban_planning"
 
 #~ msgid "misc"
-#~ msgstr "متفرقه"
+#~ msgstr "misc"
 
 #~ msgid "Additional information"
-#~ msgstr "اطلاعات تکمیلی"
-
-#~ msgid "comments"
-#~ msgstr "نظرات"
+#~ msgstr "Additional information"
 
 #~ msgid "Verified comments"
-#~ msgstr "نظرات تایید شده"
+#~ msgstr "Verified comments"
 
 #~ msgid "Post a comment"
-#~ msgstr "ارسال نظر"
+#~ msgstr "Post a comment"
 
 #~ msgid "Please post a comment"
-#~ msgstr "لطفاً نظر خود را ارسال کنید."
-
-#~ msgid "submit"
-#~ msgstr "ارسال"
+#~ msgstr "Please post a comment"
 
 #~ msgid "to write your comment please "
-#~ msgstr "لطفا نظر خود را بنویسید"
+#~ msgstr "to write your comment please "
 
 #~ msgid "log in"
-#~ msgstr "ورود"
+#~ msgstr "log in"
 
 #~ msgid "salebi"
-#~ msgstr "سلفی"
+#~ msgstr "salebi"
 
 #~ msgid "Product Short_Discription"
-#~ msgstr "توضیح مختصر از محصول"
+#~ msgstr "Product Short_Discription"
 
 #~ msgid "product details of  "
-#~ msgstr "توضیحات محصول"
+#~ msgstr "product details of  "

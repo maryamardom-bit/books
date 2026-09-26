@@ -1,18 +1,18 @@
 {% extends '_base.html' %}
 {% load i18n %}
 
-{% block page_title %}نویسندگان | انتشارات کسری{% endblock %}
+{% block page_title %}{% trans "Authors" %} | {% trans "Kasra Publishing" %}{% endblock %}
 
 {% block content %}
 <section class="page-wrap">
     <nav class="crumb">
-        <a href="{% url 'page:home' %}">خانه</a>
+        <a href="{% url 'page:home' %}">{% trans "Home" %}</a>
         <span>/</span>
-        <span>نویسندگان</span>
+        <span>{% trans "Authors" %}</span>
     </nav>
-    <p class="mb-2 text-xs font-bold text-accent-strong">کاتالوگ</p>
-    <h1 class="mb-2 text-3xl">نویسندگان</h1>
-    <p class="mb-10 max-w-2xl text-muted">{{ total_authors }} نویسنده در فهرست فعلی ناشر. هر نام به همهٔ عناوین همان نویسنده می‌رسد.</p>
+    <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Catalog" %}</p>
+    <h1 class="mb-2 text-3xl">{% trans "Authors" %}</h1>
+    <p class="mb-10 max-w-2xl text-muted">{% blocktrans count counter=total_authors %}{{ counter }} author in the publisher’s current list. Each name opens every title by that author.{% plural %}{{ counter }} authors in the publisher’s current list. Each name opens every title by that author.{% endblocktrans %}</p>
     <div class="columns-1 gap-x-10 sm:columns-2 lg:columns-3">
         {% for item in authors %}
         <a href="{% url 'product:author_books' author_name=item.author %}" class="mb-3 flex items-baseline justify-between gap-3 break-inside-avoid border-b border-line py-2">
@@ -20,7 +20,7 @@
             <span class="text-xs text-faint">{{ item.book_count }}</span>
         </a>
         {% empty %}
-        <p class="text-muted">نویسنده‌ای در کاتالوگ نیست.</p>
+        <p class="text-muted">{% trans "There are no authors in the catalog." %}</p>
         {% endfor %}
     </div>
 </section>

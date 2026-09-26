@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.utils.translation import gettext_lazy as _
 import jdatetime
 import random
 import string
@@ -16,8 +17,8 @@ class Command(BaseCommand):
         
         # مناسبت‌ها
         occasions = {
-            (1, 3): 'روز معماری',
-            (7, 24): 'روز کتاب',
+            (1, 3): _('Architecture Day'),
+            (7, 24): _('Book Day'),
         }
         
         occasion = occasions.get((today.month, today.day))

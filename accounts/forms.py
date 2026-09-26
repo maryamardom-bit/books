@@ -41,7 +41,7 @@ class ProfileEditForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(attrs={
             'id': 'birth-date-input',
-            'placeholder': 'انتخاب تاریخ',
+            'placeholder': _('Select a date'),
             'autocomplete': 'off',
             'readonly': 'readonly',
             'class': 'cursor-pointer',

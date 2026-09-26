@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 05:28+0000\n"
-"PO-Revision-Date: 2026-07-26 10:32+0330\n"
-"Last-Translator:   <maryam.ardom@gmail.com>\n"
+"POT-Creation-Date: 2026-09-26 12:21+0330\n"
+"PO-Revision-Date: 2026-09-26 14:10+0330\n"
+"Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -19,485 +18,846 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: templates/account/confirm_email.html:8
-#: templates/account/confirm_email.html:29
-#: templates/account/confirm_email.html:63
-msgid "تأیید ایمیل"
-msgstr "تأیید ایمیل"
+msgid "Additional Info"
+msgstr "اطلاعات تکمیلی"
 
-#: templates/account/confirm_email.html:31
-msgid "لینک نامعتبر"
-msgstr ""
+msgid "Last login"
+msgstr "آخرین ورود"
 
-#: templates/account/confirm_email.html:38
-msgid ""
-"\n"
-"                        لطفاً برای تأیید آدرس ایمیل زیر کلیک کنید:\n"
-"                        "
-msgstr ""
+msgid "Date joined"
+msgstr "تاریخ عضویت"
 
-#: templates/account/confirm_email.html:50
-msgid "با کلیک روی دکمه زیر، ایمیل شما تأیید می‌شود."
-msgstr ""
+msgid "username"
+msgstr "نام کاربری"
 
-#: templates/account/confirm_email.html:72
-msgid "لینک تأیید ایمیل معتبر نیست یا منقضی شده است."
-msgstr ""
-
-#: templates/account/confirm_email.html:77
-msgid "لطفاً دوباره ثبت‌نام کنید یا ایمیل جدیدی دریافت کنید."
-msgstr ""
-
-#: templates/account/confirm_email.html:88
-msgid "ثبت‌نام مجدد"
-msgstr ""
-
-#: templates/account/confirm_email.html:97
-#: templates/account/email_confirmed.html:63
-#: templates/account/verification_sent.html:58
-msgid "ورود به حساب کاربری"
-msgstr ""
-
-#: templates/account/email/email_confirmation_message.txt:4
-#, python-format
-msgid ""
-"hello from %(site_name)s. if you requested this email please click on the "
-"link below:"
-msgstr ""
-
-#: templates/account/email/email_confirmation_subject.txt:3
-msgid "please confirm email"
-msgstr "لطفاً ایمیل را تأیید کنید"
-
-#: templates/account/email_confirmed.html:8
-msgid "ایمیل با موفقیت تأیید شد"
-msgstr ""
-
-#: templates/account/email_confirmed.html:24
-msgid "ایمیل با موفقیت تأیید شد!"
-msgstr ""
-
-#: templates/account/email_confirmed.html:29
-msgid "آدرس ایمیل شما با موفقیت تأیید شد."
-msgstr ""
-
-#: templates/account/email_confirmed.html:42
-msgid "اکنون می‌توانید از تمام امکانات سایت استفاده کنید."
-msgstr ""
-
-#: templates/account/email_confirmed.html:54
-msgid "رفتن به صفحه اصلی"
-msgstr ""
-
-#: templates/account/login.html:7 templates/account/login.html:23
-#: templates/account/login.html:95
-msgid "log_in"
-msgstr "ورود"
-
-#: templates/account/login.html:28
-msgid "welcome!enter your information"
-msgstr "خوش آمدید! اطلاعات خود را وارد کنید"
-
-#: templates/account/login.html:39
-msgid "username/passworrd is not correct"
-msgstr "نام کاربری/رمز عبور صحیح نیست"
-
-#: templates/account/login.html:47
-msgid "email or user_name"
-msgstr "ایمیل/نام کاربری"
-
-#: templates/account/login.html:53
-msgid "enter email or user_name"
-msgstr "ایمیل /نام کاربری را وارد کنید"
-
-#: templates/account/login.html:61
-msgid "password"
-msgstr "رمز عبور"
-
-#: templates/account/login.html:67
-msgid "enter your password"
-msgstr "رمز عبور خود را وارد کنید"
-
-#: templates/account/login.html:79
-msgid "remmember me"
-msgstr "مرا به خاطر بسپار"
-
-#: templates/account/login.html:84
-msgid "forgot password?"
-msgstr "رمز عبور را فراموش کرده‌اید؟"
-
-#: templates/account/login.html:102
-msgid "haven't account?"
-msgstr "حساب کاربری ندارید؟"
-
-#: templates/account/login.html:105
-msgid "sign_up"
-msgstr "ثبت نام"
-
-#: templates/account/logout.html:6 templates/account/logout.html:22
-msgid "log_out"
-msgstr "خروج"
-
-#: templates/account/logout.html:27
-msgid "are you sure,you want to log out?"
-msgstr "آیا مطمئن هستید که میخواهید خارج شوید؟"
-
-#: templates/account/logout.html:42
-msgid "yes,log_out"
-msgstr "بله،خروج"
-
-#: templates/account/logout.html:52
-msgid "cancel"
-msgstr "خیر"
-
-#: templates/account/password_reset.html:8
-#: templates/account/password_reset.html:24
-msgid "بازیابی رمز عبور"
-msgstr ""
-
-#: templates/account/password_reset.html:29
-msgid ""
-"آدرس ایمیل خود را وارد کنید تا لینک بازیابی رمز عبور برای شما ارسال شود."
-msgstr ""
-
-#: templates/account/password_reset.html:50
-msgid "ایمیل"
-msgstr ""
-
-#: templates/account/password_reset.html:56
-msgid "ایمیل خود را وارد کنید"
-msgstr ""
-
-#: templates/account/password_reset.html:67
-msgid "ارسال لینک بازیابی"
-msgstr ""
-
-#: templates/account/password_reset.html:74
-msgid "رمز عبور خود را به خاطر دارید؟"
-msgstr ""
-
-#: templates/account/password_reset.html:77
-msgid "ورود"
-msgstr ""
-
-#: templates/account/password_reset.html:81
-msgid "حساب کاربری ندارید؟"
-msgstr ""
-
-#: templates/account/password_reset.html:84
-msgid "ثبت‌نام"
-msgstr ""
-
-#: templates/account/signup.html:7
-msgid "Register for Kasra Publications"
-msgstr "ثبت نام در انتشارات کسری"
-
-#: templates/account/signup.html:23 templates/account/signup.html:113
-msgid "Register"
-msgstr "ثبت نام"
-
-#: templates/account/signup.html:28
-msgid "Join the big family of Kasra Publications."
-msgstr "به خانواده بزرگ انتشارات کسری بپیوندید."
-
-#: templates/account/signup.html:39
-msgid "Please check the following errors:"
-msgstr "لطفاً خطاهای زیر را بررسی کنید:"
-
-#: templates/account/signup.html:52
 msgid "email"
 msgstr "ایمیل"
 
-#: templates/account/signup.html:58
-msgid "Enter your email"
-msgstr "ایمیل خود را وارد کنید"
+msgid "phone number"
+msgstr "شماره تلفن"
 
-#: templates/account/signup.html:66 templates/account/signup.html:72
-msgid "Username (optional)"
-msgstr "نام کاربری (اختیاری)"
+msgid "first name"
+msgstr "نام"
 
-#: templates/account/signup.html:79
-msgid "Password"
-msgstr "رمز عبور"
+msgid "last name"
+msgstr "نام خانوادگی"
 
-#: templates/account/signup.html:85
-msgid "Choose a strong password"
-msgstr "رمز عبور انتخاب کنید"
+msgid "birth date"
+msgstr "تاریخ تولد"
 
-#: templates/account/signup.html:88
-msgid "At least 8 characters, including letters and numbers"
-msgstr "حداقل ۸ کاراکتر، شامل حروف و اعداد"
+msgid "Select a date"
+msgstr "انتخاب تاریخ"
 
-#: templates/account/signup.html:96
-msgid "Repeat password"
-msgstr "تکرار رمز عبور"
+msgid "address"
+msgstr "آدرس"
 
-#: templates/account/signup.html:102
-msgid "Re-enter password"
-msgstr "رمز عبور را دوباره وارد کنید"
+msgid "postal code"
+msgstr "کد پستی"
 
-#: templates/account/signup.html:120
-msgid "Have you already registered?"
-msgstr "آیا قبلاً ثبت نام کرده‌اید؟"
+msgid "Invalid date format"
+msgstr "فرمت تاریخ نامعتبر است"
 
-#: templates/account/signup.html:123
-msgid "Log in"
+msgid "Future date is not allowed."
+msgstr "تاریخ آینده مجاز نیست."
+
+msgid "Age cannot be more than 120 years."
+msgstr "سن نمی‌تواند بیش از ۱۲۰ سال باشد."
+
+msgid "Invalid date"
+msgstr "تاریخ نامعتبر"
+
+msgid "Architecture Day"
+msgstr "روز معماری"
+
+msgid "Book Day"
+msgstr "روز کتاب"
+
+msgid "wordpress id"
+msgstr "شناسه وردپرس"
+
+msgid "wallet balance"
+msgstr "موجودی کیف پول"
+
+msgid "Format: 1370/05/15"
+msgstr "فرمت: ۱۳۷۰/۰۵/۱۵"
+
+msgid "Dashboard"
+msgstr "داشبورد"
+
+msgid "Kasra Publishing"
+msgstr "انتشارات کسری"
+
+msgid "User Dashboard"
+msgstr "داشبورد کاربر"
+
+msgid "Wallet Balance"
+msgstr "موجودی کیف پول"
+
+msgid "Toman"
+msgstr "تومان"
+
+msgid "Phone"
+msgstr "تلفن"
+
+msgid "Birth Date"
+msgstr "تاریخ تولد"
+
+msgid "Edit Profile"
+msgstr "ویرایش پروفایل"
+
+msgid "Your Tiered Discount"
+msgstr "تخفیف پلکانی شما"
+
+msgid "First Purchase"
+msgstr "خرید اول"
+
+msgid "Second Purchase"
+msgstr "خرید دوم"
+
+msgid "Third Purchase"
+msgstr "خرید سوم"
+
+msgid "Current discount"
+msgstr "تخفیف فعلی"
+
+#, python-format
+msgid "Get 10%% discount on your first purchase"
+msgstr "دریافت ۱۰٪ تخفیف برای خرید اول"
+
+msgid "Recent Orders"
+msgstr "سفارش‌های اخیر"
+
+msgid "Order"
+msgstr "سفارش"
+
+msgid "Paid"
+msgstr "پرداخت‌شده"
+
+msgid "Pending"
+msgstr "در انتظار"
+
+msgid "No orders yet."
+msgstr "هنوز سفارشی ثبت نشده است."
+
+msgid "View All Orders"
+msgstr "مشاهده همه سفارش‌ها"
+
+msgid "Order History"
+msgstr "تاریخچه سفارش‌ها"
+
+msgid "Quantity"
+msgstr "تعداد"
+
+msgid "No items"
+msgstr "موردی وجود ندارد"
+
+msgid "Total Weight"
+msgstr "وزن کل"
+
+msgid "g"
+msgstr "گرم"
+
+msgid "Return Request"
+msgstr "درخواست مرجوعی"
+
+msgid "Browse Books"
+msgstr "مرور کتاب‌ها"
+
+msgid "Calendar"
+msgstr "تقویم"
+
+msgid "Save Changes"
+msgstr "ذخیره تغییرات"
+
+msgid "Back to Dashboard"
+msgstr "بازگشت به داشبورد"
+
+msgid "Farvardin"
+msgstr "فروردین"
+
+msgid "Ordibehesht"
+msgstr "اردیبهشت"
+
+msgid "Khordad"
+msgstr "خرداد"
+
+msgid "Tir"
+msgstr "تیر"
+
+msgid "Mordad"
+msgstr "مرداد"
+
+msgid "Shahrivar"
+msgstr "شهریور"
+
+msgid "Mehr"
+msgstr "مهر"
+
+msgid "Aban"
+msgstr "آبان"
+
+msgid "Azar"
+msgstr "آذر"
+
+msgid "Dey"
+msgstr "دی"
+
+msgid "Bahman"
+msgstr "بهمن"
+
+msgid "Esfand"
+msgstr "اسفند"
+
+msgid "Sa"
+msgstr "شنبه"
+
+msgid "Su"
+msgstr "یکشنبه"
+
+msgid "Mo"
+msgstr "دوشنبه"
+
+msgid "Tu"
+msgstr "سه شنبه"
+
+msgid "We"
+msgstr "چهارشنبه"
+
+msgid "Th"
+msgstr "پنجشنبه"
+
+msgid "Fr"
+msgstr "جمعه"
+
+msgid "Today"
+msgstr "امروز"
+
+msgid "Yesterday"
+msgstr "دیروز"
+
+#, python-format, fuzzy
+msgid "%(count)s day ago"
+msgid_plural "%(count)s days ago"
+msgstr[0] "%(count)s day ago"
+msgstr[1] "%(count)s days ago"
+
+#, python-format, fuzzy
+msgid "%(count)s week ago"
+msgid_plural "%(count)s weeks ago"
+msgstr[0] "%(count)s week ago"
+msgstr[1] "%(count)s weeks ago"
+
+msgid "Profile updated successfully."
+msgstr "پروفایل با موفقیت به‌روزرسانی شد."
+
+msgid "No order found. Please try again."
+msgstr "سفارشی یافت نشد. لطفاً دوباره تلاش کنید."
+
+msgid "This order has already been paid."
+msgstr "این سفارش قبلاً پرداخت شده است."
+
+msgid "Unknown error"
+msgstr "خطای ناشناخته"
+
+msgid "Payment error"
+msgstr "خطای پرداخت"
+
+msgid "Error connecting to payment gateway."
+msgstr "خطا در اتصال به درگاه پرداخت"
+
+msgid "Payment gateway timeout."
+msgstr "اتمام مهلت زمانی درگاه پرداخت"
+
+msgid "Connection error"
+msgstr "خطای اتصال"
+
+msgid "Payment failed or cancelled."
+msgstr "پرداخت ناموفق/لغو شد"
+
+msgid "No order found."
+msgstr "سفارشی یافت نشد."
+
+msgid "This order does not belong to you."
+msgstr "این سفارش متعلق به شما نیست."
+
+msgid "Payment successful"
+msgstr "پرداخت با موفقیت انجام شد."
+
+msgid "Ref ID"
+msgstr "شناسه مرجع"
+
+msgid "Payment verification failed."
+msgstr "تأیید پرداخت ناموفق بود."
+
+msgid "Error in payment verification."
+msgstr "خطا در تأیید پرداخت"
+
+msgid "Connection error during verification."
+msgstr "خطای اتصال در حین تأیید"
+
+msgid "SMS sent successfully."
+msgstr "پیامک با موفقیت ارسال شد."
+
+msgid "Error sending SMS."
+msgstr "خطا در ارسال پیامک."
+
+msgid "Happy Birthday"
+msgstr "تولدت مبارک"
+
+msgid "Your discount code"
+msgstr "کد تخفیف شما"
+
+#, python-format
+msgid "Get 20% discount on your next purchase"
+msgstr "دریافت ۲۰٪ تخفیف برای خرید بعدی"
+
+msgid "Dear"
+msgstr "عزیز"
+
+msgid "Happy"
+msgstr "مبارک"
+
+msgid "New discount code for you"
+msgstr "کد تخفیف جدید برای شما"
+
+msgid "Your order has been registered."
+msgstr "سفارش شما ثبت شد."
+
+msgid "Total"
+msgstr "مجموع"
+
+msgid "Your payment was successful."
+msgstr "پرداخت شما با موفقیت انجام شد."
+
+msgid "Your return request has been approved."
+msgstr "درخواست مرجوعی شما تأیید شد."
+
+msgid "Amount"
+msgstr "مبلغ"
+
+msgid ""
+"Kasra Publishing — specialized publisher of architecture and design books"
+msgstr "انتشارات کسری — ناشر تخصصی کتاب‌های معماری و طراحی"
+
+msgid "Architecture bookstore"
+msgstr "فروشگاه کتاب معماری"
+
+msgid "Skip to content"
+msgstr "رفتن به محتوای اصلی"
+
+msgid "Login"
 msgstr "ورود"
 
-#: templates/account/verification_sent.html:7
-#: templates/account/verification_sent.html:23
-msgid "ایمیل تأیید ارسال شد"
+msgid "Sign in to manage orders, wallet and discounts."
+msgstr "برای مدیریت سفارش‌ها، کیف پول و تخفیف‌ها وارد شوید."
+
+msgid "Forgot password?"
+msgstr "رمز عبور را فراموش کرده‌اید؟"
+
+msgid "Don't have an account?"
+msgstr "حساب کاربری ندارید؟"
+
+msgid "Sign up"
+msgstr "ثبت‌نام"
+
+msgid "Logout"
+msgstr "خروج"
+
+msgid "Sign out"
+msgstr "خروج"
+
+msgid "Are you sure you want to sign out?"
+msgstr "آیا مطمئن هستید که می‌خواهید خارج شوید؟"
+
+msgid "Cancel"
+msgstr "انصراف"
+
+msgid "Reset password"
+msgstr "بازنشانی رمز عبور"
+
+msgid "Enter your email and we will send reset instructions."
 msgstr ""
+"ایمیل خود را وارد کنید تا دستورالعمل‌های بازنشانی را برایتان ارسال کنیم."
 
-#: templates/account/verification_sent.html:28
-msgid "لینک تأیید به آدرس ایمیل شما ارسال شد."
-msgstr ""
+msgid "Send"
+msgstr "ارسال"
 
-#: templates/account/verification_sent.html:39
-msgid "لطفاً ایمیل خود را بررسی کرده و روی لینک تأیید کلیک کنید."
-msgstr ""
+msgid "Back to login"
+msgstr "بازگشت به صفحه ورود"
 
-#: templates/account/verification_sent.html:45
-msgid "اگر ایمیلی دریافت نکردید، پوشه اسپم را نیز بررسی کنید."
-msgstr ""
+msgid "Create account"
+msgstr "ایجاد حساب کاربری"
 
-#: templates/account/verification_sent.html:67
-msgid "ارسال مجدد ایمیل"
-msgstr ""
+msgid "Join to order directly from the publisher."
+msgstr "برای سفارش مستقیم از ناشر، عضو شوید."
 
-#: templates/account/verification_sent.html:76
-msgid "بازگشت به صفحه اصلی"
-msgstr ""
+msgid "Already have an account?"
+msgstr "آیا از قبل حساب کاربری دارید؟"
 
-#: templates/footer.html:14
-msgid "About Architecture Book"
-msgstr "درباره فروشگاه"
+msgid "Support chat"
+msgstr "چت پشتیبانی"
 
-#: templates/footer.html:18
+msgid "Support"
+msgstr "پشتیبانی"
+
+msgid "Online"
+msgstr "آنلاین"
+
+msgid "Close"
+msgstr "بستن"
+
+msgid "Hello! How can I help?"
+msgstr "سلام! چطور می‌توانم کمک کنم؟"
+
+msgid "Contact support: 051-37670019"
+msgstr "تماس با پشتیبانی: 37670019-051"
+
+msgid "Contact Us"
+msgstr "تماس با ما"
+
 msgid ""
-"Welcome to the website and online store of 'Kasri Library' publications. You "
-"can order available products directly from the publisher and use priority "
-"mail delivery for all orders."
-msgstr ""
-"به وبسایت و فروشــگاه اینترنتی انتشــارات «کتابــکده کســری» خـوش آمدیــد. "
-"شمـا می‌توانیــد محصـولات موجــود را به طــور مستقیم به انتشارات سفارش داده و "
-"از ارسال پستی پیشـتاز برای تمام سفارش‌ها استفاده کنید."
+"A bookstore for architecture and design. Order directly from the publisher."
+msgstr "کتاب‌فروشی تخصصی معماری و طراحی.سفارش مستقیم از ناشر"
 
-#: templates/footer.html:28
-msgid "Quick Links"
-msgstr "لینک‌های سریع"
+msgid "Catalog"
+msgstr "فهرست"
 
-#: templates/footer.html:35
-msgid "All Books"
-msgstr "همه کتاب‌ها"
+msgid "Subjects"
+msgstr "موضوعات"
 
-#: templates/footer.html:41
-msgid "New Books"
-msgstr "کتاب‌های جدید"
+msgid "New releases"
+msgstr "تازه‌ها"
 
-#: templates/footer.html:47
+msgid "Best Sellers"
+msgstr "پرفروش‌ها"
+
+msgid "Authors"
+msgstr "نویسندگان"
+
+msgid "Collections"
+msgstr "مجموعه‌ها"
+
+msgid "Publisher discount"
+msgstr "تخفیف ناشر"
+
+msgid "Publisher"
+msgstr "ناشر"
+
 msgid "About Us"
 msgstr "درباره ما"
 
-#: templates/footer.html:53
-msgid "Contact Us"
-msgstr "ارتباط با ما"
+msgid "Order Conditions"
+msgstr "شرایط سفارش"
 
-#: templates/footer.html:64
-msgid "Contact Information"
+msgid "Work With Us"
+msgstr "همکاری با ما"
+
+msgid "Contact Info"
 msgstr "اطلاعات تماس"
 
-#: templates/footer.html:82
-msgid "Sat - Thu: 9:00 - 14:00"
-msgstr "شنبه - پنجشنبه:  14:00- 9:00"
+msgid "Mashhad, Palestine 14, No. 10"
+msgstr "مشهد، خیابان فلسطین ۱۴، پلاک ۱۰"
 
-#: templates/footer.html:97 templates/home.html:355
-msgid "Kasra Architecture Bookstore"
-msgstr "کتابفروشی کسری"
+msgid "051-37670019"
+msgstr "۰۵۱-۳۷۶۷۰۰۱۹"
 
-#: templates/footer.html:99
-msgid "All Rights Reserved"
-msgstr "تمام حقوق محفوظ است"
+msgid "Saturday to Thursday, 9–14"
+msgstr "شنبه تا پنج‌شنبه، ۹ تا ۱۴"
 
-#: templates/footer.html:116
-msgid "Architecture"
+msgid "Kasra Publishing | All rights reserved."
+msgstr "انتشارات کسری | تمامی حقوق محفوظ است."
+
+msgid "Architecture and design publisher"
+msgstr "ناشر کتاب‌های معماری و طراحی"
+
+msgid ""
+"Kasra Publishing catalog: architecture, interior, city, and landscape books "
+"— order directly from the publisher."
+msgstr ""
+"فهرست انتشارات کسری: کتاب‌های معماری، طراحی داخلی، شهرسازی و منظر — سفارش "
+"مستقیم از ناشر"
+
+msgid "Just from the publisher"
+msgstr "فقط از طریق ناشر"
+
+msgid "View book"
+msgstr "مشاهده کتاب"
+
+msgid "Full catalog"
+msgstr "فهرست کامل"
+
+msgid "A specialized library of"
+msgstr "کتابخانه‌ای تخصصی در زمینه"
+
+msgid "architecture"
 msgstr "معماری"
 
-#: templates/home.html:6
+msgid ""
+"Buy from the publisher. Architecture, interiors, the city, and landscape — "
+"authentic copies, shipped nationwide."
+msgstr ""
+"خرید مستقیم از ناشر. معماری، طراحی داخلی، شهر و منظر — نسخه‌های اصل با امکان"
+" ارسال به سراسر کشور"
+
+msgid "Start the library from the field"
+msgstr "شکل‌دهی کتابخانه بر اساس حوزه تخصصی"
+
+msgid "All subjects"
+msgstr "تمام موضوعات"
+
+msgid "titles"
+msgstr "عناوین"
+
+msgid "Recent publications"
+msgstr "انتشارات اخیر"
+
+msgid "Previous"
+msgstr "قبلی"
+
+msgid "Next"
+msgstr "بعدی"
+
+msgid "All new releases"
+msgstr "تمام آثار جدید"
+
+msgid "Books that are read the most"
+msgstr "پرمخاطب ترین کتاب‌ها"
+
+msgid "Full list"
+msgstr "فهرست کامل"
+
+msgid "Selected titles at a special price"
+msgstr "عناوین منتخب با قیمت ویژه"
+
+msgid "All discounts"
+msgstr "تمام تخفیف‌ها"
+
+msgid "Selected collections"
+msgstr "مجموعه‌های منتخب"
+
+msgid "Books placed together, with an editor’s intent"
+msgstr "کتاب‌های گردآوری‌شده با رویکردی خاص از سوی ویراستار"
+
+msgid "All collections"
+msgstr "تمام مجموعه‌ها"
+
+msgid "Voices in the catalog"
+msgstr "صداهای موجود در فهرست"
+
+msgid "Author index"
+msgstr "نمایه نویسندگان"
+
+msgid "Nationwide shipping"
+msgstr "ارسال به سراسر کشور"
+
+msgid "Express post across Iran"
+msgstr "پست پیشتاز در سراسر ایران"
+
+msgid "Buy from the publisher"
+msgstr "خرید از ناشر"
+
+msgid "An authentic copy, with no middleman"
+msgstr "نسخه اصل، بدون واسطه"
+
+msgid "Three-day returns"
+msgstr "مهلت مرجوعی سه روزه"
+
+msgid "According to the order conditions"
+msgstr "مطابق با شرایط سفارش"
+
+msgid "Account"
+msgstr "حساب کاربری"
+
+msgid "Returns"
+msgstr "مرجوعی"
+
+msgid "Advanced search"
+msgstr "جستجوی پیشرفته"
+
+msgid "Search terms"
+msgstr "عبارات جستجو"
+
+msgid "For example, architecture"
+msgstr "برای مثال، معماری"
+
+msgid "Search in"
+msgstr "جستجو در"
+
+msgid "No searchable fields"
+msgstr "بدون فیلد قابل جستجو"
+
+msgid "Search"
+msgstr "جستجو"
+
+msgid "New"
+msgstr "جدید"
+
+msgid "sold"
+msgstr "فروخته‌شده"
+
+msgid "Add to Cart"
+msgstr "افزودن به سبد خرید"
+
+msgid "No cover"
+msgstr "بدون جلد"
+
+msgid "Sale"
+msgstr "حراج"
+
+msgid "Price soon"
+msgstr "اعلام قیمت به‌زودی"
+
+msgid "Bag"
+msgstr "سبد"
+
+msgid "Catalog subjects"
+msgstr "موضوعات فهرست"
+
+msgid "All"
+msgstr "همه"
+
 msgid "Home"
 msgstr "خانه"
 
-#: templates/home.html:356
-msgid "Discover the finest collection of architecture and design books"
-msgstr "کلکسیون منتخب کتاب‌های معماری "
+msgid "Pagination"
+msgstr "صفحه‌بندی"
 
-#: templates/home.html:365
-msgid "New Releases"
-msgstr "تازه های منتشر شده"
+msgid "Search title, author, publisher…"
+msgstr "جستجوی عنوان، نویسنده، ناشر..."
 
-#: templates/home.html:366
-msgid "Latest architectural books"
-msgstr "جدیدترین کتاب های معماری"
+msgid "Search books"
+msgstr "جستجوی کتاب‌ها"
 
-#: templates/home.html:373
-msgid "Categories"
-msgstr "دسته‌بندی‌ها"
+msgid "Simple"
+msgstr "ساده"
 
-#: templates/home.html:374
-msgid "Browse by subject"
-msgstr "مرور بر اساس موضوع"
+msgid "Advanced"
+msgstr "پیشرفته"
 
-#: templates/home.html:382
-msgid "Packages & Sets"
-msgstr "بسته‌ها و مجموعه‌ها"
+msgid "Menu"
+msgstr "منو"
 
-#: templates/home.html:383
-msgid "Curated collections"
-msgstr "مجموعه‌های منتخب"
+msgid "Main navigation"
+msgstr "ناوبری اصلی"
 
-#: templates/home.html:390
-msgid "On Sale"
-msgstr "تخفیف دارها"
+msgid "Toggle light and dark"
+msgstr "تغییر وضعیت روشن و تیره"
 
-#: templates/home.html:391
-msgid "Best discounts"
-msgstr "تخفیف دارها"
+msgid "Cart"
+msgstr "سبد خرید"
 
-#: templates/topheader.html:59
-msgid "logout"
-msgstr "خروج"
+msgid "Orders"
+msgstr "سفارشات"
 
-#: templates/topheader.html:67
-msgid "hi"
-msgstr "سلام"
+msgid "Profile"
+msgstr "پروفایل"
 
-#: templates/topheader.html:68 templates/topheader.html:75
-msgid "login"
-msgstr "ورود"
+msgid "Mobile navigation"
+msgstr "ناوبری موبایل"
 
-#: templates/topheader.html:79
-msgid "signup"
-msgstr "ثبت نام"
+msgid "Contact"
+msgstr "تماس"
 
-#: templates/topheader.html:98
-msgid "home"
-msgstr "خانه"
+#~ msgid "تأیید ایمیل"
+#~ msgstr "تأیید ایمیل"
 
-#: templates/topheader.html:103
-msgid "products"
-msgstr "محصولات"
+#~ msgid "please confirm email"
+#~ msgstr "please confirm email"
 
-#: templates/topheader.html:108
-msgid "order"
-msgstr "شرایط سفارش"
+#~ msgid "log_in"
+#~ msgstr "log_in"
 
-#: templates/topheader.html:113
-msgid "about us"
-msgstr "درباره ما"
+#~ msgid "welcome!enter your information"
+#~ msgstr "welcome!enter your information"
 
-#: templates/topheader.html:118
-msgid "contact us"
-msgstr "ارتباط با ما"
+#~ msgid "username/passworrd is not correct"
+#~ msgstr "username/passworrd is not correct"
 
-#: templates/topheader.html:123
-msgid "working us"
-msgstr "همکاری با ما"
+#~ msgid "enter email or user_name"
+#~ msgstr "enter email or user_name"
+
+#~ msgid "password"
+#~ msgstr "password"
+
+#~ msgid "enter your password"
+#~ msgstr "enter your password"
+
+#~ msgid "remmember me"
+#~ msgstr "remmember me"
+
+#~ msgid "sign_up"
+#~ msgstr "sign_up"
+
+#~ msgid "log_out"
+#~ msgstr "log_out"
+
+#~ msgid "yes,log_out"
+#~ msgstr "yes,log_out"
+
+#~ msgid "Register"
+#~ msgstr "Register"
+
+#~ msgid "Join the big family of Kasra Publications."
+#~ msgstr "Join the big family of Kasra Publications."
+
+#~ msgid "Please check the following errors:"
+#~ msgstr "Please check the following errors:"
+
+#~ msgid "Enter your email"
+#~ msgstr "Enter your email"
+
+#~ msgid "Username (optional)"
+#~ msgstr "Username (optional)"
+
+#~ msgid "Password"
+#~ msgstr "Password"
+
+#~ msgid "Choose a strong password"
+#~ msgstr "Choose a strong password"
+
+#~ msgid "At least 8 characters, including letters and numbers"
+#~ msgstr "At least 8 characters, including letters and numbers"
+
+#~ msgid "Re-enter password"
+#~ msgstr "Re-enter password"
+
+#~ msgid "Have you already registered?"
+#~ msgstr "Have you already registered?"
+
+#~ msgid "Log in"
+#~ msgstr "Log in"
+
+#~ msgid "About Architecture Book"
+#~ msgstr "About Architecture Book"
+
+#~ msgid ""
+#~ "Welcome to the website and online store of 'Kasri Library' publications. You"
+#~ " can order available products directly from the publisher and use priority "
+#~ "mail delivery for all orders."
+#~ msgstr ""
+#~ "Welcome to the website and online store of 'Kasri Library' publications. You"
+#~ " can order available products directly from the publisher and use priority "
+#~ "mail delivery for all orders."
+
+#~ msgid "Quick Links"
+#~ msgstr "Quick Links"
+
+#~ msgid "All Books"
+#~ msgstr "All Books"
+
+#~ msgid "Sat - Thu: 9:00 - 14:00"
+#~ msgstr "Sat - Thu: 9:00 - 14:00"
+
+#~ msgid "All Rights Reserved"
+#~ msgstr "All Rights Reserved"
+
+#~ msgid "Latest architectural books"
+#~ msgstr "Latest architectural books"
+
+#~ msgid "Categories"
+#~ msgstr "Categories"
+
+#~ msgid "Browse by subject"
+#~ msgstr "Browse by subject"
+
+#~ msgid "Packages & Sets"
+#~ msgstr "Packages & Sets"
+
+#~ msgid "hi"
+#~ msgstr "hi"
+
+#~ msgid "signup"
+#~ msgstr "signup"
+
+#~ msgid "home"
+#~ msgstr "home"
+
+#~ msgid "products"
+#~ msgstr "products"
+
+#~ msgid "about us"
+#~ msgstr "about us"
+
+#~ msgid "contact us"
+#~ msgstr "contact us"
+
+#~ msgid "working us"
+#~ msgstr "working us"
 
 #~ msgid "Business & Management"
-#~ msgstr "کسب‌وکار و مدیریت"
+#~ msgstr "Business & Management"
 
 #~ msgid "books"
-#~ msgstr "کتاب ها"
-
-#~ msgid "Architectural Design"
-#~ msgstr "طراحی معماری"
+#~ msgstr "books"
 
 #~ msgid "Interior Design"
-#~ msgstr "طراحی و معماری داخلی"
+#~ msgstr "Interior Design"
 
 #~ msgid "Urban Studies"
-#~ msgstr "مطالعات و طراحی شهری"
+#~ msgstr "Urban Studies"
 
 #~ msgid "Landscape"
-#~ msgstr "منظر (لنداسکیپ)"
+#~ msgstr "Landscape"
 
 #~ msgid "Design Guide"
-#~ msgstr "راهنمای طراحی"
+#~ msgstr "Design Guide"
 
 #~ msgid "History & Theory"
-#~ msgstr "طراحی و نظریه"
+#~ msgstr "History & Theory"
 
 #~ msgid "Design Basics"
-#~ msgstr "بیان، مقدمات و مفاهیم طراحی"
+#~ msgstr "Design Basics"
 
 #~ msgid "Digital & Parametric"
-#~ msgstr "طراحی دیجیتال و پارامتریک"
+#~ msgstr "Digital & Parametric"
 
 #~ msgid "Sustainability"
-#~ msgstr "پایداری و طبیعت‌گرایی"
+#~ msgstr "Sustainability"
 
 #~ msgid "Project Samples"
-#~ msgstr "نمونه پروژه"
-
-#~ msgid "Other Books"
-#~ msgstr "سایر کتاب‌ها"
+#~ msgstr "Project Samples"
 
 #~ msgid "Confirm Email Address"
-#~ msgstr "تأیید آدرس ایمیل"
+#~ msgstr "Confirm Email Address"
 
 #~ msgid "Confirm"
-#~ msgstr "تأیید"
+#~ msgstr "Confirm"
 
 #~ msgid "Log In"
-#~ msgstr "ورود"
-
-#~ msgid "Sign Up"
-#~ msgstr "ثبت نام"
+#~ msgstr "Log In"
 
 #~ msgid "log out"
-#~ msgstr "خروج"
+#~ msgstr "log out"
 
 #~ msgid "Log Out"
-#~ msgstr "خروج"
+#~ msgstr "Log Out"
 
 #~ msgid "Yes"
-#~ msgstr "بله"
+#~ msgstr "Yes"
 
 #~ msgid "No"
-#~ msgstr "خیر"
-
-#~ msgid "Already have an account?"
-#~ msgstr "حساب کاربری ندارید؟"
-
-#~ msgid "Login"
-#~ msgstr "ورود"
+#~ msgstr "No"
 
 #~ msgid "Architecture Categories"
-#~ msgstr "دسته‌بندی‌های معماری"
-
-#~ msgid "Architectural History"
-#~ msgstr "تاریخ معماری"
+#~ msgstr "Architecture Categories"
 
 #~ msgid "Urban Planning"
-#~ msgstr "برنامه‌ریزی شهری"
+#~ msgstr "Urban Planning"
 
 #~ msgid "Misc"
-#~ msgstr "متفرقه"
+#~ msgstr "Misc"
 
 #~ msgid "about_us |"
-#~ msgstr "درباره ما"
+#~ msgstr "about_us |"
 
 #~ msgid "contact_us"
-#~ msgstr "ارتباط با ما"
-
-#~ msgid "profile"
-#~ msgstr "پروفایل"
+#~ msgstr "contact_us"
 
 #~ msgid "hello"
-#~ msgstr "سلام"
+#~ msgstr "hello"
 
 #~ msgid "Yes, Log Out"
-#~ msgstr "بله"
+#~ msgstr "Yes, Log Out"
 
 #~ msgid "Are You Sure?"
-#~ msgstr "آیا مطمئن هستید؟"
+#~ msgstr "Are You Sure?"

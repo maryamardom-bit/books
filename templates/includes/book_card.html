@@ -11,8 +11,8 @@
         {% endif %}
         <span class="absolute top-2 start-2 flex flex-col gap-1">
             {% if rank %}<span class="rounded-full bg-ink px-2 py-0.5 text-[11px] font-bold text-paper">{{ rank|translate_number }}</span>{% endif %}
-            {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">٪{{ product.get_discount_percent_display|translate_number }}</span>{% endif %}
-            {% if product.is_new and not rank %}<span class="rounded-full bg-paper/90 px-2 py-0.5 text-[11px] font-bold text-ink">جدید</span>{% endif %}
+            {% if product.is_on_sale %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">{{ product.get_discount_percent_display|translate_number }}%</span>{% endif %}
+            {% if product.is_new and not rank %}<span class="rounded-full bg-paper/90 px-2 py-0.5 text-[11px] font-bold text-ink">{% trans "New" %}</span>{% endif %}
         </span>
     </a>
     <div class="flex flex-1 flex-col">
@@ -21,12 +21,12 @@
         {% if product.author %}<p class="mb-2 text-xs text-faint"><a href="{% url 'product:author_books' author_name=product.author %}" class="text-faint hover:text-accent-strong">{{ product.author }}</a></p>{% endif %}
         <div class="mt-auto flex items-end justify-between gap-2 pt-2">
             <div>
-                {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} فروش</p>{% endif %}
+                {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} {% trans "sold" %}</p>{% endif %}
                 {% if product.is_on_sale %}
                 <p class="text-xs text-faint line-through">{{ product.price|intcomma:False|translate_number }}</p>
-                <p class="font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">تومان</span></p>
+                <p class="font-bold text-danger">{{ product.get_discounted_price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans "Toman" %}</span></p>
                 {% else %}
-                <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">تومان</span></p>
+                <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans "Toman" %}</span></p>
                 {% endif %}
             </div>
             <form action="{% url 'cart:cart_add' product.id %}" method="post">

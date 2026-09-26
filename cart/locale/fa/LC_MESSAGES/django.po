@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-17 14:47+0000\n"
+"POT-Creation-Date: 2026-09-26 12:21+0330\n"
 "PO-Revision-Date: 2026-07-17 18:21+0330\n"
 "Last-Translator: ثفق قفقف <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,124 +18,170 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: cart/cart.py:34
-msgid "product successfully updated to cart"
-msgstr "به روزرسانی شد"
+msgid "Invalid discount code"
+msgstr "Invalid discount code"
 
-#: cart/cart.py:37
-msgid "product successfully added to cart"
-msgstr "با موفقیت به سبد خرید اضافه شد"
+msgid "This discount code has expired or already been used"
+msgstr "This discount code has expired or already been used"
 
-#: cart/cart.py:50
-msgid "product successfully removed from cart"
-msgstr "با موفقیت از سبد خرید حذف شد"
+msgid "Discount code applied"
+msgstr "Discount code applied"
 
-#: cart/templates/cart/cart_detail.html:10
-#: cart/templates/cart/cart_detail.html:599
 msgid "Cart"
-msgstr "سبد خرید"
+msgstr "Cart"
 
-#: cart/templates/cart/cart_detail.html:10
-msgid "Kasra Architecture Bookstore"
-msgstr "کتابفروشی کسری"
+msgid "Kasra Publishing"
+msgstr "Kasra Publishing"
 
-#: cart/templates/cart/cart_detail.html:605
+msgid "Home"
+msgstr "Home"
+
 msgid "Shopping Cart"
-msgstr "سبد خرید"
+msgstr "Shopping Cart"
 
-#: cart/templates/cart/cart_detail.html:620
-msgid "pic_product"
-msgstr "تصویر محصول"
+msgid "Package"
+msgstr "Package"
 
-#: cart/templates/cart/cart_detail.html:621
-msgid "name_of_product"
-msgstr "نام محصول"
+msgid "Toman"
+msgstr "Toman"
 
-#: cart/templates/cart/cart_detail.html:622
-msgid "price"
-msgstr "قیمت"
+msgid "Decrease"
+msgstr "Decrease"
 
-#: cart/templates/cart/cart_detail.html:623
-msgid "quantity"
-msgstr "تعداد"
+msgid "Increase"
+msgstr "Increase"
 
-#: cart/templates/cart/cart_detail.html:624
-msgid "total_price"
-msgstr "جمع کل"
+msgid "Remove"
+msgstr "Remove"
 
-#: cart/templates/cart/cart_detail.html:647
-#: cart/templates/cart/cart_detail.html:676
-#: cart/templates/cart/cart_detail.html:727
-#: cart/templates/cart/cart_sidebar.html:34
-msgid "$"
-msgstr "تومان"
+msgid "Clear Cart"
+msgstr "Clear Cart"
 
-#: cart/templates/cart/cart_detail.html:691
-msgid "Empty cart"
-msgstr "خالی کردن سبد خرید"
+msgid "Order Summary"
+msgstr "Order Summary"
 
-#: cart/templates/cart/cart_detail.html:701
-msgid "Your Cart is Empty"
-msgstr "سبد خرید شما خالی است."
+msgid "Discount code..."
+msgstr "Discount code..."
 
-#: cart/templates/cart/cart_detail.html:702
-msgid "Please add some books to your cart before checking out."
-msgstr "لطفاً قبل از پرداخت تعدادی کتاب به سبد خود اضافه کنید."
+msgid "Apply"
+msgstr "Apply"
 
-#: cart/templates/cart/cart_detail.html:704
-msgid "Go Shopping"
-msgstr "برو به فروشگاه"
+msgid "Total Items"
+msgstr "Total Items"
 
-#: cart/templates/cart/cart_detail.html:715
-msgid "Cart Totals"
-msgstr "جمع کل"
-
-#: cart/templates/cart/cart_detail.html:720
-msgid "Total Products"
-msgstr "مجموع محصولات"
-
-#: cart/templates/cart/cart_detail.html:721
-msgid "number"
-msgstr "عدد"
-
-#: cart/templates/cart/cart_detail.html:724
 msgid "Total Price"
-msgstr "جمع کل"
+msgstr "Total Price"
 
-#: cart/templates/cart/cart_detail.html:732
+msgid "Savings"
+msgstr "Savings"
+
+msgid "Total Weight"
+msgstr "Total Weight"
+
+msgid "g"
+msgstr "g"
+
+msgid "Final Price"
+msgstr "Final Price"
+
 msgid "Proceed to Checkout"
-msgstr "پرداخت"
+msgstr "Proceed to Checkout"
 
-#: cart/templates/cart/cart_detail.html:736
-msgid "Cart is empty"
-msgstr "سبد خرید شما خالی است."
+msgid "Your bag is empty"
+msgstr "Your bag is empty"
 
-#: cart/templates/cart/cart_sidebar.html:8
+msgid "Add architecture books to your own library."
+msgstr "Add architecture books to your own library."
+
+msgid "Browse the catalog"
+msgstr "Browse the catalog"
+
+msgid "To start a library"
+msgstr "To start a library"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "from cart?"
+msgstr "from cart?"
+
 msgid "cart"
-msgstr "سبد خرید"
+msgstr "cart"
 
-#: cart/templates/cart/cart_sidebar.html:33
 msgid "total"
-msgstr "جمع کل"
+msgstr "total"
 
-#: cart/templates/cart/cart_sidebar.html:37
 msgid "go to cart"
-msgstr "برو به سبد خرید"
+msgstr "go to cart"
 
-#: cart/templates/cart/cart_sidebar.html:39
 msgid "check out"
-msgstr "پرداخت"
+msgstr "check out"
 
-#: cart/views.py:53
-msgid "all producs successfully removed from your cart"
-msgstr "تمام محصولات با موفقیت از سبد خرید حذف شدند"
+msgid "Product updated in cart."
+msgstr "Product updated in cart."
 
-#: cart/views.py:56
-msgid "your cart is already empty."
-msgstr "سبد خرید شما خالی است."
+msgid "Product added to cart."
+msgstr "Product added to cart."
+
+msgid "Invalid quantity."
+msgstr "Invalid quantity."
+
+msgid "Package added to cart."
+msgstr "Package added to cart."
+
+msgid "Product removed from cart."
+msgstr "Product removed from cart."
+
+msgid "Package removed from cart."
+msgstr "Package removed from cart."
+
+msgid "Cart cleared."
+msgstr "Cart cleared."
+
+msgid "Cart is already empty."
+msgstr "Cart is already empty."
+
+msgid "Discount code removed."
+msgstr "Discount code removed."
+
+#~ msgid "Kasra Architecture Bookstore"
+#~ msgstr "Kasra Architecture Bookstore"
+
+#~ msgid "pic_product"
+#~ msgstr "pic_product"
+
+#~ msgid "name_of_product"
+#~ msgstr "name_of_product"
+
+#~ msgid "price"
+#~ msgstr "price"
+
+#~ msgid "total_price"
+#~ msgstr "total_price"
+
+#~ msgid "$"
+#~ msgstr "$"
+
+#~ msgid "Please add some books to your cart before checking out."
+#~ msgstr "Please add some books to your cart before checking out."
+
+#~ msgid "Go Shopping"
+#~ msgstr "Go Shopping"
+
+#~ msgid "Cart Totals"
+#~ msgstr "Cart Totals"
+
+#~ msgid "number"
+#~ msgstr "number"
+
+#~ msgid "Cart is empty"
+#~ msgstr "Cart is empty"
+
+#~ msgid "all producs successfully removed from your cart"
+#~ msgstr "all producs successfully removed from your cart"
 
 #~ msgid "cart is empty ! please add some products to the cart "
-#~ msgstr "سبد خرید خالی است.لطفا محصول درخواستی را به سبد اضافه کنید"
+#~ msgstr "cart is empty ! please add some products to the cart "
 
 #~ msgid "checkout"
-#~ msgstr "پرداخت"
+#~ msgstr "checkout"
