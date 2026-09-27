@@ -15,16 +15,16 @@
         <span class="catalog-mark">{% trans "New" %}</span>
         {% endif %}
     </a>
-    <p class="mb-1 text-[11px] tracking-wide text-faint">{{ product.get_category_display }}</p>
-    <h3 class="mb-1 line-clamp-3 text-[15px] font-normal leading-7 text-ink">
+    <p class="mb-1 text-center text-[11px] tracking-wide text-faint">{{ product.get_category_display }}</p>
+    <h3 class="mb-1 line-clamp-3 text-center text-[15px] font-normal leading-7 text-ink">
         <a href="{{ product.get_absolute_url }}" class="hover:text-ink">{{ product.title }}</a>
     </h3>
     {% if product.author %}
-    <p class="mb-3 text-[13px] leading-6 text-muted">
+    <p class="mb-3 text-center text-[13px] leading-6 text-muted">
         <a href="{% url 'product:author_books' author_name=product.author %}" class="text-muted hover:text-ink">{{ product.author }}</a>
     </p>
     {% endif %}
-    <div class="mt-auto flex items-baseline justify-between gap-3 pt-1">
+    <div class="mt-auto flex flex-col items-center gap-2 pt-1 text-center">
         {% if product.price %}
             {% if product.is_on_sale %}
             <p class="text-[13px] text-ink">
@@ -41,10 +41,10 @@
         {% else %}
         <p class="text-[13px] text-faint">{% trans "Price soon" %}</p>
         {% endif %}
-        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="opacity-0 transition group-hover:opacity-100 max-md:opacity-100">
+        <form action="{% url 'cart:cart_add' product.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="text-[11px] tracking-wide text-muted hover:text-ink" aria-label="{% trans 'Add to Cart' %}">{% trans "Bag" %}</button>
+            <button type="submit" class="text-[11px] tracking-wide text-muted transition-colors hover:text-accent-strong" aria-label="{% trans 'Add to Cart' %}">{% trans "Bag" %}</button>
         </form>
     </div>
 </article>

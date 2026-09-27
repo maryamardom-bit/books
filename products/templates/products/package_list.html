@@ -19,9 +19,9 @@
             </a>
             <div class="flex flex-1 flex-col p-4">
                 <p class="mb-1 text-[11px] font-bold uppercase text-accent-strong">{% trans 'Package' %}</p>
-                <h2 class="mb-1 text-sm font-bold"><a href="{{ package.get_absolute_url }}">{{ package.title }}</a></h2>
-                <p class="mb-3 text-xs text-faint">{{ package.get_products_count }} {% trans 'books' %}</p>
-                <div class="mt-auto">
+                <h2 class="mb-1 text-center text-sm font-bold"><a href="{{ package.get_absolute_url }}">{{ package.title }}</a></h2>
+                <p class="mb-3 text-center text-xs text-faint">{{ package.get_products_count }} {% trans 'books' %}</p>
+                <div class="mt-auto text-center">
                     {% if package.discount_percent > 0 %}
                     <p class="text-xs text-faint line-through">{{ package.original_price|floatformat:0|intcomma:False|translate_number }}</p>
                     <p class="font-bold text-danger">{{ package.price|floatformat:0|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans 'Toman' %}</span></p>

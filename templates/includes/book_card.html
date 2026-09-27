@@ -16,10 +16,10 @@
         </span>
     </a>
     <div class="flex flex-1 flex-col">
-        <p class="mb-1 text-[11px] font-bold text-accent-strong">{{ product.get_category_display }}</p>
-        <h3 class="mb-1 line-clamp-2 text-sm font-bold leading-6"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
-        {% if product.author %}<p class="mb-2 text-xs text-faint"><a href="{% url 'product:author_books' author_name=product.author %}" class="text-faint hover:text-accent-strong">{{ product.author }}</a></p>{% endif %}
-        <div class="mt-auto flex items-end justify-between gap-2 pt-2">
+        <p class="mb-1 text-center text-[11px] font-bold text-accent-strong">{{ product.get_category_display }}</p>
+        <h3 class="mb-1 line-clamp-2 text-center text-sm font-bold leading-6"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h3>
+        {% if product.author %}<p class="mb-2 text-center text-xs text-faint"><a href="{% url 'product:author_books' author_name=product.author %}" class="text-faint hover:text-accent-strong">{{ product.author }}</a></p>{% endif %}
+        <div class="mt-auto flex flex-col items-center gap-2 pt-2 text-center">
             <div>
                 {% if show_sold %}<p class="mb-0.5 text-[11px] font-bold text-faint">{{ sold_count|default:0|translate_number }} {% trans "sold" %}</p>{% endif %}
                 {% if product.is_on_sale %}

@@ -11,16 +11,12 @@
 <section class="page-wrap lg:py-14">
     <header class="mb-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <div class="max-w-xl">
-            <p class="mb-3 text-[11px] tracking-[0.2em] text-faint">{% if discount_filter %}{% trans "Publisher discount" %}{% else %}{% trans "Catalog" %}{% endif %}</p>
-            <h1 class="mb-3 text-3xl font-normal tracking-tight sm:text-4xl">
-                {% if discount_filter %}
-                    {% trans "Publisher discount" %}
-                {% elif active_subject %}
-                    {{ active_subject.name }}
-                {% else %}
-                    {% trans "Catalog" %}
-                {% endif %}
-            </h1>
+            {% if active_subject %}
+            <p class="mb-3 text-[11px] tracking-[0.2em] text-faint">{% trans "Catalog" %}</p>
+            <h1 class="mb-3 text-3xl font-normal tracking-tight sm:text-4xl">{{ active_subject.name }}</h1>
+            {% else %}
+            <h1 class="mb-3 text-xl font-normal tracking-[0.16em] text-ink sm:text-2xl">{% if discount_filter %}{% trans "Publisher discount" %}{% else %}{% trans "Catalog" %}{% endif %}</h1>
+            {% endif %}
             <p class="text-[15px] leading-7 text-muted">
                 {% if discount_filter %}
                     {% trans "Titles at the publisher’s special price." %}

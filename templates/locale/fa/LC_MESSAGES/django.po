@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-26 12:21+0330\n"
-"PO-Revision-Date: 2026-09-26 14:10+0330\n"
+"PO-Revision-Date: 2026-09-27 11:23+0330\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -657,6 +657,1124 @@ msgstr "ناوبری موبایل"
 
 msgid "Contact"
 msgstr "تماس"
+
+msgid "Basic Information"
+msgstr "اطلاعات پایه"
+
+msgid "Book Details"
+msgstr "جزئیات کتاب"
+
+msgid "Stock Management"
+msgstr "مدیریت موجودی"
+
+msgid "Discount Settings"
+msgstr "تنظیمات تخفیف"
+
+msgid "Status & Dates"
+msgstr "وضعیت و تاریخ‌ها"
+
+msgid "Price"
+msgstr "قیمت"
+
+msgid "Discount"
+msgstr "تخفیف"
+
+msgid "Products"
+msgstr "محصولات"
+
+msgid "Pricing"
+msgstr "قیمت‌گذاری"
+
+msgid "Stock & Dates"
+msgstr "موجودی و تاریخ‌ها"
+
+msgid "Books"
+msgstr "کتاب‌ها"
+
+msgid "Original Price"
+msgstr "قیمت اصلی"
+
+msgid "Info"
+msgstr "اطلاعات"
+
+msgid "Related Questions"
+msgstr "پرسش‌های مرتبط"
+
+msgid "Display"
+msgstr "نمایش"
+
+msgid "Dates"
+msgstr "تاریخ‌ها"
+
+msgid "Created"
+msgstr "تاریخ ایجاد"
+
+msgid "Architecture Business"
+msgstr "کسب‌وکار معماری"
+
+msgid "Architecture & Design"
+msgstr "معماری و طراحی"
+
+msgid "Interior Architecture"
+msgstr "معماری داخلی"
+
+msgid "Urban Design"
+msgstr "طراحی شهری"
+
+msgid "Design Guides"
+msgstr "راهنمای طراحی"
+
+msgid "Architectural History"
+msgstr "تاریخ معماری"
+
+msgid "Design Fundamentals"
+msgstr "اصول طراحی"
+
+msgid "Digital Design"
+msgstr "طراحی دیجیتال"
+
+msgid "Case Studies"
+msgstr "مطالعات موردی"
+
+msgid "Other"
+msgstr "سایر"
+
+msgid "Packages"
+msgstr "بسته‌ها"
+
+msgid "Raghei"
+msgstr "رقعی"
+
+msgid "Vazehi"
+msgstr "وزیری"
+
+msgid "Jeybi"
+msgstr "جیبی"
+
+msgid "Rahlei"
+msgstr "رحلی"
+
+msgid "Shomiz"
+msgstr "شومیز"
+
+msgid "Gard"
+msgstr "سخت"
+
+msgid "title"
+msgstr "عنوان"
+
+msgid "category"
+msgstr "دسته‌بندی"
+
+msgid "description"
+msgstr "توضیحات"
+
+msgid "price"
+msgstr "قیمت"
+
+msgid "active"
+msgstr "فعال"
+
+msgid "image"
+msgstr "تصویر"
+
+msgid "author"
+msgstr "نویسنده"
+
+msgid "publisher"
+msgstr "ناشر"
+
+msgid "isbn"
+msgstr "شابک"
+
+msgid "year of publication"
+msgstr "سال انتشار"
+
+msgid "edition"
+msgstr "ویرایش"
+
+msgid "number of pages"
+msgstr "تعداد صفحات"
+
+msgid "book size"
+msgstr "قطع کتاب"
+
+msgid "cover type"
+msgstr "نوع جلد"
+
+msgid "publication date"
+msgstr "تاریخ انتشار"
+
+msgid "printing series"
+msgstr "سری چاپ"
+
+msgid "weight"
+msgstr "وزن"
+
+msgid "stock"
+msgstr "موجودی"
+
+msgid "reserved stock"
+msgstr "موجودی رزرو شده"
+
+msgid "discount percent"
+msgstr "درصد تخفیف"
+
+msgid "discount start date"
+msgstr "تاریخ شروع تخفیف"
+
+msgid "discount end date"
+msgstr "تاریخ پایان تخفیف"
+
+msgid "special price"
+msgstr "قیمت ویژه"
+
+msgid "created"
+msgstr "تاریخ ایجاد"
+
+msgid "modified"
+msgstr "تاریخ ویرایش"
+
+msgid "product"
+msgstr "محصول"
+
+msgid "Very Bad"
+msgstr "بسیار بد"
+
+msgid "Bad"
+msgstr "بد"
+
+msgid "Normal"
+msgstr "معمولی"
+
+msgid "Good"
+msgstr "خوب"
+
+msgid "Perfect"
+msgstr "عالی"
+
+msgid "comment text"
+msgstr "متن نظر"
+
+msgid "rating"
+msgstr "امتیاز"
+
+msgid "comment"
+msgstr "نظر"
+
+msgid "comments"
+msgstr "نظرات"
+
+msgid "slug"
+msgstr "نامک"
+
+msgid "original price"
+msgstr "قیمت اصلی"
+
+msgid "manual price"
+msgstr "قیمت دستی"
+
+msgid "package"
+msgstr "بسته"
+
+msgid "packages"
+msgstr "بسته‌ها"
+
+msgid "code"
+msgstr "کد"
+
+msgid "percent"
+msgstr "درصد"
+
+msgid "amount"
+msgstr "مقدار"
+
+msgid "max uses"
+msgstr "حداکثر تعداد استفاده"
+
+msgid "used count"
+msgstr "تعداد استفاده شده"
+
+msgid "valid from"
+msgstr "معتبر از"
+
+msgid "valid until"
+msgstr "معتبر تا"
+
+msgid "discount code"
+msgstr "کد تخفیف"
+
+msgid "discount codes"
+msgstr "کدهای تخفیف"
+
+msgid "current tier"
+msgstr "سطح فعلی"
+
+msgid "tiered discount"
+msgstr "تخفیف پلکانی"
+
+msgid "tiered discounts"
+msgstr "تخفیف‌های پلکانی"
+
+msgid "Article"
+msgstr "مقاله"
+
+msgid "News"
+msgstr "اخبار"
+
+msgid "Story"
+msgstr "داستان"
+
+msgid "content"
+msgstr "محتوا"
+
+msgid "type"
+msgstr "نوع"
+
+msgid "video"
+msgstr "ویدیو"
+
+msgid "author name"
+msgstr "نام نویسنده"
+
+msgid "updated"
+msgstr "تاریخ به‌روزرسانی"
+
+msgid "Product Blog"
+msgstr "وبلاگ محصول"
+
+msgid "Product Blogs"
+msgstr "وبلاگ‌های محصول"
+
+msgid "month count"
+msgstr "تعداد ماه"
+
+msgid "prepayment percent"
+msgstr "درصد پیش‌پرداخت"
+
+msgid "Installment Plan"
+msgstr "طرح اقساطی"
+
+msgid "Installment Plans"
+msgstr "طرح‌های اقساطی"
+
+msgid "months"
+msgstr "ماه‌ها"
+
+msgid "question"
+msgstr "پرسش"
+
+msgid "answer"
+msgstr "پاسخ"
+
+msgid "related questions"
+msgstr "پرسش‌های مرتبط"
+
+msgid "Questions to suggest after this answer"
+msgstr "پرسش‌های پیشنهادی پس از این پاسخ"
+
+msgid "display order"
+msgstr "ترتیب نمایش"
+
+msgid "FAQ"
+msgstr "پرسش متداول"
+
+msgid "FAQs"
+msgstr "پرسش‌های متداول"
+
+msgid "Practice, project management, and the economics of building"
+msgstr "عملکرد حرفه‌ای، مدیریت پروژه و اقتصاد ساخت‌وساز"
+
+msgid "Theory, design, and architectural culture"
+msgstr "نظریه، طراحی و فرهنگ معماری"
+
+msgid "Interiors, furniture, and detail"
+msgstr "طراحی داخلی، مبلمان و جزئیات"
+
+msgid "The city, spatial policy, and urban design"
+msgstr "شهر، سیاست‌گذاری فضایی و طراحی شهری"
+
+msgid "Landscape, gardens, and open space"
+msgstr "منظر، باغ‌ها و فضای باز"
+
+msgid "Practice guides and design standards"
+msgstr "راهنماهای حرفه‌ای و استانداردهای طراحی"
+
+msgid "History, criticism, and architectural heritage"
+msgstr "تاریخ، نقد و میراث معماری"
+
+msgid "Form, sketching, and architectural representation"
+msgstr "فرم، اسکیس و بازنمایی معماری"
+
+msgid "Software, representation, and digital design"
+msgstr "نرم‌افزار، بازنمایی و طراحی دیجیتال"
+
+msgid "Sustainability, climate, and responsible construction"
+msgstr "پایداری، اقلیم و ساخت‌وساز مسئولانه"
+
+msgid "Projects, precedents, and case studies"
+msgstr "پروژه‌ها، نمونه‌های پیشین و مطالعات موردی"
+
+msgid "Selected titles outside the main classification"
+msgstr "عناوین منتخب خارج از دسته‌بندی اصلی"
+
+msgid "No books by this author"
+msgstr "هیچ کتابی از این نویسنده وجود ندارد"
+
+msgid "View all books"
+msgstr "مشاهده همه کتاب‌ها"
+
+#, python-format
+msgid ""
+"%(counter)s author in the publisher’s current list. Each name opens every "
+"title by that author."
+msgid_plural ""
+"%(counter)s authors in the publisher’s current list. Each name opens every "
+"title by that author."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "There are no authors in the catalog."
+msgstr "هیچ نویسنده‌ای در کاتالوگ وجود ندارد."
+
+msgid "The most popular books, chosen by our readers."
+msgstr "محبوب‌ترین کتاب‌ها، انتخاب شده توسط خوانندگان"
+
+msgid "No sales yet"
+msgstr "هنوز فروشی انجام نشده است"
+
+msgid "Browse books"
+msgstr "مرور کتاب‌ها"
+
+msgid "Architecture library"
+msgstr "کتابخانه معماری"
+
+msgid ""
+"From theory and design to urbanism, landscape, architectural history, and "
+"professional tools."
+msgstr ""
+"از تئوری و طراحی گرفته تا شهرسازی، منظر، تاریخ معماری و ابزارهای حرفه‌ای"
+
+msgid "Search categories"
+msgstr "جستجودر دسته‌بندی ها"
+
+msgid "Name in English or Persian"
+msgstr "نام به انگلیسی یا فارسی"
+
+msgid "subjects"
+msgstr "موضوعات"
+
+msgid "View books"
+msgstr "مشاهده کتاب‌ها"
+
+msgid "No subjects have been added."
+msgstr "هیچ موضوعی اضافه نشده است."
+
+msgid "No category matches that phrase."
+msgstr "هیچ دسته‌بندی با آن عبارت مطابقت ندارد."
+
+msgid "New publications"
+msgstr "انتشارات جدید"
+
+msgid "Publication"
+msgstr "اثر (کتاب)"
+
+msgid "The newest titles added to the Kasra Publishing catalog."
+msgstr "جدیدترین عناوین اضافه‌شده به فهرست انتشارات کسری"
+
+msgid "No new titles have been added yet."
+msgstr "هنوز هیچ عنوان جدیدی اضافه نشده است."
+
+msgid "You save"
+msgstr "سود شما"
+
+msgid "In stock"
+msgstr "موجود"
+
+msgid "Out of stock"
+msgstr "ناموجود"
+
+msgid "Description"
+msgstr "توضیحات"
+
+msgid "Contents"
+msgstr "محتویات"
+
+msgid "Books in this package"
+msgstr "کتاب‌های این بسته"
+
+msgid "No books in this package."
+msgstr "هیچ کتابی در این بسته وجود ندارد."
+
+msgid "Bundles"
+msgstr "بسته‌ها"
+
+msgid "Special Packages"
+msgstr "بسته‌های ویژه"
+
+msgid "Edited collections: several titles together, at a package price."
+msgstr "مجموعه‌های گردآوری‌شده: چندین عنوان با هم، با قیمت یک بسته"
+
+msgid "Package"
+msgstr "بسته"
+
+msgid "No packages available"
+msgstr "هیچ بسته‌ای موجود نیست"
+
+msgid "reviews"
+msgstr "نقد و بررسی‌ها"
+
+msgid "About the book"
+msgstr "درباره کتاب"
+
+msgid "Publication details"
+msgstr "اطلاعات نشر"
+
+msgid "Author"
+msgstr "نویسنده"
+
+msgid "ISBN"
+msgstr "شابک"
+
+msgid "Year of publication"
+msgstr "سال انتشار"
+
+msgid "Translator / edition"
+msgstr "مترجم / ویرایش"
+
+msgid "Pages"
+msgstr "تعداد صفحات"
+
+msgid "Format"
+msgstr "قطع"
+
+msgid "Binding"
+msgstr "نوع صحافی"
+
+msgid "Printing"
+msgstr "چاپ"
+
+msgid "Weight"
+msgstr "وزن"
+
+msgid "This book is in these collections"
+msgstr "این کتاب در این مجموعه‌ها قرار دارد"
+
+msgid "Publisher’s note"
+msgstr "یادداشت ناشر"
+
+msgid "Writing related to this title"
+msgstr "مطالب مرتبط با این عنوان"
+
+msgid "Reader notes"
+msgstr "یادداشت‌های خوانندگان"
+
+msgid ""
+"No notes yet. If you have read this book, your view is useful to other "
+"architects."
+msgstr ""
+"هنوز یادداشتی ثبت نشده است. اگر این کتاب را مطالعه کرده‌اید، نظر شما برای "
+"سایر خوانندگان مفید خواهد بود."
+
+msgid "Rating"
+msgstr "امتیاز"
+
+msgid "Your note"
+msgstr "یادداشت شما"
+
+msgid "Submit"
+msgstr "ارسال"
+
+msgid "Sign in"
+msgstr "وارد شوید"
+
+msgid "to leave a note."
+msgstr "برای گذاشتن یادداشت"
+
+msgid "Same author"
+msgstr "همان نویسنده"
+
+#, python-format
+msgid "More by %(author)s"
+msgstr ""
+
+msgid "Related works"
+msgstr "آثار مرتبط"
+
+msgid "All books by this author"
+msgstr "تمام کتاب‌های این نویسنده"
+
+msgid "Keep exploring"
+msgstr "به کاوش ادامه دهید"
+
+msgid "From the same field of architecture"
+msgstr "از همان حوزه معماری"
+
+msgid "Titles at the publisher’s special price."
+msgstr "عناوین با قیمت ویژه ناشر"
+
+msgid ""
+"Architecture, interior, city, and landscape books — order directly from the "
+"publisher."
+msgstr ""
+"کتاب‌های معماری، طراحی داخلی، شهرسازی و طراحی منظر — سفارش مستقیم از ناشر"
+
+msgid "Show every price"
+msgstr "نمایش همه قیمت‌ها"
+
+msgid "Discounted only"
+msgstr "فقط موارد دارای تخفیف"
+
+msgid "Sort"
+msgstr "مرتب‌سازی"
+
+msgid "Newest"
+msgstr "جدیدترین"
+
+msgid "Lowest price"
+msgstr "کمترین قیمت"
+
+msgid "Highest price"
+msgstr "بیشترین قیمت"
+
+msgid "Title"
+msgstr "عنوان"
+
+msgid "No book matches this filter"
+msgstr "هیچ کتابی با این فیلتر مطابقت ندارد"
+
+msgid "This subject has no discounted titles."
+msgstr "هیچ عنوان تخفیف‌خورده‌ای در این موضوع وجود ندارد."
+
+msgid "This part of the catalog is empty."
+msgstr "این بخش از فهرست خالی است."
+
+msgid "There are no books in this subject yet."
+msgstr "هنوز کتابی در این موضوع وجود ندارد."
+
+msgid "Search Results"
+msgstr "نتایج جستجو"
+
+msgid "Kasra Architecture Bookstore"
+msgstr "کتاب‌فروشی معماری کسری"
+
+msgid "Search results"
+msgstr "نتایج جستجو"
+
+msgid "Search for"
+msgstr "جستجو برای"
+
+msgid "Nothing matched"
+msgstr "موردی یافت نشد"
+
+msgid "No title in the catalog matches this search."
+msgstr "هیچ عنوانی در فهرست با این جستجو مطابقت ندارد."
+
+msgid "Enter something to search for."
+msgstr "عبارتی را برای جستجو وارد کنید."
+
+msgid "Try this:"
+msgstr "این موارد را امتحان کنید:"
+
+msgid "Check the spelling of the title or the author’s name."
+msgstr "املای عنوان یا نام نویسنده را بررسی کنید."
+
+msgid "Use a shorter or more general word."
+msgstr "از واژه‌ای کوتاه‌تر یا کلی‌تر استفاده کنید."
+
+msgid "Open an architecture subject from the menu."
+msgstr "موضوعی مرتبط با معماری را از منو انتخاب کنید."
+
+msgid "From the publisher’s catalog"
+msgstr "از فهرست ناشر"
+
+msgid "Your comment has been submitted and will be shown after approval."
+msgstr "دیدگاه شما ثبت شد و پس از تأیید نمایش داده خواهد شد."
+
+msgid "Please fill all fields."
+msgstr "لطفاً تمام فیلدها را پر کنید."
+
+msgid "Invalid category"
+msgstr "دسته‌بندی نامعتبر"
+
+msgid "This package has no products."
+msgstr "این بسته هیچ محصولی ندارد."
+
+msgid "Invalid discount code"
+msgstr "کد تخفیف نامعتبر"
+
+msgid "This discount code has expired or already been used"
+msgstr "این کد تخفیف منقضی شده یا قبلاً استفاده شده است"
+
+msgid "Discount code applied"
+msgstr "کد تخفیف اعمال شد"
+
+msgid "Shopping Cart"
+msgstr "سبد خرید"
+
+msgid "Decrease"
+msgstr "کاهش"
+
+msgid "Increase"
+msgstr "افزایش"
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Clear Cart"
+msgstr "حذف سبد خرید"
+
+msgid "Order Summary"
+msgstr "خلاصه سفارش"
+
+msgid "Discount code..."
+msgstr "کد تخفیف..."
+
+msgid "Apply"
+msgstr "اعمال"
+
+msgid "Total Items"
+msgstr "تعداد کل اقلام"
+
+msgid "Total Price"
+msgstr "قیمت کل"
+
+msgid "Savings"
+msgstr "صرفه‌جویی"
+
+msgid "Final Price"
+msgstr "قیمت نهایی"
+
+msgid "Proceed to Checkout"
+msgstr "به مرحله پرداخت بروید"
+
+msgid "Your bag is empty"
+msgstr "کیف شما خالی است"
+
+msgid "Add architecture books to your own library."
+msgstr "کتاب‌های معماری را به کتابخانه خود اضافه کنید."
+
+msgid "Browse the catalog"
+msgstr "کاتالوگ را مرور کنید"
+
+msgid "To start a library"
+msgstr "برای شروع یک کتابخانه"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "from cart?"
+msgstr "از سبد خرید؟"
+
+msgid "cart"
+msgstr "سبد خرید"
+
+msgid "total"
+msgstr "جمع کل"
+
+msgid "go to cart"
+msgstr "رفتن به سبد خرید"
+
+msgid "check out"
+msgstr "تسویه حساب"
+
+msgid "Product updated in cart."
+msgstr "محصول در سبد خرید به‌روزرسانی شد."
+
+msgid "Product added to cart."
+msgstr "محصول به سبد خرید اضافه شد."
+
+msgid "Invalid quantity."
+msgstr "تعداد نامعتبر"
+
+msgid "Package added to cart."
+msgstr "بسته به سبد خرید اضافه شد."
+
+msgid "Product removed from cart."
+msgstr "محصول از سبد خرید حذف شد."
+
+msgid "Package removed from cart."
+msgstr "بسته از سبد خرید حذف شد."
+
+msgid "Cart cleared."
+msgstr "سبد خرید خالی شد."
+
+msgid "Cart is already empty."
+msgstr "سبد خرید از قبل خالی است."
+
+msgid "Discount code removed."
+msgstr "کد تخفیف حذف شد."
+
+msgid "User Info"
+msgstr "اطلاعات کاربر"
+
+msgid "Address"
+msgstr "آدرس"
+
+msgid "Payment"
+msgstr "پرداخت"
+
+msgid "Approved"
+msgstr "تأییدشده"
+
+msgid "Rejected"
+msgstr "ردشده"
+
+msgid "Returned"
+msgstr "مرجوع‌شده"
+
+msgid "Status"
+msgstr "وضعیت"
+
+msgid "Updated"
+msgstr "به‌روزرسانی‌شده"
+
+msgid "return requests approved."
+msgstr "درخواست‌های مرجوعی تأیید شدند."
+
+msgid "Approve selected returns"
+msgstr "تأیید موارد مرجوعی انتخاب‌شده"
+
+msgid "return requests rejected."
+msgstr "درخواست‌های مرجوعی رد شدند."
+
+msgid "Reject selected returns"
+msgstr "رد موارد مرجوعی انتخاب‌شده"
+
+msgid "marked as returned."
+msgstr "به‌عنوان مرجوع‌شده علامت‌گذاری شد."
+
+msgid "Mark as returned"
+msgstr "علامت‌گذاری به‌عنوان مرجوع‌شده"
+
+msgid "Reason"
+msgstr "دلیل"
+
+msgid "user"
+msgstr "کاربر"
+
+msgid "is_paid?"
+msgstr "پرداخت شده است؟"
+
+msgid "note"
+msgstr "یادداشت"
+
+msgid "total weight"
+msgstr "وزن کل"
+
+msgid "total price"
+msgstr "قیمت کل"
+
+msgid "payment method"
+msgstr "روش پرداخت"
+
+msgid "Installment"
+msgstr "اقساط"
+
+msgid "installment plan"
+msgstr "طرح اقساطی"
+
+msgid "Product Price"
+msgstr "قیمت محصول"
+
+msgid "order"
+msgstr "سفارش"
+
+msgid "reason"
+msgstr "دلیل"
+
+msgid "status"
+msgstr "وضعیت"
+
+msgid "admin note"
+msgstr "یادداشت مدیر"
+
+msgid "Return Requests"
+msgstr "درخواست‌های مرجوعی"
+
+msgid "My Returns"
+msgstr "مرجوعی‌های من"
+
+msgid "My Return Requests"
+msgstr "درخواست‌های مرجوعی من"
+
+msgid "Return"
+msgstr "مرجوع کردن"
+
+msgid "Admin Note"
+msgstr "یادداشت مدیر"
+
+msgid "No return requests"
+msgstr "هیچ درخواست مرجوعی وجود ندارد"
+
+msgid "You have not submitted any return requests yet."
+msgstr "شما هنوز هیچ درخواست مرجوعی ثبت نکرده‌اید."
+
+msgid "Checkout"
+msgstr "تسویه حساب"
+
+msgid "Order Details"
+msgstr "جزئیات سفارش"
+
+msgid "First Name"
+msgstr "نام"
+
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+msgid "Phone Number"
+msgstr "شماره تلفن"
+
+msgid "Order Notes"
+msgstr "توضیحات سفارش"
+
+msgid "Optional"
+msgstr "اختیاری"
+
+msgid "Payment Method"
+msgstr "روش پرداخت"
+
+msgid "Online Payment"
+msgstr "پرداخت آنلاین"
+
+msgid "Pay securely via SEP gateway"
+msgstr "پرداخت امن از طریق درگاه SEP"
+
+msgid "Installment (3 Months)"
+msgstr "پرداخت اقساطی (۳ ماهه)"
+
+#, python-format
+msgid "30%% prepayment + 3 monthly installments"
+msgstr "۳۰٪ پیش‌پرداخت + ۳ قسط ماهانه"
+
+msgid "Total Amount"
+msgstr "مبلغ کل"
+
+msgid "Prepayment"
+msgstr "پیش‌پرداخت"
+
+msgid "Remaining"
+msgstr "مبلغ باقیمانده"
+
+msgid "Monthly Payment"
+msgstr "قسط ماهانه"
+
+msgid "Submit Order"
+msgstr "ثبت سفارش"
+
+msgid "Your Order"
+msgstr "سفارش شما"
+
+msgid "Your Cart is Empty"
+msgstr "سبد خرید شما خالی است"
+
+msgid "Please add some books to your cart before checking out."
+msgstr "لطفاً پیش از تسویه حساب، چند کتاب به سبد خرید خود اضافه کنید."
+
+msgid "Go Shopping"
+msgstr "برو به فروشگاه"
+
+msgid "Reason for Return"
+msgstr "دلیل مرجوعی"
+
+msgid "Submit Return Request"
+msgstr "ثبت درخواست مرجوعی"
+
+msgid "Back to Order History"
+msgstr "بازگشت به تاریخچه سفارش‌ها"
+
+msgid "Your cart is empty."
+msgstr "سبد خرید شما خالی است."
+
+msgid "Please correct the errors below."
+msgstr "لطفاً خطاهای زیر را اصلاح کنید."
+
+msgid "This order is not paid."
+msgstr "هزینه این سفارش پرداخت نشده است."
+
+msgid "Return period has expired (3 days)."
+msgstr "مهلت مرجوعی به پایان رسیده است (۳ روز)"
+
+msgid "You already have a return request for this order."
+msgstr "شما قبلاً برای این سفارش درخواست مرجوعی ثبت کرده‌اید."
+
+msgid "Your return request has been submitted."
+msgstr "درخواست مرجوعی شما ثبت شد."
+
+#, python-format
+msgid "Error: %(details)s"
+msgstr ""
+
+msgid "postal cart"
+msgstr "کد پستی"
+
+msgid "phone"
+msgstr "تلفن"
+
+msgid "whatsapp"
+msgstr "واتساپ"
+
+msgid "contact_info"
+msgstr "اطلاعات_تماس"
+
+msgid "contact_infos"
+msgstr "اطلاعات_تماس"
+
+msgid "intro_text"
+msgstr "متن_مقدمه"
+
+msgid "invitation_text"
+msgstr "متن_دعوت"
+
+msgid "last updated"
+msgstr "آخرین به‌روزرسانی"
+
+msgid "cooperation"
+msgstr "همکاری"
+
+msgid "cooperations"
+msgstr "همکاری‌ها"
+
+msgid "Only one cooperation record can exist."
+msgstr "تنها یک رکورد برای «همکاری‌ها» می‌تواند وجود داشته باشد."
+
+msgid "text"
+msgstr "متن"
+
+msgid "about_us"
+msgstr "درباره ما"
+
+msgid "about_us_plural"
+msgstr "درباره ما"
+
+msgid "Only one about us record can exist."
+msgstr "تنها یک رکورد برای «درباره ما» می‌تواند وجود داشته باشد."
+
+msgid "updated at"
+msgstr "تاریخ به‌روزرسانی"
+
+msgid "orderus"
+msgstr "سفارش"
+
+msgid "Only one orderus record can exist."
+msgstr "تنها یک رکورد برای «سفارش» می‌تواند وجود داشته باشد."
+
+msgid "WordPress page"
+msgstr "برگه وردپرس"
+
+msgid "WordPress post"
+msgstr "مطلب وردپرس"
+
+msgid "archived page"
+msgstr "صفحه آرشیو‌شده"
+
+msgid "archived pages"
+msgstr "صفحات آرشیو‌شده"
+
+msgid ""
+"The story of Kasra Publishing, a specialized publisher of architecture and "
+"design."
+msgstr "داستان انتشارات کسری، ناشر تخصصی حوزه معماری و طراحی."
+
+msgid "Cooperation"
+msgstr "همکاری"
+
+msgid "Year Established"
+msgstr "سال تأسیس"
+
+msgid "Books Published"
+msgstr "کتاب‌های منتشرشده"
+
+msgid "Customer Satisfaction"
+msgstr "رضایت مشتریان"
+
+msgid "No Information Available"
+msgstr "هیچ اطلاعاتی در دسترس نیست"
+
+msgid ""
+"We would love to hear from you. Reach out through any of the channels below."
+msgstr "از طریق هر یک از کانال های زیر ارتباط برقرار کنید، ما میشنویم."
+
+msgid "Address & Contact Information"
+msgstr "آدرس و اطلاعات تماس"
+
+msgid "Address:"
+msgstr "آدرس:"
+
+msgid "Postal Code:"
+msgstr "کد پستی:"
+
+msgid "Phone Number:"
+msgstr "شماره تلفن:"
+
+msgid "Communication with Sales & Orders Department"
+msgstr "ارتباط با بخش فروش و سفارشات"
+
+msgid "WhatsApp:"
+msgstr "واتس‌اپ:"
+
+msgid "Email:"
+msgstr "ایمیل:"
+
+msgid "No Contact Information"
+msgstr "اطلاعات تماسی موجود نیست"
+
+msgid "Working Hours"
+msgstr "ساعات کاری"
+
+msgid "Saturday - Thursday:"
+msgstr "شنبه تا پنج‌شنبه:"
+
+msgid "Friday:"
+msgstr "جمعه:"
+
+msgid "Closed"
+msgstr "تعطیل"
+
+msgid "Map"
+msgstr "نقشه"
+
+msgid "Open in Maps"
+msgstr "مشاهده در نقشه"
+
+msgid "Everything you need to know about ordering, shipping and payment."
+msgstr "هرآنچه باید درباره ثبت سفارش، ارسال و پرداخت بدانید."
+
+msgid "Fast Delivery"
+msgstr "تحویل سریع"
+
+msgid "Priority mail delivery for all orders"
+msgstr "ارسال با اولویت برای تمام سفارش‌ها"
+
+msgid "Secure Payment"
+msgstr "پرداخت امن"
+
+msgid "Safe and secure online payment"
+msgstr "پرداخت آنلاین ایمن و مطمئن"
+
+msgid "Easy Returns"
+msgstr "مرجوعی آسان"
+
+msgid "Hassle-free return policy within 3 days"
+msgstr "مرجوعی بی‌دردسر ظرف ۳ روز"
+
+msgid "Collaborate with Us"
+msgstr "همکاری با ما"
+
+msgid ""
+"Authors, translators and partners — let's build the future of architecture "
+"publishing together."
+msgstr ""
+"نویسندگان، مترجمان و همکاران؛ بیایید با هم آیندهٔ نشر معماری را بسازیم."
+
+msgid "Join Us"
+msgstr "به ما بپیوندید"
+
+msgid "Last updated:"
+msgstr "آخرین به‌روزرسانی:"
+
+msgid "No Cooperation Information"
+msgstr "اطلاعاتی دربارهٔ همکاری موجود نیست"
 
 #~ msgid "تأیید ایمیل"
 #~ msgstr "تأیید ایمیل"

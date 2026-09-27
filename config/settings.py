@@ -176,7 +176,7 @@ CRISPY_ALLOWED_TEMPLATE_PACK = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOCALE_PATHS = (
-    'templates/locale',
+    os.path.join(BASE_DIR, 'templates', 'locale'),
 )
 
 # phone_number
