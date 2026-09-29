@@ -32,25 +32,37 @@
         {% endif %}
     </header>
 
-    {% if subjects %}
-        {% include "includes/catalog_filters.html" %}
-    {% endif %}
-
     <div class="mb-10 flex flex-wrap items-center justify-between gap-3">
         {% if discount_filter %}
         <a href="{% url 'product:product_list' %}{% if active_category %}?category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">{% trans "Show every price" %}</a>
         {% else %}
-        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="text-[13px] text-muted hover:text-ink">{% trans "Discounted only" %}</a>
+        <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="catalog-filter-link">{% trans "Discounted only" %}</a>
         {% endif %}
-        <label class="mb-0 flex items-center gap-3 text-[13px] font-normal text-faint">
-            {% trans "Sort" %}
-            <select class="catalog-sort" onchange="window.location.href=this.value">
-                <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-datetime_created' %}selected{% endif %}>{% trans "Newest" %}</option>
-                <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'price' %}selected{% endif %}>{% trans "Lowest price" %}</option>
-                <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == '-price' %}selected{% endif %}>{% trans "Highest price" %}</option>
-                <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" {% if sort == 'title' %}selected{% endif %}>{% trans "Title" %}</option>
-            </select>
-        </label>
+        <label class="catalog-sort-wrap">
+    <span>{% trans "Sort" %}</span>
+
+    <select class="catalog-sort" onchange="window.location.href=this.value">
+        <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
+            {% if sort == '-datetime_created' %}selected{% endif %}>
+            {% trans "Newest" %}
+        </option>
+
+        <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
+            {% if sort == 'price' %}selected{% endif %}>
+            {% trans "Lowest price" %}
+        </option>
+
+        <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
+            {% if sort == '-price' %}selected{% endif %}>
+            {% trans "Highest price" %}
+        </option>
+
+        <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
+            {% if sort == 'title' %}selected{% endif %}>
+            {% trans "Title" %}
+        </option>
+    </select>
+</label>
     </div>
 
     <div class="catalog-grid">

@@ -1,5 +1,6 @@
-from django.db.models import Q, Count
+from django.db.models import Q
 from django.views.generic import TemplateView, ListView, DetailView
+from products.contributors import catalog_contributor_groups
 from products.models import Product, Package
 from products.taxonomy import catalog_subjects
 from .models import ContactInfo, CooperationInfo, AboutUs, OrderCondition, SitePage
@@ -32,13 +33,7 @@ class HomePageView(TemplateView):
         )
         context['bestsellers'] = bestsellers or active.order_by('-avg_rating', '-datetime_created')[:8]
         context['subjects'] = catalog_subjects()
-        context['featured_authors'] = list(
-            Product.objects.filter(active=True)
-            .exclude(author='')
-            .values('author')
-            .annotate(book_count=Count('id'))
-            .order_by('-book_count', 'author')[:10]
-        )
+        context['contributor_groups'] = catalog_contributor_groups()
         context['catalog_count'] = active.count()
         return context
 

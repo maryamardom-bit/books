@@ -66,40 +66,42 @@
             }
         }
     </script>
+    <style>
+        :root {
+            --paper: 255 255 255;
+            --surface: 246 243 238;
+            --ink: 28 25 21;
+            --ink-2: 64 58 50;
+            --muted: 122 114 104;
+            --faint: 168 160 148;
+            --line: 228 221 210;
+            --accent: 168 138 60;
+            --accent-strong: 139 111 43;
+            --accent-soft: 246 240 221;
+            --danger: 181 70 50;
+            --danger-soft: 251 236 233;
+            --success: 46 122 84;
+            --success-soft: 232 243 236;
+        }
+        .dark {
+            --paper: 16 14 12;
+            --surface: 26 23 20;
+            --ink: 244 239 230;
+            --ink-2: 210 202 190;
+            --muted: 164 156 144;
+            --faint: 118 110 98;
+            --line: 52 46 38;
+            --accent: 206 174 92;
+            --accent-strong: 220 192 122;
+            --accent-soft: 46 38 22;
+            --danger: 232 140 122;
+            --danger-soft: 56 30 26;
+            --success: 132 186 150;
+            --success-soft: 26 40 32;
+        }
+    </style>
     <style type="text/tailwindcss">
         @layer base {
-            :root {
-                --paper: 255 255 255;
-                --surface: 246 243 238;
-                --ink: 28 25 21;
-                --ink-2: 64 58 50;
-                --muted: 122 114 104;
-                --faint: 168 160 148;
-                --line: 228 221 210;
-                --accent: 168 138 60;
-                --accent-strong: 139 111 43;
-                --accent-soft: 246 240 221;
-                --danger: 181 70 50;
-                --danger-soft: 251 236 233;
-                --success: 46 122 84;
-                --success-soft: 232 243 236;
-            }
-            .dark {
-                --paper: 16 14 12;
-                --surface: 26 23 20;
-                --ink: 244 239 230;
-                --ink-2: 210 202 190;
-                --muted: 164 156 144;
-                --faint: 118 110 98;
-                --line: 52 46 38;
-                --accent: 206 174 92;
-                --accent-strong: 220 192 122;
-                --accent-soft: 46 38 22;
-                --danger: 232 140 122;
-                --danger-soft: 56 30 26;
-                --success: 132 186 150;
-                --success-soft: 26 40 32;
-            }
             html { @apply bg-paper text-ink-2; }
             body { @apply min-h-screen bg-paper font-sans text-[15px] leading-relaxed text-ink-2 antialiased; }
             h1, h2, h3, h4, h5, h6 { @apply font-bold text-ink; }
@@ -142,6 +144,12 @@
                 @apply pointer-events-none absolute inset-x-3 bottom-0 h-px bg-ink;
             }
             .catalog-chip .n { @apply text-[11px] font-normal tabular-nums; color: rgb(var(--faint)); }
+            .catalog-filter-link {
+                @apply inline-block origin-center rounded px-1.5 py-0.5 text-[13px] text-muted no-underline transition-all duration-200;
+            }
+            .catalog-filter-link:hover {
+                @apply scale-[1.08] bg-accent-soft font-medium text-ink;
+            }
             .subject-grid { @apply grid gap-px overflow-hidden rounded-none border border-line bg-line sm:grid-cols-2; }
             .subject-cell {
                 @apply flex min-h-[9.5rem] flex-col justify-between bg-paper p-6 transition sm:p-8;
@@ -159,11 +167,34 @@
             .catalog-mark {
                 @apply absolute top-3 start-3 text-[10px] font-normal tracking-[0.14em] text-ink;
             }
-            .catalog-sort {
-                appearance: none;
-                @apply cursor-pointer rounded-none border-0 border-b border-line bg-transparent px-0 py-1 pe-5 text-[13px] text-ink shadow-none;
+            label.catalog-sort-wrap {
+                @apply mb-0 flex items-center justify-center gap-3 text-[13px] font-normal text-muted;
             }
-            .catalog-sort:focus { @apply border-ink outline-none ring-0; }
+            .catalog-sort {
+                color-scheme: light;
+                appearance: none;
+                text-align: center;
+                text-align-last: center;
+                background-repeat: no-repeat;
+                background-position: left 0.75rem center;
+                background-size: 0.7rem 0.45rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%237a7268' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+                @apply w-auto min-w-[9.5rem] cursor-pointer rounded border border-line bg-paper px-3 py-2 text-center font-sans text-[13px] font-normal text-muted shadow-none outline-none ring-0 transition-all duration-200;
+            }
+            .dark .catalog-sort {
+                color-scheme: dark;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23a49c90' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+            }
+            .catalog-sort:hover,
+            .catalog-sort:focus {
+                @apply scale-[1.04] border-line bg-accent-soft font-medium text-ink outline-none ring-0;
+            }
+            .catalog-sort option {
+                @apply bg-paper text-center font-sans text-[13px] font-normal text-ink;
+            }
+            .catalog-sort option:checked {
+                @apply bg-accent-soft font-medium text-ink;
+            }
             .catalog-pager { @apply mt-16 flex items-center justify-center gap-6 text-[13px]; }
             .catalog-pager a { color: rgb(var(--muted)); }
             .catalog-pager a:hover { color: rgb(var(--ink)); }

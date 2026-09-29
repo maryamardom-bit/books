@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product, Comment, Package
 from .forms import CommentForm
 from .search import build_search_q
+from .contributors import contributor_book_filter
 from .taxonomy import catalog_subjects, EXCLUDED_CATEGORIES
 from cart.forms import AddToCartProductForm
 
@@ -348,10 +349,11 @@ def package_comment(request, slug):
 
 
 def author_books_view(request, author_name):
-    """Display books by specific author"""
+    """Books where this person is the author or the translator."""
     books = Product.objects.with_ratings().filter(
-        author=author_name,
-        active=True
+        active=True,
+    ).filter(
+        contributor_book_filter(author_name),
     ).order_by('-datetime_created')
     
     paginator = Paginator(books, 12)

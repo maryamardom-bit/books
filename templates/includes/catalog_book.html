@@ -44,7 +44,10 @@
         <form action="{% url 'cart:cart_add' product.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="text-[11px] tracking-wide text-muted transition-colors hover:text-accent-strong" aria-label="{% trans 'Add to Cart' %}">{% trans "Bag" %}</button>
+            <button type="submit" class="inline-flex items-center gap-2 text-muted transition duration-200 hover:scale-110 hover:text-accent-strong">
+                <span class="text-[13px] tracking-wide">{% trans "Shopping cart" %}</span>
+                <i class="fas fa-bag-shopping text-2xl" aria-hidden="true"></i>
+            </button>
         </form>
     </div>
 </article>

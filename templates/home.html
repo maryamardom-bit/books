@@ -7,6 +7,201 @@
 {% block page_title %}{% trans "Kasra Publishing" %} | {% trans "Architecture and design publisher" %}{% endblock %}
 {% block meta_description %}{% trans "Kasra Publishing catalog: architecture, interior, city, and landscape books — order directly from the publisher." %}{% endblock %}
 
+{% block extra_css %}
+<style>
+    .home-subjects .cat-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.9rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .home-subjects .cat-item { min-width: 0; display: flex; }
+    .home-subjects .cat-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100%;
+        border: 1px solid rgb(var(--line));
+        background: rgb(var(--paper));
+        color: rgb(var(--ink-2));
+        text-decoration: none;
+        transition: border-color 0.35s ease;
+    }
+    .home-subjects .cat-card:hover {
+        border-color: rgb(var(--ink) / 0.32);
+        color: rgb(var(--ink-2));
+    }
+    .home-subjects .cat-card:focus { outline: none; }
+    .home-subjects .cat-card:focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 3px;
+    }
+    .home-subjects .cat-plate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 16 / 9;
+        padding: 1rem 1.15rem 0.75rem;
+        border-bottom: 1px solid rgb(var(--line));
+        background: rgb(var(--surface));
+        color: rgb(var(--ink) / 0.78);
+        overflow: hidden;
+    }
+    .home-subjects .cat-plate svg {
+        width: min(100%, 15.5rem);
+        height: auto;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transform: scale(1);
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .home-subjects .cat-plate .is-accent { stroke: rgb(var(--accent)); }
+    .home-subjects .cat-plate .is-fill { fill: currentColor; stroke: none; }
+    .home-subjects .cat-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 1.15rem 1.2rem 1.15rem;
+    }
+    .home-subjects .cat-title {
+        margin: 0.15rem 0 0;
+        text-align: right;
+        min-height: 3.1em;
+        font-size: 1.35rem;
+        font-weight: 400;
+        line-height: 1.55;
+        letter-spacing: -0.015em;
+        color: rgb(var(--ink));
+    }
+    .home-subjects .cat-blurb {
+        margin: 0;
+        min-height: 3.8em;
+        font-size: 0.92rem;
+        font-weight: 400;
+        line-height: 1.9;
+        color: rgb(var(--muted));
+    }
+    .home-subjects .cat-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: auto;
+        padding-top: 1.05rem;
+    }
+    .home-subjects .cat-count {
+        margin: 0;
+        font-size: 0.8rem;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+        color: rgb(var(--muted));
+        white-space: nowrap;
+    }
+    .home-subjects .cat-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: rgb(var(--accent-strong));
+        white-space: nowrap;
+    }
+    .home-subjects .cat-arrow {
+        display: block;
+        transition: transform 0.35s ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+        .home-subjects .cat-cta { opacity: 0.72; transition: opacity 0.35s ease; }
+        .home-subjects .cat-card:hover .cat-cta,
+        .home-subjects .cat-card:focus-visible .cat-cta { opacity: 1; }
+        .home-subjects .cat-card:hover .cat-plate svg,
+        .home-subjects .cat-card:focus-visible .cat-plate svg { transform: scale(1.015); }
+        .home-subjects .cat-card:hover .cat-arrow,
+        .home-subjects .cat-card:focus-visible .cat-arrow { transform: translateX(-4px); }
+    }
+    @media (min-width: 768px) {
+        .home-subjects .cat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.05rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .home-subjects .cat-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.2rem;
+        }
+    }
+    @media (max-width: 767px) {
+        .home-subjects .cat-title { font-size: 1.28rem; min-height: 3.1em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .home-subjects .cat-card,
+        .home-subjects .cat-plate svg,
+        .home-subjects .cat-arrow,
+        .home-subjects .cat-cta { transition: none; }
+        .home-subjects .cat-card:hover .cat-plate svg,
+        .home-subjects .cat-card:focus-visible .cat-plate svg,
+        .home-subjects .cat-card:hover .cat-arrow,
+        .home-subjects .cat-card:focus-visible .cat-arrow { transform: none; }
+    }
+
+    .contrib-names {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 0.5rem 0.75rem;
+        align-items: stretch;
+    }
+    .contrib-names > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        width: 100%;
+        min-width: 0;
+        height: 3.25rem;
+        margin: 0;
+        padding: 0.4rem 1rem;
+        box-sizing: border-box;
+        border: 1px solid rgb(var(--line));
+        border-radius: 999px;
+        background: rgb(var(--paper));
+        color: rgb(var(--ink));
+        text-decoration: none;
+    }
+    .contrib-names > a:hover { border-color: rgb(var(--accent)); color: rgb(var(--ink)); }
+    .contrib-person {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-align: start;
+        line-height: 1.35;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    .contrib-count {
+        flex: none;
+        font-variant-numeric: tabular-nums;
+        color: rgb(var(--faint));
+    }
+    @media (min-width: 640px) {
+        .contrib-names { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+        .contrib-names { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1280px) {
+        .contrib-names { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 {% if featured_book %}
 <section class="border-b border-line bg-surface">
@@ -64,7 +259,7 @@
 {% endif %}
 
 {% if subjects %}
-<section class="mx-auto max-w-page px-4 py-16 sm:px-6">
+<section class="home-subjects mx-auto max-w-page px-4 py-16 sm:px-6">
     <div class="mb-8 flex items-end justify-between gap-4">
         <div>
             <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Subjects" %}</p>
@@ -72,17 +267,29 @@
         </div>
         <a href="{% url 'product:product_category' %}" class="text-sm font-bold text-accent-strong">{% trans "All subjects" %}</a>
     </div>
-    <div class="subject-grid lg:grid-cols-3">
+    <ul class="cat-grid">
         {% for subject in subjects %}
-        <a href="{% url 'product:product_list_by_category' category=subject.code %}" class="subject-cell">
-            <div>
-                <h3 class="mb-2 text-lg font-normal tracking-tight text-ink">{{ subject.name }}</h3>
-                <p class="text-sm font-normal leading-6 text-muted">{{ subject.blurb }}</p>
-            </div>
-            <p class="mt-8 text-[11px] tabular-nums tracking-wide text-faint">{{ subject.count|translate_number }} {% trans "titles" %}</p>
-        </a>
+        <li class="cat-item">
+            <a class="cat-card" href="{% url 'product:product_list_by_category' category=subject.code %}">
+                <div class="cat-plate" aria-hidden="true">
+                    {% include "products/includes/category_plate.html" with code=subject.code %}
+                </div>
+                <div class="cat-body">
+                    <h3 class="cat-title" dir="auto">{{ subject.english }}</h3>
+                    <p class="cat-blurb">{{ subject.blurb }}</p>
+                    <div class="cat-foot">
+                        <p class="cat-count">{{ subject.count|translate_number }} {% trans "titles" %}</p>
+                        <span class="cat-cta">{% trans "View books" %}
+                            <svg class="cat-arrow" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                                <path d="M10.5 3.5 L5.5 8 L10.5 12.5" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </li>
         {% endfor %}
-    </div>
+    </ul>
 </section>
 {% endif %}
 
@@ -121,7 +328,7 @@
         </div>
         <div class="book-grid">
             {% for product in bestsellers %}
-                {% include "includes/book_card.html" with product=product rank=forloop.counter %}
+                {% include "includes/book_card.html" with product=product %}
             {% endfor %}
         </div>
     </div>
@@ -173,22 +380,39 @@
 </section>
 {% endif %}
 
-{% if featured_authors %}
-<section class="mx-auto max-w-page px-4 py-16 sm:px-6">
+{% if contributor_groups %}
+<section class="mx-auto max-w-page px-4 py-16 sm:px-6" x-data="{ letter: '' }">
     <div class="mb-8 flex items-end justify-between">
         <div>
             <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Authors" %}</p>
-            <h2 class="text-2xl font-bold">{% trans "Voices in the catalog" %}</h2>
+            <h2 class="text-2xl font-bold">{% trans "Authors and translators" %}</h2>
         </div>
         <a href="{% url 'product:author_list' %}" class="text-sm font-bold text-accent-strong">{% trans "Author index" %}</a>
     </div>
-    <div class="flex flex-wrap gap-2">
-        {% for item in featured_authors %}
-        <a href="{% url 'product:author_books' author_name=item.author %}" class="rounded-full border border-line bg-paper px-4 py-2 text-sm hover:border-accent">
-            {{ item.author }} <span class="text-faint">{{ item.book_count|translate_number }}</span>
-        </a>
+    <nav class="flex flex-wrap gap-2" aria-label="{% trans 'Authors and translators' %}">
+        {% for group in contributor_groups %}
+            {% if group.people %}
+            <button type="button" class="inline-flex h-9 min-w-9 items-center justify-center rounded-full border px-2 text-sm font-bold" :class="letter === '{{ group.slug }}' ? 'border-ink bg-ink text-white' : 'border-line bg-paper text-ink hover:border-accent'" :aria-pressed="letter === '{{ group.slug }}'" @click="letter = '{{ group.slug }}'">{{ group.letter }}</button>
+            {% else %}
+            <span class="inline-flex h-9 min-w-9 items-center justify-center rounded-full px-2 text-sm text-faint">{{ group.letter }}</span>
+            {% endif %}
         {% endfor %}
-    </div>
+    </nav>
+    {% for group in contributor_groups %}
+        {% if group.people %}
+        <div id="contrib-{{ group.slug }}" class="mt-8" x-show="letter === '{{ group.slug }}'" x-cloak>
+            <h3 class="mb-3 text-lg font-bold">{{ group.letter }}</h3>
+            <div class="contrib-names">
+                {% for item in group.people %}
+                <a href="{% url 'product:author_books' author_name=item.author %}">
+                    <span class="contrib-person">{{ item.author }}</span>
+                    <span class="contrib-count">{{ item.book_count|translate_number }}</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
 </section>
 {% endif %}
 

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-26 12:21+0330\n"
-"PO-Revision-Date: 2026-09-27 11:23+0330\n"
+"PO-Revision-Date: 2026-09-27 11:51+0330\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -307,7 +307,6 @@ msgstr "تولدت مبارک"
 msgid "Your discount code"
 msgstr "کد تخفیف شما"
 
-#, python-format
 msgid "Get 20% discount on your next purchase"
 msgstr "دریافت ۲۰٪ تخفیف برای خرید بعدی"
 
@@ -543,6 +542,9 @@ msgstr "تمام مجموعه‌ها"
 
 msgid "Voices in the catalog"
 msgstr "صداهای موجود در فهرست"
+
+msgid "Authors and translators"
+msgstr "نویسندگان و مترجمان"
 
 msgid "Author index"
 msgstr "نمایه نویسندگان"
