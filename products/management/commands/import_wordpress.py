@@ -486,6 +486,8 @@ class Command(BaseCommand):
         if product.image and not pkg.image:
             pkg.image = product.image
             pkg.save(update_fields=['image'])
+        from products.package_books import assign_package_books
+        assign_package_books(pkg, html_source=description)
 
     def _import_pages(self):
         self.stdout.write('Importing publisher pages…')

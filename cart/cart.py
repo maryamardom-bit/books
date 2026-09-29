@@ -31,35 +31,71 @@ class Cart:
                 return int(parts[1])
             return None
     
+    def _stock_limit(self, item, is_package):
+        if is_package:
+            return int(item.stock or 0)
+        return int(item.available_stock or 0)
+
     def add(self, item, quantity=1, replace_current_quantity=False, is_package=False):
         """
         Add a product or package to the cart or update its quantity.
+
+        Returns 'ok', 'limited' when the request was cut to available stock,
+        or 'out_of_stock' when nothing could be added.
         """
         item_type = 'package' if is_package else 'product'
         item_id = f'{item_type}_{item.id}'
-        
-        # محاسبه وزن مناسب
+        if not getattr(item, 'active', True):
+            return 'out_of_stock'
+        limit = self._stock_limit(item, is_package)
+
+        existing = self.cart.get(item_id)
+        current = int(existing.get('quantity') or 0) if isinstance(existing, dict) else 0
+        requested = quantity if replace_current_quantity else current + quantity
+        if limit <= 0 or requested <= 0:
+            return 'out_of_stock'
+
+        status = 'limited' if requested > limit else 'ok'
+        requested = min(requested, limit)
+
         if is_package:
             weight = item.get_total_weight()
         else:
             weight = item.weight if item.weight else 0
-        
-        if item_id not in self.cart:
+
+        if not isinstance(existing, dict):
             self.cart[item_id] = {
-                'quantity': 0,
+                'quantity': requested,
                 'price': str(item.price),
                 'item_type': item_type,
                 'is_package': is_package,
                 'title': item.title,
                 'weight': str(weight),
             }
-        
-        if replace_current_quantity:
-            self.cart[item_id]['quantity'] = quantity
         else:
-            self.cart[item_id]['quantity'] += quantity
-        
+            existing['quantity'] = requested
+
         self.save()
+        return status
+
+    def decrease(self, item, quantity=1, is_package=False):
+        """
+        Remove one or more of an item. Returns 'decreased', 'removed', or 'missing'.
+        """
+        item_type = 'package' if is_package else 'product'
+        item_id = f'{item_type}_{item.id}'
+        entry = self.cart.get(item_id)
+        if not isinstance(entry, dict) or not entry.get('quantity'):
+            return 'missing'
+
+        entry['quantity'] = int(entry['quantity']) - quantity
+        if entry['quantity'] <= 0:
+            del self.cart[item_id]
+            self.save()
+            return 'removed'
+
+        self.save()
+        return 'decreased'
     
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
@@ -104,28 +140,41 @@ class Cart:
                 continue
             
             quantity = item_data['quantity']
-            
-            # ساخت dict جدید برای yield
+            is_package = item_data.get('item_type') == 'package'
             result = {
+                'key': item_id,
                 'quantity': quantity,
                 'title': item_data.get('title', ''),
-                'is_package': item_data.get('is_package', False),
+                'is_package': is_package,
                 'item_type': item_data.get('item_type', 'product'),
+                'author': '',
             }
-            
-            if item_data.get('item_type') == 'package':
+
+            if is_package:
                 package = packages.get(item_id_int)
-                if package:
-                    result['package_obj'] = package
-                    result['price'] = str(package.price)
-                    result['total_price'] = str(package.price * quantity)
+                if not package:
+                    continue
+                result['package_obj'] = package
+                result['title'] = package.title
+                result['price'] = package.price
+                result['original_price'] = package.original_price
+                result['total_price'] = package.price * quantity
+                result['image'] = package.image
+                result['stock_limit'] = int(package.stock or 0)
             else:
                 product = products.get(item_id_int)
-                if product:
-                    result['product_obj'] = product
-                    result['price'] = str(product.get_discounted_price())
-                    result['total_price'] = str(product.get_discounted_price() * quantity)
-            
+                if not product:
+                    continue
+                discounted = product.get_discounted_price()
+                result['product_obj'] = product
+                result['title'] = product.title
+                result['author'] = product.author
+                result['price'] = discounted
+                result['original_price'] = product.price
+                result['total_price'] = discounted * quantity
+                result['image'] = product.image
+                result['stock_limit'] = int(product.available_stock or 0)
+
             yield result
     
     def __len__(self):
@@ -169,6 +218,70 @@ class Cart:
             total_savings += savings * item['quantity']
         return total_savings
     
+    def reconcile(self):
+        """
+        Drop items that are gone or out of stock, and cap quantities to stock.
+        Returns human-readable notes for the shopper.
+        """
+        notes = []
+        product_ids = []
+        package_ids = []
+        rows = []
+
+        for key, data in list(self.cart.items()):
+            if not isinstance(data, dict) or 'item_type' not in data:
+                continue
+            item_id = self._extract_item_id(key)
+            if item_id is None:
+                del self.cart[key]
+                continue
+            rows.append((key, data, item_id))
+            if data.get('item_type') == 'package':
+                package_ids.append(item_id)
+            else:
+                product_ids.append(item_id)
+
+        products = {
+            product.id: product
+            for product in Product.objects.filter(id__in=product_ids, active=True)
+        }
+        packages = {
+            package.id: package
+            for package in Package.objects.filter(id__in=package_ids, active=True)
+        }
+        changed = False
+
+        for key, data, item_id in rows:
+            if data.get('item_type') == 'package':
+                obj = packages.get(item_id)
+                limit = int(obj.stock or 0) if obj else 0
+            else:
+                obj = products.get(item_id)
+                limit = int(obj.available_stock or 0) if obj else 0
+            title = obj.title if obj else data.get('title', '')
+            quantity = int(data.get('quantity') or 0)
+
+            if obj is None or limit <= 0:
+                del self.cart[key]
+                changed = True
+                notes.append(
+                    _('“%(title)s” was removed because it is no longer available.')
+                    % {'title': title}
+                )
+                continue
+
+            if quantity > limit:
+                data['quantity'] = limit
+                changed = True
+                notes.append(
+                    _('Quantity of “%(title)s” was reduced to the available stock.')
+                    % {'title': title}
+                )
+
+        if changed:
+            self.save()
+        return notes
+
     def clear(self):
         if settings.CART_SESSION_ID in self.session:
             del self.session[settings.CART_SESSION_ID]

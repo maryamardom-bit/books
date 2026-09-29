@@ -113,7 +113,32 @@ class PackageModelTest(TestCase):
         
         # ساخت پکیج با محصولات
         self.package = PackageFactory(products=[self.product1, self.product2])
-        
+
+    def test_counts_books_named_in_the_description(self):
+        first = ProductFactory(title='شبکه های فضایی و احجام هندسی')
+        second = ProductFactory(title='بازخوانی [بازطراحی]؛ اصول بازطراحی معماری داخلی')
+        package = PackageFactory(
+            description=(
+                '<a href="https://example.com/?product=شبکه-های-فضایی">شبکه های فضایی و احجام هندسی</a>'
+                '<a href="https://example.com/?product=بازخوانی-بازطراحی؛-اصول-بازطراحی-معماری">بازخوانی [باطراحی]</a>'
+            ),
+            manual_price=500000,
+            price=500000,
+        )
+        from products.package_books import assign_package_books
+        assign_package_books(package)
+        package.refresh_from_db()
+        self.assertEqual(package.get_products_count(), 2)
+        self.assertCountEqual(
+            package.products.values_list('pk', flat=True),
+            [first.pk, second.pk],
+        )
+        self.assertEqual(package.price, 500000)
+
+    def test_package_without_listed_books_counts_as_one(self):
+        package = PackageFactory(description='')
+        self.assertEqual(package.get_products_count(), 1)
+
 class DiscountCodeTest(TestCase):
     """Test DiscountCode model"""
     

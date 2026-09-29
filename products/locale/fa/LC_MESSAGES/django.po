@@ -456,8 +456,8 @@ msgstr "Categories"
 msgid "Search categories"
 msgstr "Search categories"
 
-msgid "Name in English or Persian"
-msgstr "Name in English or Persian"
+msgid "Category name in Persian"
+msgstr "نام دسته‌بندی به فارسی"
 
 msgid "subjects"
 msgstr "subjects"

@@ -1,6 +1,8 @@
 from django.db.models import Q
+from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, ListView, DetailView
-from products.contributors import catalog_contributor_groups
+from persian_translate.templatetags.persian_translation_tags import translate_number
+from products.contributors import catalog_author_count, catalog_contributor_groups
 from products.models import Product, Package
 from products.taxonomy import catalog_subjects
 from .models import ContactInfo, CooperationInfo, AboutUs, OrderCondition, SitePage
@@ -45,6 +47,16 @@ class AboutUsPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['aboutus'] = AboutUs.objects.first()
         context['cooperation'] = CooperationInfo.objects.first()
+        book_count = Product.objects.filter(active=True).count()
+        author_count = catalog_author_count()
+        context['book_count'] = book_count
+        context['author_count'] = author_count
+        context['book_stat_message'] = _(
+            'Kasra Publishing currently has %(count)s published books.'
+        ) % {'count': translate_number(book_count)}
+        context['author_stat_message'] = _(
+            'Kasra Publishing currently has %(count)s authors.'
+        ) % {'count': translate_number(author_count)}
         return context
 
 class ContactUsPageView(TemplateView):

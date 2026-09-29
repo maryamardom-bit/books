@@ -358,8 +358,11 @@ class Package(models.Model):
         )['total'] or 0
     
     def get_products_count(self):
-        """Get number of active products"""
-        return self.products.filter(active=True).count()
+        """Number of books in this package."""
+        count = self.products.count()
+        if count or "href=" in (self.description or ""):
+            return count
+        return 1
     
     def get_total_weight(self):
         """Calculate total weight"""

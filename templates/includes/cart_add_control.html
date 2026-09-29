@@ -1,0 +1,14 @@
+{% load i18n %}
+<form action="{% if package %}{% url 'cart:cart_add_package' package.id %}{% else %}{% url 'cart:cart_add' product.id %}{% endif %}" method="post" class="js-add-cart inline-flex items-center gap-3 text-muted">
+    {% csrf_token %}
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-full transition duration-200 hover:scale-110 hover:text-accent-strong" aria-label="{% trans 'Add to Cart' %}">
+        <i class="fas fa-plus text-sm" aria-hidden="true"></i>
+    </button>
+    <button type="submit" class="inline-flex items-center justify-center text-ink transition duration-200 hover:scale-110 hover:text-accent-strong" aria-label="{% trans 'Add to Cart' %}">
+        <i class="fas fa-bag-shopping text-2xl" aria-hidden="true"></i>
+    </button>
+    <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-full transition duration-200 hover:scale-110 hover:text-accent-strong" formaction="{% if package %}{% url 'cart:cart_decrease_package' package.id %}{% else %}{% url 'cart:cart_decrease' product.id %}{% endif %}" aria-label="{% trans 'Remove one from cart' %}">
+        <i class="fas fa-minus text-sm" aria-hidden="true"></i>
+    </button>
+</form>

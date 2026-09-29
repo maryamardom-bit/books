@@ -71,15 +71,18 @@
 
             {% if product.available_stock > 0 %}
             <p class="mb-4 text-sm font-bold text-success">{% trans "In stock" %}</p>
-            <form action="{% url 'cart:cart_add' product.id %}" method="post" class="flex flex-wrap items-center gap-3" x-data="{ qty: 1, max: {{ product.available_stock }} }">
+            <form action="{% url 'cart:cart_add' product.id %}" method="post" class="js-add-cart flex flex-col gap-3 sm:flex-row sm:items-center" x-data="{ qty: 1, max: {{ product.available_stock }} }">
                 {% csrf_token %}
                 <input type="hidden" name="inplace" value="false">
-                <div class="flex items-center gap-2">
-                    <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" @click="qty = Math.max(1, qty - 1)">−</button>
-                    <input type="number" name="quantity" :value="qty" min="1" :max="max" class="w-16 rounded-full py-2 text-center">
-                    <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" @click="qty = Math.min(max, qty + 1)">+</button>
+                <div class="qty-step inline-flex h-11 items-center self-start rounded-full border border-line bg-paper">
+                    <button type="button" class="inline-flex h-11 w-11 items-center justify-center text-lg leading-none text-ink hover:text-accent-strong" @click="qty = Math.max(1, qty - 1)" aria-label="{% trans 'Decrease' %}">−</button>
+                    <input type="number" name="quantity" x-model.number="qty" min="1" :max="max" readonly class="!w-10 !border-0 !bg-transparent !p-0 text-center text-sm font-bold !shadow-none !ring-0" aria-label="{% trans 'Quantity' %}">
+                    <button type="button" class="inline-flex h-11 w-11 items-center justify-center text-lg leading-none text-ink hover:text-accent-strong" @click="qty = Math.min(max, qty + 1)" aria-label="{% trans 'Increase' %}">+</button>
                 </div>
-                <button type="submit" class="btn btn-accent btn-lg">{% trans "Add to Cart" %}</button>
+                <button type="submit" class="btn btn-accent h-11 px-6">
+                    <i class="fas fa-bag-shopping text-sm" aria-hidden="true"></i>
+                    {% trans "Add to Cart" %}
+                </button>
             </form>
             {% else %}
             <div class="rounded-xl bg-danger-soft p-4 font-bold text-danger">{% trans "Out of stock" %}</div>
@@ -87,26 +90,76 @@
         </div>
     </div>
 
-    <div class="mt-14 grid gap-10 lg:grid-cols-12">
-        <div class="lg:col-span-7">
-            <h2 class="mb-4 text-xl">{% trans "About the book" %}</h2>
-            <div class="prose-cms">{{ product.description|safe }}</div>
-        </div>
-        <div class="lg:col-span-5">
+    <div class="mt-14 grid items-start gap-6 lg:grid-cols-12">
+        <article class="rounded-2xl border border-line bg-paper p-5 sm:p-7 lg:col-span-7">
+            <h2 class="mb-4 border-b border-line pb-3 text-xl">{% trans "About the book" %}</h2>
+            <div class="book-prose text-sm text-ink-2">{{ product.description|safe }}</div>
+        </article>
+        <aside class="rounded-2xl border border-line bg-surface p-5 sm:p-6 lg:col-span-5">
             <h2 class="mb-4 text-xl">{% trans "Publication details" %}</h2>
-            <dl class="divide-y divide-line text-sm">
-                {% if product.author %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Author" %}</dt><dd><a href="{% url 'product:author_books' author_name=product.author %}">{{ product.author }}</a></dd></div>{% endif %}
-                {% if product.publisher %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Publisher" %}</dt><dd>{{ product.publisher }}</dd></div>{% endif %}
-                {% if product.isbn %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "ISBN" %}</dt><dd dir="ltr">{{ product.isbn }}</dd></div>{% endif %}
-                {% if product.year_of_publication %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Year of publication" %}</dt><dd>{{ product.year_of_publication }}</dd></div>{% endif %}
-                {% if product.edition %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Translator / edition" %}</dt><dd>{{ product.edition }}</dd></div>{% endif %}
-                {% if product.number_of_pages %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Pages" %}</dt><dd>{{ product.number_of_pages|translate_number }}</dd></div>{% endif %}
-                {% if product.book_size %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Format" %}</dt><dd>{{ product.get_book_size_display }}</dd></div>{% endif %}
-                {% if product.cover_type %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Binding" %}</dt><dd>{{ product.get_cover_type_display }}</dd></div>{% endif %}
-                {% if product.printing_series %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Printing" %}</dt><dd>{{ product.printing_series }}</dd></div>{% endif %}
-                {% if product.weight %}<div class="flex justify-between gap-4 py-3"><dt class="text-muted">{% trans "Weight" %}</dt><dd>{{ product.weight|translate_number }} {% trans "g" %}</dd></div>{% endif %}
+            <dl class="overflow-hidden rounded-xl border border-line bg-paper text-sm">
+                {% if product.author %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-pen-nib w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Author" %}</dt>
+                    <dd class="text-end font-bold text-ink"><a href="{% url 'product:author_books' author_name=product.author %}">{{ product.author }}</a></dd>
+                </div>
+                {% endif %}
+                {% if product.publisher %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-building w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Publisher" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.publisher }}</dd>
+                </div>
+                {% endif %}
+                {% if product.isbn %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-barcode w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "ISBN" %}</dt>
+                    <dd class="text-end font-bold text-ink" dir="ltr">{{ product.isbn }}</dd>
+                </div>
+                {% endif %}
+                {% if product.year_of_publication %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-calendar w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Year of publication" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.year_of_publication }}</dd>
+                </div>
+                {% endif %}
+                {% if product.edition %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-language w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Translator / edition" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.edition }}</dd>
+                </div>
+                {% endif %}
+                {% if product.number_of_pages %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-file-lines w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Pages" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.number_of_pages|translate_number }}</dd>
+                </div>
+                {% endif %}
+                {% if product.book_size %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-ruler-combined w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Format" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.get_book_size_display }}</dd>
+                </div>
+                {% endif %}
+                {% if product.cover_type %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-book w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Binding" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.get_cover_type_display }}</dd>
+                </div>
+                {% endif %}
+                {% if product.printing_series %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-print w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Printing" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.printing_series }}</dd>
+                </div>
+                {% endif %}
+                {% if product.weight %}
+                <div class="flex items-center justify-between gap-4 border-b border-line px-4 py-3 last:border-b-0">
+                    <dt class="flex items-center gap-2 text-muted"><i class="fas fa-weight-hanging w-4 text-center text-[11px] text-accent-strong" aria-hidden="true"></i>{% trans "Weight" %}</dt>
+                    <dd class="text-end font-bold text-ink">{{ product.weight|translate_number }} {% trans "g" %}</dd>
+                </div>
+                {% endif %}
             </dl>
-        </div>
+        </aside>
     </div>
 
     {% if product_packages %}
@@ -194,6 +247,13 @@
     </div>
     {% endif %}
 
+    <script>
+        document.querySelectorAll('.book-prose a[href*=".pdf"]').forEach(function (link) {
+            if (!link.getAttribute('aria-label') && !link.textContent.trim()) {
+                link.setAttribute('aria-label', 'دانلود PDF');
+            }
+        });
+    </script>
     {% if related_products %}
     <div class="mt-16">
         <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Keep exploring" %}</p>

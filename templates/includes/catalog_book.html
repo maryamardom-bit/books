@@ -41,13 +41,6 @@
         {% else %}
         <p class="text-[13px] text-faint">{% trans "Price soon" %}</p>
         {% endif %}
-        <form action="{% url 'cart:cart_add' product.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="inline-flex items-center gap-2 text-muted transition duration-200 hover:scale-110 hover:text-accent-strong">
-                <span class="text-[13px] tracking-wide">{% trans "Shopping cart" %}</span>
-                <i class="fas fa-bag-shopping text-2xl" aria-hidden="true"></i>
-            </button>
-        </form>
+        {% include "includes/cart_add_control.html" with product=product %}
     </div>
 </article>

@@ -30,6 +30,14 @@ def split_people(value):
     return [part.strip() for part in str(value).split('،') if part.strip()]
 
 
+def catalog_author_count():
+    """Distinct authors on active books. Translators are not included."""
+    names = set()
+    for author, in Product.objects.filter(active=True).values_list('author'):
+        names.update(split_people(author))
+    return len(names)
+
+
 def catalog_contributors():
     """Every author or translator who has at least one active book."""
     counts = defaultdict(int)

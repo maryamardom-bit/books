@@ -29,11 +29,7 @@
                 <p class="font-bold text-ink">{{ product.price|intcomma:False|translate_number }} <span class="text-[11px] font-normal text-faint">{% trans "Toman" %}</span></p>
                 {% endif %}
             </div>
-            <form action="{% url 'cart:cart_add' product.id %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-line hover:bg-ink hover:text-paper" aria-label="{% trans 'Add to Cart' %}"><i class="fas fa-plus text-xs"></i></button>
-            </form>
+            {% include "includes/cart_add_control.html" with product=product %}
         </div>
     </div>
 </article>

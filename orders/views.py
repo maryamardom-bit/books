@@ -16,9 +16,18 @@ def order_create_view(request):
     order_form = OrderForm()
     cart = Cart(request)
 
+    notes = cart.reconcile()
     if cart.is_empty():
+        if notes:
+            for note in notes:
+                messages.warning(request, note)
+            return redirect('cart:cart_detail')
         messages.warning(request, _('Your cart is empty.'))
         return redirect('product:product_list')
+    if notes:
+        for note in notes:
+            messages.warning(request, note)
+        return redirect('cart:cart_detail')
 
     # محاسبه اقساط
     total_cart_price = cart.get_total_price()

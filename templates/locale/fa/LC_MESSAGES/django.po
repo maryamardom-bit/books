@@ -1060,8 +1060,8 @@ msgstr ""
 msgid "Search categories"
 msgstr "جستجودر دسته‌بندی ها"
 
-msgid "Name in English or Persian"
-msgstr "نام به انگلیسی یا فارسی"
+msgid "Category name in Persian"
+msgstr "نام دسته‌بندی به فارسی"
 
 msgid "subjects"
 msgstr "موضوعات"
@@ -1324,7 +1324,7 @@ msgid "Remove"
 msgstr "حذف"
 
 msgid "Clear Cart"
-msgstr "حذف سبد خرید"
+msgstr "حذف کل سبد خرید"
 
 msgid "Order Summary"
 msgstr "خلاصه سفارش"
@@ -1385,6 +1385,27 @@ msgstr "محصول در سبد خرید به‌روزرسانی شد."
 
 msgid "Product added to cart."
 msgstr "محصول به سبد خرید اضافه شد."
+
+msgid "Added to cart."
+msgstr "به سبد خرید اضافه شد"
+
+msgid "Could not add to cart."
+msgstr "افزودن به سبد خرید انجام نشد."
+
+msgid "Could not update the cart."
+msgstr "به‌روزرسانی سبد خرید انجام نشد."
+
+msgid "Remove one from cart"
+msgstr "کم کردن از سبد خرید"
+
+msgid "Removed one from cart."
+msgstr "یک عدد از سبد خرید کم شد."
+
+msgid "Removed from cart."
+msgstr "از سبد خرید حذف شد."
+
+msgid "This item is not in your cart."
+msgstr "این مورد در سبد خرید نیست."
 
 msgid "Invalid quantity."
 msgstr "تعداد نامعتبر"
@@ -1676,7 +1697,7 @@ msgstr "صفحات آرشیو‌شده"
 msgid ""
 "The story of Kasra Publishing, a specialized publisher of architecture and "
 "design."
-msgstr "داستان انتشارات کسری، ناشر تخصصی حوزه معماری و طراحی."
+msgstr "داستان انتشارات کسری، ناشر تخصصی حوزه معماری و طراحی"
 
 msgid "Cooperation"
 msgstr "همکاری"
@@ -1686,6 +1707,12 @@ msgstr "سال تأسیس"
 
 msgid "Books Published"
 msgstr "کتاب‌های منتشرشده"
+
+msgid "Kasra Publishing currently has %(count)s published books."
+msgstr "در حال حاضر %(count)s کتاب منتشرشده در انتشارات کسری داریم."
+
+msgid "Kasra Publishing currently has %(count)s authors."
+msgstr "در حال حاضر %(count)s نویسنده در انتشارات کسری داریم."
 
 msgid "Customer Satisfaction"
 msgstr "رضایت مشتریان"
@@ -1777,6 +1804,42 @@ msgstr "آخرین به‌روزرسانی:"
 
 msgid "No Cooperation Information"
 msgstr "اطلاعاتی دربارهٔ همکاری موجود نیست"
+
+msgid "Continue shopping"
+msgstr "ادامه خرید"
+
+msgid "Only %(count)s left"
+msgstr "فقط %(count)s عدد مانده"
+
+msgid "Sign in to checkout"
+msgstr "ورود و ادامه پرداخت"
+
+msgid "Sign in is required before payment."
+msgstr "برای پرداخت باید وارد حساب شوید."
+
+msgid "Installment payment is available at the next step."
+msgstr "امکان پرداخت اقساطی در مرحله بعد."
+
+msgid "You may also like"
+msgstr "شاید بپسندید"
+
+msgid "Clear the cart?"
+msgstr "سبد خرید خالی شود؟"
+
+msgid "Only %(count)s left in stock."
+msgstr "فقط %(count)s عدد موجود است."
+
+msgid "This title is out of stock."
+msgstr "این عنوان ناموجود است."
+
+msgid "Enter a discount code."
+msgstr "کد تخفیف را وارد کنید."
+
+msgid "“%(title)s” was removed because it is no longer available."
+msgstr "«%(title)s» چون دیگر موجود نیست از سبد حذف شد."
+
+msgid "Quantity of “%(title)s” was reduced to the available stock."
+msgstr "تعداد «%(title)s» به موجودی انبار کاهش یافت."
 
 #~ msgid "تأیید ایمیل"
 #~ msgstr "تأیید ایمیل"

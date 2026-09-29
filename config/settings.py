@@ -96,6 +96,7 @@ TEMPLATES = [
                 'cart.context_processors.cart',
                 'products.context_processors.faq_context',
                 'products.context_processors.search_context',
+                'pages.context_processors.site_contact',
             ],
         },
     },

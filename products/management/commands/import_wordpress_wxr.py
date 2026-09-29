@@ -111,12 +111,14 @@ class Command(BaseCommand):
                 updated += 1
             if obj.category == Product.Category.PACKAGES:
                 from products.models import Package
-                Package.objects.update_or_create(
+                from products.package_books import assign_package_books
+                description = unescape(_text(elem.find('content:encoded', NS)))[:5000]
+                package, _created = Package.objects.update_or_create(
                     wordpress_id=wp_id,
                     defaults={
                         'title': obj.title[:200],
                         'slug': f'wp-{wp_id}',
-                        'description': unescape(_text(elem.find('content:encoded', NS)))[:5000],
+                        'description': description,
                         'manual_price': obj.special_price or obj.price,
                         'price': obj.special_price or obj.price,
                         'original_price': obj.price,
@@ -124,6 +126,7 @@ class Command(BaseCommand):
                         'active': obj.active,
                     },
                 )
+                assign_package_books(package, html_source=description)
             elem.clear()
 
         self.stdout.write(self.style.SUCCESS(

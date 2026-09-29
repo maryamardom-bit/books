@@ -6,81 +6,145 @@
 {% block page_title %}{% trans 'Cart' %} | {% trans 'Kasra Publishing' %}{% endblock %}
 
 {% block content %}
-<section class="page-wrap">
+{% url 'order:order_create' as checkout_url %}
+{% url 'account_login' as login_url %}
+{% trans "Clear the cart?" as clear_prompt %}
+<section class="page-wrap {% if cart %}pb-28 lg:pb-10{% endif %}">
     <nav class="crumb">
         <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
         <span>/</span>
         <span>{% trans 'Cart' %}</span>
     </nav>
-    <h1 class="mb-8 text-3xl">{% trans 'Shopping Cart' %}</h1>
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-3">
+        <h1 class="text-3xl">{% trans 'Shopping Cart' %}</h1>
+        <a href="{% url 'product:product_list' %}" class="text-sm font-bold text-accent-strong">{% trans "Continue shopping" %}</a>
+    </div>
 
     {% if cart %}
     <div class="grid gap-6 lg:grid-cols-12">
         <div class="space-y-3 lg:col-span-8">
             {% for item in cart %}
-            <div class="flex flex-wrap items-center gap-4 rounded-2xl border border-line p-4">
-                <div class="flex h-20 w-16 items-center justify-center overflow-hidden rounded-lg bg-surface">
-                    {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" class="h-full w-full object-cover">{% else %}<i class="fas fa-book-open text-faint"></i>{% endif %}
+            <article class="rounded-2xl border border-line p-4" data-line="{{ item.key }}">
+                <div class="flex gap-4">
+                    <a href="{% if item.is_package %}{{ item.package_obj.get_absolute_url }}{% else %}{{ item.product_obj.get_absolute_url }}{% endif %}" class="flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-surface">
+                        {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.title }}" class="h-full w-full object-contain">{% else %}<i class="fas fa-book-open text-faint"></i>{% endif %}
+                    </a>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-start gap-3">
+                            <div class="min-w-0 flex-1">
+                                <a href="{% if item.is_package %}{{ item.package_obj.get_absolute_url }}{% else %}{{ item.product_obj.get_absolute_url }}{% endif %}" class="font-bold leading-6">{{ item.title }}</a>
+                                {% if item.author %}<p class="mt-1 text-xs text-muted">{{ item.author }}</p>{% endif %}
+                                {% if item.is_package %}<p class="mt-1 text-xs font-bold text-accent-strong">{% trans 'Package' %}</p>{% endif %}
+                                <p class="mt-1 text-xs font-bold {% if item.stock_limit <= 3 %}text-danger{% else %}text-success{% endif %}" data-stock-note>
+                                    {% if item.stock_limit <= 3 %}
+                                        {% with count=item.stock_limit|translate_number %}{% blocktrans %}Only {{ count }} left{% endblocktrans %}{% endwith %}
+                                    {% else %}
+                                        {% trans "In stock" %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <form method="post" action="{% if item.is_package %}{% url 'cart:cart_remove_package' item.package_obj.id %}{% else %}{% url 'cart:cart_remove' item.product_obj.id %}{% endif %}" class="js-cart-action shrink-0" data-confirm-title="{{ item.title }}">
+                                {% csrf_token %}
+                                <button type="submit" class="inline-flex h-11 w-11 items-center justify-center rounded-full text-danger hover:bg-danger-soft" aria-label="{% trans 'Remove' %}"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </div>
+                        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <form method="post" action="{% if item.is_package %}{% url 'cart:cart_decrease_package' item.package_obj.id %}{% else %}{% url 'cart:cart_decrease' item.product_obj.id %}{% endif %}" class="js-cart-action">
+                                    {% csrf_token %}
+                                    <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" aria-label="{% trans 'Decrease' %}">−</button>
+                                </form>
+                                <span class="min-w-8 text-center font-bold" data-qty>{{ item.quantity|translate_number }}</span>
+                                <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}" class="js-cart-action">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="inplace" value="true">
+                                    <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                                    <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line disabled:opacity-40" data-increase {% if item.quantity >= item.stock_limit %}disabled{% endif %} aria-label="{% trans 'Increase' %}">+</button>
+                                </form>
+                            </div>
+                            <div class="text-end">
+                                {% if item.price < item.original_price %}
+                                <p class="text-xs text-faint line-through">{{ item.original_price|intcomma:False|translate_number }}</p>
+                                {% endif %}
+                                <p class="whitespace-nowrap font-bold"><span data-line-total>{{ item.total_price|intcomma:False|translate_number }}</span> <span class="text-xs font-normal text-faint">{% trans 'Toman' %}</span></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="min-w-0 flex-1">
-                    <p class="font-bold">{{ item.title }}</p>
-                    {% if item.is_package %}<span class="text-xs font-bold text-accent-strong">{% trans 'Package' %}</span>{% endif %}
-                    {% if item.price < item.original_price %}
-                    <p class="text-xs text-faint line-through">{{ item.original_price|intcomma:False|translate_number }}</p>
-                    {% endif %}
-                    <p class="text-sm font-bold">{{ item.price|intcomma:False|translate_number }} <span class="font-normal text-faint">{% trans 'Toman' %}</span></p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="inplace" value="true">
-                        <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
-                        <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" {% if item.quantity <= 1 %}disabled{% endif %} aria-label="{% trans 'Decrease' %}">−</button>
-                    </form>
-                    <span class="min-w-8 text-center font-bold">{{ item.quantity|translate_number }}</span>
-                    <form method="post" action="{% if item.is_package %}{% url 'cart:cart_add_package' item.package_obj.id %}{% else %}{% url 'cart:cart_add' item.product_obj.id %}{% endif %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="inplace" value="true">
-                        <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
-                        <button type="submit" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line" aria-label="{% trans 'Increase' %}">+</button>
-                    </form>
-                </div>
-                <p class="font-bold">{{ item.total_price|intcomma:False|translate_number }} <span class="text-xs font-normal text-faint">{% trans 'Toman' %}</span></p>
-                <a href="{% if item.is_package %}{% url 'cart:cart_remove_package' item.package_obj.id %}{% else %}{% url 'cart:cart_remove' item.product_obj.id %}{% endif %}" class="text-danger hover:text-danger" onclick="return confirmDelete('{{ item.title }}')" aria-label="{% trans 'Remove' %}"><i class="fas fa-trash-alt"></i></a>
-            </div>
+            </article>
             {% endfor %}
-            <form method="post" action="{% url 'cart:cart_clear' %}">
+            <form method="post" action="{% url 'cart:cart_clear' %}" onsubmit="return confirm('{{ clear_prompt|escapejs }}');">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-ghost text-xs"><i class="fas fa-trash-alt"></i> {% trans 'Clear Cart' %}</button>
             </form>
         </div>
 
-        <aside class="card lg:col-span-4 h-fit">
+        <aside class="card h-fit lg:sticky lg:top-24 lg:col-span-4">
             <h2 class="mb-4 text-lg">{% trans 'Order Summary' %}</h2>
             <div class="mb-4 border-b border-line pb-4">
                 {% if cart.discount_code %}
                 <div class="flex items-center justify-between rounded-xl bg-success-soft px-3 py-2 text-sm">
                     <span>{{ cart.discount_code }}</span>
-                    <a href="{% url 'cart:remove_discount' %}" class="text-danger">{% trans 'Remove' %}</a>
+                    <a href="{% url 'cart:remove_discount' %}" class="font-bold text-danger">{% trans 'Remove' %}</a>
                 </div>
                 {% else %}
                 <form method="post" action="{% url 'cart:apply_discount' %}" class="flex gap-2">
                     {% csrf_token %}
-                    <input type="text" name="code" placeholder="{% trans 'Discount code...' %}">
+                    <input type="text" name="code" class="min-w-0 flex-1" placeholder="{% trans 'Discount code...' %}" aria-label="{% trans 'Discount code...' %}">
                     <button type="submit" class="btn btn-ghost shrink-0">{% trans 'Apply' %}</button>
                 </form>
                 {% endif %}
             </div>
             <div class="space-y-2 text-sm">
-                <div class="flex justify-between"><span>{% trans 'Total Items' %}</span><span class="font-bold">{{ cart|length|translate_number }}</span></div>
-                <div class="flex justify-between"><span>{% trans 'Total Price' %}</span><span class="font-bold">{{ total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>
-                {% if total_savings > 0 %}<div class="flex justify-between text-success"><span>{% trans 'Savings' %}</span><span>{{ total_savings|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>{% endif %}
-                {% if total_weight > 0 %}<div class="flex justify-between"><span>{% trans 'Total Weight' %}</span><span>{{ total_weight|translate_number }} {% trans 'g' %}</span></div>{% endif %}
-                {% if discounted_total != total_price %}<div class="flex justify-between border-t border-line pt-3 text-base font-bold"><span>{% trans 'Final Price' %}</span><span>{{ discounted_total|intcomma:False|translate_number }} {% trans 'Toman' %}</span></div>{% endif %}
+                <div class="flex justify-between"><span>{% trans 'Total Items' %}</span><span class="font-bold" data-summary-items>{{ cart|length|translate_number }}</span></div>
+                <div class="flex justify-between"><span>{% trans 'Total Price' %}</span><span class="whitespace-nowrap font-bold"><span data-summary-total>{{ total_price|intcomma:False|translate_number }}</span> {% trans 'Toman' %}</span></div>
+                <div class="flex justify-between text-success {% if total_savings <= 0 %}hidden{% endif %}" data-summary-savings-row>
+                    <span>{% trans 'Savings' %}</span>
+                    <span class="whitespace-nowrap"><span data-summary-savings>{{ total_savings|intcomma:False|translate_number }}</span> {% trans 'Toman' %}</span>
+                </div>
+                <div class="flex justify-between text-success {% if discount_amount <= 0 %}hidden{% endif %}" data-summary-discount-row>
+                    <span>{% trans "Discount" %}</span>
+                    <span class="whitespace-nowrap"><span data-summary-discount>{{ discount_amount|intcomma:False|translate_number }}</span> {% trans 'Toman' %}</span>
+                </div>
+                <div class="flex justify-between border-t border-line pt-3 text-base font-bold {% if discounted_total == total_price %}hidden{% endif %}" data-summary-final-row>
+                    <span>{% trans 'Final Price' %}</span>
+                    <span class="whitespace-nowrap"><span data-summary-final>{{ discounted_total|intcomma:False|translate_number }}</span> {% trans 'Toman' %}</span>
+                </div>
             </div>
-            <a href="{% url 'order:order_create' %}" class="btn btn-accent btn-lg btn-block mt-6"><i class="fas fa-arrow-left"></i> {% trans 'Proceed to Checkout' %}</a>
+            <div class="mt-4 rounded-xl bg-success-soft px-3 py-2 text-sm font-bold text-success {% if total_savings <= 0 %}hidden{% endif %}" data-savings-banner>
+                {% trans "You save" %} <span data-savings-amount>{{ total_savings|intcomma:False|translate_number }}</span> {% trans "Toman" %}
+            </div>
+            {% if user.is_authenticated %}
+            <a href="{{ checkout_url }}" class="btn btn-accent btn-lg btn-block mt-6"><i class="fas fa-arrow-left"></i> {% trans 'Proceed to Checkout' %}</a>
+            {% else %}
+            <a href="{{ login_url }}?next={{ checkout_url|urlencode }}" class="btn btn-accent btn-lg btn-block mt-6"><i class="fas fa-arrow-left"></i> {% trans "Sign in to checkout" %}</a>
+            <p class="mt-2 text-center text-xs text-muted">{% trans "Sign in is required before payment." %}</p>
+            {% endif %}
+            <p class="mt-3 text-center text-xs text-muted">{% trans "Installment payment is available at the next step." %}</p>
         </aside>
     </div>
+
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-paper px-4 py-3 shadow-lg lg:hidden">
+        <div class="mx-auto flex max-w-page items-center justify-between gap-3">
+            <p class="whitespace-nowrap text-sm font-bold"><span data-sticky-total>{{ discounted_total|intcomma:False|translate_number }}</span> <span class="text-xs font-normal text-faint">{% trans 'Toman' %}</span></p>
+            {% if user.is_authenticated %}
+            <a href="{{ checkout_url }}" class="btn btn-accent">{% trans 'Proceed to Checkout' %}</a>
+            {% else %}
+            <a href="{{ login_url }}?next={{ checkout_url|urlencode }}" class="btn btn-accent">{% trans "Sign in to checkout" %}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if suggested_books %}
+    <div class="mt-14">
+        <h2 class="mb-6 text-lg">{% trans "You may also like" %}</h2>
+        <div class="book-grid">
+            {% for product in suggested_books %}
+                {% include "includes/book_card.html" with product=product %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
     {% else %}
     <div class="py-16 text-center">
         <i class="fas fa-shopping-bag mb-4 text-5xl text-faint"></i>
@@ -100,9 +164,98 @@
     </div>
     {% endif %}
 </section>
+{% endblock %}
+
+{% block extra_js %}
 <script>
-    function confirmDelete(title) {
-        return confirm('{% trans "Delete" %} "' + title + '" {% trans "from cart?" %}');
-    }
+    document.addEventListener('submit', function (event) {
+        var form = event.target;
+        if (!form.classList || !form.classList.contains('js-cart-action')) return;
+        if (form.dataset.confirmTitle) {
+            var prompt = '{% trans "Delete" %}' + ' «' + form.dataset.confirmTitle + '» ' + '{% trans "from cart?" %}';
+            if (!window.confirm(prompt)) {
+                event.preventDefault();
+                return;
+            }
+        }
+        event.preventDefault();
+        var button = event.submitter || form.querySelector('button[type="submit"]');
+        var action = (button && button.getAttribute('formaction')) || form.action;
+        if (button) button.disabled = true;
+        var keepDisabled = false;
+        var toman = '{% trans "Toman" %}';
+        fetch(action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+            credentials: 'same-origin'
+        }).then(function (response) {
+            return response.json().then(function (data) { return { ok: response.ok, data: data }; });
+        }).then(function (result) {
+            var data = result.data || {};
+            if (window.showCartToast) showCartToast(data.message || '', data.kind || (result.ok ? 'success' : 'error'));
+            var badge = document.getElementById('cart-count');
+            if (badge && data.cart_count != null) {
+                badge.textContent = data.cart_count;
+                badge.classList.toggle('hidden', !data.cart_count);
+            }
+            var items = document.querySelector('[data-summary-items]');
+            if (items && data.items_label != null) items.textContent = data.items_label;
+            var summaryTotal = document.querySelector('[data-summary-total]');
+            if (summaryTotal && data.total_price != null) summaryTotal.textContent = data.total_price;
+            var sticky = document.querySelector('[data-sticky-total]');
+            if (sticky && data.final_price != null) sticky.textContent = data.final_price;
+            [['[data-summary-savings-row]', '[data-summary-savings]', data.savings, data.savings_amount],
+             ['[data-summary-discount-row]', '[data-summary-discount]', data.discount, data.discount_amount]
+            ].forEach(function (row) {
+                var box = document.querySelector(row[0]);
+                if (!box) return;
+                box.classList.toggle('hidden', !row[3]);
+                var amount = box.querySelector(row[1]);
+                if (amount && row[2] != null) amount.textContent = row[2];
+            });
+            var finalRow = document.querySelector('[data-summary-final-row]');
+            if (finalRow) {
+                finalRow.classList.toggle('hidden', !data.show_final);
+                var finalAmount = finalRow.querySelector('[data-summary-final]');
+                if (finalAmount && data.final_price != null) finalAmount.textContent = data.final_price;
+            }
+            var banner = document.querySelector('[data-savings-banner]');
+            if (banner) {
+                banner.classList.toggle('hidden', !data.savings_amount);
+                var saved = banner.querySelector('[data-savings-amount]');
+                if (saved && data.savings != null) saved.textContent = data.savings;
+            }
+            if (data.line) {
+                var line = document.querySelector('[data-line="' + CSS.escape(String(data.line.key)) + '"]');
+                if (data.line.removed) {
+                    if (line) line.remove();
+                } else if (line) {
+                    var qty = line.querySelector('[data-qty]');
+                    if (qty) qty.textContent = data.line.quantity;
+                    var lineTotal = line.querySelector('[data-line-total]');
+                    if (lineTotal) lineTotal.textContent = data.line.line_total;
+                    var note = line.querySelector('[data-stock-note]');
+                    if (note && data.line.stock_note) {
+                        note.textContent = data.line.stock_note;
+                        note.classList.toggle('text-danger', !!data.line.stock_low);
+                        note.classList.toggle('text-success', !data.line.stock_low);
+                    }
+                    var plus = line.querySelector('[data-increase]');
+                    if (plus) {
+                        plus.disabled = !!data.line.at_stock_limit;
+                        if (button === plus) keepDisabled = plus.disabled;
+                    }
+                    var qtyInput = line.querySelector('input[name="quantity"]');
+                    if (qtyInput && data.line.quantity_raw != null) qtyInput.value = data.line.quantity_raw + 1;
+                }
+            }
+            if (!data.cart_count) window.location.reload();
+        }).catch(function () {
+            if (window.showCartToast) showCartToast('{% trans "Could not update the cart." %}', 'error');
+        }).finally(function () {
+            if (button && !keepDisabled) button.disabled = false;
+        });
+    });
 </script>
 {% endblock %}

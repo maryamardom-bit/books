@@ -38,31 +38,24 @@
         {% else %}
         <a href="{% url 'product:product_list' %}?discount=true{% if active_category %}&category={{ active_category }}{% endif %}" class="catalog-filter-link">{% trans "Discounted only" %}</a>
         {% endif %}
-        <label class="catalog-sort-wrap">
-    <span>{% trans "Sort" %}</span>
-
-    <select class="catalog-sort" onchange="window.location.href=this.value">
-        <option value="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
-            {% if sort == '-datetime_created' %}selected{% endif %}>
-            {% trans "Newest" %}
-        </option>
-
-        <option value="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
-            {% if sort == 'price' %}selected{% endif %}>
-            {% trans "Lowest price" %}
-        </option>
-
-        <option value="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
-            {% if sort == '-price' %}selected{% endif %}>
-            {% trans "Highest price" %}
-        </option>
-
-        <option value="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}"
-            {% if sort == 'title' %}selected{% endif %}>
-            {% trans "Title" %}
-        </option>
-    </select>
-</label>
+        <div class="relative" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
+            <button type="button" class="catalog-sort-wrap" @click="open = !open" :aria-expanded="open.toString()" aria-haspopup="listbox">
+                <span>{% trans "Sort" %}</span>
+                <span class="catalog-sort">
+                    {% if sort == 'price' %}{% trans "Lowest price" %}
+                    {% elif sort == '-price' %}{% trans "Highest price" %}
+                    {% elif sort == 'title' %}{% trans "Title" %}
+                    {% else %}{% trans "Newest" %}
+                    {% endif %}
+                </span>
+            </button>
+            <div class="catalog-sort-menu" x-show="open" x-cloak x-transition.opacity role="listbox">
+                <a role="option" href="?sort=-datetime_created{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" class="{% if sort == '-datetime_created' %}is-on{% endif %}">{% trans "Newest" %}</a>
+                <a role="option" href="?sort=price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" class="{% if sort == 'price' %}is-on{% endif %}">{% trans "Lowest price" %}</a>
+                <a role="option" href="?sort=-price{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" class="{% if sort == '-price' %}is-on{% endif %}">{% trans "Highest price" %}</a>
+                <a role="option" href="?sort=title{% if discount_filter %}&discount=true{% endif %}{% if active_category %}&category={{ active_category }}{% endif %}" class="{% if sort == 'title' %}is-on{% endif %}">{% trans "Title" %}</a>
+            </div>
+        </div>
     </div>
 
     <div class="catalog-grid">

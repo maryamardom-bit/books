@@ -1,10 +1,11 @@
 {% extends "_base.html" %}
 {% load i18n %}
+{% load persian_translation_tags %}
 
 {% block page_title %}{% trans "About Us" %} | {% trans "Kasra Architecture Bookstore" %}{% endblock %}
 
 {% block content %}
-<section class="page-wrap">
+<section class="page-wrap" x-data="{ statToast: '', hideStat: null, showStat(message) { this.statToast = message; clearTimeout(this.hideStat); this.hideStat = setTimeout(() => { this.statToast = ''; }, 4000); } }">
     <nav class="crumb">
         <a href="{% url 'page:home' %}">{% trans 'Home' %}</a>
         <span>/</span>
@@ -22,12 +23,21 @@
         {% endif %}
         <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">1392</p><p class="text-xs text-muted">{% trans "Year Established" %}</p></div>
-            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">500+</p><p class="text-xs text-muted">{% trans "Books Published" %}</p></div>
-            <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">150+</p><p class="text-xs text-muted">{% trans "Authors" %}</p></div>
+            <button type="button" class="rounded-2xl border border-line p-5 text-center transition hover:border-accent" data-stat="{{ book_stat_message }}" @click="showStat($el.dataset.stat)">
+                <p class="text-2xl font-bold">{% if book_count > 500 %}{{ 500|translate_number }}+{% else %}{{ book_count|translate_number }}{% endif %}</p>
+                <p class="text-xs text-muted">{% trans "Books Published" %}</p>
+            </button>
+            <button type="button" class="rounded-2xl border border-line p-5 text-center transition hover:border-accent" data-stat="{{ author_stat_message }}" @click="showStat($el.dataset.stat)">
+                <p class="text-2xl font-bold">{% if author_count > 100 %}{{ 200|translate_number }}+{% else %}{{ author_count|translate_number }}{% endif %}</p>
+                <p class="text-xs text-muted">{% trans "Authors" %}</p>
+            </button>
             <div class="rounded-2xl border border-line p-5 text-center"><p class="text-2xl font-bold">100%</p><p class="text-xs text-muted">{% trans "Customer Satisfaction" %}</p></div>
         </div>
     {% else %}
         <p class="py-16 text-center text-muted">{% trans "No Information Available" %}</p>
     {% endif %}
+    <div x-show="statToast" x-cloak x-transition.opacity class="pointer-events-none fixed inset-0 z-[90] flex items-center justify-center px-4" role="status">
+        <p class="max-w-lg rounded-full bg-ink px-5 py-3 text-center text-sm font-bold text-paper shadow-lg dark:bg-accent" x-text="statToast"></p>
+    </div>
 </section>
 {% endblock %}

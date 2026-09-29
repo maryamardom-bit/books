@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block page_title %}{% trans "Architecture library" %} | {% trans "Kasra Publishing" %}{% endblock %}
 {% block meta_description %}{% trans "From theory and design to urbanism, landscape, architectural history, and professional tools." %}{% endblock %}
@@ -11,10 +12,34 @@
         padding-bottom: clamp(3.5rem, 8vw, 6rem);
     }
     .cat-hero {
-        position: relative;
+        display: grid;
+        align-items: center;
+        gap: 1.25rem 2.5rem;
         margin-bottom: 2.25rem;
     }
-    .cat-hero > * { position: relative; z-index: 1; }
+    .cat-hero-art {
+        position: relative;
+        width: 100%;
+        min-height: 16rem;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        align-self: stretch;
+        pointer-events: none;
+    }
+    .cat-hero-art img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .dark .cat-hero-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgb(16 14 12 / 0.55);
+    }
     .cat-eyebrow {
         display: flex;
         align-items: center;
@@ -233,22 +258,15 @@
         }
     }
     @media (min-width: 1024px) {
-        .cat-hero::before {
-            content: "";
-            position: absolute;
-            z-index: 0;
-            top: 0.25rem;
-            inset-inline-end: 0;
-            width: 240px;
-            height: 148px;
-            pointer-events: none;
-            background-image:
-                linear-gradient(to bottom, rgb(var(--line)) 1px, transparent 1px),
-                linear-gradient(to left, rgb(var(--line)) 1px, transparent 1px);
-            background-size: 22px 22px;
-            opacity: 0.85;
-            -webkit-mask-image: linear-gradient(to left, transparent, #000 24%, #000 58%, transparent);
-            mask-image: linear-gradient(to left, transparent, #000 24%, #000 58%, transparent);
+        .cat-hero {
+            grid-template-columns: minmax(0, 1fr) minmax(16rem, 26rem);
+        }
+        .cat-hero-art {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            aspect-ratio: auto;
+            justify-self: stretch;
         }
         .cat-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -278,12 +296,15 @@
         <p class="cat-eyebrow"><span dir="auto">{% trans "Categories" %}</span></p>
         <h1>{% trans "Architecture library" %}</h1>
         <p class="cat-lead">{% trans "From theory and design to urbanism, landscape, architectural history, and professional tools." %}</p>
+        <div class="cat-hero-art lg:col-start-2 lg:row-start-1 lg:row-span-3" aria-hidden="true">
+            <img src="{% static 'img/category-library.png' %}" alt="">
+        </div>
     </header>
 
     <div class="cat-tools">
         <form class="cat-search" role="search" @submit.prevent="apply($event.target.elements.q.value)">
             <label for="category-query">{% trans "Search categories" %}</label>
-            <input id="category-query" name="q" type="search" inputmode="search" autocomplete="off" placeholder="{% trans 'Name in English or Persian' %}" x-model="q" @input="apply($event.target.value)" @search="apply($event.target.value)">
+            <input id="category-query" name="q" type="search" inputmode="search" autocomplete="off" placeholder="{% trans 'Category name in Persian' %}" x-model="q" @input="apply($event.target.value)" @search="apply($event.target.value)">
         </form>
         <p class="cat-tools-meta"><span class="tabular-nums">{{ categories|length }}</span> {% trans "subjects" %}</p>
     </div>
