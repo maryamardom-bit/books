@@ -1,7 +1,8 @@
 {% load static %}
 {% load i18n %}
 
-<footer class="mt-16 bg-ink text-stone-300">
+<footer class="site-footer mt-16 bg-ink text-stone-300">
+    <div class="site-footer-full">
     <div class="mx-auto grid max-w-page gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
         <div class="flex w-max max-w-full flex-col items-center justify-self-start">
             <a href="{% url 'page:home' %}" class="mb-4 inline-block">
@@ -55,4 +56,14 @@
         </div>
     </div>
     <div class="border-t border-white/10 py-4 text-center text-xs text-stone-500">© {% now "Y" %} {% trans 'Kasra Publishing | All rights reserved.' %}</div>
+    </div>
+    <style>.site-footer-plan{display:none}</style>
+    <div class="site-footer-plan">
+        <p class="plan-foot-copy">KASRA {% now "Y" %} ©</p>
+        <a href="https://t.me/kasrapublishing" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://www.instagram.com/kasrapublishing/" target="_blank" rel="noopener">Instagram</a>
+        {% if footer_whatsapp_url %}
+        <a href="{{ footer_whatsapp_url }}" target="_blank" rel="noopener">WhatsApp</a>
+        {% endif %}
+    </div>
 </footer>

@@ -11,8 +11,22 @@
         <span>{% trans "Authors" %}</span>
     </nav>
     <p class="mb-2 text-xs font-bold text-accent-strong">{% trans "Catalog" %}</p>
+    {% if letter %}
+    <h1 class="mb-6 text-3xl">{% trans "Contributors" %}: {{ letter }}</h1>
+    {% else %}
     <h1 class="mb-2 text-3xl">{% trans "Authors" %}</h1>
-    <p class="mb-10 max-w-2xl text-muted">{% blocktrans count counter=total_authors %}{{ counter }} author in the publisher’s current list. Each name opens every title by that author.{% plural %}{{ counter }} authors in the publisher’s current list. Each name opens every title by that author.{% endblocktrans %}</p>
+    <p class="mb-6 max-w-2xl text-muted">{% blocktrans count counter=total_authors %}{{ counter }} author in the publisher’s current list. Each name opens every title by that author.{% plural %}{{ counter }} authors in the publisher’s current list. Each name opens every title by that author.{% endblocktrans %}</p>
+    {% endif %}
+    <nav class="mb-10 flex flex-wrap gap-x-3 gap-y-2 border-b border-line pb-4" aria-label="{% trans 'Contributors' %}">
+        <a href="{% url 'product:author_list' %}" class="{% if not letter %}font-bold text-accent-strong{% else %}text-muted{% endif %}">{% trans "All" %}</a>
+        {% for group in letter_groups %}
+        {% if group.people %}
+        <a href="?letter={{ group.letter|urlencode }}" class="{% if group.letter == letter %}font-bold text-accent-strong{% endif %}">{{ group.letter }}</a>
+        {% else %}
+        <span class="text-faint">{{ group.letter }}</span>
+        {% endif %}
+        {% endfor %}
+    </nav>
     <div class="columns-1 gap-x-10 sm:columns-2 lg:columns-3">
         {% for item in authors %}
         <a href="{% url 'product:author_books' author_name=item.author %}" class="mb-3 flex items-baseline justify-between gap-3 break-inside-avoid border-b border-line py-2">

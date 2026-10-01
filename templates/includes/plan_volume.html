@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load persian_translation_tags %}
+{% load humanize %}
+
+<article class="volume">
+    <a class="volume-link" href="{{ product.get_absolute_url }}">
+        <span class="volume-cover">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="" width="120" height="160">
+            {% else %}
+            <i class="fa-solid fa-book volume-fallback" aria-hidden="true"></i>
+            {% endif %}
+            <span class="volume-spine" aria-hidden="true"></span>
+            {% if product.is_on_sale %}
+            <span class="volume-mark">{{ product.get_discount_percent_display|translate_number }}%</span>
+            {% endif %}
+        </span>
+        <h3 class="volume-title" title="{{ product.title }}">{{ product.title }}</h3>
+        {% if product.author %}<p class="volume-by" title="{{ product.author }}">{{ product.author }}</p>{% endif %}
+    </a>
+    <div class="volume-buy">
+        <p class="volume-price">
+            {% if product.is_on_sale %}
+            <s>{{ product.price|intcomma:False|translate_number }}</s>
+            <span>{{ product.get_discounted_price|intcomma:False|translate_number }}</span>
+            {% else %}
+            <span>{{ product.price|intcomma:False|translate_number }}</span>
+            {% endif %}
+            <span class="volume-unit">{% trans "Toman" %}</span>
+        </p>
+        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="js-add-cart volume-add">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" aria-label="{% trans 'Add to Cart' %}">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            </button>
+        </form>
+    </div>
+</article>

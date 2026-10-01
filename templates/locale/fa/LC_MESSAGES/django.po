@@ -433,6 +433,9 @@ msgstr "پرفروش‌ها"
 msgid "Authors"
 msgstr "نویسندگان"
 
+msgid "Contributors"
+msgstr "پدیدآورندگان"
+
 msgid "Collections"
 msgstr "مجموعه‌ها"
 
@@ -450,6 +453,12 @@ msgstr "شرایط سفارش"
 
 msgid "Work With Us"
 msgstr "همکاری با ما"
+
+msgid "Guide"
+msgstr "راهنما"
+
+msgid "Curated book sets"
+msgstr "بسته‌های منتخب کتاب"
 
 msgid "Contact Info"
 msgstr "اطلاعات تماس"
@@ -737,6 +746,66 @@ msgstr "طراحی دیجیتال"
 
 msgid "Case Studies"
 msgstr "مطالعات موردی"
+
+msgid "Landscape"
+msgstr "منظر"
+
+msgid "Sustainability"
+msgstr "پایداری"
+
+msgid "Discovery archive"
+msgstr "نمایه"
+
+msgid "Axonometric index"
+msgstr "نمایه محوری"
+
+msgid "Architectural library"
+msgstr "کتابخانه معماری"
+
+msgid "A place for books, ideas, and close looking"
+msgstr "جایی برای کتاب، ایده و نگاه دقیق"
+
+msgid "Wayfinding"
+msgstr "مسیریابی"
+
+msgid "Exhibition"
+msgstr "نمایشگاه"
+
+msgid "Reading table"
+msgstr "میز مطالعه"
+
+msgid "Begin here"
+msgstr "از اینجا"
+
+msgid "Selected shelf"
+msgstr "قفسه منتخب"
+
+msgid "View all"
+msgstr "همه"
+
+msgid "The collection"
+msgstr "مجموعه"
+
+msgid "Find your way through the library by subject, shelf, or author."
+msgstr "از راه موضوع، قفسه یا پدیدآورنده در کتابخانه پیش بروید."
+
+msgid "The complete collection"
+msgstr "مجموعه کامل"
+
+msgid "Primary navigation"
+msgstr "ناوبری اصلی"
+
+msgid "Discounts"
+msgstr "تخفیف‌ها"
+
+msgid "Read"
+msgstr "بخوان"
+
+msgid "Look"
+msgstr "ببین"
+
+msgid "Come back"
+msgstr "برگرد"
 
 msgid "Other"
 msgstr "سایر"
@@ -1979,9 +2048,6 @@ msgstr "تعداد «%(title)s» به موجودی انبار کاهش یافت.
 #~ msgid "Urban Studies"
 #~ msgstr "Urban Studies"
 
-#~ msgid "Landscape"
-#~ msgstr "Landscape"
-
 #~ msgid "Design Guide"
 #~ msgstr "Design Guide"
 
@@ -1993,9 +2059,6 @@ msgstr "تعداد «%(title)s» به موجودی انبار کاهش یافت.
 
 #~ msgid "Digital & Parametric"
 #~ msgstr "Digital & Parametric"
-
-#~ msgid "Sustainability"
-#~ msgstr "Sustainability"
 
 #~ msgid "Project Samples"
 #~ msgstr "Project Samples"

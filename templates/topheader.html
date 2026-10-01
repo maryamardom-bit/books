@@ -1,8 +1,55 @@
 {% load static %}
 {% load i18n %}
 
-<header class="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md">
-    <div class="mx-auto flex h-14 max-w-page items-center gap-3 px-4 sm:h-16 sm:px-6">
+<header class="site-header sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md{% if request.resolver_match.url_name == 'home' %} is-plan{% endif %}">
+    {% if request.resolver_match.url_name == 'home' %}
+    <div class="plan-header">
+        <a href="{% url 'page:home' %}" class="plan-logo" aria-label="{% trans 'Kasra Publishing' %}">
+            <img src="{% static 'img/logo/kasra-logo-black.png' %}" alt="" class="dark:hidden">
+            <img src="{% static 'img/logo/kasra-logo-white.png' %}" alt="" class="hidden dark:inline">
+        </a>
+        <nav class="plan-navlinks" aria-label="{% trans 'Main navigation' %}">
+            <a href="{% url 'product:product_list' %}">{% trans "Books" %}</a>
+            <a href="{% url 'product:product_category' %}">{% trans "Subjects" %}</a>
+        </nav>
+        <div class="plan-tools">
+            <form class="plan-tool-search" action="{% url 'product:product_search' %}" method="get" role="search">
+                <input type="hidden" name="mode" value="simple">
+                <label for="plan-q">{% trans "Search" %}</label>
+                <input id="plan-q" type="search" name="q" x-ref="planQ" x-model="searchQuery" value="{{ request.GET.q|default:'' }}" aria-label="{% trans 'Search books' %}">
+                <button type="button" aria-label="{% trans 'Search books' %}" @click="searchQuery ? $el.closest('form').requestSubmit() : $refs.planQ.focus()"><i class="fas fa-search" aria-hidden="true"></i></button>
+            </form>
+            <button type="button" id="themeToggle" class="plan-tool" aria-label="{% trans 'Toggle light and dark' %}">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:inline"></i>
+            </button>
+            <a href="{% url 'cart:cart_detail' %}" class="plan-tool" aria-label="{% trans 'Cart' %}">
+                <i class="fas fa-bag-shopping"></i>
+                <span id="cart-count" class="plan-cart-count{% if not cart|length %} hidden{% endif %}">{{ cart|length }}</span>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="plan-account" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
+                <button type="button" class="plan-tool" @click="open = !open" :aria-expanded="open.toString()" aria-haspopup="menu" aria-label="{% trans 'Dashboard' %}">
+                    <i class="fas fa-user"></i>
+                </button>
+                <div x-show="open" x-cloak x-transition.opacity role="menu" class="plan-account-menu">
+                    <a role="menuitem" href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
+                    <a role="menuitem" href="{% url 'accounts:order_history' %}">{% trans 'Orders' %}</a>
+                    <a role="menuitem" href="{% url 'order:my_returns' %}">{% trans 'Returns' %}</a>
+                    <a role="menuitem" href="{% url 'accounts:profile_edit' %}">{% trans 'Profile' %}</a>
+                    <a role="menuitem" class="is-leave" href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="plan-tool" aria-label="{% trans 'Login' %}"><i class="fas fa-user"></i></a>
+            {% endif %}
+            <button type="button" class="plan-menu" @click="navOpen = true" :aria-expanded="navOpen.toString()" aria-label="{% trans 'Menu' %}">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+    {% else %}
+    <div class="site-header-bar mx-auto flex h-14 max-w-page items-center gap-3 px-4 sm:h-16 sm:px-6">
         <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink lg:hidden" @click="navOpen = true" :aria-expanded="navOpen.toString()" aria-label="{% trans 'Menu' %}">
             <i class="fas fa-bars"></i>
         </button>
@@ -12,11 +59,23 @@
             <img src="{% static 'img/logo/kasra-logo-white.png' %}" alt="{% trans 'Kasra Publishing' %}" class="hidden h-9 w-auto dark:inline">
         </a>
 
-        <nav class="hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="{% trans 'Main navigation' %}">
+        <nav class="site-nav hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="{% trans 'Main navigation' %}">
             {% include "includes/nav_links.html" with item_class="rounded-full px-3 py-2 text-sm font-bold text-ink-2 hover:bg-surface hover:text-ink" active_class="bg-surface text-ink" %}
         </nav>
 
-        <div class="ms-auto flex items-center gap-1">
+        <form class="home-bar-search hidden" action="{% url 'product:product_search' %}" method="get" role="search">
+            <input type="hidden" name="mode" value="simple">
+            <input type="search"
+                   name="q"
+                   x-model="searchQuery"
+                   value="{{ request.GET.q|default:'' }}"
+                   placeholder="{% trans 'Search title, author, publisher…' %}"
+                   aria-label="{% trans 'Search books' %}">
+            <button type="submit" aria-label="{% trans 'Search books' %}"><i class="fas fa-search" aria-hidden="true"></i></button>
+            <button type="button" @click="searchOpen = true">{% trans 'Advanced' %}</button>
+        </form>
+
+        <div class="site-tools ms-auto flex items-center gap-1">
             <button type="button" id="themeToggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink hover:bg-surface" aria-label="{% trans 'Toggle light and dark' %}">
                 <i class="fas fa-moon dark:hidden"></i>
                 <i class="fas fa-sun hidden dark:inline"></i>
@@ -43,16 +102,17 @@
             {% endif %}
         </div>
     </div>
-    <div class="border-t border-line">
+    <div class="site-header-search border-t border-line">
         <div class="mx-auto max-w-page px-4 py-2.5 sm:px-6">
             {% include "includes/site_search.html" %}
         </div>
     </div>
+    {% endif %}
 </header>
 
-<div x-show="navOpen" x-transition.opacity class="fixed inset-0 z-[60] bg-ink/40 lg:hidden" @click="navOpen = false" x-cloak></div>
+<div x-show="navOpen" x-transition.opacity class="fixed inset-0 z-[60] bg-ink/40" @click="navOpen = false" x-cloak></div>
 <aside x-show="navOpen" x-cloak x-transition.opacity.duration.200ms
-       class="fixed inset-y-0 right-0 z-[70] flex w-80 max-w-[88vw] flex-col bg-paper shadow-xl lg:hidden"
+       class="fixed inset-y-0 right-0 z-[70] flex w-80 max-w-[88vw] flex-col bg-paper shadow-xl"
        :aria-hidden="(!navOpen).toString()">
     <div class="flex items-center justify-between border-b border-line px-5 py-4">
         <strong>{% trans 'Kasra Publishing' %}</strong>

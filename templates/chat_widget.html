@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="fixed bottom-6 start-6 z-[80]">
+<div class="chat-dock fixed bottom-6 start-6 z-[80]">
     <button type="button" class="relative flex h-14 w-14 items-center justify-center rounded-full bg-ink text-xl text-paper shadow-lg hover:bg-accent" @click="chatOpen = !chatOpen" aria-label="{% trans 'Support chat' %}">
         <i class="fas" :class="chatOpen ? 'fa-times' : 'fa-comments'"></i>
         <span class="absolute top-1 end-1 h-3 w-3 rounded-full border-2 border-paper bg-success"></span>
@@ -8,7 +8,7 @@
 </div>
 
 <div x-show="chatOpen" x-cloak x-transition
-     class="fixed bottom-24 start-6 z-[81] flex w-80 max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-line bg-paper shadow-xl">
+     class="chat-panel fixed bottom-24 start-6 z-[81] flex w-80 max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-line bg-paper shadow-xl">
     <div class="flex items-center justify-between bg-ink px-5 py-4 text-paper">
         <div>
             <p class="text-sm font-bold">{% trans 'Support' %}</p>

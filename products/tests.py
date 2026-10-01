@@ -379,6 +379,15 @@ class CatalogDiscoveryTest(TestCase):
         self.assertContains(response, 'نویسنده شهری')
         self.assertContains(response, 'نویسنده داخلی')
 
+    def test_author_list_filtered_by_letter(self):
+        ProductFactory(author='مریم احمدی', active=True)
+        response = self.client.get('/products/author/', {'letter': 'م'})
+        self.assertEqual(response.status_code, 200)
+        names = [person['author'] for person in response.context['authors']]
+        self.assertIn('مریم احمدی', names)
+        self.assertNotIn('نویسنده شهری', names)
+        self.assertNotIn('نویسنده داخلی', names)
+
     def test_new_releases(self):
         response = self.client.get('/products/new-releases/')
         self.assertEqual(response.status_code, 200)

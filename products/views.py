@@ -15,7 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product, Comment, Package
 from .forms import CommentForm
 from .search import build_search_q
-from .contributors import contributor_book_filter
+from .contributors import catalog_contributor_groups, contributor_book_filter, persian_letter
 from .taxonomy import catalog_subjects, EXCLUDED_CATEGORIES
 from cart.forms import AddToCartProductForm
 
@@ -379,16 +379,27 @@ def author_books_view(request, author_name):
 
 def author_list_view(request):
     """Author index derived from catalog — no extra author model."""
-    authors = (
-        Product.objects.filter(active=True)
-        .exclude(author='')
-        .values('author')
-        .annotate(book_count=Count('id'))
-        .order_by('author')
-    )
+    groups = catalog_contributor_groups()
+    letter = persian_letter(request.GET.get('letter', '').strip())
+    selected = next((group for group in groups if group['letter'] == letter), None)
+    if selected:
+        authors = selected['people']
+        total_authors = len(authors)
+    else:
+        letter = ''
+        authors = (
+            Product.objects.filter(active=True)
+            .exclude(author='')
+            .values('author')
+            .annotate(book_count=Count('id'))
+            .order_by('author')
+        )
+        total_authors = authors.count()
     return render(request, 'products/author_list.html', {
         'authors': authors,
-        'total_authors': authors.count(),
+        'total_authors': total_authors,
+        'letter_groups': groups,
+        'letter': letter,
     })
 
 
