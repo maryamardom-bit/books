@@ -439,6 +439,18 @@ msgstr "پدیدآورندگان"
 msgid "Collections"
 msgstr "مجموعه‌ها"
 
+msgid "Partner Publishers"
+msgstr "ناشران همکار"
+
+msgid "Representatives"
+msgstr "نمایندگان"
+
+msgid "Publishers we work with"
+msgstr "ناشرانی که با ما همکاری می‌کنند"
+
+msgid "Our official sales agents"
+msgstr "مراکز فروش رسمی کتاب‌های ما"
+
 msgid "Publisher discount"
 msgstr "تخفیف ناشر"
 
@@ -643,7 +655,7 @@ msgid "Simple"
 msgstr "ساده"
 
 msgid "Advanced"
-msgstr "پیشرفته"
+msgstr "جستجوی پیشرفته"
 
 msgid "Menu"
 msgstr "منو"
@@ -796,7 +808,7 @@ msgid "Primary navigation"
 msgstr "ناوبری اصلی"
 
 msgid "Discounts"
-msgstr "تخفیف‌ها"
+msgstr "تخفیف‌دارها"
 
 msgid "Read"
 msgstr "بخوان"

@@ -502,6 +502,11 @@
 
     .archive-block { margin-top: 0.85rem; }
     .archive-people { margin-top: 1.15rem; }
+    .archive-discounts { margin-top: 1.15rem; }
+    .archive-discounts h2 {
+        padding-top: 0.35rem;
+        border-top: 1px solid rgb(var(--ink) / 0.2);
+    }
     .archive-block h2 {
         display: block;
         padding-bottom: 0.35rem;
@@ -698,6 +703,14 @@
             <strong class="side-title">{% trans "Collections" %}</strong>
             <em class="side-sub">{% trans "Curated book sets" %}</em>
         </a>
+        <a class="side-link" href="#">
+            <strong class="side-title">{% trans "Partner Publishers" %}</strong>
+            <em class="side-sub">{% trans "Publishers we work with" %}</em>
+        </a>
+        <a class="side-link" href="#">
+            <strong class="side-title">{% trans "Representatives" %}</strong>
+            <em class="side-sub">{% trans "Our official sales agents" %}</em>
+        </a>
         <section class="side-guide" aria-labelledby="side-guide">
             <h2 id="side-guide" class="side-title">{% trans "Guide" %}</h2>
             <a class="idx" href="{% url 'page:aboutus' %}">
@@ -807,10 +820,12 @@
                 {% endfor %}
             </div>
         </section>
+        <section class="archive-block archive-discounts" aria-labelledby="arc-discounts">
+            <h2 id="arc-discounts">
+                <a href="{% url 'product:product_list' %}?discount=true">{% trans "Discounts" %}</a>
+            </h2>
+        </section>
         <div class="archive-foot">
-            <a class="idx" href="{% url 'product:product_list' %}?discount=true">
-                <span class="idx-name">{% trans "Discounts" %}</span>
-            </a>
             <form class="archive-search" action="{% url 'product:product_search' %}" method="get" role="search">
                 <input type="hidden" name="mode" value="simple">
                 <input type="search" name="q" x-model="searchQuery" placeholder="{% trans 'Search' %}" aria-label="{% trans 'Search books' %}">
