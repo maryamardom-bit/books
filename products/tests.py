@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
@@ -350,6 +350,7 @@ class ProductSearchViewTest(TestCase):
         self.assertContains(response, 'searchOpen = true')
 
 
+@override_settings(LANGUAGE_CODE='en')
 class CatalogDiscoveryTest(TestCase):
     def setUp(self):
         self.urban = ProductFactory(

@@ -43,7 +43,9 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.get_savings()
     
     def get_avg_rating(self, obj):
-        return obj.avg_rating
+        # Annotated by ProductManager.with_ratings(); nested products (packages) are not.
+        avg = getattr(obj, 'avg_rating', None)
+        return avg if avg is not None else obj.get_avg_rating()
     
     def get_is_on_sale(self, obj):
         return obj.is_on_sale()
