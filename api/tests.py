@@ -190,6 +190,89 @@ class CartAPITest(APITestCase):
         self.assertEqual(response.data['cart_count'], 0)
 
 
+class APISecurityTest(APITestCase):
+    """Fields and objects a customer must not be able to control."""
+
+    def setUp(self):
+        from orders.factories import OrderFactory
+
+        self.user = User.objects.create_user(username='buyer', password='testpass123')
+        self.other = User.objects.create_user(username='other', password='testpass123')
+        self.product = ProductFactory(stock=5)
+        self.own_order = OrderFactory(user=self.user, is_paid=True)
+        self.other_order = OrderFactory(user=self.other, is_paid=True)
+        self.client.login(username='buyer', password='testpass123')
+
+    def test_comment_cannot_self_approve(self):
+        response = self.client.post('/api/v1/comments/', {
+            'product': self.product.id, 'body': 'spam', 'stars': 5, 'active': True,
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertFalse(Comment.objects.get(pk=response.data['id']).active)
+
+    def test_edited_comment_returns_to_moderation(self):
+        comment = CommentFactory(product=self.product, author=self.user, active=True)
+        self.client.patch(f'/api/v1/comments/{comment.id}/', {'body': 'changed'}, format='json')
+        comment.refresh_from_db()
+        self.assertFalse(comment.active)
+
+    def test_cannot_request_return_for_someone_elses_order(self):
+        response = self.client.post('/api/v1/returns/', {
+            'order': self.other_order.id, 'reason': 'x',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertFalse(response.data['success'])
+        self.assertEqual(response.data['error']['code'], 'VALIDATION_ERROR')
+
+    def test_customer_cannot_set_return_status(self):
+        response = self.client.post('/api/v1/returns/', {
+            'order': self.own_order.id, 'reason': 'damaged', 'status': 'APPROVED', 'admin_note': 'ok',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['status'], 'PENDING')
+        self.assertEqual(response.data['admin_note'], '')
+
+    def test_customer_cannot_update_return(self):
+        from orders.factories import ReturnRequestFactory
+
+        ret = ReturnRequestFactory(order=self.own_order, user=self.user)
+        response = self.client.patch(f'/api/v1/returns/{ret.id}/', {'status': 'APPROVED'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_cannot_read_someone_elses_order(self):
+        response = self.client.get(f'/api/v1/orders/{self.other_order.id}/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['error']['code'], 'NOT_FOUND')
+
+
+class CartAPIValidationTest(APITestCase):
+    def setUp(self):
+        self.product = ProductFactory(price=100000, stock=3)
+
+    def test_invalid_quantity(self):
+        response = self.client.post('/api/v1/cart/', {'item_id': self.product.id, 'quantity': 'abc'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['error']['code'], 'INVALID_QUANTITY')
+
+    def test_out_of_stock(self):
+        self.product.stock = 0
+        self.product.save()
+        response = self.client.post('/api/v1/cart/', {'item_id': self.product.id, 'quantity': 1}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['error']['code'], 'BOOK_OUT_OF_STOCK')
+
+    def test_string_false_is_not_a_package(self):
+        response = self.client.post('/api/v1/cart/', {
+            'item_id': self.product.id, 'quantity': 1, 'is_package': 'false',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_unknown_item(self):
+        response = self.client.post('/api/v1/cart/', {'item_id': 999999}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['error']['code'], 'ITEM_NOT_FOUND')
+
+
 class ProfileAPITest(APITestCase):
     """Test Profile API"""
     

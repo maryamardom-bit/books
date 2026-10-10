@@ -430,3 +430,32 @@ class CatalogDiscoveryTest(TestCase):
             self.assertContains(response, str(subject['english']).replace('&', '&amp;'))
             self.assertContains(response, f'/products/categories/{subject["code"]}/')
             self.assertEqual(subject['count'], 1 if subject['code'] in ('URBAN', 'INTERIOR') else 0)
+
+
+class CommentInputValidationTest(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_user(username='reader', password='testpass123')
+        self.client.login(username='reader', password='testpass123')
+        self.product = ProductFactory(active=True)
+
+    def test_non_numeric_stars_does_not_crash(self):
+        response = self.client.post(f'/products/comment/{self.product.id}/', {'body': 'ok', 'stars': 'abc'})
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Comment.objects.filter(product=self.product).exists())
+
+    def test_out_of_range_stars_rejected(self):
+        self.client.post(f'/products/comment/{self.product.id}/', {'body': 'ok', 'stars': '99'})
+        self.assertFalse(Comment.objects.filter(product=self.product).exists())
+
+    def test_valid_comment_waits_for_moderation(self):
+        self.client.post(f'/products/comment/{self.product.id}/', {'body': 'عالی', 'stars': '5'})
+        comment = Comment.objects.get(product=self.product)
+        self.assertFalse(comment.active)
+
+    def test_release_stock_never_negative(self):
+        self.product.stock = 5
+        self.product.reserved_stock = 1
+        self.product.save()
+        self.product.release_stock(3)
+        self.assertEqual(self.product.reserved_stock, 0)

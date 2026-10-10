@@ -36,8 +36,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('profile/', views.UserProfileView.as_view(), name='api_profile'),
     path('cart/', views.CartAPIView.as_view(), name='api_cart'),
-    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
-    
+
     # JWT Endpoints
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

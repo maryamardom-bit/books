@@ -1,5 +1,13 @@
 venv/
+.venv/
 db.sqlite3
 .idea/
+.vscode/
 staticfiles/
 .env
+.env.prod
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/

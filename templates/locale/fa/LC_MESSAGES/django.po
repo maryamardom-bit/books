@@ -1922,6 +1922,133 @@ msgstr "«%(title)s» چون دیگر موجود نیست از سبد حذف ش�
 msgid "Quantity of “%(title)s” was reduced to the available stock."
 msgstr "تعداد «%(title)s» به موجودی انبار کاهش یافت."
 
+msgid "Pay"
+msgstr "پرداخت"
+
+msgid "Payment not found."
+msgstr "پرداخت یافت نشد."
+
+msgid "This payment is no longer pending."
+msgstr "این پرداخت دیگر در انتظار نیست."
+
+msgid "This order can no longer be paid."
+msgstr "این سفارش دیگر قابل پرداخت نیست."
+
+msgid "This transaction has already been used."
+msgstr "این تراکنش قبلاً استفاده شده است."
+
+msgid ""
+"Some items are no longer in stock. Your payment will be refunded by the bank."
+msgstr "برخی از اقلام دیگر موجود نیستند. مبلغ پرداختی توسط بانک به حساب شما بازگردانده می‌شود."
+
+msgid "Payment amount does not match the order."
+msgstr "مبلغ پرداختی با مبلغ سفارش مطابقت ندارد."
+
+msgid "Enter a valid ISBN-10 or ISBN-13."
+msgstr "یک شابک ۱۰ یا ۱۳ رقمی معتبر وارد کنید."
+
+msgid "This ISBN already belongs to “%(title)s”."
+msgstr "این شابک قبلاً برای «%(title)s» ثبت شده است."
+
+msgid "Draft"
+msgstr "پیش‌نویس"
+
+msgid "Pending payment"
+msgstr "در انتظار پرداخت"
+
+msgid "Payment failed"
+msgstr "پرداخت ناموفق"
+
+msgid "Processing"
+msgstr "در حال پردازش"
+
+msgid "Packed"
+msgstr "بسته‌بندی شده"
+
+msgid "Shipped"
+msgstr "ارسال شده"
+
+msgid "Delivered"
+msgstr "تحویل داده شده"
+
+msgid "Cancelled"
+msgstr "لغو شده"
+
+msgid "Return requested"
+msgstr "درخواست مرجوعی"
+
+msgid "Refunded"
+msgstr "بازپرداخت شده"
+
+msgid "payment"
+msgstr "پرداخت"
+
+msgid "payments"
+msgstr "پرداخت‌ها"
+
+msgid "gateway"
+msgstr "درگاه"
+
+msgid "reference"
+msgstr "شناسه پرداخت"
+
+msgid "Initiated"
+msgstr "ایجاد شده"
+
+msgid "Pending at gateway"
+msgstr "در انتظار درگاه"
+
+msgid "Failed"
+msgstr "ناموفق"
+
+msgid "transaction id"
+msgstr "شماره تراکنش"
+
+msgid "RRN"
+msgstr "شماره مرجع بانکی"
+
+msgid "trace number"
+msgstr "شماره پیگیری"
+
+msgid "card"
+msgstr "کارت"
+
+msgid "failure reason"
+msgstr "علت خطا"
+
+msgid "callback payload"
+msgstr "داده بازگشتی درگاه"
+
+msgid "verify payload"
+msgstr "پاسخ تایید درگاه"
+
+msgid "paid at"
+msgstr "زمان پرداخت"
+
+msgid "SMS is disabled."
+msgstr "ارسال پیامک غیرفعال است."
+
+msgid "Mark as paid (offline payment, no stock change)"
+msgstr "علامت‌گذاری به‌عنوان پرداخت‌شده (پرداخت آفلاین، بدون تغییر موجودی)"
+
+msgid "Mark as processing"
+msgstr "تغییر وضعیت به در حال پردازش"
+
+msgid "Mark as packed"
+msgstr "تغییر وضعیت به بسته‌بندی شده"
+
+msgid "Mark as shipped"
+msgstr "تغییر وضعیت به ارسال شده"
+
+msgid "Mark as delivered"
+msgstr "تغییر وضعیت به تحویل داده شده"
+
+msgid "Cancel orders"
+msgstr "لغو سفارش‌ها"
+
+msgid "%(moved)s orders updated, %(skipped)s skipped (invalid transition)."
+msgstr "%(moved)s سفارش به‌روزرسانی شد، %(skipped)s مورد نادیده گرفته شد (تغییر وضعیت غیرمجاز)."
+
 #~ msgid "تأیید ایمیل"
 #~ msgstr "تأیید ایمیل"
 

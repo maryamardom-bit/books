@@ -23,8 +23,11 @@
                 <span class="font-bold">{% trans 'Order' %} {{ order.id }}</span>
                 <span class="text-sm text-faint">{{ order.datetime_created|to_jalali:'%Y/%m/%d %H:%M' }}</span>
                 <span class="font-bold">{{ order.total_price|intcomma:False|translate_number }} {% trans 'Toman' %}</span>
-                {% if order.is_paid %}<span class="rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-bold text-success">{% trans 'Paid' %}</span>
-                {% else %}<span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">{% trans 'Pending' %}</span>{% endif %}
+                {% if order.status == 'PENDING_PAYMENT' or order.status == 'PAYMENT_FAILED' or order.status == 'CANCELLED' %}
+                <span class="rounded-full bg-danger-soft px-2 py-0.5 text-[11px] font-bold text-danger">{{ order.get_status_display }}</span>
+                {% else %}
+                <span class="rounded-full bg-success-soft px-2 py-0.5 text-[11px] font-bold text-success">{{ order.get_status_display }}</span>
+                {% endif %}
             </div>
             <div class="divide-y divide-line">
                 {% for item in order.items.all %}
@@ -56,6 +59,8 @@
                 <span class="text-xs text-muted">{% trans 'Total Weight' %}: {{ order.total_weight|translate_number }} {% trans 'g' %}</span>
                 {% if order.is_paid %}
                 <a href="{% url 'order:request_return' order.id %}" class="btn btn-ghost text-xs text-danger">{% trans 'Return Request' %}</a>
+                {% elif order.status == 'PENDING_PAYMENT' or order.status == 'PAYMENT_FAILED' %}
+                <a href="{% url 'payment:payment_process' %}?order={{ order.id }}" class="btn btn-accent text-xs">{% trans 'Pay' %}</a>
                 {% endif %}
             </div>
         </article>

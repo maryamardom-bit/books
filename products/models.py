@@ -4,12 +4,15 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from ckeditor.fields import RichTextField
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Q, Avg, Sum, Value, F, Count
 from django.db.models.functions import Coalesce
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from django.core.cache import cache
+
+from core.isbn import canonical_isbn13, normalize_isbn
 
 
 class ProductManager(models.Manager):
@@ -52,6 +55,19 @@ class ProductManager(models.Manager):
 
 
 class Product(models.Model):
+    """
+    Sellable book (currently Work + Edition + SKU in one row).
+
+    TODO(Phase 1 - Catalog): split into Work / Edition with Contributor (author, translator,
+    editor, illustrator), hierarchical Category, Tag, Series and Publisher models.
+    Until then:
+      - `category` is a fixed enum, not a hierarchical Category model.
+      - `author` holds comma-separated names (see contributors.split_people).
+      - `edition` holds the translator names imported from WordPress, not the edition label.
+      - `isbn` is not DB-unique because imported data may contain duplicates; uniqueness
+        is enforced in clean() and must become a UniqueConstraint after data cleanup.
+      - `stock` is mutated directly; it must move to an InventoryItem + StockTransaction ledger.
+    """
 
     class Category(models.TextChoices):
         BUSINESS = 'BUSINESS', _('Architecture Business')
@@ -141,8 +157,34 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+    def clean(self):
+        super().clean()
+        if not self.isbn:
+            return
+        canonical = canonical_isbn13(self.isbn)
+        if not canonical:
+            raise ValidationError({'isbn': _('Enter a valid ISBN-10 or ISBN-13.')})
+        self.isbn = normalize_isbn(self.isbn)
+        duplicate = self.find_isbn_duplicate(canonical)
+        if duplicate is not None:
+            raise ValidationError({
+                'isbn': _('This ISBN already belongs to “%(title)s”.') % {'title': duplicate.title},
+            })
+
+    def find_isbn_duplicate(self, canonical):
+        # Stored ISBNs have mixed formats (hyphens, ISBN-10), so compare canonical forms.
+        # TODO(Phase 1 - Catalog): store a normalized `isbn13` column with a unique index.
+        others = Product.objects.exclude(isbn='').only('pk', 'title', 'isbn')
+        if self.pk:
+            others = others.exclude(pk=self.pk)
+        for other in others.iterator():
+            if canonical_isbn13(other.isbn) == canonical:
+                return other
+        return None
+
     def get_absolute_url(self):
+        # TODO(Phase 1 - SEO): switch to /books/<slug>/ with a 301 from the pk URL.
         return reverse('product:product_detail', args=[self.pk])
     
     def is_on_sale(self):
@@ -227,6 +269,8 @@ class Product(models.Model):
     
     def reserve_stock(self, quantity):
         """Reserve stock atomically"""
+        # TODO(Phase 1 - Inventory): not called anywhere yet. Checkout should create an expiring
+        # StockReservation per line (released by a scheduled job) instead of locking at payment time.
         updated = Product.objects.filter(
             pk=self.pk,
             stock__gte=F('reserved_stock') + quantity
@@ -239,10 +283,13 @@ class Product(models.Model):
         return False
     
     def release_stock(self, quantity):
-        """Release reserved stock"""
-        Product.objects.filter(pk=self.pk).update(
-            reserved_stock=F('reserved_stock') - quantity
-        )
+        """Release reserved stock; never drives reserved_stock below zero."""
+        released = Product.objects.filter(
+            pk=self.pk,
+            reserved_stock__gte=quantity,
+        ).update(reserved_stock=F('reserved_stock') - quantity)
+        if not released:
+            Product.objects.filter(pk=self.pk).update(reserved_stock=0)
         self.refresh_from_db(fields=['reserved_stock'])
 
 
@@ -487,6 +534,9 @@ class DiscountCode(models.Model):
 
 
 class TieredDiscount(models.Model):
+    # TODO(Phase 2 - Promotions/Loyalty): the tier advances after each paid order and is shown on
+    # the dashboard, but get_discount_percent() is never applied to the cart or order total.
+    # Decide the business rule and apply it in one pricing service together with DiscountCode.
     user = models.ForeignKey(
         get_user_model(), 
         on_delete=models.CASCADE, 
@@ -559,6 +609,8 @@ class ProductBlog(models.Model):
 
 
 class InstallmentPlan(models.Model):
+    # TODO(Phase 2 - Payment): installment checkout is UI-only. Orders marked "installment" are
+    # still charged the full amount online; there is no schedule, due-date or collection model.
     product = models.ForeignKey(
         Product, 
         on_delete=models.CASCADE, 

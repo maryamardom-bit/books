@@ -16,6 +16,9 @@ class OrderFactory(factory.django.DjangoModelFactory):
     total_price = factory.Faker('random_int', min=100000, max=1000000)
     total_weight = factory.Faker('random_int', min=100, max=5000)
     is_paid = True
+    status = factory.LazyAttribute(
+        lambda order: Order.Status.PAID if order.is_paid else Order.Status.PENDING_PAYMENT
+    )
     datetime_created = factory.LazyFunction(timezone.now)
 
 

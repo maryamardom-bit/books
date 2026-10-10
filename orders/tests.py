@@ -7,8 +7,10 @@ from django.contrib.sessions.backends.db import SessionStore
 
 from products.factories import ProductFactory, PackageFactory
 from products.models import Product, Package
+from django.db.models import ProtectedError
+
 from .factories import OrderFactory, OrderItemFactory, ReturnRequestFactory
-from .models import Order, OrderItem, ReturnRequest
+from .models import InvalidOrderTransition, Order, OrderItem, ReturnRequest
 
 # این را اضافه کنید
 User = get_user_model()
@@ -101,6 +103,51 @@ class OrderModelTest(TestCase):
     def test_order_payment_method_default(self):
         """Test default payment method"""
         self.assertEqual(self.order.payment_method, 'online')
+
+
+class OrderStateMachineTest(TestCase):
+    def setUp(self):
+        self.order = OrderFactory(is_paid=False)
+
+    def test_happy_path(self):
+        for status in (
+            Order.Status.PAID,
+            Order.Status.PROCESSING,
+            Order.Status.PACKED,
+            Order.Status.SHIPPED,
+            Order.Status.DELIVERED,
+        ):
+            self.order.transition_to(status)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, Order.Status.DELIVERED)
+        self.assertTrue(self.order.is_paid)
+
+    def test_cannot_ship_unpaid_order(self):
+        with self.assertRaises(InvalidOrderTransition):
+            self.order.transition_to(Order.Status.SHIPPED)
+
+    def test_cancelled_is_terminal(self):
+        self.order.transition_to(Order.Status.CANCELLED)
+        with self.assertRaises(InvalidOrderTransition):
+            self.order.transition_to(Order.Status.PAID)
+
+
+class OrderHistoryIntegrityTest(TestCase):
+    def test_item_keeps_title_and_price_after_catalog_change(self):
+        product = ProductFactory(title='Original title', price=500000)
+        item = OrderItemFactory(product=product, price=500000)
+        product.title = 'Renamed'
+        product.price = 700000
+        product.save()
+        item.refresh_from_db()
+        self.assertEqual(item.get_title(), 'Original title')
+        self.assertEqual(item.price, 500000)
+
+    def test_ordered_product_cannot_be_deleted(self):
+        product = ProductFactory()
+        OrderItemFactory(product=product)
+        with self.assertRaises(ProtectedError):
+            product.delete()
 
 
 class ReturnRequestModelTest(TestCase):
@@ -228,12 +275,26 @@ class OrderCreateViewTest(TestCase):
         self.assertEqual(item.product, self.product)
         self.assertEqual(item.quantity, 2)
         
-        # بررسی کاهش موجودی
+        # موجودی فقط پس از تایید پرداخت کم می‌شود، نه هنگام ثبت سفارش
         self.product.refresh_from_db()
-        self.assertEqual(self.product.stock, 8)  # 10 - 2
+        self.assertEqual(self.product.stock, 10)
+        self.assertEqual(order.status, Order.Status.PENDING_PAYMENT)
+        self.assertEqual(item.title, self.product.title)
         
         # بررسی خالی شدن سبد
         self.assertEqual(self.client.session.get('cart'), {})
+
+    def test_order_create_rejects_unknown_payment_method(self):
+        data = {
+            'first_name': 'Test',
+            'last_name': 'User',
+            'phone_number': '09123456789',
+            'address': 'Test Address',
+            'payment-method': 'free-books',
+        }
+        self.client.post(reverse('order:order_create'), data)
+        order = Order.objects.filter(user=self.user).first()
+        self.assertEqual(order.payment_method, 'online')
     
     def test_order_create_view_empty_cart(self):
         """Test order create with empty cart"""

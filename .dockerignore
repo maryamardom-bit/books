@@ -1,1 +1,9 @@
 venv/
+.venv/
+.git/
+.env
+.env.prod
+__pycache__/
+*.py[cod]
+staticfiles/
+.pytest_cache/

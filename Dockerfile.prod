@@ -1,29 +1,34 @@
 FROM python:3.14-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
 WORKDIR /code
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    postgresql-client \
+    gettext \
     libpq-dev \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy project
 COPY . .
 
-# Create directories
-RUN mkdir -p /code/staticfiles /code/media
+# Build-time values only: collectstatic/compilemessages need settings to import, not real secrets.
+RUN DJANGO_SECRET_KEY=build-only DJANGO_DEBUG=False \
+    python manage.py compilemessages --settings=config.settings_production \
+    && DJANGO_SECRET_KEY=build-only DJANGO_DEBUG=False \
+    python manage.py collectstatic --noinput --settings=config.settings_production
 
-# Collect static files
-RUN python manage.py collectstatic --noinput --settings=config.settings_production
+RUN mkdir -p /code/staticfiles /code/media \
+    && useradd --system --uid 1000 --home /code app \
+    && chown -R app:app /code
+USER app
 
-# Expose port
 EXPOSE 8000
 
-# Run gunicorn
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "120"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "120", "--access-logfile", "-"]

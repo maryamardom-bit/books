@@ -91,6 +91,13 @@ class CommentSerializer(serializers.ModelSerializer):
             'id', 'product', 'author_name', 'body', 'stars',
             'datetime_created', 'active',
         ]
+        # Moderation flag: only staff approve comments (via admin), never the author.
+        read_only_fields = ['active']
+
+    def validate_product(self, product):
+        if not product.active:
+            raise serializers.ValidationError('Product is not available.')
+        return product
     
     def get_datetime_created(self, obj):
         return to_jalali(obj.datetime_created)
@@ -143,10 +150,11 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
-            'id', 'user', 'is_paid', 'first_name', 'last_name',
+            'id', 'user', 'status', 'is_paid', 'first_name', 'last_name',
             'phone_number', 'address', 'total_weight', 'total_price',
             'payment_method', 'items', 'datetime_created',
         ]
+        read_only_fields = fields
     
     def get_datetime_created(self, obj):
         return to_jalali(obj.datetime_created)
@@ -162,9 +170,23 @@ class ReturnRequestSerializer(serializers.ModelSerializer):
             'id', 'order', 'user', 'reason', 'status', 'status_display',
             'admin_note', 'datetime_created',
         ]
+        # Customers only choose the order and write a reason; staff decide in the admin.
+        read_only_fields = ['user', 'status', 'admin_note']
     
     def get_datetime_created(self, obj):
         return to_jalali(obj.datetime_created)
+
+    def validate_order(self, order):
+        request = self.context['request']
+        if order.user_id != request.user.id:
+            raise serializers.ValidationError('Order not found.')
+        if not order.is_paid:
+            raise serializers.ValidationError('This order is not paid.')
+        if (timezone.now() - order.datetime_created).days > 3:
+            raise serializers.ValidationError('Return period has expired (3 days).')
+        if ReturnRequest.objects.filter(order=order, user=request.user).exists():
+            raise serializers.ValidationError('You already have a return request for this order.')
+        return order
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

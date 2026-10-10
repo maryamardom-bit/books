@@ -1,16 +1,25 @@
+import logging
+
 import requests
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+logger = logging.getLogger(__name__)
+
 
 class SMSService:
     """Service for sending SMS via Kavenegar"""
+    # TODO(Phase 2 - Notifications): move behind a central NotificationService (email/SMS/in-app)
+    # sent from a background worker with retries, so a slow SMS API never blocks checkout.
     
     API_URL = 'https://api.kavenegar.com/v1/{}/sms/send.json'
     
     @classmethod
     def send_sms(cls, receptor, message):
         """Send SMS to a single receptor"""
+        if not getattr(settings, 'SMS_ENABLED', True):
+            logger.info('SMS disabled; skipped message to %s', str(receptor)[-4:])
+            return False, _('SMS is disabled.')
         api_key = settings.KAVENEGAR_API_KEY
         sender = settings.KAVENEGAR_SENDER
         
@@ -30,12 +39,15 @@ class SMSService:
                 return True, _('SMS sent successfully.')
             else:
                 return False, result.get('return', {}).get('message', _('Error sending SMS.'))
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, ValueError, AttributeError) as e:
+            logger.warning('SMS send failed: %s', e.__class__.__name__)
             return False, str(e)
     
     @classmethod
     def send_bulk_sms(cls, receptors, message):
         """Send SMS to multiple receptors"""
+        if not getattr(settings, 'SMS_ENABLED', True):
+            return False, _('SMS is disabled.')
         api_key = settings.KAVENEGAR_API_KEY
         sender = settings.KAVENEGAR_SENDER
         
@@ -57,7 +69,8 @@ class SMSService:
                 return True, _('SMS sent successfully.')
             else:
                 return False, result.get('return', {}).get('message', _('Error sending SMS.'))
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, ValueError, AttributeError) as e:
+            logger.warning('Bulk SMS send failed: %s', e.__class__.__name__)
             return False, str(e)
     
     @classmethod

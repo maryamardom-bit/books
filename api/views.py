@@ -14,6 +14,7 @@ from .serializers import (
     ProductBlogSerializer, FAQSerializer, OrderSerializer,
     ReturnRequestSerializer, UserProfileSerializer,
 )
+from .exceptions import APIError
 from .permissions import (
     IsOwnerOrAdmin, IsAdminOrReadOnly, IsProductOwnerOrAdmin,
     IsOrderOwnerOrAdmin,
@@ -84,6 +85,13 @@ class CommentViewSet(viewsets.ModelViewSet):
         # نظرات API نیز مانند وب‌سایت نیاز به تایید مدیر دارند
         serializer.save(author=self.request.user, active=False)
 
+    def perform_update(self, serializer):
+        # An edited comment goes back to moderation, otherwise approved text could be replaced.
+        if self.request.user.is_staff:
+            serializer.save()
+        else:
+            serializer.save(active=False)
+
 
 class ProductBlogViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for blogs"""
@@ -114,6 +122,8 @@ class ReturnRequestViewSet(viewsets.ModelViewSet):
     """API endpoint for return requests"""
     serializer_class = ReturnRequestSerializer
     permission_classes = [IsOrderOwnerOrAdmin]
+    # Customers create and read; status changes happen in the admin workflow.
+    http_method_names = ['get', 'post', 'head', 'options']
     
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -134,10 +144,11 @@ class UserProfileView(APIView):
     
     def put(self, request):
         serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    patch = put
 
 
 class CartAPIView(APIView):
@@ -173,48 +184,51 @@ class CartAPIView(APIView):
             'discounted_total': cart.get_discounted_total(),
         })
     
+    MAX_QUANTITY = 100
+
+    @staticmethod
+    def _flag(value):
+        # JSON sends booleans, form data sends "false"/"0", which are truthy strings.
+        if isinstance(value, str):
+            return value.strip().lower() in ('1', 'true', 'yes', 'on')
+        return bool(value)
+
+    def _get_item(self, request):
+        item_id = request.data.get('item_id')
+        if not item_id or not str(item_id).isdigit():
+            raise APIError('ITEM_ID_REQUIRED', 'item_id is required')
+        is_package = self._flag(request.data.get('is_package', False))
+        model = Package if is_package else Product
+        item = model.objects.filter(id=item_id).first()
+        if item is None:
+            raise APIError('ITEM_NOT_FOUND', 'Item not found', status_code=status.HTTP_404_NOT_FOUND)
+        return item, is_package
+
     def post(self, request):
         """Add item to cart"""
-        item_id = request.data.get('item_id')
-        quantity = int(request.data.get('quantity', 1))
-        is_package = request.data.get('is_package', False)
-        
-        if not item_id:
-            return Response({'error': 'item_id is required'}, status=400)
-        
+        item, is_package = self._get_item(request)
         try:
-            if is_package:
-                item = Package.objects.get(id=item_id)
-            else:
-                item = Product.objects.get(id=item_id)
-        except (Product.DoesNotExist, Package.DoesNotExist):
-            return Response({'error': 'Item not found'}, status=404)
-        
+            quantity = int(request.data.get('quantity', 1))
+        except (TypeError, ValueError):
+            quantity = 0
+        if not 1 <= quantity <= self.MAX_QUANTITY:
+            raise APIError('INVALID_QUANTITY', 'Invalid quantity.')
+
         cart = Cart(request)
-        cart.add(item, quantity=quantity, is_package=is_package)
-        
+        result = cart.add(item, quantity=quantity, is_package=is_package)
+        if result == 'out_of_stock':
+            raise APIError('BOOK_OUT_OF_STOCK', 'این کتاب موجود نیست.')
+
         return Response({
             'success': True,
+            'limited': result == 'limited',
             'cart_count': len(cart),
             'total_price': cart.get_total_price(),
         })
     
     def delete(self, request):
         """Remove item from cart"""
-        item_id = request.data.get('item_id')
-        is_package = request.data.get('is_package', False)
-        
-        if not item_id:
-            return Response({'error': 'item_id is required'}, status=400)
-        
-        try:
-            if is_package:
-                item = Package.objects.get(id=item_id)
-            else:
-                item = Product.objects.get(id=item_id)
-        except (Product.DoesNotExist, Package.DoesNotExist):
-            return Response({'error': 'Item not found'}, status=404)
-        
+        item, is_package = self._get_item(request)
         cart = Cart(request)
         cart.remove(item, is_package=is_package)
         

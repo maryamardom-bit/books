@@ -1,7 +1,15 @@
 from django.db import models
 from django.db.models import Q
 
+from core.text import normalize_persian, search_variants
 from .models import Product
+
+# Long pasted queries would explode into hundreds of OR clauses.
+MAX_SEARCH_TOKENS = 6
+
+# TODO(Phase 1 - Search): replace icontains scans with a normalized `search_document`
+# column + PostgreSQL full-text (SearchVector/GIN) and pg_trgm for typo tolerance,
+# autocomplete and ranking. Current approach is correct but scans every row.
 
 # Operational / commerce fields are not bibliographic search targets.
 EXCLUDED_FIELD_NAMES = {
@@ -69,7 +77,8 @@ def _query_for_field(field, query):
     clauses = Q()
 
     if isinstance(field, TEXT_FIELD_TYPES):
-        clauses |= Q(**{f'{name}__icontains': query})
+        for variant in search_variants(query):
+            clauses |= Q(**{f'{name}__icontains': variant})
         if field.choices:
             matching = [
                 value
@@ -93,12 +102,13 @@ def _query_for_field(field, query):
 
 def build_search_q(query, field_names=None):
     """
-    Build an OR query across selected Product fields.
+    Every word must match at least one selected field (AND of ORs).
+    Splitting on words also makes «میر عباسی» find «میرعباسی» and «میر‌عباسی».
     field_names=None → all searchable fields (simple search).
     field_names=[] → no fields selected (advanced with none checked).
     """
-    query = (query or '').strip()
-    if not query:
+    tokens = normalize_persian(query).split()[:MAX_SEARCH_TOKENS]
+    if not tokens:
         return None
 
     allowed = _allowed_field_map()
@@ -110,6 +120,11 @@ def build_search_q(query, field_names=None):
             return None
 
     combined = Q()
-    for field in selected:
-        combined |= _query_for_field(field, query)
+    for token in tokens:
+        token_q = Q()
+        for field in selected:
+            token_q |= _query_for_field(field, token)
+        if not token_q:
+            return None
+        combined &= token_q
     return combined if combined else None

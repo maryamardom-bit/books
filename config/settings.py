@@ -5,11 +5,14 @@ Django settings for config project.
 from pathlib import Path
 from environs import Env
 import os
+import sys
 from datetime import timedelta
 
 # for environment variables
 env = Env()
 env.read_env()
+
+TESTING = (len(sys.argv) > 1 and sys.argv[1] == 'test') or 'pytest' in sys.modules
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,6 +24,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env.bool("DJANGO_DEBUG")
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
+CSRF_TRUSTED_ORIGINS = env.list('DJANGO_CSRF_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 INSTALLED_APPS = [
@@ -45,7 +49,6 @@ INSTALLED_APPS = [
     'rosetta',
     'ckeditor',
     'phonenumber_field',
-    'debug_toolbar',
 
     # local
     'accounts.apps.AccountsConfig',
@@ -57,6 +60,8 @@ INSTALLED_APPS = [
     'payment.apps.PaymentConfig',
     'rest_framework',
     'rest_framework_simplejwt',
+    # Required for BLACKLIST_AFTER_ROTATION to actually revoke rotated refresh tokens.
+    'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'api',
 ]
@@ -64,7 +69,6 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,6 +83,12 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# The debug toolbar is a development tool only; it must never load in tests or production.
+ENABLE_DEBUG_TOOLBAR = DEBUG and not TESTING
+if ENABLE_DEBUG_TOOLBAR:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -189,10 +199,6 @@ MESSAGE_TAGS = {
     messages_constant.ERROR: 'danger',
 }
 
-# SEP Payment Gateway Settings
-# SEP_TERMINAL_ID = 'test_terminal_id'  # برای تست فقط — باید از متغیر محیطی خوانده شود
-SEP_TERMINAL_ID = env('SEP_TERMINAL_ID', default='test_terminal_id')
-
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
@@ -211,24 +217,63 @@ CKEDITOR_CONFIGS = {
 # Kavenegar SMS
 KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY", default="test_api_key")
 KAVENEGAR_SENDER = env("KAVENEGAR_SENDER", default="1000596446")
+# Without a real key every SMS would be a failing HTTP call (tests, local dev).
+SMS_ENABLED = env.bool('SMS_ENABLED', default=KAVENEGAR_API_KEY != 'test_api_key' and not TESTING)
 CART_SESSION_ID = 'cart'
 
-# SEP Payment Gateway Settings
+# Payment
+PAYMENT_GATEWAY = env('PAYMENT_GATEWAY', default='sep')
+# Store prices are in Toman; Iranian gateways charge in Rial.
+PAYMENT_AMOUNT_MULTIPLIER = env.int('PAYMENT_AMOUNT_MULTIPLIER', default=10)
+PAYMENT_HTTP_TIMEOUT = env.int('PAYMENT_HTTP_TIMEOUT', default=15)
 SEP_TERMINAL_ID = env('SEP_TERMINAL_ID', default='test_terminal_id')
-
-# NOTE: ZARINPAL_MERCHANT_ID removed — SEP gateway is used instead.
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'EXCEPTION_HANDLER': 'api.exceptions.api_exception_handler',
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': env('API_THROTTLE_ANON', default='60/minute'),
+        'user': env('API_THROTTLE_USER', default='240/minute'),
+    },
+}
+
+if TESTING:
+    REST_FRAMEWORK['DEFAULT_THROTTLE_CLASSES'] = []
+
+REDIS_URL = env('REDIS_URL', default='')
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': REDIS_URL,
+        }
+    }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {'format': '%(asctime)s %(levelname)s %(name)s: %(message)s'},
+    },
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler', 'formatter': 'standard'},
+    },
+    'root': {'handlers': ['console'], 'level': env('DJANGO_LOG_LEVEL', default='INFO')},
+    'loggers': {
+        'django.db.backends': {'level': 'WARNING'},
+    },
 }
 
 SIMPLE_JWT = {
@@ -255,9 +300,6 @@ SIMPLE_JWT = {
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
-        'Basic': {
-            'type': 'basic'
-        },
         'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',

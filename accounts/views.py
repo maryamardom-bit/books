@@ -40,5 +40,9 @@ def profile_edit_view(request):
 
 @login_required
 def order_history_view(request):
-    orders = Order.objects.filter(user=request.user).order_by('-datetime_created')
+    orders = (
+        Order.objects.filter(user=request.user)
+        .prefetch_related('items__product')
+        .order_by('-datetime_created')
+    )
     return render(request, 'accounts/order_history.html', {'orders': orders})

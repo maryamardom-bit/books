@@ -1,432 +1,354 @@
-from unittest.mock import patch, Mock
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from django.urls import reverse
-from django.utils import timezone
+from unittest.mock import Mock, patch
 
-from products.factories import ProductFactory, PackageFactory
-from products.models import Product, Package, TieredDiscount
+import requests
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase, override_settings
+from django.urls import reverse
+
 from orders.factories import OrderFactory, OrderItemFactory
-from orders.models import Order, OrderItem
+from orders.models import Order
+from products.factories import DiscountCodeFactory, PackageFactory, ProductFactory
+from products.models import TieredDiscount
+
+from .gateways.sep import SepGateway
+from .models import Payment
 
 User = get_user_model()
 
+SEP_POST = 'payment.gateways.sep.requests.post'
 
+
+def _response(payload, status_code=200):
+    response = Mock()
+    response.status_code = status_code
+    response.json.return_value = payload
+    return response
+
+
+def _token_ok(token='test_token_123'):
+    return _response({'status': 1, 'token': token})
+
+
+def _verify_ok(payment, ref_num='REF123456', amount=None):
+    return _response({
+        'TransactionDetail': {
+            'RRN': '14226761817',
+            'RefNum': ref_num,
+            'MaskedPan': '621986****8080',
+            'TerminalNumber': 2015,
+            'OrginalAmount': payment.amount * 10 if amount is None else amount,
+            'AffectiveAmount': payment.amount * 10 if amount is None else amount,
+            'StraceNo': '100408',
+        },
+        'ResultCode': 0,
+        'ResultDescription': 'عملیات با موفقیت انجام شد',
+        'Success': True,
+    })
+
+
+def _callback(payment, status='2', ref_num='REF123456'):
+    return {
+        'ResNum': payment.reference.hex,
+        'RefNum': ref_num,
+        'Status': status,
+        'State': 'OK' if status == '2' else 'CanceledByUser',
+        'TraceNo': '100408',
+        'Rrn': '14226761817',
+        'Amount': str(payment.amount * 10),
+        'SecurePan': '621986****8080',
+    }
+
+
+@override_settings(SEP_TERMINAL_ID='2015', PAYMENT_AMOUNT_MULTIPLIER=10)
 class PaymentProcessTest(TestCase):
-    """Test payment process view"""
-    
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='paymentuser',
-            password='testpass123',
-            phone_number='09123456789'
-        )
+        self.user = User.objects.create_user(username='paymentuser', password='testpass123', phone_number='09123456789')
         self.client.login(username='paymentuser', password='testpass123')
-        
         self.product = ProductFactory(price=100000, stock=10)
-        self.order = OrderFactory(
-            user=self.user,
-            total_price=200000,
-            total_weight=1000,
-            is_paid=False
-        )
-        
-        # تنظیم session با order_id
+        self.order = OrderFactory(user=self.user, total_price=200000, total_weight=1000, is_paid=False)
         session = self.client.session
         session['order_id'] = self.order.id
         session.save()
-    
-    @patch('payment.views.requests.post')
-    def test_payment_process_success(self, mock_post):
-        """Test successful payment process initiation"""
-        # Mock response از درگاه پرداخت
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 1,
-            'token': 'test_token_123'
-        }
-        mock_post.return_value = mock_response
-        
+
+    @patch(SEP_POST)
+    def test_redirects_to_gateway_with_rial_amount(self, mock_post):
+        mock_post.return_value = _token_ok()
+
         response = self.client.get(reverse('payment:payment_process'))
-        
-        # باید به درگاه پرداخت redirect شود
+
         self.assertEqual(response.status_code, 302)
         self.assertIn('sep.shaparak.ir', response.url)
         self.assertIn('test_token_123', response.url)
-        
-        # بررسی اینکه درخواست به درگاه ارسال شده
-        mock_post.assert_called_once()
-        call_args = mock_post.call_args
-        self.assertEqual(call_args[1]['data']['TerminalId'], 'test_terminal_id')
-        self.assertEqual(call_args[1]['data']['Amount'], 200000)
-    
-    @patch('payment.views.requests.post')
-    def test_payment_process_gateway_error(self, mock_post):
-        """Test payment process with gateway error"""
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 0,
-            'errorDesc': 'Invalid terminal'
-        }
-        mock_post.return_value = mock_response
-        
+        payment = Payment.objects.get(order=self.order)
+        self.assertEqual(payment.status, Payment.Status.PENDING)
+        payload = mock_post.call_args.kwargs['json']
+        self.assertEqual(payload['action'], 'token')
+        self.assertEqual(payload['TerminalId'], '2015')
+        self.assertEqual(payload['Amount'], 2000000)  # 200,000 Toman = 2,000,000 Rial
+        self.assertEqual(payload['ResNum'], payment.reference.hex)
+        self.assertTrue(payload['RedirectUrl'].endswith(reverse('payment:payment_verify')))
+
+    @patch(SEP_POST)
+    def test_gateway_rejection(self, mock_post):
+        mock_post.return_value = _response({'status': -1, 'errorCode': 5, 'errorDesc': 'Invalid terminal'})
+
         response = self.client.get(reverse('payment:payment_process'))
-        
-        # باید به سبد خرید redirect شود
-        self.assertEqual(response.status_code, 302)
+
         self.assertRedirects(response, reverse('cart:cart_detail'))
-    
-    @patch('payment.views.requests.post')
-    def test_payment_process_timeout(self, mock_post):
-        """Test payment process with timeout"""
-        import requests
+        self.assertEqual(Payment.objects.get(order=self.order).status, Payment.Status.FAILED)
+
+    @patch(SEP_POST)
+    def test_gateway_timeout(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout()
-        
+
         response = self.client.get(reverse('payment:payment_process'))
-        
-        self.assertEqual(response.status_code, 302)
+
         self.assertRedirects(response, reverse('cart:cart_detail'))
-    
-    @patch('payment.views.requests.post')
-    def test_payment_process_connection_error(self, mock_post):
-        """Test payment process with connection error"""
-        import requests
-        mock_post.side_effect = requests.exceptions.RequestException('Connection failed')
-        
-        response = self.client.get(reverse('payment:payment_process'))
-        
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('cart:cart_detail'))
-    
-    def test_payment_process_no_order(self):
-        """Test payment process without order in session"""
-        # حذف order_id از session
+        self.assertEqual(Payment.objects.get(order=self.order).status, Payment.Status.FAILED)
+
+    def test_no_order(self):
         session = self.client.session
-        if 'order_id' in session:
-            del session['order_id']
+        session.pop('order_id', None)
         session.save()
-        
+
         response = self.client.get(reverse('payment:payment_process'))
-        
-        self.assertEqual(response.status_code, 302)
+
         self.assertRedirects(response, reverse('cart:cart_detail'))
-    
-    def test_payment_process_already_paid(self):
-        """Test payment process for already paid order"""
+
+    def test_already_paid(self):
         self.order.is_paid = True
+        self.order.status = Order.Status.PAID
         self.order.save()
-        
+
         response = self.client.get(reverse('payment:payment_process'))
-        
-        self.assertEqual(response.status_code, 302)
+
         self.assertRedirects(response, reverse('page:home'))
 
+    def test_cannot_pay_someone_elses_order(self):
+        other = OrderFactory(is_paid=False)
+        response = self.client.get(reverse('payment:payment_process'), {'order': other.id})
+        self.assertEqual(response.status_code, 404)
 
-class PaymentVerifyTest(TestCase):
-    """Test payment verification view"""
-    
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username='verifyuser',
-            password='testpass123',
-            phone_number='09123456789'
-        )
-        self.client.login(username='verifyuser', password='testpass123')
-        
-        self.product = ProductFactory(price=100000, stock=10)
-        self.order = OrderFactory(
-            user=self.user,
-            total_price=100000,
-            total_weight=500,
-            is_paid=False
-        )
-        
-        # ایجاد OrderItem
-        self.order_item = OrderItemFactory(
-            order=self.order,
-            product=self.product,
-            quantity=2,
-            price=100000
-        )
-        
-        # تنظیم session با order_id
-        session = self.client.session
-        session['order_id'] = self.order.id
-        session.save()
-    
-    @patch('payment.views.requests.post')
-    def test_payment_verify_success(self, mock_post):
-        """Test successful payment verification"""
-        # Mock پاسخ موفق از درگاه
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 1,
-            'RefId': 'REF123456'
-        }
-        mock_post.return_value = mock_response
-        
-        # شبیه‌سازی callback از درگاه
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'  # وضعیت موفق
-            }
-        )
-        
-        # باید به صفحه اصلی redirect شود
+    def test_anonymous_redirected_to_login(self):
+        self.client.logout()
+        response = self.client.get(reverse('payment:payment_process'))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('page:home'))
-        
-        # بررسی به‌روزرسانی سفارش
+        self.assertIn('login', response.url)
+
+    def test_zero_total_completes_without_gateway(self):
+        self.order.total_price = 0
+        self.order.save()
+        OrderItemFactory(order=self.order, product=self.product, quantity=1, price=0)
+
+        with patch(SEP_POST) as mock_post:
+            response = self.client.get(reverse('payment:payment_process'))
+            mock_post.assert_not_called()
+
+        self.assertRedirects(response, reverse('accounts:order_history'))
         self.order.refresh_from_db()
         self.assertTrue(self.order.is_paid)
-        
-        # بررسی کاهش موجودی
+
+
+@override_settings(SEP_TERMINAL_ID='2015', PAYMENT_AMOUNT_MULTIPLIER=10)
+class PaymentCallbackTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='verifyuser', password='testpass123', phone_number='09123456789')
+        self.product = ProductFactory(price=50000, stock=10)
+        self.order = OrderFactory(user=self.user, total_price=100000, total_weight=500, is_paid=False)
+        OrderItemFactory(order=self.order, product=self.product, quantity=2, price=50000)
+        self.payment = Payment.objects.create(
+            order=self.order, gateway='sep', amount=100000, status=Payment.Status.PENDING,
+        )
+        # The bank posts cross-site: no session cookie, no logged-in user.
+        self.bank = Client()
+
+    def _post(self, data):
+        return self.bank.post(reverse('payment:payment_verify'), data)
+
+    @patch(SEP_POST)
+    def test_success_marks_paid_and_decreases_stock(self, mock_post):
+        mock_post.return_value = _verify_ok(self.payment)
+
+        response = self._post(_callback(self.payment))
+
+        self.assertRedirects(response, reverse('page:home'))
+        self.order.refresh_from_db()
+        self.payment.refresh_from_db()
         self.product.refresh_from_db()
-        self.assertEqual(self.product.stock, 8)  # 10 - 2
-        
-        # بررسی حذف order_id از session
-        self.assertNotIn('order_id', self.client.session)
-    
-    def test_payment_verify_failed_status(self):
-        """Test payment verification with failed status"""
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '1'  # وضعیت ناموفق
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('cart:cart_detail'))
-        
-        # سفارش نباید پرداخت شده باشد
-        self.order.refresh_from_db()
-        self.assertFalse(self.order.is_paid)
-    
-    def test_payment_verify_no_token(self):
-        """Test payment verification without token"""
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('cart:cart_detail'))
-        
-        self.order.refresh_from_db()
-        self.assertFalse(self.order.is_paid)
-    
-    def test_payment_verify_no_order(self):
-        """Test payment verification without order in session"""
-        # حذف order_id از session
-        session = self.client.session
-        if 'order_id' in session:
-            del session['order_id']
-        session.save()
-        
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('cart:cart_detail'))
-    
-    @patch('payment.views.requests.post')
-    def test_payment_verify_gateway_error(self, mock_post):
-        """Test payment verification with gateway error"""
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 0,
-            'errorDesc': 'Verification failed'
-        }
-        mock_post.return_value = mock_response
-        
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('cart:cart_detail'))
-        
-        self.order.refresh_from_db()
-        self.assertFalse(self.order.is_paid)
-    
-    @patch('payment.views.requests.post')
-    def test_payment_verify_advance_tier(self, mock_post):
-        """Test payment verification advances tiered discount"""
-        # ایجاد TieredDiscount اولیه
+        self.assertTrue(self.order.is_paid)
+        self.assertEqual(self.order.status, Order.Status.PAID)
+        self.assertEqual(self.payment.status, Payment.Status.PAID)
+        self.assertEqual(self.payment.transaction_id, 'REF123456')
+        self.assertEqual(self.product.stock, 8)
+        verify_payload = mock_post.call_args.kwargs['json']
+        self.assertEqual(verify_payload, {'RefNum': 'REF123456', 'TerminalNumber': 2015})
+
+    @patch(SEP_POST)
+    def test_callback_replay_is_idempotent(self, mock_post):
+        mock_post.return_value = _verify_ok(self.payment)
+
+        self._post(_callback(self.payment))
+        response = self._post(_callback(self.payment))
+
+        self.assertRedirects(response, reverse('page:home'))
+        self.assertEqual(mock_post.call_count, 1)
+        self.product.refresh_from_db()
+        self.assertEqual(self.product.stock, 8)
+
+    @patch(SEP_POST)
+    def test_advances_tier_and_counts_discount_code(self, mock_post):
+        code = DiscountCodeFactory(code='SPRING', used_count=0, max_uses=5)
+        self.order.discount_code = 'SPRING'
+        self.order.save()
         tiered = TieredDiscount.objects.create(user=self.user, current_tier=0)
-        
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 1,
-            'RefId': 'REF123456'
-        }
-        mock_post.return_value = mock_response
-        
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        
-        # بررسی ارتقای سطح تخفیف
+        mock_post.return_value = _verify_ok(self.payment)
+
+        self._post(_callback(self.payment))
+
         tiered.refresh_from_db()
+        code.refresh_from_db()
         self.assertEqual(tiered.current_tier, 1)
-    
-    @patch('payment.views.requests.post')
-    def test_payment_verify_stock_decrease(self, mock_post):
-        """Test payment verification decreases stock correctly"""
-        initial_stock = self.product.stock
-        
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 1,
-            'RefId': 'REF123456'
-        }
-        mock_post.return_value = mock_response
-        
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        
-        # بررسی کاهش موجودی
+        self.assertEqual(code.used_count, 1)
+
+    @patch(SEP_POST)
+    def test_cancelled_at_gateway(self, mock_post):
+        response = self._post(_callback(self.payment, status='1'))
+
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+        mock_post.assert_not_called()
+        self.order.refresh_from_db()
+        self.payment.refresh_from_db()
+        self.assertFalse(self.order.is_paid)
+        self.assertEqual(self.order.status, Order.Status.PAYMENT_FAILED)
+        self.assertEqual(self.payment.status, Payment.Status.CANCELLED)
+
+    @patch(SEP_POST)
+    def test_verify_rejected(self, mock_post):
+        mock_post.return_value = _response({'ResultCode': -2, 'ResultDescription': 'تراکنش یافت نشد', 'Success': False})
+
+        self._post(_callback(self.payment))
+
+        self.order.refresh_from_db()
         self.product.refresh_from_db()
-        expected_stock = initial_stock - self.order_item.quantity
-        self.assertEqual(self.product.stock, expected_stock)
-    
-    @patch('payment.views.requests.post')
-    def test_payment_verify_package_stock_decrease(self, mock_post):
-        """Test payment verification decreases package stock"""
-        # ایجاد پکیج
-        package_product = ProductFactory(price=80000, weight=300, stock=10)
-        package = PackageFactory(products=[package_product])
-        
-        # ایجاد سفارش با پکیج
-        order_with_package = OrderFactory(
-            user=self.user,
-            total_price=package.price,
-            total_weight=300,
-            is_paid=False
+        self.assertFalse(self.order.is_paid)
+        self.assertEqual(self.product.stock, 10)
+
+    @patch(SEP_POST)
+    def test_amount_mismatch_is_rejected_and_reversed(self, mock_post):
+        mock_post.side_effect = [
+            _verify_ok(self.payment, amount=1000),
+            _response({'ResultCode': 0, 'Success': True}),
+        ]
+
+        self._post(_callback(self.payment))
+
+        self.order.refresh_from_db()
+        self.payment.refresh_from_db()
+        self.assertFalse(self.order.is_paid)
+        self.assertEqual(self.payment.status, Payment.Status.FAILED)
+        self.assertEqual(mock_post.call_count, 2)
+        self.assertEqual(mock_post.call_args_list[1].args[0], SepGateway.REVERSE_URL)
+
+    @patch(SEP_POST)
+    def test_verify_timeout_keeps_payment_pending_for_retry(self, mock_post):
+        mock_post.side_effect = requests.exceptions.Timeout()
+
+        response = self._post(_callback(self.payment))
+
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+        self.payment.refresh_from_db()
+        self.order.refresh_from_db()
+        self.assertEqual(self.payment.status, Payment.Status.PENDING)
+        self.assertFalse(self.order.is_paid)
+
+        mock_post.side_effect = None
+        mock_post.return_value = _verify_ok(self.payment)
+        self._post(_callback(self.payment))
+        self.order.refresh_from_db()
+        self.assertTrue(self.order.is_paid)
+
+    @patch(SEP_POST)
+    def test_out_of_stock_is_not_verified(self, mock_post):
+        self.product.stock = 1
+        self.product.save()
+
+        self._post(_callback(self.payment))
+
+        mock_post.assert_not_called()
+        self.product.refresh_from_db()
+        self.order.refresh_from_db()
+        self.assertEqual(self.product.stock, 1)
+        self.assertFalse(self.order.is_paid)
+
+    @patch(SEP_POST)
+    def test_last_copy_sold_once(self, mock_post):
+        """Two orders for the last copy: only the first verified payment wins, stock never < 0."""
+        self.product.stock = 2
+        self.product.save()
+        other_order = OrderFactory(total_price=100000, is_paid=False)
+        OrderItemFactory(order=other_order, product=self.product, quantity=2, price=50000)
+        other_payment = Payment.objects.create(
+            order=other_order, gateway='sep', amount=100000, status=Payment.Status.PENDING,
         )
-        
-        package_item = OrderItemFactory(
-            order=order_with_package,
-            product=None,
-            package=package,
-            quantity=3,
-            price=package.price
+        mock_post.return_value = _verify_ok(self.payment)
+
+        self._post(_callback(self.payment))
+        mock_post.return_value = _verify_ok(other_payment, ref_num='REF999')
+        self._post(_callback(other_payment, ref_num='REF999'))
+
+        self.product.refresh_from_db()
+        other_order.refresh_from_db()
+        self.assertEqual(self.product.stock, 0)
+        self.assertFalse(other_order.is_paid)
+        self.assertEqual(mock_post.call_count, 1)
+
+    @patch(SEP_POST)
+    def test_duplicate_transaction_id_rejected(self, mock_post):
+        mock_post.return_value = _verify_ok(self.payment)
+        self._post(_callback(self.payment))
+
+        other_order = OrderFactory(total_price=100000, is_paid=False)
+        other_payment = Payment.objects.create(
+            order=other_order, gateway='sep', amount=100000, status=Payment.Status.PENDING,
         )
-        
-        # تنظیم session با order_id جدید
-        session = self.client.session
-        session['order_id'] = order_with_package.id
-        session.save()
-        
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'status': 1,
-            'RefId': 'REF123456'
-        }
-        mock_post.return_value = mock_response
-        
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        self.assertEqual(response.status_code, 302)
-        
-        # بررسی کاهش موجودی پکیج
+        self._post(_callback(other_payment, ref_num='REF123456'))
+
+        other_order.refresh_from_db()
+        other_payment.refresh_from_db()
+        self.assertFalse(other_order.is_paid)
+        self.assertEqual(other_payment.failure_reason, 'DUPLICATE_TRANSACTION')
+
+    @patch(SEP_POST)
+    def test_package_stock_decrease(self, mock_post):
+        book = ProductFactory(price=80000, weight=300, stock=10)
+        package = PackageFactory(products=[book], stock=5)
+        order = OrderFactory(user=self.user, total_price=package.price * 3, is_paid=False)
+        OrderItemFactory(order=order, product=None, package=package, quantity=3, price=package.price)
+        payment = Payment.objects.create(order=order, gateway='sep', amount=order.total_price, status=Payment.Status.PENDING)
+        mock_post.return_value = _verify_ok(payment, ref_num='PKG1')
+
+        self._post(_callback(payment, ref_num='PKG1'))
+
         package.refresh_from_db()
-        self.assertEqual(package.stock, package.stock)  # موجودی فعلی
+        self.assertEqual(package.stock, 2)
+
+    def test_unknown_reference(self):
+        response = self._post({'ResNum': 'not-a-uuid', 'RefNum': 'X', 'Status': '2'})
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+
+    def test_get_callback_without_params(self):
+        response = self.bank.get(reverse('payment:payment_verify'))
+        self.assertRedirects(response, reverse('cart:cart_detail'))
 
 
 class PaymentURLTest(TestCase):
-    """Test payment URLs"""
-    
-    def test_payment_process_url(self):
-        """Test payment process URL"""
-        url = reverse('payment:payment_process')
-        self.assertEqual(url, '/payment/process/')
-    
-    def test_payment_verify_url(self):
-        """Test payment verify URL"""
-        url = reverse('payment:payment_verify')
-        self.assertEqual(url, '/payment/verify/')
+    def test_urls(self):
+        self.assertEqual(reverse('payment:payment_process'), '/payment/process/')
+        self.assertEqual(reverse('payment:payment_verify'), '/payment/verify/')
 
 
 class PaymentCSRFExemptTest(TestCase):
-    """Test CSRF exempt on payment verify"""
-    
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username='csrfuser',
-            password='testpass123'
-        )
-        self.client.login(username='csrfuser', password='testpass123')
-        
-        self.order = OrderFactory(
-            user=self.user,
-            is_paid=False
-        )
-        
-        session = self.client.session
-        session['order_id'] = self.order.id
-        session.save()
-    
-    def test_payment_verify_csrf_exempt(self):
-        """Test that payment verify is CSRF exempt"""
-        # این تست باید بدون CSRF token کار کند
-        response = self.client.get(
-            reverse('payment:payment_verify'),
-            {
-                'token': 'test_token',
-                'RRN': '123456789',
-                'status': '2'
-            }
-        )
-        
-        # نباید 403 Forbidden برگرداند
+    def test_callback_is_csrf_exempt(self):
+        client = Client(enforce_csrf_checks=True)
+        response = client.post(reverse('payment:payment_verify'), {'ResNum': '', 'Status': '2'})
         self.assertNotEqual(response.status_code, 403)

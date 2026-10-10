@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -52,54 +53,59 @@ def order_create_view(request):
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
         payment_method = request.POST.get('payment-method', 'online')
-        installment_plan_id = request.POST.get('installment_plan_id', '')
+        if payment_method not in dict(Order._meta.get_field('payment_method').choices):
+            payment_method = 'online'
+        installment_plan_id = request.POST.get('installment_plan_id', '')[:20]
 
         if order_form.is_valid():
-            order_obj = order_form.save(commit=False)
-            order_obj.user = request.user
-            order_obj.payment_method = payment_method
-            if installment_plan_id:
-                order_obj.installment_plan_id = installment_plan_id
-            order_obj.save()
+            with transaction.atomic():
+                order_obj = order_form.save(commit=False)
+                order_obj.user = request.user
+                order_obj.status = Order.Status.PENDING_PAYMENT
+                order_obj.payment_method = payment_method
+                # TODO(Phase 2 - Payment): installment orders are still charged the full total online.
+                if payment_method == 'installment' and installment_plan_id:
+                    order_obj.installment_plan_id = installment_plan_id
+                order_obj.save()
 
-            total_weight = 0
-            total_price = 0
+                total_weight = 0
+                total_price = 0
 
-            for item in cart:
-                price = item['price']
-                quantity = item['quantity']
+                for item in cart:
+                    price = item['price']
+                    quantity = item['quantity']
 
-                if item['is_package']:
-                    package = item.get('package_obj')
-                    if package:
-                        OrderItem.objects.create(
-                            order=order_obj,
-                            package=package,
-                            quantity=quantity,
-                            price=price,
-                        )
-                        total_weight += package.get_total_weight() * quantity
-                else:
-                    product = item.get('product_obj')
-                    if product:
-                        OrderItem.objects.create(
-                            order=order_obj,
-                            product=product,
-                            quantity=quantity,
-                            price=price,
-                        )
-                        total_weight += (product.weight or 0) * quantity
+                    if item['is_package']:
+                        package = item.get('package_obj')
+                        if package:
+                            OrderItem.objects.create(
+                                order=order_obj,
+                                package=package,
+                                title=package.title[:255],
+                                quantity=quantity,
+                                price=price,
+                            )
+                            total_weight += package.get_total_weight() * quantity
+                    else:
+                        product = item.get('product_obj')
+                        if product:
+                            OrderItem.objects.create(
+                                order=order_obj,
+                                product=product,
+                                title=product.title[:255],
+                                quantity=quantity,
+                                price=price,
+                            )
+                            total_weight += (product.weight or 0) * quantity
 
-                total_price += price * quantity
+                    total_price += price * quantity
 
-            order_obj.total_weight = total_weight
-            # مبلغ واقعی پرداختی = مبلغ سبد پس از اعمال کد تخفیف
-            order_obj.total_price = cart.get_discounted_total() or total_price
-            order_obj.save()
-
-            # ذخیره کد تخفیف استفاده‌شده در سشن تا هنگام تایید پرداخت، آمار استفاده‌اش ثبت شود
-            if cart.discount_code:
-                request.session['order_discount_code'] = cart.discount_code
+                order_obj.total_weight = total_weight
+                # مبلغ واقعی پرداختی = مبلغ سبد پس از اعمال کد تخفیف (ممکن است صفر باشد)
+                order_obj.total_price = cart.get_discounted_total() if cart.discount_code else total_price
+                # آمار استفاده از کد تخفیف هنگام تایید موفق پرداخت ثبت می‌شود
+                order_obj.discount_code = cart.discount_code or ''
+                order_obj.save(update_fields=['total_weight', 'total_price', 'discount_code', 'datetime_modified'])
 
             # نکته: کاهش موجودی در این مرحله انجام نمی‌شود!
             # اگر پرداخت موفق نشود، مشتری نباید موجودی را از دست بدهد.

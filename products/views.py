@@ -142,7 +142,8 @@ def _book_json_ld(product, request):
         },
         'offers': {
             '@type': 'Offer',
-            'price': product.get_discounted_price(),
+            # Store prices are in Toman; schema.org needs an ISO 4217 currency (IRR = Rial).
+            'price': product.get_discounted_price() * 10,
             'priceCurrency': 'IRR',
             'availability': (
                 'https://schema.org/InStock'
@@ -162,22 +163,32 @@ def _book_json_ld(product, request):
     return data
 
 
+def _parse_stars(value):
+    """Rating from untrusted POST data, or None when it is not 1..5."""
+    try:
+        stars = int(value)
+    except (TypeError, ValueError):
+        return None
+    return stars if 1 <= stars <= 5 else None
+
+
 class CommentCreateView(LoginRequiredMixin, generic.View):
     """Submit new comment. Login is required, otherwise anonymous users get a 500 error."""
+    # TODO(Phase 2 - Reviews): mark reviews from customers with a paid order as "verified".
     def get(self, request, product_id):
         return redirect('product:product_detail', pk=product_id)
     
     def post(self, request, product_id):
         product = get_object_or_404(Product, id=product_id, active=True)
-        body = request.POST.get('body')
-        stars = request.POST.get('stars')
+        body = (request.POST.get('body') or '').strip()
+        stars = _parse_stars(request.POST.get('stars'))
         
         if body and stars:
             Comment.objects.create(
                 product=product,
                 author=request.user,
-                body=body,
-                stars=int(stars),
+                body=body[:5000],
+                stars=stars,
                 active=False,
             )
             messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
@@ -326,17 +337,18 @@ def product_list_by_category(request, category):
 def package_comment(request, slug):
     """Submit comment for package"""
     package = get_object_or_404(Package, slug=slug, active=True)
-    body = request.POST.get('body')
-    stars = request.POST.get('stars')
+    body = (request.POST.get('body') or '').strip()
+    stars = _parse_stars(request.POST.get('stars'))
     
     if body and stars:
+        # TODO(Phase 2 - Reviews): packages have no own reviews; the comment lands on the first book.
         first_product = package.products.first()
         if first_product:
             Comment.objects.create(
                 product=first_product,
                 author=request.user,
-                body=body,
-                stars=int(stars),
+                body=body[:5000],
+                stars=stars,
                 active=False,
             )
             messages.success(request, _('Your comment has been submitted and will be shown after approval.'))
