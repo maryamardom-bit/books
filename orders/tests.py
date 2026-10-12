@@ -131,6 +131,51 @@ class OrderStateMachineTest(TestCase):
         with self.assertRaises(InvalidOrderTransition):
             self.order.transition_to(Order.Status.PAID)
 
+    def test_native_unpaid_order_is_payable(self):
+        self.assertFalse(self.order.is_imported)
+        self.assertTrue(self.order.is_payable())
+
+
+class ImportedOrderStateMachineTest(TestCase):
+    def setUp(self):
+        self.order = OrderFactory(is_paid=False, wordpress_id=4242)
+
+    def test_imported_order_is_never_payable(self):
+        self.assertTrue(self.order.is_imported)
+        self.assertFalse(self.order.is_payable())
+
+    def test_imported_order_cannot_enter_payment_states(self):
+        for status in (Order.Status.PAID, Order.Status.PAYMENT_FAILED):
+            with self.subTest(status=status):
+                self.assertFalse(self.order.can_transition_to(status))
+                with self.assertRaises(InvalidOrderTransition):
+                    self.order.transition_to(status)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, Order.Status.PENDING_PAYMENT)
+        self.assertFalse(self.order.is_paid)
+
+    def test_imported_order_can_still_be_cancelled(self):
+        self.order.transition_to(Order.Status.CANCELLED)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, Order.Status.CANCELLED)
+
+    def test_admin_offline_payment_skips_imported_orders(self):
+        native = OrderFactory(is_paid=False)
+        admin_user = User.objects.create_superuser(username='staff', password='testpass123', email='staff@example.com')
+        self.client.force_login(admin_user)
+
+        self.client.post(reverse('admin:orders_order_changelist'), {
+            'action': 'mark_paid_offline',
+            '_selected_action': [self.order.pk, native.pk],
+        })
+
+        self.order.refresh_from_db()
+        native.refresh_from_db()
+        self.assertFalse(self.order.is_paid)
+        self.assertEqual(self.order.status, Order.Status.PENDING_PAYMENT)
+        self.assertTrue(native.is_paid)
+        self.assertEqual(native.status, Order.Status.PAID)
+
 
 class OrderHistoryIntegrityTest(TestCase):
     def test_item_keeps_title_and_price_after_catalog_change(self):

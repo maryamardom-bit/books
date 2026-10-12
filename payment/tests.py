@@ -10,6 +10,7 @@ from orders.models import Order
 from products.factories import DiscountCodeFactory, PackageFactory, ProductFactory
 from products.models import TieredDiscount
 
+from . import services
 from .gateways.sep import SepGateway
 from .models import Payment
 
@@ -339,6 +340,159 @@ class PaymentCallbackTest(TestCase):
     def test_get_callback_without_params(self):
         response = self.bank.get(reverse('payment:payment_verify'))
         self.assertRedirects(response, reverse('cart:cart_detail'))
+
+
+@override_settings(SEP_TERMINAL_ID='2015', PAYMENT_AMOUNT_MULTIPLIER=10)
+class ImportedOrderPaymentTest(TestCase):
+    """Historical WooCommerce orders (wordpress_id set) must never be paid again."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='legacyuser', password='testpass123', phone_number='09123456789')
+        self.client.login(username='legacyuser', password='testpass123')
+        self.product = ProductFactory(price=50000, stock=10)
+        self.next_wp_id = 9000
+
+    def _imported(self, status=Order.Status.PENDING_PAYMENT, is_paid=False, total_price=100000):
+        self.next_wp_id += 1
+        return OrderFactory(
+            user=self.user, wordpress_id=self.next_wp_id, status=status,
+            is_paid=is_paid, total_price=total_price,
+        )
+
+    def _assert_untouched(self, order, status, is_paid):
+        order.refresh_from_db()
+        self.assertEqual(order.status, status)
+        self.assertEqual(order.is_paid, is_paid)
+        self.assertFalse(Payment.objects.filter(order=order).exists())
+
+    def test_unpaid_imported_orders_cannot_start_payment(self):
+        # Cancelled / on-hold WooCommerce orders arrive as PENDING_PAYMENT (model default).
+        for status in (Order.Status.PENDING_PAYMENT, Order.Status.PAYMENT_FAILED, Order.Status.CANCELLED):
+            with self.subTest(status=status):
+                order = self._imported(status=status)
+                with patch(SEP_POST) as mock_post:
+                    response = self.client.get(reverse('payment:payment_process'), {'order': order.id})
+                    mock_post.assert_not_called()
+                self.assertRedirects(response, reverse('cart:cart_detail'))
+                self._assert_untouched(order, status, is_paid=False)
+
+    def test_imported_order_in_session_cannot_start_payment(self):
+        order = self._imported()
+        session = self.client.session
+        session['order_id'] = order.id
+        session.save()
+
+        with patch(SEP_POST) as mock_post:
+            self.client.get(reverse('payment:payment_process'))
+            mock_post.assert_not_called()
+
+        self._assert_untouched(order, Order.Status.PENDING_PAYMENT, is_paid=False)
+
+    def test_imported_zero_total_order_is_not_completed(self):
+        order = self._imported(total_price=0)
+
+        with patch(SEP_POST) as mock_post:
+            self.client.get(reverse('payment:payment_process'), {'order': order.id})
+            mock_post.assert_not_called()
+
+        self._assert_untouched(order, Order.Status.PENDING_PAYMENT, is_paid=False)
+
+    def test_imported_paid_and_refunded_orders_cannot_start_payment(self):
+        for status in (Order.Status.PAID, Order.Status.REFUNDED):
+            with self.subTest(status=status):
+                order = self._imported(status=status, is_paid=True)
+                with patch(SEP_POST) as mock_post:
+                    response = self.client.get(reverse('payment:payment_process'), {'order': order.id})
+                    mock_post.assert_not_called()
+                self.assertRedirects(response, reverse('page:home'))
+                self._assert_untouched(order, status, is_paid=True)
+
+    def test_service_rejects_imported_order_directly(self):
+        order = self._imported(total_price=0)
+
+        with self.assertRaises(services.PaymentError) as ctx:
+            services.start_payment(order, 'https://example.test/payment/verify/')
+
+        self.assertEqual(ctx.exception.code, 'ORDER_NOT_PAYABLE')
+        self._assert_untouched(order, Order.Status.PENDING_PAYMENT, is_paid=False)
+
+    @patch(SEP_POST)
+    def test_successful_callback_for_imported_order_is_not_verified(self, mock_post):
+        order = self._imported()
+        OrderItemFactory(order=order, product=self.product, quantity=2, price=50000)
+        payment = Payment.objects.create(order=order, gateway='sep', amount=100000, status=Payment.Status.PENDING)
+        mock_post.return_value = _verify_ok(payment)
+
+        response = Client().post(reverse('payment:payment_verify'), _callback(payment))
+        replay = Client().post(reverse('payment:payment_verify'), _callback(payment))
+
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+        self.assertRedirects(replay, reverse('cart:cart_detail'))
+        # Never verified, so the bank auto-refunds the transaction.
+        mock_post.assert_not_called()
+        payment.refresh_from_db()
+        order.refresh_from_db()
+        self.product.refresh_from_db()
+        self.assertEqual(payment.status, Payment.Status.FAILED)
+        self.assertEqual(payment.failure_reason, 'ORDER_NOT_PAYABLE: imported')
+        self.assertFalse(order.is_paid)
+        self.assertEqual(order.status, Order.Status.PENDING_PAYMENT)
+        self.assertEqual(self.product.stock, 10)
+
+    @patch(SEP_POST)
+    def test_cancelled_callback_does_not_change_imported_order(self, mock_post):
+        order = self._imported()
+        payment = Payment.objects.create(order=order, gateway='sep', amount=100000, status=Payment.Status.PENDING)
+
+        Client().post(reverse('payment:payment_verify'), _callback(payment, status='1'))
+
+        mock_post.assert_not_called()
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.Status.PENDING_PAYMENT)
+        self.assertFalse(order.is_paid)
+
+    def test_order_history_hides_pay_for_imported_orders(self):
+        imported = self._imported()
+        native = OrderFactory(user=self.user, is_paid=False)
+
+        response = self.client.get(reverse('accounts:order_history'))
+
+        pay_url = reverse('payment:payment_process')
+        self.assertNotContains(response, f'{pay_url}?order={imported.id}"')
+        self.assertContains(response, f'{pay_url}?order={native.id}"')
+
+
+@override_settings(SEP_TERMINAL_ID='2015', PAYMENT_AMOUNT_MULTIPLIER=10)
+class NativeOrderRetryTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='retryuser', password='testpass123')
+        self.client.login(username='retryuser', password='testpass123')
+        self.order = OrderFactory(
+            user=self.user, status=Order.Status.PAYMENT_FAILED, is_paid=False, total_price=100000,
+        )
+
+    @patch(SEP_POST)
+    def test_failed_order_can_retry_payment(self, mock_post):
+        mock_post.return_value = _token_ok()
+
+        response = self.client.get(reverse('payment:payment_process'), {'order': self.order.id})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('sep.shaparak.ir', response.url)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, Order.Status.PENDING_PAYMENT)
+        self.assertEqual(Payment.objects.get(order=self.order).status, Payment.Status.PENDING)
+
+    def test_cancelled_native_order_cannot_start_payment(self):
+        self.order.status = Order.Status.CANCELLED
+        self.order.save()
+
+        with patch(SEP_POST) as mock_post:
+            response = self.client.get(reverse('payment:payment_process'), {'order': self.order.id})
+            mock_post.assert_not_called()
+
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+        self.assertFalse(Payment.objects.filter(order=self.order).exists())
 
 
 class PaymentURLTest(TestCase):

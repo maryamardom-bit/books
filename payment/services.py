@@ -78,7 +78,7 @@ def start_payment(order, callback_url):
         order = Order.objects.select_for_update().get(pk=order.pk)
         if order.is_paid:
             raise PaymentError('ORDER_ALREADY_PAID')
-        if order.status not in (Order.Status.PENDING_PAYMENT, Order.Status.PAYMENT_FAILED):
+        if not order.is_payable():
             raise PaymentError('ORDER_NOT_PAYABLE')
         if order.status == Order.Status.PAYMENT_FAILED:
             order.transition_to(Order.Status.PENDING_PAYMENT)
@@ -141,8 +141,9 @@ def handle_callback(data):
             if order.is_paid:
                 _fail(payment, None, 'ORDER_ALREADY_PAID')
                 return CallbackOutcome(False, 'ORDER_ALREADY_PAID', payment)
-            if order.status not in (Order.Status.PENDING_PAYMENT, Order.Status.PAYMENT_FAILED):
-                _fail(payment, None, f'ORDER_NOT_PAYABLE: {order.status}')
+            if not order.is_payable():
+                reason = 'imported' if order.is_imported else order.status
+                _fail(payment, None, f'ORDER_NOT_PAYABLE: {reason}')
                 return CallbackOutcome(False, 'ORDER_NOT_PAYABLE', payment)
 
             duplicate = (

@@ -37,6 +37,9 @@ class Order(models.Model):
         Status.CANCELLED: set(),
         Status.REFUNDED: set(),
     }
+    PAYABLE_STATUSES = {Status.PENDING_PAYMENT, Status.PAYMENT_FAILED}
+    # Imported orders keep their historical status; they can never re-enter the payment flow.
+    PAYMENT_STATUSES = PAYABLE_STATUSES | {Status.PAID}
 
     # Orders are financial records: users with orders cannot be hard-deleted.
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, verbose_name=_('user'))
@@ -100,7 +103,17 @@ class Order(models.Model):
     def get_total_weight(self):
         return sum(item.get_weight() for item in self.items.all())
 
+    @property
+    def is_imported(self):
+        # wordpress_id is set only by the WooCommerce importer, never by checkout.
+        return self.wordpress_id is not None
+
+    def is_payable(self):
+        return not self.is_imported and not self.is_paid and self.status in self.PAYABLE_STATUSES
+
     def can_transition_to(self, new_status):
+        if self.is_imported and new_status in self.PAYMENT_STATUSES:
+            return False
         return new_status in self.TRANSITIONS.get(self.status, set())
 
     def transition_to(self, new_status, save=True):

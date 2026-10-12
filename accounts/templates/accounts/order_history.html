@@ -59,7 +59,7 @@
                 <span class="text-xs text-muted">{% trans 'Total Weight' %}: {{ order.total_weight|translate_number }} {% trans 'g' %}</span>
                 {% if order.is_paid %}
                 <a href="{% url 'order:request_return' order.id %}" class="btn btn-ghost text-xs text-danger">{% trans 'Return Request' %}</a>
-                {% elif order.status == 'PENDING_PAYMENT' or order.status == 'PAYMENT_FAILED' %}
+                {% elif order.is_payable %}
                 <a href="{% url 'payment:payment_process' %}?order={{ order.id }}" class="btn btn-accent text-xs">{% trans 'Pay' %}</a>
                 {% endif %}
             </div>
