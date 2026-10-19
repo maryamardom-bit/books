@@ -2,7 +2,14 @@
 
 **Status: `NO-GO — NO EXECUTION AUTHORIZED`**
 
-**Document type:** Planning and analysis only. Completing this document does not authorize code edits, migrations, database access or modification, Git operations, test execution, package installation, secrets inspection, deployment, rollback, restoration, importer execution, historical order correction, or production changes.
+| Final status field | Value |
+| --- | --- |
+| Commercial release | `NO-GO` |
+| Historical-order correction | `NO-GO` |
+| Execution authorization | `NONE` |
+| S4 gates closed by this document | `NONE` |
+
+**Document type:** Planning and analysis only. Completing or consolidating this document does not authorize code edits, migrations, database access or modification, Git operations, test execution, package installation, secrets inspection, deployment, rollback, restoration, importer execution, historical order correction, payment enablement, production cutover, or production changes. Authorization Boundaries A–E are each separate; none are granted here.
 
 **Evidence labels (mandatory):**
 | Label | Meaning |
@@ -28,7 +35,33 @@
 - `audit_reports/KASRA_ORDER_CORRECTION_REV8_FINDINGS.md`
 - `audit_reports/KASRA_ORDER_CORRECTION_REV8_GATE_MATRIX.md`
 
-**Baseline note:** Rev8 recorded inspected commit `90987a6` on branch `cursor/payment-hardening-and-architecture-review`. Feature-gap audit dated 2026-10-11. This blueprint does **not** claim those baselines equal any current working tree. Past audit “VERIFIED” / “test passed” labels are **REPORTED** prior claims, not retained evidence for this document (Rev8 J1: no claim reached “VERIFIED FROM EXISTING REPRODUCIBLE EVIDENCE”).
+**Baseline note:** Rev8 recorded inspected commit `90987a6` on branch `cursor/payment-hardening-and-architecture-review`. Feature-gap audit dated 2026-10-11. This blueprint does **not** claim those baselines equal any current working tree. Past audit “VERIFIED” / “test passed” labels are **REPORTED** prior claims, not retained evidence for this document (Rev8 J1: no claim reached “VERIFIED FROM EXISTING REPRODUCIBLE EVIDENCE”). This consolidation revision does **not** independently reverify the current repository, runtime, database, payment gateway, backup, or server configuration; historical audit findings remain labelled **REPORTED** (previously reported), not independently reverified.
+
+---
+
+## Authorization Boundaries
+
+Each of the following is a **separate** authorization boundary. Authorization for one boundary must **never** imply authorization for another. Every authorization must identify, in writing: **scope**, **environment**, **target version or image**, **time window**, and **approver**. No authorization under any boundary is granted by this document.
+
+| ID | Boundary | What it covers (planning definition only) | Current authorization |
+| --- | --- | --- | --- |
+| **A** | Non-production testing | Non-prod test runs, disposable DB exercises, mocked or sandbox payment drills, staging dress rehearsals that do not touch production data or traffic | **NONE** |
+| **B** | Production migration | Production (or production-bound) schema migrate as a separate operation after verified backup; never via web start (see R-07; owner decision 4) | **NONE** |
+| **C** | Payment enablement | Enabling live customer payment / SEP production credentials or traffic that can capture real funds | **NONE** |
+| **D** | Production cutover | DNS/traffic cutover, production TLS go-live, public commercial release switch | **NONE** |
+| **E** | Historical-order correction (Workstream B) | Any `correct_imported_order_amounts` preview against production, `--apply`, rollback, or related recovery under Rev8 GM-18+ | **NONE** |
+
+### Separate-authorization rule
+
+- Closing a planning finding, accepting a PROPOSED design, or completing documentation does **not** authorize A, B, C, D, or E.
+- Closing one S4 gate (see Independent-Review Record) does **not** authorize B, C, D, or E; does **not** close dependent or sibling gates by implication; and does **not** authorize Workstream B.
+- Boundary A (non-prod testing) does **not** authorize C (payment enablement) or D (cutover).
+- Boundary B (production migration) does **not** authorize C, D, or E.
+- Boundary C does **not** authorize D or E.
+- Boundary D does **not** authorize E.
+- Boundary E remains isolated from Workstream A release gates (R-12).
+
+**No waiver is currently granted** under any boundary (see Waiver rule below).
 
 ---
 
@@ -183,14 +216,28 @@ This todo is **complete as a planning inventory** when the checklist above is re
 - Retained non-prod evidence for replay, concurrency, mismatch, reverse-failure, multi-pending.
 - SEP sandbox checklist executed under separate auth with logs retained.
 - No payment gate marked passed without artifacts.
+- Expected-outcome matrix below satisfied for every scenario, with retained evidence identifiers.
+
+### R-02 expected-outcome matrix (planning; not executed)
+
+Outcomes below are **PROPOSED / REPORTED** invariants for validation planning. They are **not** proof that current HEAD or any runtime already behaves this way (**NOT VERIFIED** by this document). Recovery procedures that lack an owner-approved runbook are marked **OWNER DECISION REQUIRED** — this document does **not** invent recovery procedures.
+
+| Scenario | Expected payment status | Expected order status | Fulfillment prevention behavior | Evidence required | Owner-approved recovery procedure |
+| --- | --- | --- | --- | --- | --- |
+| **Callback replay** | After a successful first callback: replay must leave exactly one successful/PAID payment for that order intent; duplicate callback must not create a second PAID payment (idempotent / rejected duplicate) — **REPORTED** feature-gap intent; **NOT VERIFIED** now | Order must remain in the post-success paid/fulfillable state from the first success only; replay must not create a second paid order or regress a completed payment to unpaid without an explicit authorized recovery path | Fulfillment may proceed only from the single successful payment outcome; replay must not trigger a second fulfill/ship/stock-decrement cycle | Retained non-prod (Boundary **A**) logs + DB snapshots: first callback result, replay request/response, payment row count/status, order status, stock delta; named commit/image; test id/JUnit or equivalent digest | **OWNER DECISION REQUIRED** |
+| **Concurrent callbacks** | Under concurrent duplicate callbacks for the same payment intent: at most one payment reaches PAID/success; losers remain non-paid / rejected / pending per implemented fail-closed rules — **PROPOSED**; **NOT VERIFIED** under real DB locking | At most one order transition to paid for that intent; no double-paid order pair from the race | Stock/fulfillment decrements at most once; concurrent loser must not fulfill | Concurrent test harness output + DB lock/transaction evidence retained; payment/order/stock before/after; named commit/image | **OWNER DECISION REQUIRED** |
+| **Amount mismatch** | Payment must **not** remain successfully PAID when verify amount mismatches contracted expected amount; mismatch path must attempt reversal and leave payment non-paid / failed / reversed per design — **REPORTED** feature-gap intent; **NOT VERIFIED** now | Order must **not** be treated as paid/ready-to-fulfill solely from a mismatched callback | Fulfillment must be blocked while payment is non-paid after mismatch; no ship/download release on mismatch success | Mocked/sandbox verify mismatch case logs; reverse request evidence; final payment + order status; amount fields vs R-01 contract; named commit/image | **OWNER DECISION REQUIRED** |
+| **Payment reversal failure** | If reverse API fails after mismatch (or equivalent reverse-required path): system must **fail closed** — payment must not be left as successfully PAID; escalation/hold state must be observable — **PROPOSED**; exact hold statuses **OWNER DECISION REQUIRED** for naming | Order must not be fulfillable as paid while reverse failure is unresolved | Fulfillment prevented until an owner-approved recovery resolves the hold | Reverse-failure injection evidence; final payment/order status; alert/escalation artifact if monitoring exists; named commit/image | **OWNER DECISION REQUIRED** (includes halt-vs-retry-reverse policy already listed above) |
+| **Multiple pending payments** | Behavior when multiple `PENDING` payments exist for one order under retry: coalesce / expire / keep — **OWNER DECISION REQUIRED**; until decided, expected terminal payment status set is **NOT** fixed by this document. Invariant that must still hold once any path succeeds: **at most one PAID** payment per order intent (**PROPOSED**) | Order paid transition only from the single successful payment; abandoned pendings must not flip the order to paid | Fulfillment only after the single successful paid outcome; pending-only orders must not fulfill | Multi-pending create/pay test evidence; enumeration of payment rows per order; final statuses; named commit/image | **OWNER DECISION REQUIRED** |
 
 ### Required tests and dependencies
 - **Tests:** payment suite re-run at named commit + digest; reverse-failure; concurrent callbacks; multi-pending create/pay; optional PO-21 concurrent coupon.
 - **Depends on:** R-01 contract (amounts meaningful only after unit contract).
 - **Release impact:** blocks payment release.
+- **Authorization:** Boundary **A** for non-prod evidence; Boundary **C** separately for any live payment enablement — neither granted here.
 
 ### Separate authorization required?
-**Yes** — test runs, code changes, and sandbox exercises.
+**Yes** — test runs, code changes, and sandbox exercises (Boundary **A** at minimum; **C** never implied).
 
 ---
 
@@ -449,15 +496,50 @@ This todo is **complete as a planning inventory** when the checklist above is re
 5. Optional `django.contrib.sitemaps`.
 6. Fix Unicode slug routing for packages (SEO-13).
 
+### R-08 SEO validation requirements (strengthened; planning only)
+
+These validation steps are **PROPOSED** gate evidence requirements. They are **not** executed by this document. No crawl, media inventory, or robots/canonical inspection of a live or staging host is claimed here (**NOT VERIFIED**).
+
+1. **Freeze export-derived legacy URL inventory**  
+   - Produce a frozen inventory of legacy URLs derived from the authorized export (products, categories, pages, tags/posts as in scope, attachment/media paths).  
+   - Record a durable **inventory identifier** and **content hash** (e.g. SHA-256 of the frozen file) in the release evidence pack.  
+   - Re-runs must cite the same frozen inventory id/hash or document a new freeze with owner acknowledgement.
+
+2. **Document exclusions + owner acknowledgement**  
+   - List every URL class or path excluded from redirect/content validation (e.g. `/app/`, `/bot/`, `/wp-json`, intentional 410s, admin-only, known dead export rows).  
+   - Exclusions require **owner acknowledgement** in writing. Unacknowledged exclusions leave R-08 open. Fate of `/app/`, `/bot/`, `/wp-json` remains **OWNER DECISION REQUIRED** until acknowledged.
+
+3. **Validate final destination content and destination type**  
+   - For each in-scope legacy URL: follow redirect chain; record final status, final URL, and **destination type** (product, category, page, media, other).  
+   - Validate that final destination **content** matches the legacy resource intent (same product/page/category identity), not merely a 200 OK.
+
+4. **Reject irrelevant homepage redirects**  
+   - Redirects whose final destination is the site homepage (or equivalent generic landing page) are **failures** unless that specific URL is on an **owner-approved** exception list.  
+   - Blanket “send unknowns to `/`” is not acceptable under decision 3 without explicit per-class or per-URL approval (**OWNER DECISION REQUIRED** for any such exceptions; none are granted here).
+
+5. **Validate media URLs, robots, canonicals, and query-string handling**  
+   - **Media:** `/wp-content/uploads/` (and agreed equivalents) return 200 or an intentional, owner-consistent 301 to the correct media object — not a soft 404 HTML page.  
+   - **Robots:** `robots.txt` returns 200 with expected directives for the kept domain; behavior under staging vs production hostnames documented.  
+   - **Canonical:** HTML canonical URLs omit sort/filter/session query noise (SEO-10); Unicode/package slug cases covered (SEO-13).  
+   - **Query-string handling:** document how unknown and known query params affect redirects and canonicals; validation must include representative query variants from the frozen inventory or an agreed sample set.
+
+6. **Retain crawl logs and coverage summary**  
+   - Keep raw crawl/redirect logs and a **coverage summary** (inventory size, tested count, pass/fail/excluded, homepage-redirect rejects, media/robots/canonical results) suitable for **independent review** (S4).  
+   - Coverage summary must cite the frozen inventory id/hash.
+
 ### Acceptance criteria
-- Export-derived legacy URL crawl: product/category/page URLs → 301 → 200.
-- Attachment URLs 200 or intentional 301.
-- `robots.txt` 200; canonicals without sort/filter query noise.
+- Frozen export-derived legacy URL inventory id + hash recorded.
+- Exclusions listed with owner acknowledgement (or R-08 remains open).
+- In-scope URLs: redirect chain → correct destination type + content match; no unapproved homepage redirects.
+- Media URL checks pass per rules above; `robots.txt` 200 with documented behavior; canonicals and query-string handling validated.
+- Crawl logs + coverage summary retained for independent review.
+- (**Prior weaker criteria retained as subset:**) product/category/page URLs → 301 → 200 where that is the correct destination type.
 
 ### Required tests and dependencies
-- **Tests:** `resolve()`/HTTP redirect tests; fixture slug redirects; staging link crawl.
-- **Depends on:** media copy ops; decision 3; owner app/bot decisions for those paths.
+- **Tests:** `resolve()`/HTTP redirect tests; fixture slug redirects; staging link crawl against frozen inventory; media/robots/canonical/query cases; coverage summary generation.
+- **Depends on:** media copy ops; decision 3; owner app/bot decisions and exclusion acknowledgements for those paths.
 - **Release impact:** required for domain-preserving cutover.
+- **Authorization:** Boundary **A** for staging crawl evidence; Boundary **D** separately for production cutover — neither granted here.
 
 ### Separate authorization required?
 **Yes.**
@@ -486,7 +568,7 @@ This todo is **complete as a planning inventory** when the checklist above is re
 - Whether any new (non-migrated) coupons are allowed at launch under the limited model.
 
 ### Proposed remediation (PROPOSED)
-- Until owner picks A/B: **safe default path** = migrated coupons **inactive** (or not imported for active use); allow only newly created coupons whose rules the model can enforce; register admin; later parity.
+- Until owner picks A/B: a **PROPOSED** (not approved) engineering-safe path is migrated coupons **inactive** (or not imported for active use); allow only newly created coupons whose rules the model can enforce; register admin; later parity. This path is **not** converted into approved policy by this document; Section 0.3 A/B remains **OWNER DECISION REQUIRED**.
 - If **B**: implement min spend, per-user, category, exclude-sale, individual-use, max discount, expiry before activation; convert amounts per R-01/unit policy; fix PO-21 atomicity.
 - Never activate unrestricted imports of restricted WooCommerce coupons.
 
@@ -528,7 +610,7 @@ This todo is **complete as a planning inventory** when the checklist above is re
 - Confirm hide installment at launch.
 
 ### Proposed remediation (PROPOSED)
-1. Hide installment UI before launch (low ambiguity relative to feature-gap recommendation).
+1. Hide installment UI before launch is a **PROPOSED** remediation aligned with the feature-gap recommendation; Section 0.4 installment confirmation remains **OWNER DECISION REQUIRED** and is not approved by this document.
 2. Implement guest + structured address **only if** owner marks in-scope.
 3. Implement bank transfer → awaiting/on-hold + instructions **only if** in-scope; offline mark-paid must decrement stock (PO-19).
 4. Document accepted revenue risk if deferred.
@@ -689,6 +771,86 @@ PARALLEL (never merges into [11] cutover):
 3. Do not run production migrate from web start; only via decision 4 after R-11.
 4. Do not run Workstream B apply in any release step.
 5. Do not mark any gate passed without retained evidence and independent verification where Rev8/feature-gap require it.
+6. Diagram labels such as “default safe: inactive” for coupons are **PROPOSED** sequencing hints only — not owner-approved policy (Section 0.3 remains open).
+
+---
+
+## Gate closure, waivers, and independent review
+
+### Gate-closure non-implication rule
+
+Closing **one** gate (finding acceptance criteria, S4 review, or Rev8 GM entry) does **not**:
+
+- authorize production migration (Boundary **B**);
+- authorize payment enablement (Boundary **C**);
+- authorize production cutover (Boundary **D**);
+- authorize historical-order correction / Workstream B (Boundary **E**);
+- close any **dependent** or **sibling** gate by implication.
+
+Each gate requires its own evidence pack and, where this blueprint or Rev8 requires it, an Independent-Review Record. Commercial release GO and Workstream B GO remain separate decisions.
+
+### Waiver rule
+
+Any waiver of a gate, acceptance criterion, or authorization prerequisite requires **separate, explicit authorization** identifying:
+
+| Waiver field | Required content |
+| --- | --- |
+| Decision-maker | Named approver (role + identity) |
+| Affected gate | Exact finding/GM/S4 gate id |
+| Scope | What is waived and what remains required |
+| Environment | Non-prod / staging / production as applicable |
+| Rationale | Why the waiver is requested |
+| Impact | What changes in risk, sequencing, or customer effect |
+| Accepted residual risk | Explicit residual risk statement |
+
+**No waiver is currently granted.** Proposed remediation text is not a waiver.
+
+### S4 Independent-Review Record (template)
+
+Use one record per review event. The **reviewer must differ from the producer** of the evidence under review. Completing this template in planning form does **not** close any gate and does **not** grant Boundaries A–E.
+
+```text
+S4 INDEPENDENT-REVIEW RECORD
+============================
+Record id:                    ______________________________
+Date (UTC):                   ______________________________
+
+1. Reviewer identity (must ≠ producer)
+   Reviewer name/role:        ______________________________
+   Producer name/role:        ______________________________
+   Independence attestation:  Reviewer did not produce the
+                              evidence pack under review: [ ] yes
+
+2. Evidence identifiers and hashes
+   Evidence pack id:          ______________________________
+   Artifact paths/ids:        ______________________________
+   Content hashes (algo):     ______________________________
+   Named commit / image:      ______________________________
+   Frozen URL inventory id/hash (if R-08 in scope): __________
+
+3. Exact scope and gates reviewed
+   Workstream:                [ ] A  [ ] B  [ ] other: ______
+   Findings/gates in scope:   ______________________________
+   Findings/gates out of scope: ____________________________
+   Authorization boundaries considered (A–E): ______________
+   Note: reviewing a gate ≠ authorizing B/C/D/E.
+
+4. Findings, unresolved exceptions, and impact
+   Findings (pass/fail/blocked): ____________________________
+   Unresolved exceptions:     ______________________________
+   Impact of each exception:  ______________________________
+   Owner decisions still open: ______________________________
+
+5. Explicit decision and limitations
+   Decision:                  [ ] PASS  [ ] FAIL  [ ] INCOMPLETE
+   Gates closed by THIS record: ____________________________
+   (If none: write NONE)
+   Limitations / non-claims:  ______________________________
+   Waivers relied upon:       [ ] NONE  [ ] list ids: _______
+   Authorization granted?:    [ ] NONE (expected default)
+```
+
+**S4 gates closed by this document: `NONE`.**
 
 ---
 
@@ -696,21 +858,34 @@ PARALLEL (never merges into [11] cutover):
 
 | Question | Decision |
 | --- | --- |
-| Commercial release ready? | **NO-GO** — open P0s: monetary/SEP contract (R-01), shipping rates (R-05), TLS (R-06), imported payability (R-04), coupon policy (R-09); payment runtime evidence not retained for this document (R-02). |
-| Historical order correction ready? | **NO-GO** — Rev8 GM-01–GM-24 open; conflicts unresolved (R-12). |
+| Commercial release | **`NO-GO`** — open P0s: monetary/SEP contract (R-01), shipping rates (R-05), TLS (R-06), imported payability (R-04), coupon policy (R-09); payment runtime evidence not retained for this document (R-02); SEO validation inventory/crawl not executed (R-08). |
+| Historical-order correction | **`NO-GO`** — Rev8 GM-01–GM-24 open; conflicts unresolved (R-12); Boundary **E** unauthorized. |
+| Execution authorization | **`NONE`** — Boundaries A–E all **NONE**; this document authorizes documentation only. |
+| S4 gates closed by this document | **`NONE`** |
 | Owner contracts complete for release? | **NO** — inventory recorded; signed answers still **OWNER DECISION REQUIRED**. |
-| Any execution authorized by this blueprint? | **No.** |
+| Waivers granted? | **NONE** |
 | Final status | **`NO-GO — NO EXECUTION AUTHORIZED`** until a separately authorized review establishes otherwise. |
+
+Unresolved owner decisions (non-exhaustive; remain explicitly unresolved — no proposed default is approved policy): Section 0.1 H1/H2/SEP unit; 0.2 shipping rates; 0.3 coupon A/B and Smart Coupons; 0.4 guest/bacs/installment; 0.5 hostname/TLS termination; 0.6 RPO/RTO/backup/monitoring/migrate approver; R-02 reverse-failure and multi-pending recovery policies; R-03 duplicate-order policy; R-04 archival/non-payable and Workstream B business inputs; R-08 exclusions and any homepage-redirect exceptions; R-12 whether Workstream B proceeds after launch.
 
 ---
 
 ## Work performed for this blueprint revision
 
-- Deliverable: this planning document only (`/opt/cursor/artifacts/KASRA_REMEDIATION_BLUEPRINT.md`).
-- Plan file not edited.
-- Repository code not modified.
-- Tests not run. Databases not contacted. Migrations, importer, correction, rollback not run.
-- Secrets and `.env` contents not inspected for substance.
-- Git commit/push/deploy not performed for remediation execution (none authorized).
+### Prior blueprint creation (REPORTED context; not re-executed here)
+- Original planning deliverable created as documentation only; historical audit sources cited as **REPORTED**.
+
+### This consolidation revision (documentation only)
+- Changed file: `audit_reports/KASRA_REMEDIATION_BLUEPRINT.md` only.
+- Added Authorization Boundaries A–E and separate-authorization rule.
+- Added R-02 expected-outcome matrix (recovery procedures left **OWNER DECISION REQUIRED** where unapproved).
+- Strengthened R-08 SEO validation (frozen inventory hash, exclusions, destination content/type, homepage-redirect rejection, media/robots/canonical/query, crawl log retention).
+- Added Gate-closure non-implication rule, Waiver rule (no waivers granted), and S4 Independent-Review Record template.
+- Preserved final status: commercial **NO-GO**; historical-order correction **NO-GO**; execution authorization **NONE**; S4 gates closed **NONE**.
+- Unresolved owner decisions left explicitly unresolved; proposed defaults not converted to approved policy.
+- Historical audit findings kept as **REPORTED** / previously reported — this task did **not** inspect current repository runtime behavior, database contents, payment gateway, backups, or server configuration beyond reading this planning document.
+- Application code, tests, settings, migrations, data, secrets, deployment files, and other documents **not** modified.
+- Tests not run. Databases not contacted. Migrations, importer, correction, rollback, payment operations, deployment, and production access **not** performed.
+- Per task authorization: **no git commit or push** for this consolidation revision.
 
 **End of blueprint.**
