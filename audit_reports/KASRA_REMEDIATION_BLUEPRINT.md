@@ -27,13 +27,26 @@
 
 **Workstream separation:** Workstream A = commercial release remediation. Workstream B = historical imported-order amount correction/recovery. They must not share authorization, runbooks, or release gates. Historical correction is not part of go-live.
 
-**Primary supplied sources:**
+**Primary supplied sources (cited paths):**
 - `audit_reports/WORDPRESS_DJANGO_FEATURE_GAP_AUDIT.md`
 - `audit_reports/P0_2_PHASE1_CURRENCY_CONVERTER_RECONCILIATION.md`
 - `audit_reports/P0_2_PHASE2_READ_ONLY_RECONCILIATION.md`
 - `audit_reports/P0_2_PHASE3_CORRECTION_PLAN.md`
 - `audit_reports/KASRA_ORDER_CORRECTION_REV8_FINDINGS.md`
 - `audit_reports/KASRA_ORDER_CORRECTION_REV8_GATE_MATRIX.md`
+
+**Source path presence (read-only repository metadata; path existence only — contents not opened or re-proven here):**
+
+| Cited path | On this blueprint branch / working tree / `origin/main` | Path presence elsewhere (metadata only) |
+| --- | --- | --- |
+| `audit_reports/WORDPRESS_DJANGO_FEATURE_GAP_AUDIT.md` | **ABSENT** | **PRESENT** on `origin/cursor/payment-hardening-and-architecture-review` tip `4a6c74410ecd6f30e81df28d061dd2fdc31449b9` (blob `8841946e66d3aaed1074632d5e90c170f282b4dd`) |
+| `audit_reports/P0_2_PHASE1_CURRENCY_CONVERTER_RECONCILIATION.md` | **ABSENT** | **PRESENT** on same tip (blob `6e116b1b537ab017837deead2c9cc8f4c8cb17c2`) |
+| `audit_reports/P0_2_PHASE2_READ_ONLY_RECONCILIATION.md` | **ABSENT** | **PRESENT** on same tip (blob `9314a33d1745791aefacf5fe86060e91448f9997`) |
+| `audit_reports/P0_2_PHASE3_CORRECTION_PLAN.md` | **ABSENT** | **PRESENT** on same tip (blob `946df4bf16a7fe14fd75d8b160b12b9c2f4b6331`) |
+| `audit_reports/KASRA_ORDER_CORRECTION_REV8_FINDINGS.md` | **ABSENT** | **PRESENT** on same tip (blob `b953495cde55e2e5fc1d22aca8c9b9314729b0fa`); introduced by commit `4a6c744` |
+| `audit_reports/KASRA_ORDER_CORRECTION_REV8_GATE_MATRIX.md` | **ABSENT** | **PRESENT** on same tip (blob `9b8be1dea8bdb9214aedbb6310c6e775ba89684b`); introduced by commit `4a6c744` |
+
+**Unresolved source-reference / traceability impact:** Because none of the six cited paths are present on this blueprint branch, on `origin/main`, or in the current working tree, this document **cannot** locally re-open those sources for content verification. Path presence on another remote branch is **not** content verification. Claims attributed to those sources remain **REPORTED**. Items that still require separately authorized inspection, run, owner statement, or external system remain **NOT VERIFIED**. This documentation correction does **not** reconstruct missing reports, invent file contents, or promote any cited claim to independently verified current-HEAD truth.
 
 **Baseline note:** Rev8 recorded inspected commit `90987a6` on branch `cursor/payment-hardening-and-architecture-review`. Feature-gap audit dated 2026-10-11. This blueprint does **not** claim those baselines equal any current working tree. Past audit “VERIFIED” / “test passed” labels are **REPORTED** prior claims, not retained evidence for this document (Rev8 J1: no claim reached “VERIFIED FROM EXISTING REPRODUCIBLE EVIDENCE”). This consolidation revision does **not** independently reverify the current repository, runtime, database, payment gateway, backup, or server configuration; historical audit findings remain labelled **REPORTED** (previously reported), not independently reverified.
 
@@ -886,6 +899,13 @@ Unresolved owner decisions (non-exhaustive; remain explicitly unresolved — no 
 - Historical audit findings kept as **REPORTED** / previously reported — this task did **not** inspect current repository runtime behavior, database contents, payment gateway, backups, or server configuration beyond reading this planning document.
 - Application code, tests, settings, migrations, data, secrets, deployment files, and other documents **not** modified.
 - Tests not run. Databases not contacted. Migrations, importer, correction, rollback, payment operations, deployment, and production access **not** performed.
-- Per task authorization: **no git commit or push** for this consolidation revision.
+- **Stated intention of the original consolidation task (REPORTED):** task authorization instructed **no git commit or push** for that consolidation revision.
+- **Actual Git / PR state observed after that consolidation (VERIFIED from repository / GitHub metadata; history not altered to match the intention):** consolidation commit `9c20b6e074615eed720eab42d2fd079a9e8f350a` (“Consolidate planning-review items into Kasra remediation blueprint.”) exists on branch `cursor/remediation-blueprint-6515` and is included in open PR #1 (`https://github.com/maryamardom-bit/books/pull/1`, base `main`). That commit is **not** an ancestor of `origin/main` as of this documentation correction. This document does **not** claim that no such commit or PR exists.
+
+### Documentation verification findings F1/F2 (documentation only)
+- Changed file: `audit_reports/KASRA_REMEDIATION_BLUEPRINT.md` only.
+- **F1:** Corrected the consolidation work-log so stated “no commit/push” intention is distinguished from the verified existence of commit `9c20b6e074615eed720eab42d2fd079a9e8f350a` and PR #1. Git history was not amended, rewritten, reset, or deleted.
+- **F2:** Recorded read-only path-presence metadata for the six cited `audit_reports/*` sources; recorded absence from this branch / `origin/main` / working tree; preserved **REPORTED** / **NOT VERIFIED** classifications; recorded unresolved local-source traceability impact. Source contents were not reconstructed and were not treated as content-verified.
+- Preserved final status: commercial **NO-GO**; historical-order correction **NO-GO**; execution authorization **NONE**; S4 gates closed **NONE**.
 
 **End of blueprint.**
