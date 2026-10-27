@@ -1,3 +1,4 @@
+
 {% extends '_base.html' %}
 {% load i18n %}
 
@@ -6,133 +7,466 @@
 {% block content %}
 <section class="page-wrap">
     <nav class="crumb">
-        <a href="{% url 'accounts:dashboard' %}">{% trans 'Dashboard' %}</a>
+        <a href="{% url 'accounts:dashboard' %}">
+            {% trans 'Dashboard' %}
+        </a>
         <span>/</span>
         <span>{% trans 'Edit Profile' %}</span>
     </nav>
+
     {% include "includes/account_nav.html" %}
+
     <div class="card mx-auto max-w-xl">
-        <h1 class="mb-6 text-center text-xl">{% trans 'Edit Profile' %}</h1>
+        <h1 class="mb-6 text-center text-xl">
+            {% trans 'Edit Profile' %}
+        </h1>
+
         <form method="post" class="space-y-4">
             {% csrf_token %}
+
             {% for field in form %}
-            <div>
-                <label>{{ field.label }}</label>
-                {% if field.name == 'birth_date' %}
-                <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                    {{ field }}
-                    <button type="button" class="absolute end-3 top-1/2 -translate-y-1/2 text-accent-strong" @click="open = !open; if (open) renderCalendar()" aria-label="{% trans 'Calendar' %}">
-                        <i class="far fa-calendar-alt"></i>
-                    </button>
-                    <div id="jalali-calendar" class="absolute end-0 top-14 z-[90] hidden w-72 rounded-xl border border-line bg-paper p-4 shadow-lg"></div>
+                <div>
+                    <label
+                        {% if field.name == 'birth_date' %}
+                            for="birth-date-input"
+                        {% else %}
+                            for="{{ field.id_for_label }}"
+                        {% endif %}
+                        class="mb-1 block"
+                    >
+                        {{ field.label }}
+                    </label>
+
+                    {% if field.name == 'birth_date' %}
+                        <div id="birth-date-wrapper" class="relative">
+                            {{ field }}
+
+                            <button
+                                type="button"
+                                id="calendar-toggle"
+                                class="absolute end-3 top-1/2
+                                       -translate-y-1/2
+                                       text-accent-strong"
+                                aria-label="{% trans 'Calendar' %}"
+                                aria-expanded="false"
+                                aria-controls="jalali-calendar"
+                            >
+                                <i class="far fa-calendar-alt"></i>
+                            </button>
+
+                            <div
+                                id="jalali-calendar"
+                                class="absolute end-0 top-full mt-2
+                                       z-[90] hidden w-full
+                                       min-w-[280px] max-w-[320px]
+                                       rounded-xl border border-line
+                                       bg-paper p-3 shadow-lg"
+                                dir="rtl"
+                            ></div>
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <p class="mt-1 text-xs text-danger">
+                            {{ field.errors.0 }}
+                        </p>
+                    {% endif %}
                 </div>
-                {% else %}
-                {{ field }}
-                {% endif %}
-                {% if field.errors %}<p class="mt-1 text-xs text-danger">{{ field.errors.0 }}</p>{% endif %}
-            </div>
             {% endfor %}
-            <button type="submit" class="btn btn-accent btn-lg btn-block">{% trans 'Save Changes' %}</button>
+
+            <button
+                type="submit"
+                class="btn btn-accent btn-lg btn-block"
+            >
+                {% trans 'Save Changes' %}
+            </button>
         </form>
-        <p class="mt-4 text-center"><a href="{% url 'accounts:dashboard' %}" class="text-sm text-muted">{% trans 'Back to Dashboard' %}</a></p>
+
+        <p class="mt-4 text-center">
+            <a
+                href="{% url 'accounts:dashboard' %}"
+                class="text-sm text-muted"
+            >
+                {% trans 'Back to Dashboard' %}
+            </a>
+        </p>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-let currentYear = 1403;
-let currentMonth = 1;
-let selectedDate = null;
-const monthNames = ['{% trans "Farvardin" %}','{% trans "Ordibehesht" %}','{% trans "Khordad" %}','{% trans "Tir" %}','{% trans "Mordad" %}','{% trans "Shahrivar" %}','{% trans "Mehr" %}','{% trans "Aban" %}','{% trans "Azar" %}','{% trans "Dey" %}','{% trans "Bahman" %}','{% trans "Esfand" %}'];
+(function () {
+    'use strict';
 
-function toggleCalClass(show) {
-    const cal = document.getElementById('jalali-calendar');
-    cal.classList.toggle('hidden', !show);
-}
+    let currentYear = 1405;
+    let currentMonth = 1;
+    let selectedDate = null;
 
-function renderCalendar() {
-    const cal = document.getElementById('jalali-calendar');
-    cal.classList.remove('hidden');
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
-    let html = `
-        <div class="mb-3 flex items-center justify-between">
-            <button type="button" onclick="changeMonth(-1)" class="rounded-lg bg-surface px-2 py-1 font-bold">→</button>
-            <div class="flex items-center gap-1">
-                <button type="button" onclick="toggleYearDropdown(event)" class="rounded px-2 py-1 font-bold">${currentYear}</button>
-                <span class="text-faint">/</span>
-                <button type="button" onclick="toggleMonthDropdown(event)" class="rounded px-2 py-1 font-bold">${monthNames[currentMonth-1]}</button>
+    const monthNames = [
+        '{% trans "Farvardin" %}',
+        '{% trans "Ordibehesht" %}',
+        '{% trans "Khordad" %}',
+        '{% trans "Tir" %}',
+        '{% trans "Mordad" %}',
+        '{% trans "Shahrivar" %}',
+        '{% trans "Mehr" %}',
+        '{% trans "Aban" %}',
+        '{% trans "Azar" %}',
+        '{% trans "Dey" %}',
+        '{% trans "Bahman" %}',
+        '{% trans "Esfand" %}'
+    ];
+
+    const weekdays = [
+        '{% trans "Sa" %}',
+        '{% trans "Su" %}',
+        '{% trans "Mo" %}',
+        '{% trans "Tu" %}',
+        '{% trans "We" %}',
+        '{% trans "Th" %}',
+        '{% trans "Fr" %}'
+    ];
+
+    function isLeapYear(year) {
+        // محاسبهٔ تقریبی کبیسه در چرخهٔ ۳۳ ساله
+        return ((year % 33) % 4) === 1;
+    }
+
+    function getDaysInMonth(year, month) {
+        if (month >= 1 && month <= 6) return 31;
+        if (month >= 7 && month <= 11) return 30;
+        if (month === 12) return isLeapYear(year) ? 30 : 29;
+        return 0;
+    }
+
+    function getFirstDayOfMonth(year, month) {
+        /*
+         * روز شروع فروردین ۱۴۰۳ برابر چهارشنبه است.
+         * این محاسبه با چرخهٔ سادهٔ سال کبیسه انجام می‌شود.
+         * برای تقویم کاملاً دقیق، از مبدل معتبر جلالی استفاده کنید.
+         */
+        const baseYear = 1403;
+        const baseDay = 4; // شنبه=۰، یکشنبه=۱، ... جمعه=۶
+
+        let totalDays = 0;
+
+        for (let y = baseYear; y < year; y++) {
+            totalDays += isLeapYear(y) ? 366 : 365;
+        }
+
+        for (let y = year; y < baseYear; y++) {
+            totalDays -= isLeapYear(y) ? 366 : 365;
+        }
+
+        for (let m = 1; m < month; m++) {
+            totalDays += getDaysInMonth(year, m);
+        }
+
+        return ((totalDays + baseDay) % 7 + 7) % 7;
+    }
+
+    function closeCalendar() {
+        const calendar = document.getElementById('jalali-calendar');
+        const toggle = document.getElementById('calendar-toggle');
+
+        if (!calendar || !toggle) return;
+
+        calendar.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function renderCalendar() {
+        const calendar = document.getElementById('jalali-calendar');
+        if (!calendar) return;
+
+        const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+        const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+
+        let html = `
+            <div class="mb-3 flex items-center justify-between gap-1">
+                <button
+                    type="button"
+                    data-calendar-action="prev"
+                    class="flex h-9 w-9 shrink-0 items-center
+                           justify-center rounded-lg bg-surface
+                           hover:bg-line"
+                    aria-label="Previous month"
+                >→</button>
+
+                <div class="flex min-w-0 items-center justify-center gap-1">
+                    <button
+                        type="button"
+                        data-calendar-action="year"
+                        class="rounded-lg px-2 py-2 text-sm
+                               font-bold hover:bg-surface"
+                    >${currentYear}</button>
+
+                    <span class="text-faint">/</span>
+
+                    <button
+                        type="button"
+                        data-calendar-action="month"
+                        class="rounded-lg px-2 py-2 text-sm
+                               font-bold hover:bg-surface"
+                    >${monthNames[currentMonth - 1]}</button>
+                </div>
+
+                <button
+                    type="button"
+                    data-calendar-action="next"
+                    class="flex h-9 w-9 shrink-0 items-center
+                           justify-center rounded-lg bg-surface
+                           hover:bg-line"
+                    aria-label="Next month"
+                >←</button>
             </div>
-            <button type="button" onclick="changeMonth(1)" class="rounded-lg bg-surface px-2 py-1 font-bold">←</button>
-        </div>
-        <div id="year-dropdown" class="mb-2 hidden"></div>
-        <div id="month-dropdown" class="mb-2 hidden"></div>
-        <table class="w-full text-center text-sm">
-            <tr class="text-muted"><th>{% trans "Sa" %}</th><th>{% trans "Su" %}</th><th>{% trans "Mo" %}</th><th>{% trans "Tu" %}</th><th>{% trans "We" %}</th><th>{% trans "Th" %}</th><th>{% trans "Fr" %}</th></tr><tr>
-    `;
-    for (let i = 0; i < firstDay; i++) html += '<td></td>';
-    for (let day = 1; day <= daysInMonth; day++) {
-        if ((firstDay + day - 1) % 7 === 0 && day > 1) html += '</tr><tr>';
-        const isSelected = selectedDate && selectedDate.year === currentYear && selectedDate.month === currentMonth && selectedDate.day === day;
-        html += `<td onclick="selectDate(${day})" class="cursor-pointer rounded-lg p-2 ${isSelected ? 'bg-accent font-bold text-white' : 'hover:bg-surface'}">${day}</td>`;
+
+            <div id="year-dropdown" class="mb-2 hidden"></div>
+            <div id="month-dropdown" class="mb-2 hidden"></div>
+
+            <div class="grid grid-cols-7 gap-1 text-center">
+                ${weekdays.map(day => `
+                    <div
+                        class="flex h-9 min-w-0 items-center
+                               justify-center rounded-md
+                               text-xs font-semibold text-muted"
+                    >${day}</div>
+                `).join('')}
+            </div>
+
+            <div class="mt-1 grid grid-cols-7 gap-1 text-center">
+        `;
+
+        for (let i = 0; i < firstDay; i++) {
+            html += '<div class="aspect-square min-w-0"></div>';
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const isSelected = Boolean(
+                selectedDate &&
+                selectedDate.year === currentYear &&
+                selectedDate.month === currentMonth &&
+                selectedDate.day === day
+            );
+
+            html += `
+                <button
+                    type="button"
+                    data-calendar-day="${day}"
+                    class="flex aspect-square min-w-0
+                           items-center justify-center rounded-lg
+                           text-sm transition-colors
+                           ${isSelected
+                               ? 'bg-accent font-bold text-white'
+                               : 'hover:bg-surface'}"
+                    aria-pressed="${isSelected}"
+                    aria-label="${day}"
+                >${day}</button>
+            `;
+        }
+
+        html += '</div>';
+
+        calendar.innerHTML = html;
+        calendar.classList.remove('hidden');
     }
-    html += '</tr></table>';
-    cal.innerHTML = html;
-}
 
-function toggleYearDropdown(event) {
-    event.stopPropagation();
-    const dropdown = document.getElementById('year-dropdown');
-    if (!dropdown.classList.contains('hidden')) { dropdown.classList.add('hidden'); return; }
-    let years = '';
-    for (let y = currentYear - 60; y <= currentYear + 10; y++) years += `<option value="${y}">${y}</option>`;
-    dropdown.innerHTML = `<select onchange="selectYear(this.value)">${years}</select>`;
-    dropdown.classList.remove('hidden');
-}
+    function changeMonth(delta) {
+        currentMonth += delta;
 
-function toggleMonthDropdown(event) {
-    event.stopPropagation();
-    const dropdown = document.getElementById('month-dropdown');
-    if (!dropdown.classList.contains('hidden')) { dropdown.classList.add('hidden'); return; }
-    let months = '';
-    monthNames.forEach((name, index) => { months += `<option value="${index+1}">${name}</option>`; });
-    dropdown.innerHTML = `<select onchange="selectMonth(this.value)">${months}</select>`;
-    dropdown.classList.remove('hidden');
-}
+        if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear--;
+        } else if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear++;
+        }
 
-function selectYear(year) { currentYear = parseInt(year); renderCalendar(); }
-function selectMonth(month) { currentMonth = parseInt(month); renderCalendar(); }
-function getDaysInMonth(year, month) {
-    const monthDays = [31,31,31,31,31,31,30,30,30,30,30,29];
-    if (month === 12 && isLeapYear(year)) return 30;
-    return monthDays[month - 1];
-}
-function isLeapYear(year) { return year % 33 % 4 === 1; }
-function getFirstDayOfMonth(year, month) {
-    const baseYear = 1403, baseDay = 6;
-    let totalDays = 0;
-    for (let y = baseYear; y < year; y++) totalDays += isLeapYear(y) ? 366 : 365;
-    for (let m = 1; m < month; m++) totalDays += getDaysInMonth(year, m);
-    return (totalDays + baseDay) % 7;
-}
-function changeMonth(delta) {
-    currentMonth += delta;
-    if (currentMonth < 1) { currentMonth = 12; currentYear--; }
-    else if (currentMonth > 12) { currentMonth = 1; currentYear++; }
-    renderCalendar();
-}
-function selectDate(day) {
-    selectedDate = { year: currentYear, month: currentMonth, day };
-    document.getElementById('birth-date-input').value = `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-    document.getElementById('jalali-calendar').classList.add('hidden');
-}
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('birth-date-input');
-    if (input && input.value) {
-        const parts = input.value.split('/');
-        if (parts.length === 3) { currentYear = parseInt(parts[0]); currentMonth = parseInt(parts[1]); }
+        renderCalendar();
     }
-});
+
+    function showYearDropdown() {
+        const dropdown = document.getElementById('year-dropdown');
+        const monthDropdown = document.getElementById('month-dropdown');
+
+        if (!dropdown || !monthDropdown) return;
+
+        monthDropdown.classList.add('hidden');
+
+        if (!dropdown.classList.contains('hidden')) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+
+        let options = '';
+
+        for (let year = currentYear - 60; year <= currentYear + 10; year++) {
+            options += `
+                <option value="${year}"
+                    ${year === currentYear ? 'selected' : ''}>
+                    ${year}
+                </option>
+            `;
+        }
+
+        dropdown.innerHTML = `
+            <select
+                id="calendar-year-select"
+                class="w-full rounded-lg border border-line
+                       bg-paper p-2 text-sm"
+                aria-label="Select year"
+            >${options}</select>
+        `;
+
+        dropdown.classList.remove('hidden');
+
+        document.getElementById('calendar-year-select')
+            .addEventListener('change', function () {
+                currentYear = parseInt(this.value, 10);
+                renderCalendar();
+            });
+    }
+
+    function showMonthDropdown() {
+        const dropdown = document.getElementById('month-dropdown');
+        const yearDropdown = document.getElementById('year-dropdown');
+
+        if (!dropdown || !yearDropdown) return;
+
+        yearDropdown.classList.add('hidden');
+
+        if (!dropdown.classList.contains('hidden')) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+
+        dropdown.innerHTML = `
+            <select
+                id="calendar-month-select"
+                class="w-full rounded-lg border border-line
+                       bg-paper p-2 text-sm"
+                aria-label="Select month"
+            >
+                ${monthNames.map((name, index) => `
+                    <option value="${index + 1}"
+                        ${index + 1 === currentMonth ? 'selected' : ''}>
+                        ${name}
+                    </option>
+                `).join('')}
+            </select>
+        `;
+
+        dropdown.classList.remove('hidden');
+
+        document.getElementById('calendar-month-select')
+            .addEventListener('change', function () {
+                currentMonth = parseInt(this.value, 10);
+                renderCalendar();
+            });
+    }
+
+    function selectDate(day) {
+        const input = document.getElementById('birth-date-input');
+        if (!input) return;
+
+        selectedDate = {
+            year: currentYear,
+            month: currentMonth,
+            day: day
+        };
+
+        input.value =
+            `${currentYear}/${String(currentMonth).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+
+        closeCalendar();
+    }
+
+    function parseInputDate(input) {
+        const match = input.value.trim().match(
+            /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/
+        );
+
+        if (!match) return false;
+
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+
+        if (
+            !Number.isInteger(year) ||
+            year < 1 ||
+            month < 1 ||
+            month > 12 ||
+            day < 1 ||
+            day > getDaysInMonth(year, month)
+        ) {
+            return false;
+        }
+
+        currentYear = year;
+        currentMonth = month;
+        selectedDate = { year, month, day };
+
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const wrapper = document.getElementById('birth-date-wrapper');
+        const input = document.getElementById('birth-date-input');
+        const calendar = document.getElementById('jalali-calendar');
+        const toggle = document.getElementById('calendar-toggle');
+
+        if (!wrapper || !input || !calendar || !toggle) return;
+
+        parseInputDate(input);
+
+        toggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (calendar.classList.contains('hidden')) {
+                parseInputDate(input);
+                renderCalendar();
+                toggle.setAttribute('aria-expanded', 'true');
+            } else {
+                closeCalendar();
+            }
+        });
+
+        calendar.addEventListener('click', function (event) {
+            const button = event.target.closest('button');
+            if (!button) return;
+
+            const action = button.dataset.calendarAction;
+
+            if (action === 'prev') changeMonth(-1);
+            else if (action === 'next') changeMonth(1);
+            else if (action === 'year') showYearDropdown();
+            else if (action === 'month') showMonthDropdown();
+            else if (button.dataset.calendarDay) {
+                selectDate(Number(button.dataset.calendarDay));
+            }
+
+            event.stopPropagation();
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!wrapper.contains(event.target)) {
+                closeCalendar();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeCalendar();
+            }
+        });
+    });
+})();
 </script>
 {% endblock %}
