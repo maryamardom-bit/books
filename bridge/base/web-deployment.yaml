@@ -1,0 +1,67 @@
+#! web-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: web
+    namespace: books
+    labels:
+        com.docker.compose.project: books
+        com.docker.compose.service: web
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: books
+            com.docker.compose.service: web
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: books
+                com.docker.compose.service: web
+                com.docker.compose.network.default: "true"
+        spec:
+            restartPolicy: OnFailure
+            containers:
+                - name: web
+                  image: books-web
+                  imagePullPolicy: IfNotPresent
+                  args:
+                    - python
+                    - /code/manage.py
+                    - runserver
+                    - 0.0.0.0:8000
+                  workingDir: /code
+                  env:
+                    - name: DJANGO_DB_HOST
+                      value: "db"
+                    - name: DJANGO_DB_NAME
+                      value: "postgres"
+                    - name: DJANGO_DB_PASSWORD
+                      value: "postgres"
+                    - name: DJANGO_DB_PORT
+                      value: "5432"
+                    - name: DJANGO_DB_USER
+                      value: "postgres"
+                    - name: DJANGO_DEBUG
+                      value: "True"
+                    - name: DJANGO_SECRET_KEY
+                      value: "django-insecure-b764$#(&o4o((cvy!z^nsseq5@erq#e^0%5r5a(%c24*f^*sde"
+                    - name: KAVENEGAR_API_KEY
+                      value: "test_api_key_here"
+                    - name: KAVENEGAR_SENDER
+                      value: "1000596446"
+                    - name: SEP_TERMINAL_ID
+                      value: "test-terminal-id"
+                  ports:
+                    - name: web-8000
+                      containerPort: 8000
+                  volumeMounts:
+                    - name: code
+                      mountPath: /code
+            volumes:
+                - name: code
+                  hostPath:
+                    path: D:\django_project\books
