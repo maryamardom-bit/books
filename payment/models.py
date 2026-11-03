@@ -64,8 +64,8 @@ class Payment(models.Model):
             ),
             models.UniqueConstraint(
                 fields=['order'],
-                condition=Q(status='PAID'),
-                name='payment_one_paid_per_order',
+                condition=Q(status__in=['INITIATED', 'PENDING']),
+                name='payment_one_active_per_order',
             ),
         ]
 

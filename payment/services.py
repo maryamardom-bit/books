@@ -42,6 +42,7 @@ MESSAGES = {
     'PAYMENT_AMOUNT_MISMATCH': _('Payment amount does not match the order.'),
     'GATEWAY_UNAVAILABLE': _('Error connecting to payment gateway.'),
     'GATEWAY_REJECTED': _('Payment error'),
+    'PAYMENT_IN_PROGRESS': _('A payment attempt is already in progress or requires reconciliation.'),
 }
 
 
@@ -67,42 +68,77 @@ class CallbackOutcome:
     def message(self):
         return str(MESSAGES.get(self.code, self.code))
 
-
 def start_payment(order, callback_url):
     """
     Create a Payment and ask the gateway for a token.
-    Returns the GatewayRedirect, or None when the order total is zero and was completed directly.
+    Returns the GatewayRedirect, or None when the order total is zero
+    and was completed directly.
+
+    An INITIATED payment after a transport error is intentionally retained:
+    the gateway may have processed the token request even if its response
+    was lost. It must be reconciled before another attempt is created.
     """
     gateway = get_gateway()
+
     with transaction.atomic():
         order = Order.objects.select_for_update().get(pk=order.pk)
+
         if order.is_paid:
             raise PaymentError('ORDER_ALREADY_PAID')
+
         if not order.is_payable():
             raise PaymentError('ORDER_NOT_PAYABLE')
+
+        active_payment = Payment.objects.filter(
+            order=order,
+            status__in=[
+                Payment.Status.INITIATED,
+                Payment.Status.PENDING,
+            ],
+        ).exists()
+
+        if active_payment:
+            raise PaymentError('PAYMENT_IN_PROGRESS')
+
         if order.status == Order.Status.PAYMENT_FAILED:
             order.transition_to(Order.Status.PENDING_PAYMENT)
-        payment = Payment.objects.create(order=order, gateway=gateway.name, amount=order.total_price)
+
+        payment = Payment.objects.create(
+            order=order,
+            gateway=gateway.name,
+            amount=order.total_price,
+        )
 
         if payment.amount <= 0:
             if not _lock_and_check_stock(order):
                 _fail(payment, order, 'OUT_OF_STOCK')
                 raise PaymentError('BOOK_OUT_OF_STOCK')
+
             _complete(payment, order)
             return None
 
     try:
         redirect = gateway.request_payment(payment, callback_url)
+
     except GatewayError:
-        _fail(payment, None, 'GATEWAY_UNAVAILABLE')
-        raise PaymentError('GATEWAY_UNAVAILABLE')
+        payment.failure_reason = 'TOKEN_OUTCOME_UNKNOWN'
+        payment.save(update_fields=['failure_reason', 'updated_at'])
+        raise PaymentError('PAYMENT_IN_PROGRESS')
+
     except PaymentRejected as exc:
         _fail(payment, None, f'GATEWAY_REJECTED: {exc}')
         raise PaymentError('GATEWAY_REJECTED', str(exc))
 
     payment.token = redirect.token[:255]
     payment.status = Payment.Status.PENDING
-    payment.save(update_fields=['token', 'status', 'updated_at'])
+    payment.failure_reason = ''
+    payment.save(update_fields=[
+        'token',
+        'status',
+        'failure_reason',
+        'updated_at',
+    ])
+
     return redirect
 
 
@@ -127,7 +163,10 @@ def handle_callback(data):
                 return CallbackOutcome(False, 'PAYMENT_NOT_FOUND')
             if payment.status == Payment.Status.PAID:
                 return CallbackOutcome(True, 'ALREADY_PAID', payment)
-            if payment.status != Payment.Status.PENDING:
+            if payment.status not in (
+                Payment.Status.INITIATED,
+                Payment.Status.PENDING,
+            ):
                 return CallbackOutcome(False, 'PAYMENT_NOT_PENDING', payment)
 
             order = Order.objects.select_for_update().get(pk=payment.order_id)

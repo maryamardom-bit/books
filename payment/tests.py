@@ -99,13 +99,37 @@ class PaymentProcessTest(TestCase):
         self.assertEqual(Payment.objects.get(order=self.order).status, Payment.Status.FAILED)
 
     @patch(SEP_POST)
-    def test_gateway_timeout(self, mock_post):
+    def test_gateway_timeout_keeps_payment_initiated(self, mock_post):
         mock_post.side_effect = requests.exceptions.Timeout()
 
         response = self.client.get(reverse('payment:payment_process'))
 
         self.assertRedirects(response, reverse('cart:cart_detail'))
-        self.assertEqual(Payment.objects.get(order=self.order).status, Payment.Status.FAILED)
+
+        payment = Payment.objects.get(order=self.order)
+        self.assertEqual(payment.status, Payment.Status.INITIATED)
+        self.assertEqual(payment.failure_reason, 'TOKEN_OUTCOME_UNKNOWN')
+
+    @patch(SEP_POST)
+    def test_active_payment_prevents_new_token_request(self, mock_post):
+        existing_payment = Payment.objects.create(
+            order=self.order,
+            gateway='sep',
+            amount=self.order.total_price,
+            status=Payment.Status.PENDING,
+        )
+
+        response = self.client.get(reverse('payment:payment_process'))
+
+        self.assertRedirects(response, reverse('cart:cart_detail'))
+        mock_post.assert_not_called()
+
+        payments = Payment.objects.filter(order=self.order)
+        self.assertEqual(payments.count(), 1)
+        self.assertEqual(
+            payments.get().pk,
+            existing_payment.pk,
+        )
 
     def test_no_order(self):
         session = self.client.session
@@ -341,6 +365,26 @@ class PaymentCallbackTest(TestCase):
         response = self.bank.get(reverse('payment:payment_verify'))
         self.assertRedirects(response, reverse('cart:cart_detail'))
 
+    @patch(SEP_POST)
+    def test_successful_callback_for_initiated_payment(self, mock_post):
+        self.payment.status = Payment.Status.INITIATED
+        self.payment.failure_reason = 'TOKEN_OUTCOME_UNKNOWN'
+        self.payment.save(update_fields=['status', 'failure_reason'])
+
+        mock_post.return_value = _verify_ok(self.payment)
+
+        response = self._post(_callback(self.payment))
+
+        self.assertRedirects(response, reverse('page:home'))
+
+        self.payment.refresh_from_db()
+        self.order.refresh_from_db()
+        self.product.refresh_from_db()
+
+        self.assertEqual(self.payment.status, Payment.Status.PAID)
+        self.assertTrue(self.order.is_paid)
+        self.assertEqual(self.product.stock, 8)
+        mock_post.assert_called_once()
 
 @override_settings(SEP_TERMINAL_ID='2015', PAYMENT_AMOUNT_MULTIPLIER=10)
 class ImportedOrderPaymentTest(TestCase):
